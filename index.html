@@ -3,51 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>o'fil du Doubs - Location Touristique</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            font-size: 24px;
-        }
-        section {
-            padding: 20px;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            font-size: 18px;
-            color: white;
-            background-color: #3498db;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #2980b9;
-        }
-    </style>
+    <title>O'Fil du Doubs - Location de charme</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <div class="language-selector">
+            <a href="#" onclick="changeLanguage('fr')">🇫🇷</a>
+            <a href="#" onclick="changeLanguage('en')">🇬🇧</a>
+            <a href="#" onclick="changeLanguage('de')">🇩🇪</a>
+        </div>
+        <h1>O'Fil du Doubs</h1>
+        <p id="subtitle">Un hébergement confortable au bord de l'eau</p>
+    </header>
+    
+    <main>
+        <section>
+            <h2 id="welcome">Bienvenue à O'Fil du Doubs</h2>
+            <p id="description">Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
+        </section>
+    </main>
+    
+    <script>
+        const translations = {
+            fr: {
+                subtitle: "Un hébergement confortable au bord de l'eau",
+                welcome: "Bienvenue à O'Fil du Doubs",
+                description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura."
+            },
+            en: {
+                subtitle: "A comfortable accommodation by the water",
+                welcome: "Welcome to O'Fil du Doubs",
+                description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Jura."
+            },
+            de: {
+                subtitle: "Eine komfortable Unterkunft am Wasser",
+                welcome: "Willkommen bei O'Fil du Doubs",
+                description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Jura."
+            }
+        };
 
-<header>
-    Bienvenue à o'fil du Doubs
-</header>
-
-<section>
-    <h1>Un havre de paix au bord du Doubs</h1>
-    <p>Profitez d’un séjour agréable dans notre logement touristique situé en pleine nature.</p>
-    <a href="https://tonliendereservation.com" class="button">Réserver maintenant</a>
-</section>
-
+        function changeLanguage(lang) {
+            document.getElementById('subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('welcome').textContent = translations[lang].welcome;
+            document.getElementById('description').textContent = translations[lang].description;
+        }
+    </script>
 </body>
 </html>
