@@ -36,8 +36,28 @@
             left: 20px;
         }
         .star-classification img {
-            width: 100px;
+            width: 80px;
             height: auto;
+        }
+        .logo {
+            margin-top: 10px;
+            width: 150px;
+            height: auto;
+        }
+        .view-image {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .star-classification img {
+                width: 50px;
+                top: 5px;
+                left: 10px;
+            }
+            .logo {
+                width: 100px;
+            }
         }
         main {
             padding: 20px;
@@ -61,6 +81,7 @@
             <a href="#" onclick="changeLanguage('en')">🇬🇧</a>
             <a href="#" onclick="changeLanguage('de')">🇩🇪</a>
         </div>
+        <img src="logo-o-fil-du-doubs.jpg" alt="Logo O'Fil du Doubs" class="logo">
         <h1>O'Fil du Doubs</h1>
         <p id="subtitle">Un hébergement confortable au bord de l'eau</p>
     </header>
@@ -69,6 +90,7 @@
         <section>
             <h2 id="welcome">Bienvenue à O'Fil du Doubs</h2>
             <p id="description">Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
+            <img src="vue-balcon.jpg" alt="Vue depuis le balcon" class="view-image">
         </section>
     </main>
     
