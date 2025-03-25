@@ -15,6 +15,7 @@ header {
 nav {
     background: #005f8d;
     padding: 10px;
+    position: relative;
 }
 
 nav ul {
@@ -35,7 +36,7 @@ nav ul li a {
     font-weight: bold;
 }
 
-/* Menu burger caché par défaut */
+/* Styles pour le menu burger */
 .menu-toggle {
     display: none;
     background: #0077b6;
@@ -43,6 +44,7 @@ nav ul li a {
     padding: 10px;
     cursor: pointer;
     text-align: center;
+    font-size: 20px;
 }
 
 /* Version mobile */
@@ -56,6 +58,10 @@ nav ul li a {
         top: 50px;
         left: 0;
         text-align: center;
+    }
+
+    nav ul.active {
+        display: flex;
     }
 
     nav ul li {
