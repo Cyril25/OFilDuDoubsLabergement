@@ -9,14 +9,20 @@
 <body>
     <header>
         <h1>Informations Pratiques</h1>
-        <nav>
-            <a href="index.html">Accueil</a>
-            <a href="checkin.html">Check-in / Check-out</a>
-            <a href="equipements.html">Équipements</a>
-            <a href="activites.html">Activités & Commerces</a>
-            <a href="contact.html">Contact</a>
-        </nav>
+        <div id="menu-container"></div>
     </header>
+    
+    <script>
+        // Charger le menu dynamiquement
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("menu.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("menu-container").innerHTML = data;
+                })
+                .catch(error => console.error("Erreur lors du chargement du menu :", error));
+        });
+    </script>
     
     <main>
         <section>
