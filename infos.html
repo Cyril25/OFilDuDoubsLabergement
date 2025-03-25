@@ -23,7 +23,6 @@
     <main>
         <section>
             <h2>Adresse</h2>
-            <p>Appartement 211 (1er étage, bâtiment 2)</p>
             <p>2 Impasse Cotti, 25160 Labergement-Sainte-Marie (France)</p>
         </section>
         
@@ -53,5 +52,48 @@
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("translations.json")
+                .then(response => response.json())
+                .then(translations => {
+                    const languageSelect = document.getElementById("language-select");
+
+                    function updateContent(language) {
+                        const content = translations[language];
+
+                        // Update text content for sections
+                        document.getElementById("adresse").textContent = content.adresse;
+                        document.getElementById("stationnement").textContent = content.stationnement;
+                        document.getElementById("local-poubelles").textContent = content.local-poubelles;
+
+                        // Update headings
+                        document.getElementById("adresse-title").textContent = "Adresse";
+                        document.getElementById("stationnement-title").textContent = "Places de stationnement";
+                        document.getElementById("local-poubelles-title").textContent = "Local poubelles";
+                        document.getElementById("numeros-utiles-title").textContent = "Numéros utiles";
+
+                        // Update useful numbers list
+                        const ul = document.getElementById("numeros-utiles");
+                        ul.innerHTML = "";
+                        content.numeros-utiles.forEach(item => {
+                            const li = document.createElement("li");
+                            li.textContent = `${item.label} - ${item.description}`;
+                            ul.appendChild(li);
+                        });
+                    }
+
+                    // Set the default language
+                    updateContent("fr");
+
+                    // Change language on selection
+                    languageSelect.addEventListener("change", function (event) {
+                        updateContent(event.target.value);
+                    });
+                })
+                .catch(error => console.error("Erreur de traduction :", error));
+        });
+    </script>
 </body>
 </html>
