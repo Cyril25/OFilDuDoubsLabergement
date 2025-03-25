@@ -29,4 +29,9 @@
         var menu = document.getElementById("menu-items");
         menu.classList.toggle("active");
     }
+
+    // Attendre que le menu soit bien inséré avant d'ajouter l'événement
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".menu-toggle").addEventListener("click", toggleMenu);
+    });
 </script>
