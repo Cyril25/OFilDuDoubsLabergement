@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informations Pratiques - O'Fil du Doubs</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="menu-container"></div>
     <script>
-                document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
         fetch("menu.html")
             .then(response => response.text())
             .then(data => {
@@ -32,8 +29,8 @@
 
     const languageSelect = document.getElementById("language-select");
 
-    function changeLanguage(language) {
-        const content = translations[language];
+    function changeLanguage(lang) {
+        const content = translations[lang];
 
         // Update text content for sections
         document.getElementById("adresse").textContent = content.adresse;
@@ -54,7 +51,11 @@
             li.textContent = `${item.label} - ${item.description}`;
             ul.appendChild(li);
         });
+    }
     </script>
+</head>
+<body>
+    <div id="menu-container"></div>
     
     <main>
         <section>
