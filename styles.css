@@ -120,8 +120,9 @@ section {
     margin: 20px auto;
     width: 80%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: none;
 }
-section.active {
+
+/* Assurer que la première section s'affiche */
+main section:first-child {
     display: block;
 }
