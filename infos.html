@@ -9,14 +9,50 @@
 <body>
     <div id="menu-container"></div>
     <script>
-        // Charger le menu dynamiquement
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("menu.html")
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("menu-container").innerHTML = data;
-                })
-                .catch(error => console.error("Erreur lors du chargement du menu :", error));
+                document.addEventListener("DOMContentLoaded", function () {
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+
+                // Maintenant que le menu est inséré, on attache l'événement au bouton
+                let menuToggle = document.querySelector(".menu-toggle");
+                let menuItems = document.querySelector("#menu-items");
+
+                if (menuToggle && menuItems) {
+                    menuToggle.addEventListener("click", function () {
+                        menuItems.classList.toggle("active");
+                    });
+                } else {
+                    console.error("Le menu burger ne peut pas être activé.");
+                }
+            })
+            .catch(error => console.error("Erreur lors du chargement du menu :", error));
+    });
+
+    const languageSelect = document.getElementById("language-select");
+
+    function changeLanguage(language) {
+        const content = translations[language];
+
+        // Update text content for sections
+        document.getElementById("adresse").textContent = content.adresse;
+        document.getElementById("stationnement").textContent = content.stationnement;
+        document.getElementById("local-poubelles").textContent = content.local-poubelles;
+
+        // Update headings
+        document.getElementById("adresse-title").textContent = "Adresse";
+        document.getElementById("stationnement-title").textContent = "Places de stationnement";
+        document.getElementById("local-poubelles-title").textContent = "Local poubelles";
+        document.getElementById("numeros-utiles-title").textContent = "Numéros utiles";
+
+        // Update useful numbers list
+        const ul = document.getElementById("numeros-utiles");
+        ul.innerHTML = "";
+        content.numeros-utiles.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = `${item.label} - ${item.description}`;
+            ul.appendChild(li);
         });
     </script>
     
@@ -52,48 +88,5 @@
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("translations.json")
-                .then(response => response.json())
-                .then(translations => {
-                    const languageSelect = document.getElementById("language-select");
-
-                    function changeLanguage(language) {
-                        const content = translations[language];
-
-                        // Update text content for sections
-                        document.getElementById("adresse").textContent = content.adresse;
-                        document.getElementById("stationnement").textContent = content.stationnement;
-                        document.getElementById("local-poubelles").textContent = content.local-poubelles;
-
-                        // Update headings
-                        document.getElementById("adresse-title").textContent = "Adresse";
-                        document.getElementById("stationnement-title").textContent = "Places de stationnement";
-                        document.getElementById("local-poubelles-title").textContent = "Local poubelles";
-                        document.getElementById("numeros-utiles-title").textContent = "Numéros utiles";
-
-                        // Update useful numbers list
-                        const ul = document.getElementById("numeros-utiles");
-                        ul.innerHTML = "";
-                        content.numeros-utiles.forEach(item => {
-                            const li = document.createElement("li");
-                            li.textContent = `${item.label} - ${item.description}`;
-                            ul.appendChild(li);
-                        });
-                    }
-
-                    // Set the default language
-                    updateContent("fr");
-
-                    // Change language on selection
-                    languageSelect.addEventListener("change", function (event) {
-                        updateContent(event.target.value);
-                    });
-                })
-                .catch(error => console.error("Erreur de traduction :", error));
-        });
-    </script>
 </body>
 </html>
