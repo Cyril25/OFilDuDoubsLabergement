@@ -5,85 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O'Fil du Doubs - Location de charme</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-            position: relative;
-        }
-        header {
-            background: #0077b6;
-            color: white;
-            padding: 20px;
-            position: relative;
-        }
-        nav {
-            background: #005f8d;
-            padding: 10px;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .language-selector {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-        .language-selector a {
-            margin: 0 5px;
-            text-decoration: none;
-            font-size: 20px;
-        }
-        .star-classification {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-        }
-        .star-classification img {
-            width: 80px;
-            height: auto;
-        }
-        .logo {
-            margin-top: 10px;
-            width: 150px;
-            height: auto;
-        }
-        .view-image {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 20px;
-        }
-        @media (max-width: 600px) {
-            .star-classification img {
-                width: 50px;
-                top: 5px;
-                left: 10px;
-            }
-            .logo {
-                width: 100px;
-            }
-        }
-        main {
-            padding: 20px;
-        }
-        section {
-            background: white;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-        section.active {
-            display: block;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -96,62 +17,59 @@
             <a href="#" onclick="changeLanguage('de')">🇩🇪</a>
         </div>
         <img src="images/logo-o-fil-du-doubs.jpg" alt="Logo O'Fil du Doubs" class="logo">
-        <h1>O'Fil du Doubs</h1>
+        <h1 id="title">O'Fil du Doubs</h1>
         <p id="subtitle">Un hébergement confortable au bord de l'eau</p>
     </header>
-    
-    <script>
-        fetch("menu.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("menu-container").innerHTML = data;
-            });
-    </script>
-    
+
+    <!-- Conteneur pour le menu -->
+    <div id="menu-container"></div>
+
     <main>
-        <section id="accueil" class="active">
-            <h2>Bienvenue à O'Fil du Doubs</h2>
-            <p>Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
+        <section>
+            <h2 id="welcome">Bienvenue à O'Fil du Doubs</h2>
+            <p id="description">Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
             <img src="images/vue-balcon.jpg" alt="Vue depuis le balcon" class="view-image">
         </section>
-        
-        <section id="infos">
-            <h2>Informations Pratiques</h2>
-            <p>Adresse : 2 Impasse Cotti, 25160 Labergement-Sainte-Marie</p>
-            <p>Parking : Merci de ne pas vous garer sur les places réservées.</p>
-            <p>Numéros d'urgence : 112 (Europe), 15 (Samu), 17 (Police), 18 (Pompiers)</p>
-        </section>
-        
-        <section id="checkin">
-            <h2>Check-in / Check-out</h2>
-            <p>Arrivée entre 17h00 et 22h00, départ avant 11h00.</p>
-            <p>Déposez les clés dans la boîte à clés (code 1711).</p>
-        </section>
-        
-        <section id="equipements">
-            <h2>Équipements</h2>
-            <p>WiFi : <b>AuFilDuDoubs</b> (mdp : Franche-comte211)</p>
-            <p>Cuisine équipée avec four, plaques à induction, machine à café.</p>
-        </section>
-        
-        <section id="activites">
-            <h2>Activités & Commerces</h2>
-            <p>À visiter : La Maison de la Réserve, le Château de Joux, la Fonderie de Cloches Obertino.</p>
-            <p>Commerces : CocciMarket, Fruitière des Lacs, Boulangerie Baverel.</p>
-        </section>
-        
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Téléphone : Cyril 06 83 01 61 51 / Alisson 06 88 72 89 49</p>
-        </section>
     </main>
-    
+
     <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
+        // Charger le menu dynamiquement
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("menu.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("menu-container").innerHTML = data;
+                })
+                .catch(error => console.error("Erreur lors du chargement du menu :", error));
+        });
+
+        // Traductions
+        const translations = {
+            fr: {
+                title: "O'Fil du Doubs",
+                subtitle: "Un hébergement confortable au bord de l'eau",
+                welcome: "Bienvenue à O'Fil du Doubs",
+                description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura."
+            },
+            en: {
+                title: "O'Fil du Doubs",
+                subtitle: "A comfortable accommodation by the water",
+                welcome: "Welcome to O'Fil du Doubs",
+                description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Jura."
+            },
+            de: {
+                title: "O'Fil du Doubs",
+                subtitle: "Eine komfortable Unterkunft am Wasser",
+                welcome: "Willkommen bei O'Fil du Doubs",
+                description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Jura."
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('title').textContent = translations[lang].title;
+            document.getElementById('subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('welcome').textContent = translations[lang].welcome;
+            document.getElementById('description').textContent = translations[lang].description;
         }
     </script>
 </body>
