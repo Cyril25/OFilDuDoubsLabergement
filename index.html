@@ -100,14 +100,13 @@
         <p id="subtitle">Un hébergement confortable au bord de l'eau</p>
     </header>
     
-    <nav>
-        <a href="#" onclick="showSection('accueil')">Accueil</a>
-        <a href="#" onclick="showSection('infos')">Infos pratiques</a>
-        <a href="#" onclick="showSection('checkin')">Check-in / Check-out</a>
-        <a href="#" onclick="showSection('equipements')">Équipements</a>
-        <a href="#" onclick="showSection('activites')">Activités & Commerces</a>
-        <a href="#" onclick="showSection('contact')">Contact</a>
-    </nav>
+    <script>
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+            });
+    </script>
     
     <main>
         <section id="accueil" class="active">
