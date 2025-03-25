@@ -20,20 +20,25 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-                fetch("menu.html")
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("menu-container").innerHTML = data;
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
 
-                        // Exécuter les scripts dans menu.html
-                        let scripts = document.getElementById("menu-container").getElementsByTagName("script");
-                        for (let script of scripts) {
-                            eval(script.innerText); // Exécute les scripts du menu après insertion
-                        }
-                    })
-                    .catch(error => console.error("Erreur lors du chargement du menu :", error));
-            });
+                // Maintenant que le menu est inséré, on attache l'événement au bouton
+                let menuToggle = document.querySelector(".menu-toggle");
+                let menuItems = document.querySelector("#menu-items");
 
+                if (menuToggle && menuItems) {
+                    menuToggle.addEventListener("click", function () {
+                        menuItems.classList.toggle("active");
+                    });
+                } else {
+                    console.error("Le menu burger ne peut pas être activé.");
+                }
+            })
+            .catch(error => console.error("Erreur lors du chargement du menu :", error));
+    });
         // Traductions
         const translations = {
             fr: {
