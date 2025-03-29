@@ -1,3 +1,61 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background-color: #2C5F2D; /* Vert forêt */
+    color: white;
+    padding: 20px;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+/* Section d'introduction */
+.intro {
+    padding: 40px;
+    background-color: #87CEEB; /* Bleu rivière */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #2C5F2D;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #1E4020;
+}
+
+/* Informations utiles */
+.infos {
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    border-radius: 10px;
+}
+
+/* Footer */
+footer {
+    background-color: #2C5F2D;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+}
+
 .language-selector {
     position: absolute;
     top: 20px;
