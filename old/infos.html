@@ -27,56 +27,30 @@
             })
             .catch(error => console.error("Erreur lors du chargement du menu :", error));
     });
-
-    const languageSelect = document.getElementById("language-select");
-
-    function changeLanguage(lang) {
-        const content = translations[lang];
-
-        // Update text content for sections
-        document.getElementById("adresse").textContent = content.adresse;
-        document.getElementById("stationnement").textContent = content.stationnement;
-        document.getElementById("local-poubelles").textContent = content.local-poubelles;
-
-        // Update headings
-        document.getElementById("adresse-title").textContent = "Adresse";
-        document.getElementById("stationnement-title").textContent = "Places de stationnement";
-        document.getElementById("local-poubelles-title").textContent = "Local poubelles";
-        document.getElementById("numeros-utiles-title").textContent = "Numéros utiles";
-
-        // Update useful numbers list
-        const ul = document.getElementById("numeros-utiles");
-        ul.innerHTML = "";
-        content.numeros-utiles.forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = `${item.label} - ${item.description}`;
-            ul.appendChild(li);
-        });
-    }
-    </script>
+</script>
 </head>
 <body>
     <div id="menu-container"></div>
     
     <main>
         <section>
-            <h2>Adresse</h2>
-            <p>2 Impasse Cotti, 25160 Labergement-Sainte-Marie (France)</p>
+            <h2 id="adresse-title">Adresse</h2>
+            <p id="adresse">2 Impasse Cotti, 25160 Labergement-Sainte-Marie (France)</p>
         </section>
         
         <section>
-            <h2>Places de stationnement</h2>
-            <p>Les places marquées "Réservée" au sol sont privatives, merci de ne pas vous y garer. Vous pouvez stationner sur l’ensemble des autres places de parking de la résidence.</p>
+            <h2 id="stationnement-title">Places de stationnement</h2>
+            <p id="stationnement">Les places marquées "Réservée" au sol sont privatives, merci de ne pas vous y garer. Vous pouvez stationner sur l’ensemble des autres places de parking de la résidence.</p>
         </section>
         
         <section>
-            <h2>Local poubelles</h2>
-            <p>Un local poubelles se trouve au niveau des garages au -1. Vous pouvez y déposer vos déchets dans les poubelles vertes et jaunes pour le tri.</p>
+            <h2 id="local-poubelles-title">Local poubelles</h2>
+            <p id="local-poubelles">Un local poubelles se trouve au niveau des garages au -1. Vous pouvez y déposer vos déchets dans les poubelles vertes et jaunes pour le tri.</p>
         </section>
         
         <section>
-            <h2>Numéros utiles</h2>
-            <ul>
+            <h2 id="numeros-utiles-title">Numéros utiles</h2>
+            <ul id="numeros-utiles">
                 <li>112 - Numéro d’urgence européen</li>
                 <li>15 - Samu</li>
                 <li>17 - Police secours</li>
