@@ -8,6 +8,8 @@
     <script src="scripts/translations.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+        loadLanguage();
+
         fetch("menu.html")
             .then(response => response.text())
             .then(data => {
@@ -60,10 +62,6 @@
             </ul>
         </section>
     </main>
-    <script>
-        // Charger la langue au démarrage
-        loadLanguage();
-    </script>
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>

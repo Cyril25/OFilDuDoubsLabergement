@@ -8,6 +8,8 @@
     <script src="scripts/translations.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+        loadLanguage();
+
         fetch("menu.html")
             .then(response => response.text())
             .then(data => {
@@ -40,10 +42,6 @@
             <img src="images/vue-balcon.jpg" alt="Vue depuis le balcon" class="view-image">
         </section>
     </main>
-    <script>
-        // Charger la langue au démarrage
-        loadLanguage();
-    </script>
     
 </body>
 </html>
