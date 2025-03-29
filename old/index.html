@@ -9,8 +9,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
         const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
-        changeLanguage(lang);
-
+        
         fetch("menu.html")
             .then(response => response.text())
             .then(data => {
@@ -27,6 +26,8 @@
                 } else {
                     console.error("Le menu burger ne peut pas être activé.");
                 }
+
+                changeLanguage(lang);
             })
             .catch(error => console.error("Erreur lors du chargement du menu :", error));
     });
