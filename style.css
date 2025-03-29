@@ -1,0 +1,17 @@
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.language-selector img {
+    width: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.language-selector img:hover {
+    border: 2px solid #fff;
+}

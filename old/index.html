@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'Fil du Doubs - Location de charme</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+
+                // Maintenant que le menu est inséré, on attache l'événement au bouton
+                let menuToggle = document.querySelector(".menu-toggle");
+                let menuItems = document.querySelector("#menu-items");
+
+                if (menuToggle && menuItems) {
+                    menuToggle.addEventListener("click", function () {
+                        menuItems.classList.toggle("active");
+                    });
+                } else {
+                    console.error("Le menu burger ne peut pas être activé.");
+                }
+            })
+            .catch(error => console.error("Erreur lors du chargement du menu :", error));
+    });
+        // Traductions
+        const translations = {
+            fr: {
+                title: "O'Fil du Doubs",
+                subtitle: "Un hébergement confortable au bord de l'eau",
+                welcome: "Bienvenue à O'Fil du Doubs",
+                description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Doubs."
+            },
+            en: {
+                title: "O'Fil du Doubs",
+                subtitle: "A comfortable accommodation by the water",
+                welcome: "Welcome to O'Fil du Doubs",
+                description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Doubs."
+            },
+            de: {
+                title: "O'Fil du Doubs",
+                subtitle: "Eine komfortable Unterkunft am Wasser",
+                welcome: "Willkommen bei O'Fil du Doubs",
+                description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Doubs."
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('title').textContent = translations[lang].title;
+            document.getElementById('subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('welcome').textContent = translations[lang].welcome;
+            document.getElementById('description').textContent = translations[lang].description;
+        }
+    </script>
+</head>
+<body>
+    <!-- Conteneur pour le menu -->
+    <div id="menu-container"></div>
+
+    <main>
+        <section>
+            <h2 id="welcome">Bienvenue à O'Fil du Doubs</h2>
+            <p id="description">Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
+            <img src="images/vue-balcon.jpg" alt="Vue depuis le balcon" class="view-image">
+        </section>
+    </main>
+
+    
+</body>
+</html>
