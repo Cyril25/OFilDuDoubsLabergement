@@ -20,6 +20,28 @@ const translations = {
     }
 };
 
+// Fonction pour récupérer la langue depuis localStorage ou définir une langue par défaut
+function getCurrentLanguage() {
+    return localStorage.getItem('language') || 'fr'; // Langue par défaut : français
+}
+
+// Fonction pour changer la langue
+function changeLanguage(lang) {
+    if (!translations[lang]) {
+        console.error(`La langue "${lang}" n'est pas disponible.`);
+        return;
+    }
+
+    // Mettre à jour le contenu de la page
+    document.getElementById('title').textContent = translations[lang].title;
+    document.getElementById('subtitle').textContent = translations[lang].subtitle;
+    document.getElementById('welcome').textContent = translations[lang].welcome;
+    document.getElementById('description').textContent = translations[lang].description;
+
+    // Stocker la langue sélectionnée dans localStorage
+    localStorage.setItem('language', lang);
+}
+
 // Fonction pour changer la langue
 function changeLanguage(lang) {
     document.getElementById('title').textContent = translations[lang].title;
@@ -33,6 +55,6 @@ function changeLanguage(lang) {
 
 // Fonction pour charger la langue au démarrage
 function loadLanguage() {
-    const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
+    const lang = getCurrentLanguage();
     changeLanguage(lang);
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informations Pratiques - O'Fil du Doubs</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="scripts/translations.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
         fetch("menu.html")
@@ -85,7 +86,10 @@
             </ul>
         </section>
     </main>
-    
+    <script>
+        // Charger la langue au démarrage
+        loadLanguage();
+    </script>
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
