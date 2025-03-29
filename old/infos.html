@@ -8,7 +8,8 @@
     <script src="scripts/translations.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        loadLanguage();
+        const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
+        changeLanguage(lang);
 
         fetch("menu.html")
             .then(response => response.text())
