@@ -24,7 +24,7 @@
                         menuItems.classList.toggle("active");
                     });
                 } else {
-                    console.error("Le menu burger ne peut pas être activé.");
+                    console.warn("Certains éléments du menu burger sont manquants dans le contenu chargé.");
                 }
             })
             .catch(error => console.error("Erreur lors du chargement du menu :", error));

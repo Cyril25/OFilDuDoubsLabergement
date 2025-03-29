@@ -59,57 +59,54 @@ const translations = {
     }
 };
 
-// Fonction pour récupérer la langue depuis localStorage ou définir une langue par défaut
-function getCurrentLanguage() {
-    return localStorage.getItem('language') || 'fr'; // Langue par défaut : français
-}
-
 function changeLanguage(lang) {
-    const content = translations[lang].infos;
+    const translation = translations[lang];
+    if (!translation) {
+        console.error(`La langue "${lang}" n'est pas disponible.`);
+        return;
+    }
 
-    // Update text content for sections
-    document.getElementById("adresse").textContent = content.adresse;
-    document.getElementById("stationnement").textContent = content.stationnement;
-    document.getElementById("local-poubelles").textContent = content.localPoubelles;
+    // Traductions communes (présentes sur toutes les pages)
+    const titleElement = document.getElementById('title');
+    const subtitleElement = document.getElementById('subtitle');
+    const welcomeElement = document.getElementById('welcome');
+    const descriptionElement = document.getElementById('description');
 
-    // Update headings
-    document.getElementById("adresse-title").textContent = "Adresse";
-    document.getElementById("stationnement-title").textContent = "Places de stationnement";
-    document.getElementById("local-poubelles-title").textContent = "Local poubelles";
-    document.getElementById("numeros-utiles-title").textContent = "Numéros utiles";
+    if (titleElement) titleElement.textContent = translation.title;
+    if (subtitleElement) subtitleElement.textContent = translation.subtitle;
+    if (welcomeElement) welcomeElement.textContent = translation.welcome;
+    if (descriptionElement) descriptionElement.textContent = translation.description;
 
-    // Update useful numbers list
-    const ul = document.getElementById("numeros-utiles");
-    ul.innerHTML = "";
-    content.numerosUtiles.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.label} - ${item.description}`;
-        ul.appendChild(li);
-    });
+    // Traductions spécifiques à la page "infos.html"
+    if (translation.infos) {
+        const adresseElement = document.getElementById('adresse');
+        const stationnementElement = document.getElementById('stationnement');
+        const localPoubellesElement = document.getElementById('local-poubelles');
+        const adresseTitleElement = document.getElementById('adresse-title');
+        const stationnementTitleElement = document.getElementById('stationnement-title');
+        const localPoubellesTitleElement = document.getElementById('local-poubelles-title');
+        const numerosUtilesTitleElement = document.getElementById('numeros-utiles-title');
+        const numerosUtilesList = document.getElementById('numeros-utiles');
+
+        if (adresseElement) adresseElement.textContent = translation.infos.adresse;
+        if (stationnementElement) stationnementElement.textContent = translation.infos.stationnement;
+        if (localPoubellesElement) localPoubellesElement.textContent = translation.infos.localPoubelles;
+
+        if (adresseTitleElement) adresseTitleElement.textContent = "Adresse";
+        if (stationnementTitleElement) stationnementTitleElement.textContent = "Places de stationnement";
+        if (localPoubellesTitleElement) localPoubellesTitleElement.textContent = "Local poubelles";
+        if (numerosUtilesTitleElement) numerosUtilesTitleElement.textContent = "Numéros utiles";
+
+        if (numerosUtilesList) {
+            numerosUtilesList.innerHTML = ""; // Vider la liste existante
+            translation.infos.numerosUtiles.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.label} - ${item.description}`;
+                numerosUtilesList.appendChild(li);
+            });
+        }
+    }
 
     // Stocker la langue sélectionnée dans localStorage
     localStorage.setItem('language', lang);
-}
-
-// Charger la langue au démarrage
-document.addEventListener("DOMContentLoaded", () => {
-    const lang = getCurrentLanguage();
-    changeLanguage(lang);
-});
-
-// Fonction pour changer la langue
-function changeLanguage(lang) {
-    document.getElementById('title').textContent = translations[lang].title;
-    document.getElementById('subtitle').textContent = translations[lang].subtitle;
-    document.getElementById('welcome').textContent = translations[lang].welcome;
-    document.getElementById('description').textContent = translations[lang].description;
-
-    // Stocker la langue sélectionnée dans localStorage
-    localStorage.setItem('language', lang);
-}
-
-// Fonction pour charger la langue au démarrage
-function loadLanguage() {
-    const lang = getCurrentLanguage();
-    changeLanguage(lang);
 }
