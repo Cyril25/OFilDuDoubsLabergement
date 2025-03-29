@@ -85,9 +85,13 @@ nav ul li a {
 }
 
 /* Sélecteur de langue */
+.language-selector a {
+    text-decoration: none; /* Supprime le soulignement */
+    font-size: 0; /* Cache le texte si nécessaire (les drapeaux sont des images) */
+}
 
 .language-selector img {
-    width: 30px;
+    width: 25px;
     height: auto;
     margin: 0 5px;
     cursor: pointer;
