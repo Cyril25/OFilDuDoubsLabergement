@@ -1,6 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Le script est chargé !");
     loadLanguage("fr");
+
+// Gestion de la galerie d'images
+const galleryImages = document.querySelectorAll(".gallery img");
+const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImage");
+const closeModal = document.getElementById("closeModal");
+
+galleryImages.forEach(image => {
+    image.addEventListener("click", function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+    });
+});
+
+closeModal.addEventListener("click", function () {
+    modal.style.display = "none";
+});
+
+window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
 });
 
 function loadLanguage(lang) {
