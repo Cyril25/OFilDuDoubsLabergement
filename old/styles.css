@@ -172,3 +172,57 @@ section {
 main section:first-child {
     display: block;
 }
+
+/* Styles améliorés pour les listes */
+ul {
+    list-style: none; /* Suppression des puces par défaut */
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    background: #eaf4f4; /* Fond léger */
+    margin: 8px 0; /* Espacement entre les éléments */
+    padding: 12px 15px;
+    border-radius: 8px; /* Coins arrondis */
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: background 0.3s ease-in-out;
+}
+
+ul li:hover {
+    background: #d6ecec; /* Effet au survol */
+}
+
+/* Icônes personnalisées pour les listes */
+ul li::before {
+    content: "•"; /* Icône personnalisée */
+    color: #007f5f; /* Vert nature */
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Pour les listes dans la section "Nos réseaux sociaux" */
+ul.socials li {
+    background: none;
+    padding: 5px;
+    box-shadow: none;
+}
+
+ul.socials li::before {
+    content: "→"; /* Flèche pour différencier */
+    color: #005f8d; /* Bleu rivière */
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+/* Pour les listes de contacts */
+ul.contact-info li::before {
+    content: "📍"; /* Icônes adaptées (peut être changé selon le besoin) */
+    font-size: 18px;
+    margin-right: 10px;
+}
