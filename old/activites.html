@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activités & Commerces - O'Fil du Doubs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts/translations.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const lang = localStorage.getItem('language') || 'fr';
+
+            fetch("menu.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("menu-container").innerHTML = data;
+
+                    let menuToggle = document.querySelector(".menu-toggle");
+                    let menuItems = document.querySelector("#menu-items");
+
+                    if (menuToggle && menuItems) {
+                        menuToggle.addEventListener("click", function () {
+                            menuItems.classList.toggle("active");
+                        });
+                    } else {
+                        console.error("Le menu burger ne peut pas être activé.");
+                    }
+
+                    changeLanguage(lang);
+                })
+                .catch(error => console.error("Erreur lors du chargement du menu :", error));
+        });
+    </script>
+</head>
+<body>
+    <div id="menu-container"></div>
+
+    <main>
+        <section>
+            <h2>Activités</h2>
+            <ul>
+                <li><strong>La Maison de la Réserve</strong> : Découvrez la faune et la flore locales à travers des expositions et des sentiers de randonnée.</li>
+                <li><strong>Fonderie de Cloches Obertino</strong> : Visitez cette fonderie renommée et apprenez-en plus sur la fabrication des cloches.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Commerces</h2>
+            <ul>
+                <li><strong>CocciMarket</strong> : Épicerie locale (fermé le dimanche après-midi et sur le temps de midi).</li>
+                <li><strong>Boulangerie Baverel</strong> : Pains et viennoiseries artisanales (fermé le mercredi, le dimanche après-midi et sur le temps de midi).</li>
+                <li><strong>La Fruitière des Lacs</strong> : Fromagerie proposant Comté, Morbier, Mont d’Or et autres produits locaux (fermé le dimanche après-midi et en début d’après-midi).</li>
+                <li><strong>Boucherie Paillard Frères</strong> : Spécialités locales comme la saucisse de Morteau (fermé le jeudi, le dimanche après-midi et sur le temps de midi).</li>
+                <li><strong>Au Cellier du Lac</strong> : Caviste avec vins du Jura et spiritueux locaux (fermé le dimanche, le lundi et sur le temps de midi).</li>
+                <li><strong>Tabac Presse Jeux Faure</strong> : Presse, tabac et jeux (fermé le dimanche après-midi).</li>
+                <li><strong>Café Fleur</strong> : Salon de thé et fleuriste (fermé le dimanche après-midi, le lundi et sur le temps de midi).</li>
+                <li><strong>Le Bistrot de l'Aberge</strong> : Cuisine traditionnelle et locale (fermé le mercredi).</li>
+                <li><strong>Le Vélo Bar</strong> : Bar avec grande terrasse.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Services</h2>
+            <ul>
+                <li><strong>La Poste Agence Communale</strong> : Services postaux (DAB disponible à Malbuisson).</li>
+                <li><strong>Garage du Coude</strong> : Station-service, lavage et location de voitures.</li>
+                <li><strong>Pharmacie des Deux Lacs</strong> : Médicaments et conseils de santé.</li>
+                <li><strong>Coiffure Imagina’tif / Michel Delgrande / L’Art du Geste</strong> : Salons de coiffure.</li>
+                <li><strong>Salons Beauté Bien-Être</strong> : Institut de soins et bien-être.</li>
+                <li><strong>Clinique Vétérinaire des Lacs</strong> : Soins pour animaux.</li>
+                <li><strong>Médecins et Spécialistes</strong> : Médecins généralistes et spécialistes à proximité.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Activités de la région et Suisse voisine</h2>
+            <p>Nous mettons à votre disposition une sélection de flyers pour découvrir des lieux incontournables comme le Château de Joux ou le Fort Saint-Antoine.</p>
+            <p>Pour des recommandations, contactez-nous, nous serons ravis de partager nos meilleures adresses.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© O'Fil du Doubs - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
