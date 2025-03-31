@@ -1,17 +1,32 @@
+/* Styles généraux */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     text-align: center;
+    position: relative;
 }
 
+/* Header */
 header {
-    background: #0077b6;
+    background: #007f5f; /* Vert nature */
     color: white;
     padding: 20px;
     position: relative;
-    text-align: center;
+}
+
+.logo {
+    margin-top: 10px;
+    width: 150px;
+    height: auto;
+}
+
+/* Navigation */
+nav {
+    background: #005f8d; /* Bleu rivière */
+    padding: 10px;
+    position: relative;
 }
 
 nav ul {
@@ -32,17 +47,18 @@ nav ul li a {
     font-weight: bold;
 }
 
+/* Menu burger pour mobile */
 .menu-toggle {
     display: none;
-    cursor: pointer;
-    font-size: 20px;
     background: #0077b6;
     color: white;
     padding: 10px;
+    cursor: pointer;
     text-align: center;
+    font-size: 20px;
 }
 
-/* Responsive */
+/* Version mobile */
 @media (max-width: 768px) {
     nav ul {
         display: none;
@@ -50,17 +66,44 @@ nav ul li a {
         background: #005f8d;
         width: 100%;
         position: absolute;
-        top: 60px;
+        top: 50px;
         left: 0;
+        text-align: center;
     }
 
     nav ul.active {
         display: flex;
     }
 
+    nav ul li {
+        padding: 10px 0;
+    }
+
     .menu-toggle {
         display: block;
     }
+}
+
+/* Sélecteur de langue */
+.language-selector a {
+    text-decoration: none; /* Supprime le soulignement */
+    font-size: 0; /* Cache le texte si nécessaire (les drapeaux sont des images) */
+}
+
+.language-selector img {
+    width: 25px;
+    height: auto;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.language-selector img:hover {
+    border: 2px solid white; /* Ajoute un effet au survol */
+}
+
+.language-selector a {
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
 }
 
 .language-selector {
@@ -69,12 +112,38 @@ nav ul li a {
     right: 20px;
 }
 
+.language-selector img {
+    width: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.language-selector img:hover {
+    border: 2px solid white;
+}
+
+/* Étoiles pour la classification */
+.star-classification {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+.star-classification img {
+    width: 80px;
+    height: auto;
+}
+
+/* Image principale */
 .view-image {
     width: 100%;
     max-width: 800px;
     margin-top: 20px;
 }
 
+/* Section principale */
 main {
     padding: 20px;
 }
@@ -85,4 +154,28 @@ section {
     margin: 20px auto;
     width: 80%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Adaptation mobile */
+@media (max-width: 600px) {
+    .star-classification img {
+        width: 50px;
+        top: 5px;
+        left: 10px;
+    }
+    .logo {
+        width: 100px;
+    }
+}
+
+/* Assurer que la première section s'affiche */
+main section:first-child {
+    display: block;
+}
+
+/* Styles améliorés pour les listes */
+ul {
+    list-style: none; /* Suppression des puces par défaut */
+    padding: 0;
+    margin: 0;
 }
