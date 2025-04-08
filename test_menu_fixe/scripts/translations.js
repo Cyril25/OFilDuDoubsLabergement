@@ -9,6 +9,7 @@ const translations = {
             accueil: "Accueil",
             infos: "Infos pratiques",
             checkin: "Check-in / Check-out",
+            equipement:"Confort & Équipements",
             activites: "Activités & Commerces",
             contact: "Contact"
         },
@@ -23,7 +24,16 @@ const translations = {
                 { label: "18", description: "Sapeurs-pompiers" },
                 { label: "Centre Hospitalier de Pontarlier", description: "03 81 38 54 54" },
                 { label: "Pharmacie de garde", description: "32 37" }
-            ]
+            ],
+            equipementDetails: {
+                wifi: "Internet accessible par wifi",
+                multimedia: "Télévision 116 cm connectée",
+                baby: "Lit parapluie et chaise haute disponible",
+                kitchenAppliances: "Appareil à raclette et fondue",
+                kitchen: "Dosette café, filtre à café, huile/vinaigre, sel et poivre",
+                consumables: "Papier toilette, essuie-tout, pastilles lave-vaisselle et sac poubelle en petite quantité",
+                recycling: "Bacs à votre disposition pour le tri sélectif"
+            }
         }
     },
     en: {
@@ -35,6 +45,7 @@ const translations = {
             accueil: "Home",
             infos: "Practical Info",
             checkin: "Check-in / Check-out",
+            equipement: "Comfort & Equipment",
             activites: "Activities & Shops",
             contact: "Contact"
         },
@@ -49,7 +60,16 @@ const translations = {
                 { label: "18", description: "Firefighters" },
                 { label: "Pontarlier Hospital Center", description: "03 81 38 54 54" },
                 { label: "On-call pharmacy", description: "32 37" }
-            ]
+            ],
+            equipementDetails: {
+                wifi: "Internet accessible via Wi-Fi",
+                multimedia: "116 cm connected television",
+                baby: "Travel cot and high chair available",
+                kitchenAppliances: "Raclette and fondue set",
+                kitchen: "Coffee pods, coffee filter, oil/vinegar, salt and pepper",
+                consumables: "Toilet paper, paper towels, dishwasher tablets, and garbage bags in small quantities",
+                recycling: "Bins available for recycling"
+            }
         }
     },
     de: {
@@ -61,6 +81,7 @@ const translations = {
             accueil: "Startseite",
             infos: "Praktische Infos",
             checkin: "Check-in / Check-out",
+            equipement: "Komfort & Ausstattung",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
         },
@@ -75,7 +96,16 @@ const translations = {
                 { label: "18", description: "Feuerwehr" },
                 { label: "Krankenhaus Pontarlier", description: "03 81 38 54 54" },
                 { label: "Notdienstapotheke", description: "32 37" }
-            ]
+            ],
+            equipementDetails: {
+                wifi: "Internet über WLAN zugänglich",
+                multimedia: "116 cm verbundenes Fernsehen",
+                baby: "Reisebett und Hochstuhl verfügbar",
+                kitchenAppliances: "Raclette- und Fonduegerät",
+                kitchen: "Kaffeepads, Kaffeefilter, Öl/Essig, Salz und Pfeffer",
+                consumables: "Toilettenpapier, Küchenrolle, Geschirrspültabs und Müllsäcke in kleinen Mengen",
+                recycling: "Behälter für die Mülltrennung verfügbar"
+            }
         }
     }
 };
