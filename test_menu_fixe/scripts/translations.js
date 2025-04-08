@@ -24,27 +24,7 @@ const translations = {
                 { label: "18", description: "Sapeurs-pompiers" },
                 { label: "Centre Hospitalier de Pontarlier", description: "03 81 38 54 54" },
                 { label: "Pharmacie de garde", description: "32 37" }
-            ],
-            equipementDetails: {
-                titles: {
-                    wifi: "Wifi",
-                    multimedia: "Multimédia",
-                    baby: "Pour bébé",
-                    kitchenAppliances: "Appareils de cuisine",
-                    kitchen: "A la cuisine",
-                    consumables: "Consommables",
-                    recycling: "Tri sélectif"
-                },
-                descriptions: {
-                    wifi: "Internet accessible par wifi",
-                    multimedia: "Télévision 116 cm connectée",
-                    baby: "Lit parapluie et chaise haute disponible",
-                    kitchenAppliances: "Appareil à raclette et fondue",
-                    kitchen: "Dosette café, filtre à café, huile/vinaigre, sel et poivre",
-                    consumables: "Papier toilette, essuie-tout, pastilles lave-vaisselle et sac poubelle en petite quantité",
-                    recycling: "Bacs à votre disposition pour le tri sélectif"
-                }
-            }
+            ]
         }
     },
     en: {
@@ -56,7 +36,7 @@ const translations = {
             accueil: "Home",
             infos: "Practical Info",
             checkin: "Check-in / Check-out",
-            equipements: "Comfort & Equipment",
+            equipements:"Confort & Équipements",
             activites: "Activities & Shops",
             contact: "Contact"
         },
@@ -71,27 +51,7 @@ const translations = {
                 { label: "18", description: "Firefighters" },
                 { label: "Pontarlier Hospital Center", description: "03 81 38 54 54" },
                 { label: "On-call pharmacy", description: "32 37" }
-            ],
-            equipementDetails: {
-                titles: {
-                    wifi: "Wifi",
-                    multimedia: "Multimedia",
-                    baby: "For baby",
-                    kitchenAppliances: "Kitchen appliances",
-                    kitchen: "In the kitchen",
-                    consumables: "Consumables",
-                    recycling: "Recycling"
-                },
-                descriptions: {
-                    wifi: "Internet accessible via Wi-Fi",
-                    multimedia: "116 cm connected television",
-                    baby: "Travel cot and high chair available",
-                    kitchenAppliances: "Raclette and fondue set",
-                    kitchen: "Coffee pods, coffee filter, oil/vinegar, salt and pepper",
-                    consumables: "Toilet paper, paper towels, dishwasher tablets, and garbage bags in small quantities",
-                    recycling: "Bins available for recycling"
-                }
-            }
+            ]
         }
     },
     de: {
@@ -103,7 +63,7 @@ const translations = {
             accueil: "Startseite",
             infos: "Praktische Infos",
             checkin: "Check-in / Check-out",
-            equipements: "Komfort & Ausstattung",
+            equipements:"Confort & Équipements",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
         },
@@ -118,27 +78,7 @@ const translations = {
                 { label: "18", description: "Feuerwehr" },
                 { label: "Krankenhaus Pontarlier", description: "03 81 38 54 54" },
                 { label: "Notdienstapotheke", description: "32 37" }
-            ],
-            equipementDetails: {
-                titles: {
-                    wifi: "WLAN",
-                    multimedia: "Multimedia",
-                    baby: "Für Babys",
-                    kitchenAppliances: "Küchengeräte",
-                    kitchen: "In der Küche",
-                    consumables: "Verbrauchsmaterialien",
-                    recycling: "Recycling"
-                },
-                descriptions: {
-                    wifi: "Internet über WLAN zugänglich",
-                    multimedia: "116 cm verbundenes Fernsehen",
-                    baby: "Reisebett und Hochstuhl verfügbar",
-                    kitchenAppliances: "Raclette- und Fonduegerät",
-                    kitchen: "Kaffeepads, Kaffeefilter, Öl/Essig, Salz und Pfeffer",
-                    consumables: "Toilettenpapier, Küchenrolle, Geschirrspültabs und Müllsäcke in kleinen Mengen",
-                    recycling: "Behälter für die Mülltrennung verfügbar"
-                }
-            }
+            ]
         }
     }
 };
@@ -221,20 +161,20 @@ if (translation.infos && translation.infos.equipementDetails) {
     const recyclingDescriptionElement = document.getElementById('recycling-description');
 
     if (equipementsTitleElement) equipementsTitleElement.textContent = translation.menu.equipements;
-    if (wifiTitleElement) wifiTitleElement.textContent = translation.infos.equipementDetails.titles.wifi;
-    if (wifiDescriptionElement) wifiDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.wifi;
-    if (multimediaTitleElement) multimediaTitleElement.textContent = translation.infos.equipementDetails.titles.multimedia;
-    if (multimediaDescriptionElement) multimediaDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.multimedia;
-    if (babyTitleElement) babyTitleElement.textContent = translation.infos.equipementDetails.titles.baby;
-    if (babyDescriptionElement) babyDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.baby;
-    if (kitchenAppliancesTitleElement) kitchenAppliancesTitleElement.textContent = translation.infos.equipementDetails.titles.kitchenAppliances;
-    if (kitchenAppliancesDescriptionElement) kitchenAppliancesDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.kitchenAppliances;
-    if (kitchenTitleElement) kitchenTitleElement.textContent = translation.infos.equipementDetails.titles.kitchen;
-    if (kitchenDescriptionElement) kitchenDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.kitchen;
-    if (consumablesTitleElement) consumablesTitleElement.textContent = translation.infos.equipementDetails.titles.consumables;
-    if (consumablesDescriptionElement) consumablesDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.consumables;
-    if (recyclingTitleElement) recyclingTitleElement.textContent = translation.infos.equipementDetails.titles.recycling;
-    if (recyclingDescriptionElement) recyclingDescriptionElement.textContent = translation.infos.equipementDetails.descriptions.recycling;
+    if (wifiTitleElement) wifiTitleElement.textContent = "Wifi";
+    if (wifiDescriptionElement) wifiDescriptionElement.textContent = translation.infos.equipementDetails.wifi;
+    if (multimediaTitleElement) multimediaTitleElement.textContent = "Multimédia";
+    if (multimediaDescriptionElement) multimediaDescriptionElement.textContent = translation.infos.equipementDetails.multimedia;
+    if (babyTitleElement) babyTitleElement.textContent = "Pour bébé";
+    if (babyDescriptionElement) babyDescriptionElement.textContent = translation.infos.equipementDetails.baby;
+    if (kitchenAppliancesTitleElement) kitchenAppliancesTitleElement.textContent = "Appareils de cuisine";
+    if (kitchenAppliancesDescriptionElement) kitchenAppliancesDescriptionElement.textContent = translation.infos.equipementDetails.kitchenAppliances;
+    if (kitchenTitleElement) kitchenTitleElement.textContent = "A la cuisine";
+    if (kitchenDescriptionElement) kitchenDescriptionElement.textContent = translation.infos.equipementDetails.kitchen;
+    if (consumablesTitleElement) consumablesTitleElement.textContent = "Consommables";
+    if (consumablesDescriptionElement) consumablesDescriptionElement.textContent = translation.infos.equipementDetails.consumables;
+    if (recyclingTitleElement) recyclingTitleElement.textContent = "Tri sélectif";
+    if (recyclingDescriptionElement) recyclingDescriptionElement.textContent = translation.infos.equipementDetails.recycling;
 }
 
     // Stocker la langue sélectionnée dans localStorage
