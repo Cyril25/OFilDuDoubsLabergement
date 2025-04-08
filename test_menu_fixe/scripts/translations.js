@@ -9,7 +9,7 @@ const translations = {
             accueil: "Accueil",
             infos: "Infos pratiques",
             checkin: "Check-in / Check-out",
-            equipement:"Confort & Équipements",
+            equipements:"Confort & Équipements",
             activites: "Activités & Commerces",
             contact: "Contact"
         },
@@ -45,7 +45,7 @@ const translations = {
             accueil: "Home",
             infos: "Practical Info",
             checkin: "Check-in / Check-out",
-            equipement: "Comfort & Equipment",
+            equipements: "Comfort & Equipment",
             activites: "Activities & Shops",
             contact: "Contact"
         },
@@ -81,7 +81,7 @@ const translations = {
             accueil: "Startseite",
             infos: "Praktische Infos",
             checkin: "Check-in / Check-out",
-            equipement: "Komfort & Ausstattung",
+            equipements: "Komfort & Ausstattung",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
         },
