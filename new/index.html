@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Fil du Doubs - Accueil</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <img src="images/logo.jpg" alt="Logo O Fil du Doubs" class="logo">
+        <h1 id="title">Bienvenue à O Fil du Doubs</h1>
+
+        <!-- Sélecteur de langue -->
+        <div class="language-selector">
+            <img src="images/fr.png" alt="Français" onclick="changeLanguage('fr')">
+            <img src="images/en.png" alt="English" onclick="changeLanguage('en')">
+            <img src="images/de.png" alt="Deutsch" onclick="changeLanguage('de')">
+        </div>
+    </header>
+
+    <section class="intro">
+        <p id="intro-text">Découvrez notre hébergement au cœur de la nature, entre forêt et rivière.</p>
+        <a href="gallery.html" class="btn" id="btn-gallery">Voir les photos</a>
+    </section>
+
+    <section class="infos">
+        <h2 id="info-title">Informations utiles</h2>
+        <ul>
+            <li id="info-address">📍 Adresse : [Votre adresse]</li>
+            <li id="info-checkin">📅 Check-in : [Horaires]</li>
+            <li id="info-amenities">🛏️ Équipements : [Liste des équipements]</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p id="footer-text">© 2024 O Fil du Doubs - Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
