@@ -6,7 +6,13 @@ body {
     background-color: #f4f4f4;
     text-align: center;
     position: relative;
-    padding-top: 60px; /* Ajout pour éviter que le contenu soit masqué par le menu */
+}
+
+/* Padding-top uniquement pour la version PC */
+@media (min-width: 769px) {
+    body {
+        padding-top: 55px; /* Ajout pour éviter que le contenu soit masqué par le menu sur PC */
+    }
 }
 
 /* Header */
@@ -160,26 +166,53 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Adaptation mobile */
-@media (max-width: 600px) {
-    .star-classification img {
-        width: 50px;
-        top: 5px;
-        left: 10px;
+/* Version mobile */
+@media (max-width: 768px) {
+    nav {
+        position: relative; /* Permet de positionner les enfants avec position: absolute */
+        display: flex;
+        justify-content: center; /* Centre le menu hamburger */
+        align-items: center; /* Aligne verticalement les éléments */
+        background: #005f8d; /* Assure que la barre bleue est visible */
+        width: 100%; /* S'assure que la barre occupe toute la largeur */
+        height: 60px; /* Définit une hauteur fixe pour la barre */
     }
-    .logo {
-        width: 100px;
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+        position: absolute; /* Permet de le positionner indépendamment */
+        left: 50%; /* Positionne le centre du bouton au milieu de la page */
+        transform: translateX(-50%); /* Ajuste pour centrer parfaitement */
+        z-index: 2; /* Assure que le menu burger est au-dessus des autres éléments */
     }
-}
 
-/* Assurer que la première section s'affiche */
-main section:first-child {
-    display: block;
-}
+    .language-selector {
+        position: absolute; /* Permet de positionner les drapeaux indépendamment */
+        right: 10px; /* Aligne les drapeaux à droite */
+        top: 50%; /* Centre verticalement les drapeaux */
+        transform: translateY(-50%); /* Ajuste pour centrer parfaitement */
+        display: flex; /* Affiche les drapeaux en ligne */
+        align-items: center; /* Aligne verticalement les drapeaux */
+        z-index: 1; /* Assure que les drapeaux ne chevauchent pas le menu burger */
+    }
 
-/* Styles améliorés pour les listes */
-ul {
-    list-style: none; /* Suppression des puces par défaut */
-    padding: 0;
-    margin: 0;
+    nav ul {
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column; /* Empile les éléments du menu */
+        background: #005f8d;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Place le menu déroulant juste en dessous de la barre */
+        left: 0;
+        text-align: center;
+        z-index: 1; /* Assure que le menu déroulant est visible */
+    }
+
+    nav ul.active {
+        display: flex; /* Affiche le menu lorsqu'il est activé */
+    }
+
+    nav ul li {
+        padding: 10px 0;
+    }
 }
