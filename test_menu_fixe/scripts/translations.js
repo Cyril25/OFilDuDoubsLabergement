@@ -134,8 +134,9 @@ function changeLanguage(lang) {
         menuItems[0].textContent = translation.menu.accueil;
         menuItems[1].textContent = translation.menu.infos;
         menuItems[2].textContent = translation.menu.checkin;
-        menuItems[3].textContent = translation.menu.activites;
-        menuItems[4].textContent = translation.menu.contact;
+        menuItems[3].textContent = translation.menu.equipements;
+        menuItems[4].textContent = translation.menu.activites;
+        menuItems[5].textContent = translation.menu.contact;
     }
     
     // Traductions spécifiques à la page "infos.html"
