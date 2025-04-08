@@ -169,6 +169,41 @@ function changeLanguage(lang) {
         }
     }
 
+    // Traductions spécifiques à la page "equipements.html"
+if (translation.infos && translation.infos.equipementDetails) {
+    const equipementsTitleElement = document.getElementById('equipements-title');
+    const wifiTitleElement = document.getElementById('wifi-title');
+    const wifiDescriptionElement = document.getElementById('wifi-description');
+    const multimediaTitleElement = document.getElementById('multimedia-title');
+    const multimediaDescriptionElement = document.getElementById('multimedia-description');
+    const babyTitleElement = document.getElementById('baby-title');
+    const babyDescriptionElement = document.getElementById('baby-description');
+    const kitchenAppliancesTitleElement = document.getElementById('kitchen-appliances-title');
+    const kitchenAppliancesDescriptionElement = document.getElementById('kitchen-appliances-description');
+    const kitchenTitleElement = document.getElementById('kitchen-title');
+    const kitchenDescriptionElement = document.getElementById('kitchen-description');
+    const consumablesTitleElement = document.getElementById('consumables-title');
+    const consumablesDescriptionElement = document.getElementById('consumables-description');
+    const recyclingTitleElement = document.getElementById('recycling-title');
+    const recyclingDescriptionElement = document.getElementById('recycling-description');
+
+    if (equipementsTitleElement) equipementsTitleElement.textContent = translation.menu.equipements;
+    if (wifiTitleElement) wifiTitleElement.textContent = "Wifi";
+    if (wifiDescriptionElement) wifiDescriptionElement.textContent = translation.infos.equipementDetails.wifi;
+    if (multimediaTitleElement) multimediaTitleElement.textContent = "Multimédia";
+    if (multimediaDescriptionElement) multimediaDescriptionElement.textContent = translation.infos.equipementDetails.multimedia;
+    if (babyTitleElement) babyTitleElement.textContent = "Pour bébé";
+    if (babyDescriptionElement) babyDescriptionElement.textContent = translation.infos.equipementDetails.baby;
+    if (kitchenAppliancesTitleElement) kitchenAppliancesTitleElement.textContent = "Appareils de cuisine";
+    if (kitchenAppliancesDescriptionElement) kitchenAppliancesDescriptionElement.textContent = translation.infos.equipementDetails.kitchenAppliances;
+    if (kitchenTitleElement) kitchenTitleElement.textContent = "A la cuisine";
+    if (kitchenDescriptionElement) kitchenDescriptionElement.textContent = translation.infos.equipementDetails.kitchen;
+    if (consumablesTitleElement) consumablesTitleElement.textContent = "Consommables";
+    if (consumablesDescriptionElement) consumablesDescriptionElement.textContent = translation.infos.equipementDetails.consumables;
+    if (recyclingTitleElement) recyclingTitleElement.textContent = "Tri sélectif";
+    if (recyclingDescriptionElement) recyclingDescriptionElement.textContent = translation.infos.equipementDetails.recycling;
+}
+
     // Stocker la langue sélectionnée dans localStorage
     localStorage.setItem('language', lang);
 }
