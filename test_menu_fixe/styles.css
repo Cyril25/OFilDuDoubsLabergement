@@ -222,12 +222,14 @@ section {
     border-collapse: collapse;
     text-align: center;
     margin: 20px 0;
+    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
 }
 
 .equipements-table td {
     padding: 15px;
     vertical-align: top;
     border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
+    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
 }
 
 .equipements-table img {
@@ -246,19 +248,35 @@ section {
     font-size: 0.9rem;
     color: #666;
     margin: 0;
+}.equipements-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 20px 0;
+    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
 }
 
-@media (max-width: 768px) {
-    .equipements-table {
-        font-size: 0.9rem;
-    }
+.equipements-table td {
+    padding: 15px;
+    vertical-align: top;
+    border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
+    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
+}
 
-    .equipements-table td {
-        padding: 10px;
-    }
+.equipements-table img {
+    display: block;
+    margin: 0 auto 10px; /* Centre l'image et ajoute un espace en dessous */
+}
 
-    .equipements-table img {
-        width: 30px; /* Réduit la taille des images sur mobile */
-        height: auto;
-    }
+.equipements-table strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.equipements-table p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
 }
