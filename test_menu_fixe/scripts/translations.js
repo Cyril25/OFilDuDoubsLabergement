@@ -7,9 +7,9 @@ const translations = {
         description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Doubs.",
         menu: {
             accueil: "Accueil",
-            infos: "Infos pratiques",
-            checkin: "Check-in / Check-out",
+            logement: "Le logement",
             equipements:"Confort & Équipements",
+            infos: "Infos pratiques",
             activites: "Activités & Commerces",
             contact: "Contact"
         },
@@ -34,9 +34,9 @@ const translations = {
         description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Doubs.",
         menu: {
             accueil: "Home",
-            infos: "Practical Info",
-            checkin: "Check-in / Check-out",
+            logement: "The accommodation",
             equipements:"Confort & Équipements",
+            infos: "Practical Info",
             activites: "Activities & Shops",
             contact: "Contact"
         },
@@ -61,9 +61,9 @@ const translations = {
         description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Doubs.",
         menu: {
             accueil: "Startseite",
-            infos: "Praktische Infos",
-            checkin: "Check-in / Check-out",
+            logement: "Die Unterkunft",
             equipements:"Confort & Équipements",
+            infos: "Praktische Infos",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
         },
@@ -105,9 +105,9 @@ function changeLanguage(lang) {
     const menuItems = document.querySelectorAll("#menu-items li a");
     if (menuItems.length > 0) {
         menuItems[0].textContent = translation.menu.accueil;
-        menuItems[1].textContent = translation.menu.infos;
-        menuItems[2].textContent = translation.menu.checkin;
-        menuItems[3].textContent = translation.menu.equipements;
+        menuItems[1].textContent = translation.menu.logement;
+        menuItems[2].textContent = translation.menu.equipements;
+        menuItems[3].textContent = translation.menu.infos;
         menuItems[4].textContent = translation.menu.activites;
         menuItems[5].textContent = translation.menu.contact;
     }
