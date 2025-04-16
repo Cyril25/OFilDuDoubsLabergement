@@ -378,3 +378,34 @@ section {
     line-height: 1.6;
     color: #333;
 }
+
+/* Version mobile pour les pièces */
+@media (max-width: 768px) {
+    .room-content {
+        flex-direction: column; /* Empile les éléments verticalement */
+        text-align: center; /* Centre le texte */
+    }
+
+    .room-content.reverse {
+        flex-direction: column; /* Empile également pour les sections inversées */
+    }
+
+    .room-image {
+        width: 100%; /* L'image occupe toute la largeur */
+        margin-top: 10px; /* Ajoute un espace entre le texte et l'image */
+    }
+
+    .room-text {
+        width: 100%; /* Le texte occupe toute la largeur */
+        margin-bottom: 10px; /* Ajoute un espace entre le texte et l'image */
+    }
+
+    .room-text h2 {
+        font-size: 1.5em; /* Ajuste la taille du titre pour mobile */
+    }
+
+    .room-text p {
+        font-size: 1em; /* Ajuste la taille du texte pour mobile */
+        line-height: 1.5; /* Améliore la lisibilité */
+    }
+}
