@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const languageSelector = document.querySelector(".language-selector");
+
+    if (languageSelector) {
+        languageSelector.addEventListener("click", function (event) {
+            const target = event.target.closest("a[data-lang]");
+            if (target) {
+                const selectedLang = target.getAttribute("data-lang");
+                localStorage.setItem("language", selectedLang); // Sauvegarde la langue sélectionnée
+                location.reload(); // Recharge la page pour appliquer la langue
+            }
+        });
+    }
+});
+
 function applyTranslations(lang, pageTranslations) {
     // Appliquer les traductions du menu
     const menuTranslation = menuTranslations[lang];
