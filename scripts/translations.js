@@ -7,8 +7,9 @@ const translations = {
         description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Doubs.",
         menu: {
             accueil: "Accueil",
+            logement: "Le logement",
+            equipements:"Confort & Équipements",
             infos: "Infos pratiques",
-            checkin: "Check-in / Check-out",
             activites: "Activités & Commerces",
             contact: "Contact"
         },
@@ -33,8 +34,9 @@ const translations = {
         description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Doubs.",
         menu: {
             accueil: "Home",
+            logement: "The accommodation",
+            equipements:"Confort & Équipements",
             infos: "Practical Info",
-            checkin: "Check-in / Check-out",
             activites: "Activities & Shops",
             contact: "Contact"
         },
@@ -59,8 +61,9 @@ const translations = {
         description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Doubs.",
         menu: {
             accueil: "Startseite",
+            logement: "Die Unterkunft",
+            equipements:"Confort & Équipements",
             infos: "Praktische Infos",
-            checkin: "Check-in / Check-out",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
         },
@@ -102,10 +105,11 @@ function changeLanguage(lang) {
     const menuItems = document.querySelectorAll("#menu-items li a");
     if (menuItems.length > 0) {
         menuItems[0].textContent = translation.menu.accueil;
-        menuItems[1].textContent = translation.menu.infos;
-        menuItems[2].textContent = translation.menu.checkin;
-        menuItems[3].textContent = translation.menu.activites;
-        menuItems[4].textContent = translation.menu.contact;
+        menuItems[1].textContent = translation.menu.logement;
+        menuItems[2].textContent = translation.menu.equipements;
+        menuItems[3].textContent = translation.menu.infos;
+        menuItems[4].textContent = translation.menu.activites;
+        menuItems[5].textContent = translation.menu.contact;
     }
     
     // Traductions spécifiques à la page "infos.html"
@@ -137,6 +141,41 @@ function changeLanguage(lang) {
             });
         }
     }
+
+    // Traductions spécifiques à la page "equipements.html"
+if (translation.infos && translation.infos.equipementDetails) {
+    const equipementsTitleElement = document.getElementById('equipements-title');
+    const wifiTitleElement = document.getElementById('wifi-title');
+    const wifiDescriptionElement = document.getElementById('wifi-description');
+    const multimediaTitleElement = document.getElementById('multimedia-title');
+    const multimediaDescriptionElement = document.getElementById('multimedia-description');
+    const babyTitleElement = document.getElementById('baby-title');
+    const babyDescriptionElement = document.getElementById('baby-description');
+    const kitchenAppliancesTitleElement = document.getElementById('kitchen-appliances-title');
+    const kitchenAppliancesDescriptionElement = document.getElementById('kitchen-appliances-description');
+    const kitchenTitleElement = document.getElementById('kitchen-title');
+    const kitchenDescriptionElement = document.getElementById('kitchen-description');
+    const consumablesTitleElement = document.getElementById('consumables-title');
+    const consumablesDescriptionElement = document.getElementById('consumables-description');
+    const recyclingTitleElement = document.getElementById('recycling-title');
+    const recyclingDescriptionElement = document.getElementById('recycling-description');
+
+    if (equipementsTitleElement) equipementsTitleElement.textContent = translation.menu.equipements;
+    if (wifiTitleElement) wifiTitleElement.textContent = "Wifi";
+    if (wifiDescriptionElement) wifiDescriptionElement.textContent = translation.infos.equipementDetails.wifi;
+    if (multimediaTitleElement) multimediaTitleElement.textContent = "Multimédia";
+    if (multimediaDescriptionElement) multimediaDescriptionElement.textContent = translation.infos.equipementDetails.multimedia;
+    if (babyTitleElement) babyTitleElement.textContent = "Pour bébé";
+    if (babyDescriptionElement) babyDescriptionElement.textContent = translation.infos.equipementDetails.baby;
+    if (kitchenAppliancesTitleElement) kitchenAppliancesTitleElement.textContent = "Appareils de cuisine";
+    if (kitchenAppliancesDescriptionElement) kitchenAppliancesDescriptionElement.textContent = translation.infos.equipementDetails.kitchenAppliances;
+    if (kitchenTitleElement) kitchenTitleElement.textContent = "A la cuisine";
+    if (kitchenDescriptionElement) kitchenDescriptionElement.textContent = translation.infos.equipementDetails.kitchen;
+    if (consumablesTitleElement) consumablesTitleElement.textContent = "Consommables";
+    if (consumablesDescriptionElement) consumablesDescriptionElement.textContent = translation.infos.equipementDetails.consumables;
+    if (recyclingTitleElement) recyclingTitleElement.textContent = "Tri sélectif";
+    if (recyclingDescriptionElement) recyclingDescriptionElement.textContent = translation.infos.equipementDetails.recycling;
+}
 
     // Stocker la langue sélectionnée dans localStorage
     localStorage.setItem('language', lang);

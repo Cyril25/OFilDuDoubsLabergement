@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - O'Fil du Doubs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts/translations.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const lang = localStorage.getItem('language') || 'fr';
+
+            fetch("menu.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("menu-container").innerHTML = data;
+
+                    let menuToggle = document.querySelector(".menu-toggle");
+                    let menuItems = document.querySelector("#menu-items");
+
+                    if (menuToggle && menuItems) {
+                        menuToggle.addEventListener("click", function () {
+                            menuItems.classList.toggle("active");
+                        });
+                    } else {
+                        console.error("Le menu burger ne peut pas être activé.");
+                    }
+
+                    changeLanguage(lang);
+                })
+                .catch(error => console.error("Erreur lors du chargement du menu :", error));
+        });
+    </script>
+</head>
+<body>
+    <div id="menu-container"></div>
+
+    <main>
+        <section>
+            <h2>Contact</h2>
+            <p>Une question, un besoin spécifique ou une demande d'information ? N'hésitez pas à nous contacter !</p>
+        </section>
+
+        <section>
+            <h2>Nos coordonnées</h2>
+            <ul>
+                <li><strong>Adresse :</strong> O'Fil du Doubs, 10 Rue du Bief Belin, 25160 Malbuisson</li>
+                <li><strong>Téléphone :</strong> <a href="tel:+33612345678">+33 6 XX XX XX XX</a></li>
+                <li><strong>Email :</strong> <a href="mailto:contact@ofil-du-doubs.fr">contact@ofil-du-doubs.fr</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Formulaire de contact</h2>
+            <form action="send_email.php" method="post">
+                <label for="name">Nom :</label>
+                <input type="text" id="name" name="name" required>
+                <br />
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" required>
+                <br />
+                <label for="message">Message :</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <br />
+                <button type="submit">Envoyer</button>
+            </form>
+        </section>
+
+        <!-- <section>
+            <h2>Nos réseaux sociaux</h2>
+            <p>Suivez-nous sur les réseaux sociaux pour rester informés :</p>
+            <ul>
+                <li><a href="https://www.facebook.com/ofil-du-doubs" target="_blank">Facebook</a></li>
+                <li><a href="https://www.instagram.com/ofil-du-doubs" target="_blank">Instagram</a></li>
+            </ul>
+        </section> -->
+
+        <!-- <section>
+            <h2>Localisation</h2>
+            <p>Retrouvez-nous sur Google Maps :</p>
+            <iframe
+                width="100%"
+                height="300"
+                style="border:0;"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/place?key=VOTRE_CLE_API&q=10+Rue+du+Bief+Belin,Malbuisson,France">
+            </iframe>
+        </section> -->
+    </main>
+
+    <footer>
+        <p>© O'Fil du Doubs - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
