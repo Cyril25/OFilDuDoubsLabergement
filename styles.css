@@ -379,6 +379,16 @@ section {
     color: #333;
 }
 
+.room-content.full {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.room-content.full .room-text {
+    width: 100%;
+}
+
 /* Version mobile pour les pièces */
 @media (max-width: 768px) {
     .room-content {
