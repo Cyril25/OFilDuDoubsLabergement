@@ -19,33 +19,6 @@
     <script src="scripts/menu-translations.js"></script>
     <script src="scripts/index-translations.js"></script>
     <script src="scripts/applyTranslations.js"></script>
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
-        
-        fetch("menu.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("menu-container").innerHTML = data;
-
-                // Maintenant que le menu est inséré, on attache l'événement au bouton
-                let menuToggle = document.querySelector(".menu-toggle");
-                let menuItems = document.querySelector("#menu-items");
-
-                if (menuToggle && menuItems) {
-                    menuToggle.addEventListener("click", function () {
-                        menuItems.classList.toggle("active");
-                    });
-                } else {
-                    console.error("Le menu burger ne peut pas être activé.");
-                }
-
-                // Appliquer les traductions
-                applyTranslations(lang, indexTranslations[lang]);
-            })
-            .catch(error => console.error("Erreur lors du chargement du menu :", error));
-    });
-    </script> -->
 </head>
 <body>
     <!-- Conteneur pour le menu -->
