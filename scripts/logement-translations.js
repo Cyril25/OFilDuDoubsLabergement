@@ -3,9 +3,9 @@ const dataTranslations = {
         title: "Le logement"
     },
     en: {
-        title: "Le logement en anglais !!!"
+        title: "The accommodation"
     },
     de: {
-        title: "O'Fil du Doubs"
+        title: "Die Unterkunft"
     }
 };
