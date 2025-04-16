@@ -1,4 +1,4 @@
-const indexTranslations = {
+const dataTranslations = {
     fr: {
         title: "O'Fil du Doubs",
         subtitle: "Un hébergement confortable au bord de l'eau",

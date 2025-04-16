@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Appliquer les traductions
-            applyTranslations(lang, indexTranslations[lang]);
+            applyTranslations(lang, dataTranslations[lang]);
         })
         .catch(error => console.error("Erreur lors du chargement du menu :", error));
 });

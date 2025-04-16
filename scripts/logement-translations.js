@@ -1,4 +1,4 @@
-const logementTranslations = {
+const dataTranslations = {
     fr: {
         title: "Le logement"
     },
