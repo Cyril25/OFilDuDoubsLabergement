@@ -294,3 +294,46 @@ section {
     color: #666;
     margin: 0;
 }
+
+
+
+/* Section des pièces */
+.room {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.room-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.room-content.reverse {
+    flex-direction: row-reverse; /* Inverse l'ordre pour alterner image et texte */
+}
+
+.room-image {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-text {
+    width: 50%;
+    text-align: justify;
+}
+
+.room-text h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #005f8d; /* Couleur principale */
+}
+
+.room-text p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+}
