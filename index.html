@@ -16,7 +16,9 @@
 
     <title>O'Fil du Doubs - Location de charme</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="scripts/translations.js"></script>
+    <script src="scripts/menu-translations.js"></script>
+    <script src="scripts/index-translations.js"></script>
+    <script src="scripts/applyTranslations.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
         const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
@@ -38,7 +40,8 @@
                     console.error("Le menu burger ne peut pas être activé.");
                 }
 
-                changeLanguage(lang);
+                // Appliquer les traductions
+                applyTranslations(lang, indexTranslations[lang]);
             })
             .catch(error => console.error("Erreur lors du chargement du menu :", error));
     });
