@@ -36,7 +36,7 @@ header.header2 {
     color: white;
     padding: 20px;
     position: relative;
-    height: 250px; /* Conserve la hauteur actuelle de la bannière */
+    height: 100px; /* Conserve la hauteur actuelle de la bannière */
     display: flex;
     flex-direction: column;
     justify-content: center;
