@@ -29,6 +29,20 @@ header {
     align-items: center;
 }
 
+/* Header 2 */
+header .header2 {
+    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center; /* Utilise l'image comme fond */
+    background-size: cover; /* S'assure que l'image couvre toute la largeur */
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 250px; /* Conserve la hauteur actuelle de la bannière */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .logo {
     margin-top: 10px;
     width: 150px;

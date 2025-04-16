@@ -3,12 +3,13 @@ const translations = {
     fr: {
         title: "O'Fil du Doubs",
         subtitle: "Un hébergement confortable au bord de l'eau",
+        subtitle2: "Meublé de tourisme 4 étoiles",
         welcome: "Bienvenue chez Alisson et Cyril - O'Fil du Doubs",
         description: "Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Doubs.",
         menu: {
             accueil: "Accueil",
             logement: "Le logement",
-            equipements: "Confort & Équipements",
+            equipements:"Confort & Équipements",
             infos: "Infos pratiques",
             activites: "Activités & Commerces",
             contact: "Contact"
@@ -30,6 +31,7 @@ const translations = {
     en: {
         title: "O'Fil du Doubs",
         subtitle: "A comfortable accommodation by the water",
+        subtitle2: "Meublé de tourisme 4 étoiles",
         welcome: "Welcome to Alisson and Cyril's - O'Fil du Doubs",
         description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Doubs.",
         menu: {
@@ -57,12 +59,13 @@ const translations = {
     de: {
         title: "O'Fil du Doubs",
         subtitle: "Eine komfortable Unterkunft am Wasser",
+        subtitle2: "Meublé de tourisme 4 étoiles",
         welcome: "Willkommen bei Alisson und Cyril - O'Fil du Doubs",
         description: "In Labergement-Sainte-Marie gelegen, bietet unsere Unterkunft den idealen Rahmen für einen entspannten Aufenthalt im Herzen des Doubs.",
         menu: {
             accueil: "Startseite",
             logement: "Die Unterkunft",
-            equipements: "Komfort & Ausstattung",
+            equipements:"Komfort & Ausstattung",
             infos: "Praktische Infos",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
@@ -93,11 +96,13 @@ function changeLanguage(lang) {
     // Traductions communes (présentes sur toutes les pages)
     const titleElement = document.getElementById('title');
     const subtitleElement = document.getElementById('subtitle');
+    const subtitle2Element = document.getElementById('subtitle2');
     const welcomeElement = document.getElementById('welcome');
     const descriptionElement = document.getElementById('description');
 
     if (titleElement) titleElement.textContent = translation.title;
     if (subtitleElement) subtitleElement.textContent = translation.subtitle;
+    if (subtitleElement2) subtitleElement.textContent = translation.subtitle2;
     if (welcomeElement) welcomeElement.textContent = translation.welcome;
     if (descriptionElement) descriptionElement.textContent = translation.description;
 
