@@ -1,16 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const languageSelector = document.querySelector(".language-selector");
+    const lang = localStorage.getItem('language') || 'fr'; // Langue par défaut : français
 
-    if (languageSelector) {
-        languageSelector.addEventListener("click", function (event) {
-            const target = event.target.closest("a[data-lang]");
-            if (target) {
-                const selectedLang = target.getAttribute("data-lang");
-                localStorage.setItem("language", selectedLang); // Sauvegarde la langue sélectionnée
-                location.reload(); // Recharge la page pour appliquer la langue
+    // Charger le menu
+    fetch("menu.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("menu-container").innerHTML = data;
+
+            // Activer le menu burger
+            const menuToggle = document.querySelector(".menu-toggle");
+            const menuItems = document.querySelector("#menu-items");
+
+            if (menuToggle && menuItems) {
+                menuToggle.addEventListener("click", function () {
+                    menuItems.classList.toggle("active");
+                });
+            } else {
+                console.error("Le menu burger ne peut pas être activé.");
             }
-        });
-    }
+
+            // Gérer le changement de langue
+            const languageSelector = document.querySelector(".language-selector");
+            if (languageSelector) {
+                languageSelector.addEventListener("click", function (event) {
+                    const target = event.target.closest("a[data-lang]");
+                    if (target) {
+                        const selectedLang = target.getAttribute("data-lang");
+                        localStorage.setItem("language", selectedLang); // Sauvegarde la langue sélectionnée
+                        location.reload(); // Recharge la page pour appliquer la langue
+                    }
+                });
+            }
+
+            // Appliquer les traductions
+            applyTranslations(lang, indexTranslations[lang]);
+        })
+        .catch(error => console.error("Erreur lors du chargement du menu :", error));
 });
 
 function applyTranslations(lang, pageTranslations) {
