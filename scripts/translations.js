@@ -8,7 +8,7 @@ const translations = {
         menu: {
             accueil: "Accueil",
             logement: "Le logement",
-            equipements:"Confort & Équipements",
+            equipements: "Confort & Équipements",
             infos: "Infos pratiques",
             activites: "Activités & Commerces",
             contact: "Contact"
@@ -30,12 +30,12 @@ const translations = {
     en: {
         title: "O'Fil du Doubs",
         subtitle: "A comfortable accommodation by the water",
-        welcome: "Welcome to Alisson et Cyril's - O'Fil du Doubs",
+        welcome: "Welcome to Alisson and Cyril's - O'Fil du Doubs",
         description: "Located in Labergement-Sainte-Marie, our accommodation offers an ideal setting for a relaxing stay in the heart of the Doubs.",
         menu: {
             accueil: "Home",
             logement: "The accommodation",
-            equipements:"Confort & Équipements",
+            equipements: "Comfort & Equipment",
             infos: "Practical Info",
             activites: "Activities & Shops",
             contact: "Contact"
@@ -62,7 +62,7 @@ const translations = {
         menu: {
             accueil: "Startseite",
             logement: "Die Unterkunft",
-            equipements:"Confort & Équipements",
+            equipements: "Komfort & Ausstattung",
             infos: "Praktische Infos",
             activites: "Aktivitäten & Geschäfte",
             contact: "Kontakt"
