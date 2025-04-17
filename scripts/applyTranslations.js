@@ -58,11 +58,9 @@ if (pageTranslations) {
     Object.keys(pageTranslations).forEach(id => {
         const element = document.getElementById(id);
         if (element) {
-            // Vérifie si c'est un placeholder
+            // Vérifie si c'est un champ de formulaire
             if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                if (pageTranslations[id].placeholder) {
-                    element.placeholder = pageTranslations[id].placeholder;
-                }
+                element.placeholder = pageTranslations[id];
             } else {
                 // Sinon, applique le texte comme contenu
                 element.textContent = pageTranslations[id];
