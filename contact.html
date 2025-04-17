@@ -28,9 +28,8 @@
     </header>
     <main>
         <section>
-            <h2>Contactez-nous</h2>
             <p>Pour toute question ou réservation, n'hésitez pas à nous contacter via le formulaire ci-dessous :</p>
-            <form action="submit_form.php" method="POST" class="contact-form">
+            <form action="https://formspree.io/f/mzzeqqyl" method="POST" class="contact-form">
                 <div class="form-group">
                     <label for="name">Nom :</label>
                     <input type="text" id="name" name="name" placeholder="Votre nom" required>
@@ -40,9 +39,16 @@
                     <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
                 </div>
                 <div class="form-group">
+                    <label for="phone">Téléphone :</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required>
+                </div>
+                <div class="form-group">
                     <label for="message">Message :</label>
                     <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
                 </div>
+                <!-- Champ honeypot -->
+                <input type="text" name="_honeypot" style="display:none">
+                <input type="hidden" name="_redirect" value="https://ton-site.fr/merci.html">
                 <button type="submit" class="btn-submit">Envoyer</button>
             </form>
         </section>
