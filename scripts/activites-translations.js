@@ -1,6 +1,6 @@
 const dataTranslations = {
     fr: {
-        title: "Activités & commerces",
+        title: "Activités & commerces du village",
         subtitle: "Activités et commerces à proximité",
     },
     en: {
