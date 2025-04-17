@@ -361,10 +361,11 @@ section {
     display: flex;
     flex-direction: column;
     gap: 10px; /* Add spacing between the images */
+    width: 50%; /* Ensure the width remains at 50% */
 }
 
 .room-images img {
-    width: 100%; /* Adjust width as needed */
+    width: 100%; /* Adjust width within the 50% container */
     height: auto;
 }
 
