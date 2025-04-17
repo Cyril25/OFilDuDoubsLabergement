@@ -87,7 +87,7 @@
                   if (response.ok) {
                     statusText.textContent = "Message envoyé avec succès ! Redirection...";
                     setTimeout(() => {
-                      window.location.href = 'https://ton-site.fr/merci.html'; // 🔁 modifie cette URL
+                      window.location.href = '/merci.html'; // 🔁 modifie cette URL
                     }, 1000);
                   } else {
                     throw new Error("Erreur lors de l'envoi");
