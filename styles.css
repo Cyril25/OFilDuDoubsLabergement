@@ -365,8 +365,9 @@ section {
 }
 
 .room-images img {
-    width: 100%; /* Adjust width within the container */
-    height: auto;
+    width: 100%; /* S'assure que les images occupent 100% de leur conteneur */
+    max-width: 100%; /* Empêche les images de dépasser leur conteneur */
+    height: auto; /* Conserve les proportions des images */
 }
 
 @media (max-width: 768px) {
