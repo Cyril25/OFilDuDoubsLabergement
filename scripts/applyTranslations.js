@@ -53,13 +53,21 @@ function applyTranslations(lang, pageTranslations) {
         }
     }
 
-    // Appliquer les traductions spécifiques à la page
-    if (pageTranslations) {
-        Object.keys(pageTranslations).forEach(id => {
-            const element = document.getElementById(id);
-            if (element) {
+// Appliquer les traductions spécifiques à la page
+if (pageTranslations) {
+    Object.keys(pageTranslations).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            // Vérifie si c'est un placeholder
+            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                if (pageTranslations[id].placeholder) {
+                    element.placeholder = pageTranslations[id].placeholder;
+                }
+            } else {
+                // Sinon, applique le texte comme contenu
                 element.textContent = pageTranslations[id];
             }
-        });
-    }
+        }
+    });
+}
 }

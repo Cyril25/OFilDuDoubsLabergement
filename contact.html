@@ -28,25 +28,25 @@
     </header>
     <main>
         <section>
-            <p id="contact-intro">Pour toute question ou réservation, n'hésitez pas à nous contacter via le formulaire ci-dessous :</p>
+            <p id="contactIntro">Pour toute question ou réservation, n'hésitez pas à nous contacter via le formulaire ci-dessous :</p>
             <form action="https://formspree.io/f/mzzeqqyl" method="POST" class="contact-form">
               <div class="form-group">
-                <label for="name" id="label-name">Nom :</label>
+                <label for="name" id="labelName">Nom :</label>
                 <input type="text" id="name" name="name" placeholder="Votre nom" required>
               </div>
             
               <div class="form-group">
-                <label for="email" id="label-email">Email :</label>
+                <label for="email" id="labelEmail">Email :</label>
                 <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
               </div>
             
               <div class="form-group">
-                <label for="phone" id="label-phone">Téléphone :</label>
+                <label for="phone" id="labelPhone">Téléphone :</label>
                 <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required>
               </div>
             
               <div class="form-group">
-                <label for="message" id="label-message">Message :</label>
+                <label for="message" id="labelMessage">Message :</label>
                 <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
               </div>
             
@@ -56,8 +56,8 @@
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
               </div>
             
-              <button type="submit" class="btn-submit" id="submit-button">Envoyer</button>
-              <p id="form-status" style="margin-top: 10px;"></p>
+              <button type="submit" class="btn-submit" id="submitButton">Envoyer</button>
+              <p id="formStatus" style="margin-top: 10px;"></p>
             </form>
             
             <script>
@@ -65,7 +65,7 @@
                 e.preventDefault();
                 const form = e.target;
                 const submitButton = form.querySelector('button[type="submit"]');
-                const statusText = document.getElementById('form-status');
+                const statusText = document.getElementById('formStatus');
             
                 // Vérifie le honeypot
                 if (form.querySelector('[name="website"]').value !== "") {
