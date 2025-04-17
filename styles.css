@@ -1,6 +1,6 @@
-/* Début styles généraux */
+/* Styles généraux */
 body {
-    font-family: 'Playfair Display', Georgia, "Times New Roman", serif;
+    font-family: 'Playfair Display',Georgia,"Times New Roman",serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -15,26 +15,60 @@ body {
     }
 }
 
+/* Header */
+header.header-principal {
+    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center; /* Utilise l'image comme fond */
+    background-size: cover; /* S'assure que l'image couvre toute la largeur */
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 450px; /* Conserve la hauteur actuelle de la bannière */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Header 2 */
+header.header2 {
+    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center; /* Utilise l'image comme fond */
+    background-size: cover; /* S'assure que l'image couvre toute la largeur */
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 100px; /* Conserve la hauteur actuelle de la bannière */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    margin-top: 10px;
+    width: 150px;
+    height: auto;
+}
+
 /* Navigation */
 nav {
     background: #005f8d; /* Bleu rivière */
-    padding: 10px 0px;
-    position: fixed;
-    top: 0;
+    padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
+    position: fixed; /* Rend le menu fixe */
+    top: 0; /* Positionne le menu en haut */
     left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: 100%; /* S'assure que le menu occupe toute la largeur */
+    z-index: 1000; /* Place le menu au-dessus des autres éléments */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour le contraste */
+    display: flex; /* Utilisation de Flexbox */
+    justify-content: space-between; /* Espace entre les éléments */
+    align-items: center; /* Aligne verticalement les éléments */
 }
 
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
+    display: flex; /* Affiche les éléments du menu en ligne */
 }
 
 nav ul li {
@@ -49,8 +83,8 @@ nav ul li a {
 
 /* Language selector */
 .language-selector {
-    display: flex;
-    align-items: center;
+    display: flex; /* Affiche les drapeaux en ligne */
+    align-items: center; /* Aligne verticalement les drapeaux */
 }
 
 .language-selector img {
@@ -63,7 +97,7 @@ nav ul li a {
 }
 
 .language-selector img:hover {
-    border: 2px solid white;
+    border: 2px solid white; /* Ajoute un effet au survol */
 }
 
 /* Menu burger pour mobile */
@@ -80,18 +114,18 @@ nav ul li a {
 /* Version mobile */
 @media (max-width: 768px) {
     nav {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; /* Empile les éléments verticalement */
+        align-items: flex-start; /* Aligne les éléments à gauche */
     }
 
     .menu-toggle {
-        display: block;
-        align-self: flex-end;
+        display: block; /* Affiche le bouton burger */
+        align-self: flex-end; /* Place le bouton à droite */
     }
 
     nav ul {
-        display: none;
-        flex-direction: column;
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column; /* Empile les éléments du menu */
         background: #005f8d;
         width: 100%;
         position: absolute;
@@ -101,7 +135,7 @@ nav ul li a {
     }
 
     nav ul.active {
-        display: flex;
+        display: flex; /* Affiche le menu lorsqu'il est activé */
     }
 
     nav ul li {
@@ -109,8 +143,8 @@ nav ul li a {
     }
 
     .language-selector {
-        margin-top: 10px;
-        align-self: center;
+        margin-top: 10px; /* Place le sélecteur de langue sous le menu */
+        align-self: center; /* Centre le sélecteur de langue */
     }
 }
 
@@ -146,61 +180,106 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Fin styles généraux */
+/* Version mobile */
+@media (max-width: 768px) {
+    nav {
+        position: relative; /* Permet de positionner les enfants avec position: absolute */
+        display: flex;
+        justify-content: center; /* Centre le menu hamburger */
+        align-items: center; /* Aligne verticalement les éléments */
+        background: #005f8d; /* Assure que la barre bleue est visible */
+        width: 100%; /* S'assure que la barre occupe toute la largeur */
+        height: 60px; /* Définit une hauteur fixe pour la barre */
+    }
 
-/* Début styles spécifiques à la page d'accueil */
-header.header-principal {
-    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center;
-    background-size: cover;
-    color: white;
-    padding: 20px;
-    position: relative;
-    height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+        position: absolute; /* Permet de le positionner indépendamment */
+        left: 50%; /* Positionne le centre du bouton au milieu de la page */
+        transform: translateX(-50%); /* Ajuste pour centrer parfaitement */
+        z-index: 2; /* Assure que le menu burger est au-dessus des autres éléments */
+    }
+
+    .language-selector {
+        position: absolute; /* Permet de positionner les drapeaux indépendamment */
+        right: 10px; /* Aligne les drapeaux à droite */
+        top: 50%; /* Centre verticalement les drapeaux */
+        transform: translateY(-50%); /* Ajuste pour centrer parfaitement */
+        display: flex; /* Affiche les drapeaux en ligne */
+        align-items: center; /* Aligne verticalement les drapeaux */
+        z-index: 1; /* Assure que les drapeaux ne chevauchent pas le menu burger */
+    }
+
+    nav ul {
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column; /* Empile les éléments du menu */
+        background: #005f8d;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Place le menu déroulant juste en dessous de la barre */
+        left: 0;
+        text-align: center;
+        z-index: 1; /* Assure que le menu déroulant est visible */
+    }
+
+    nav ul.active {
+        display: flex; /* Affiche le menu lorsqu'il est activé */
+    }
+
+    nav ul li {
+        padding: 10px 0;
+    }
 }
 
-header.header2 {
-    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center;
-    background-size: cover;
-    color: white;
-    padding: 20px;
-    position: relative;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo {
-    margin-top: 10px;
-    width: 150px;
-    height: auto;
-}
-/* Fin styles spécifiques à la page d'accueil */
-
-/* Début styles spécifiques à la page des équipements */
 .equipements-table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
     margin: 20px 0;
-    table-layout: fixed;
+    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
 }
 
 .equipements-table td {
     padding: 15px;
     vertical-align: top;
-    border: 1px solid #ddd;
-    width: 25%;
+    border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
+    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
 }
 
 .equipements-table img {
     display: block;
-    margin: 0 auto 10px;
+    margin: 0 auto 10px; /* Centre l'image et ajoute un espace en dessous */
+}
+
+.equipements-table strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.equipements-table p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}.equipements-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 20px 0;
+    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
+}
+
+.equipements-table td {
+    padding: 15px;
+    vertical-align: top;
+    border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
+    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
+}
+
+.equipements-table img {
+    display: block;
+    margin: 0 auto 10px; /* Centre l'image et ajoute un espace en dessous */
 }
 
 .equipements-table strong {
@@ -215,9 +294,10 @@ header.header2 {
     color: #666;
     margin: 0;
 }
-/* Fin styles spécifiques à la page des équipements */
 
-/* Début styles spécifiques à la page des pièces */
+
+
+/* Section des pièces */
 .room {
     margin: 40px auto;
     padding: 20px;
@@ -231,7 +311,7 @@ header.header2 {
 }
 
 .room-content.reverse {
-    flex-direction: row-reverse;
+    flex-direction: row-reverse; /* Inverse l'ordre pour alterner image et texte */
 }
 
 .room-image {
@@ -249,7 +329,48 @@ header.header2 {
 .room-text h2 {
     font-size: 1.8em;
     margin-bottom: 10px;
-    color: #005f8d;
+    color: #005f8d; /* Couleur principale */
+}
+
+.room-text p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Section des pièces */
+.room {
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.room-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.room-content.reverse {
+    flex-direction: row-reverse; /* Inverse l'ordre pour alterner image et texte */
+}
+
+.room-image {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-text {
+    width: 50%;
+    text-align: justify;
+}
+
+.room-text h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #005f8d; /* Couleur principale */
 }
 
 .room-text p {
@@ -271,36 +392,35 @@ header.header2 {
 /* Version mobile pour les pièces */
 @media (max-width: 768px) {
     .room-content {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: column; /* Empile les éléments verticalement */
+        text-align: center; /* Centre le texte */
     }
 
     .room-content.reverse {
-        flex-direction: column;
+        flex-direction: column; /* Empile également pour les sections inversées */
     }
 
     .room-image {
-        width: 100%;
-        margin-top: 10px;
+        width: 100%; /* L'image occupe toute la largeur */
+        margin-top: 10px; /* Ajoute un espace entre le texte et l'image */
     }
 
     .room-text {
-        width: 100%;
-        margin-bottom: 10px;
+        width: 100%; /* Le texte occupe toute la largeur */
+        margin-bottom: 10px; /* Ajoute un espace entre le texte et l'image */
     }
 
     .room-text h2 {
-        font-size: 1.5em;
+        font-size: 1.5em; /* Ajuste la taille du titre pour mobile */
     }
 
     .room-text p {
-        font-size: 1em;
-        line-height: 1.5;
+        font-size: 1em; /* Ajuste la taille du texte pour mobile */
+        line-height: 1.5; /* Améliore la lisibilité */
     }
 }
-/* Fin styles spécifiques à la page des pièces */
 
-/* Début styles spécifiques au formulaire de contact */
+/* Styles pour le formulaire de contact */
 .contact-form {
     max-width: 600px;
     margin: 0 auto;
@@ -318,7 +438,7 @@ header.header2 {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #005f8d;
+    color: #005f8d; /* Couleur principale */
 }
 
 .contact-form input,
@@ -352,4 +472,3 @@ header.header2 {
 .contact-form .btn-submit:hover {
     background: #004a70;
 }
-/* Fin styles spécifiques au formulaire de contact */
