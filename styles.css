@@ -180,7 +180,7 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Version mobile */
+/* Version mobile pour le menu */
 @media (max-width: 768px) {
     nav {
         position: relative; /* Permet de positionner les enfants avec position: absolute */
@@ -230,6 +230,8 @@ section {
         padding: 10px 0;
     }
 }
+
+/* Version normale pour la page des équipements */
 
 .equipements-table {
     width: 100%;
@@ -293,6 +295,47 @@ section {
     font-size: 0.9rem;
     color: #666;
     margin: 0;
+}
+
+/* Version mobile pour la page des équipements */
+@media (max-width: 768px) {
+    .equipements-table {
+        width: 100%; /* La table occupe toute la largeur */
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .equipements-table tr {
+        display: flex; /* Transforme les lignes en flexbox */
+        flex-direction: column; /* Empile les éléments verticalement */
+        margin-bottom: 20px; /* Ajoute un espace entre les groupes d'équipements */
+    }
+
+    .equipements-table td {
+        display: flex; /* Transforme les cellules en blocs flexibles */
+        flex-direction: column; /* Empile le contenu verticalement */
+        align-items: center; /* Centre le contenu horizontalement */
+        padding: 15px;
+        border: 1px solid #ddd; /* Ajoute une bordure pour séparer les éléments */
+        width: 100%; /* Chaque équipement occupe toute la largeur */
+    }
+
+    .equipements-table i {
+        font-size: 30px; /* Réduit légèrement la taille des icônes pour mobile */
+        margin-bottom: 10px; /* Ajoute un espace entre l'icône et le texte */
+    }
+
+    .equipements-table strong {
+        font-size: 1.2em; /* Augmente légèrement la taille du texte pour les titres */
+        margin-bottom: 5px;
+        color: #005f8d; /* Couleur principale */
+    }
+
+    .equipements-table p {
+        font-size: 1em; /* Ajuste la taille du texte pour mobile */
+        color: #333;
+        text-align: center; /* Centre le texte */
+    }
 }
 
 
