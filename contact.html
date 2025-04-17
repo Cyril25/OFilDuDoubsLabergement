@@ -30,64 +30,77 @@
         <section>
             <p>Pour toute question ou réservation, n'hésitez pas à nous contacter via le formulaire ci-dessous :</p>
             <form action="https://formspree.io/f/mzzeqqyl" method="POST" class="contact-form">
-                <div class="form-group">
-                  <label for="name">Nom :</label>
-                  <input type="text" id="name" name="name" placeholder="Votre nom" required>
-                </div>
-              
-                <div class="form-group">
-                  <label for="email">Email :</label>
-                  <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Téléphone :</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required>
-                </div>
-              
-                <div class="form-group">
-                  <label for="message">Message :</label>
-                  <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
-                </div>
-              
-                <!-- Champ honeypot amélioré -->
-                <div style="position: absolute; left: -9999px;" aria-hidden="true">
-                  <label for="website">Ne pas remplir ce champ :</label>
-                  <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-                </div>
-              
-                <button type="submit" class="btn-submit">Envoyer</button>
-              </form>
-              
-              <script>
-                document.querySelector('.contact-form').addEventListener('submit', function (e) {
-                  e.preventDefault();
-                  const form = e.target;
-              
-                  // Vérifie que le champ honeypot est vide
-                  if (form.querySelector('[name="website"]').value !== "") {
-                    console.log("Formulaire bloqué par honeypot.");
-                    return;
+              <div class="form-group">
+                <label for="name">Nom :</label>
+                <input type="text" id="name" name="name" placeholder="Votre nom" required>
+              </div>
+            
+              <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+              </div>
+            
+              <div class="form-group">
+                <label for="phone">Téléphone :</label>
+                <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required>
+              </div>
+            
+              <div class="form-group">
+                <label for="message">Message :</label>
+                <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
+              </div>
+            
+              <!-- Champ honeypot -->
+              <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                <label for="website">Ne pas remplir ce champ :</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+              </div>
+            
+              <button type="submit" class="btn-submit">Envoyer</button>
+              <p id="form-status" style="margin-top: 10px;"></p>
+            </form>
+            
+            <script>
+              document.querySelector('.contact-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const form = e.target;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const statusText = document.getElementById('form-status');
+            
+                // Vérifie le honeypot
+                if (form.querySelector('[name="website"]').value !== "") {
+                  console.log("Formulaire bloqué par honeypot.");
+                  return;
+                }
+            
+                submitButton.disabled = true;
+                submitButton.textContent = "Envoi en cours...";
+                statusText.textContent = "";
+            
+                fetch(form.action, {
+                  method: 'POST',
+                  body: new FormData(form),
+                  headers: {
+                    'Accept': 'application/json'
                   }
-              
-                  fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: {
-                      'Accept': 'application/json'
-                    }
-                  }).then(response => {
-                    if (response.ok) {
-                      window.location.href = 'https://ton-site.fr/merci.html'; // 🔁 redirection
-                    } else {
-                      alert("Une erreur est survenue lors de l'envoi du formulaire.");
-                    }
-                  }).catch(error => {
-                    alert("Une erreur réseau est survenue. Veuillez réessayer.");
-                    console.error(error);
-                  });
+                }).then(response => {
+                  if (response.ok) {
+                    statusText.textContent = "Message envoyé avec succès ! Redirection...";
+                    setTimeout(() => {
+                      window.location.href = 'https://ton-site.fr/merci.html'; // 🔁 modifie cette URL
+                    }, 1000);
+                  } else {
+                    throw new Error("Erreur lors de l'envoi");
+                  }
+                }).catch(error => {
+                  statusText.textContent = "Une erreur est survenue. Merci de réessayer.";
+                  console.error(error);
+                }).finally(() => {
+                  submitButton.disabled = false;
+                  submitButton.textContent = "Envoyer";
                 });
-              </script>
+              });
+            </script>
         </section>
     </main>
     <footer>
