@@ -596,3 +596,32 @@ section {
         padding: 0; /* Supprime le padding pour éviter les débordements */
     }
 }
+
+/* Styles pour le lien Airbnb */
+.airbnb-link {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.airbnb-link a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #005f8d; /* Couleur principale */
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.airbnb-link a:hover {
+    color: #004a70; /* Couleur au survol */
+}
+
+.airbnb-thumbnail {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+    object-fit: cover; /* Assure que l'image est bien cadrée */
+}
