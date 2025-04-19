@@ -329,21 +329,24 @@ section {
     text-align: justify;
 }
 
+/* Styles pour les conteneurs d'images */
 .room-images {
-    width: 50%; /* Assure que les images occupent 50% */
-    display: flex;
+    display: flex; /* Affiche les images en ligne */
     flex-direction: column; /* Empile les images verticalement */
     gap: 10px; /* Ajoute un espace entre les images */
+    width: 50%; /* Assure que les images occupent 50% de la largeur */
 }
 
 .room-images img {
     width: 100%; /* Les images occupent toute la largeur de leur conteneur */
     height: auto; /* Conserve les proportions des images */
+    border-radius: 10px; /* Ajoute des coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
 }
 
 @media (max-width: 768px) {
-    .room-content.reverse .room-images {
-        width: 100%; /* Full width for mobile mode */
+    .room-images {
+        width: 100%; /* Les images occupent toute la largeur sur mobile */
     }
 }
 
