@@ -41,9 +41,59 @@
             <p id="description">Situé à Labergement-Sainte-Marie, notre logement vous offre un cadre idéal pour un séjour relaxant au cœur du Jura.</p>
             <img src="images/vue-balcon.jpg" alt="Vue depuis le balcon" class="view-image">
         </section>
+        <section>
+            <h2>Disponibilités</h2>
+            <div id="calendar-container">
+                <p>Chargement du calendrier...</p>
+            </div>
+        </section>
     </main>
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarContainer = document.getElementById("calendar-container");
+            const icalUrl = "https://www.airbnb.fr/calendar/ical/1160174173295911644.ics?s=b14aa96311bec7c24999ed2509141cb8";
+
+            fetch(icalUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur lors du chargement du calendrier.");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Simple parsing of iCal data to display events
+                    const events = [];
+                    const lines = data.split("\n");
+                    let event = null;
+
+                    lines.forEach(line => {
+                        if (line.startsWith("BEGIN:VEVENT")) {
+                            event = {};
+                        } else if (line.startsWith("END:VEVENT")) {
+                            if (event) events.push(event);
+                            event = null;
+                        } else if (event) {
+                            const [key, value] = line.split(":");
+                            if (key && value) {
+                                event[key.trim()] = value.trim();
+                            }
+                        }
+                    });
+
+                    // Render events in the calendar container
+                    calendarContainer.innerHTML = "<ul>" + events.map(e => {
+                        const start = e["DTSTART"] ? new Date(e["DTSTART"]).toLocaleDateString() : "Inconnu";
+                        const end = e["DTEND"] ? new Date(e["DTEND"]).toLocaleDateString() : "Inconnu";
+                        return `<li>Du ${start} au ${end}</li>`;
+                    }).join("") + "</ul>";
+                })
+                .catch(error => {
+                    calendarContainer.innerHTML = `<p>Erreur : ${error.message}</p>`;
+                });
+        });
+    </script>
 </body>
 </html>
