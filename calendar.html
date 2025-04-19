@@ -16,6 +16,7 @@
     
         <!-- FullCalendar JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
     </head>
 <body>
     <h1>Calendrier des réservations</h1>
@@ -73,6 +74,7 @@
         // Fonction pour initialiser le calendrier avec FullCalendar
         function initializeCalendar(events) {
             $('#calendar').fullCalendar({
+                locale: 'fr',
                 events: events.map(event => ({
                     title: event.title,
                     start: event.start,
