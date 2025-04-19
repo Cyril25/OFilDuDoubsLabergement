@@ -55,8 +55,9 @@
         document.addEventListener("DOMContentLoaded", function () {
             const calendarContainer = document.getElementById("calendar-container");
             const icalUrl = "https://www.airbnb.fr/calendar/ical/1160174173295911644.ics?s=b14aa96311bec7c24999ed2509141cb8";
+            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
-            fetch(icalUrl)
+            fetch(proxyUrl + icalUrl)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Erreur lors du chargement du calendrier.");
