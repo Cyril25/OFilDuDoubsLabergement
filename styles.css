@@ -6,6 +6,7 @@ body {
     background-color: #f4f4f4;
     text-align: center;
     position: relative;
+    overflow-x: hidden; /* Supprime les scrollbars horizontales */
 }
 
 /* Padding-top uniquement pour la version PC */
@@ -50,7 +51,6 @@ header.header2 {
 }
 
 /* Navigation */
-nav {
     background: #005f8d; /* Bleu rivière */
     padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
     position: fixed; /* Rend le menu fixe */
