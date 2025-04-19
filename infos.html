@@ -32,6 +32,25 @@
     <!-- FullCalendar JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
+    <style>
+        .airbnb-embed-frame {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+        }
+    
+        @media (min-width: 600px) {
+            .airbnb-embed-frame {
+                width: 450px;
+                height: 300px;
+            }
+        }
+
+        .airbnb-embed-frame {
+    margin: 0 auto;
+    display: block;
+}
+    </style>
 </head>
 <body>
     <!-- Conteneur pour le menu -->
@@ -44,13 +63,18 @@
             <h2>Disponibilités</h2>
             <p>Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
             <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
-            <p>Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
-            <div class="airbnb-link">
-                <a href="https://www.airbnb.fr/rooms/1160174173295911644?check_in=2025-05-17&check_out=2025-05-22&guests=1&adults=1&s=67&unique_share_id=df0a6d60-cc08-4ef0-8f14-a79d6cb84404" target="_blank" rel="nofollow">
-                    <img src="images/airbnb-thumbnail.jpg" alt="Voir sur Airbnb" class="airbnb-thumbnail">
-                    <span>Voir les tarifs et réserver sur Airbnb</span>
-                </a>
-            </div>
+            <p>Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
+            <div class="airbnb-embed-frame" 
+     data-id="1160174173295911644" 
+     data-view="home" 
+     data-hide-price="true" 
+     style="margin: auto;">
+  <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank">Voir sur Airbnb</a>
+  <a href="https://www.airbnb.fr/rooms/1160174173295911644" rel="nofollow" target="_blank">
+    Appartement · Labergement-Sainte-Marie · ★5,0 · 2 chambres · 2 lits · 1 salle de bain et 1 toilette
+  </a>
+</div>
+<script async src="https://www.airbnb.fr/embeddable/airbnb_jssdk"></script>
         </section>
     </main>
     <footer>
