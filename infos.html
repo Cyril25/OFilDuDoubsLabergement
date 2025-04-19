@@ -33,23 +33,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
     <style>
-        .airbnb-wrapper {
-          max-width: 100%;
+        .airbnb-container {
+          position: relative;
           width: 100%;
-          overflow-x: hidden;
-          display: flex;
-          justify-content: center;
+          padding-bottom: 66.66%; /* Ratio 3:2 pour simuler une iframe responsive */
+          height: 0;
+          overflow: hidden;
         }
       
-        .airbnb-embed-frame {
-          width: 100%;
-          max-width: 450px;
+        .airbnb-container .airbnb-embed-frame {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100% !important;
+          height: 100% !important;
+          box-sizing: border-box;
+          overflow: hidden;
         }
       
-        @media (max-width: 600px) {
-          .airbnb-embed-frame {
-            width: 100% !important;
-          }
+        .airbnb-container iframe {
+          width: 100% !important;
+          height: 100% !important;
+          border: none;
         }
       </style>
 </head>
@@ -65,7 +70,7 @@
             <p>Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
             <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
             <p>Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
-            <div class="airbnb-wrapper">
+            <div class="airbnb-container">
                 <div class="airbnb-embed-frame" 
                      data-id="1160174173295911644" 
                      data-view="home" 
