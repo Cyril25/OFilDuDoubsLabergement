@@ -33,28 +33,70 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
     <style>
-        .airbnb-container {
-          position: relative;
+        .airbnb-card {
+          display: flex;
+          flex-direction: column;
+          max-width: 450px;
+          margin: auto;
+          text-decoration: none;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          background: #fff;
+          transition: transform 0.2s ease;
+        }
+      
+        .airbnb-card:hover {
+          transform: scale(1.02);
+        }
+      
+        .airbnb-img {
           width: 100%;
-          padding-bottom: 66.66%; /* Ratio 3:2 pour simuler une iframe responsive */
-          height: 0;
-          overflow: hidden;
+          height: 200px;
+          background-size: cover;
+          background-position: center;
         }
       
-        .airbnb-container .airbnb-embed-frame {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100% !important;
-          height: 100% !important;
-          box-sizing: border-box;
-          overflow: hidden;
+        .airbnb-info {
+          padding: 1em;
+          color: #111;
         }
       
-        .airbnb-container iframe {
-          width: 100% !important;
-          height: 100% !important;
+        .airbnb-info h3 {
+          font-size: 1.1em;
+          margin: 0 0 0.3em;
+        }
+      
+        .airbnb-info p {
+          font-size: 0.95em;
+          margin: 0 0 1em;
+          color: #555;
+        }
+      
+        .airbnb-info button {
+          background-color: #FF5A5F;
+          color: white;
+          padding: 0.6em 1em;
           border: none;
+          border-radius: 8px;
+          font-weight: bold;
+          cursor: pointer;
+          font-size: 0.95em;
+        }
+      
+        .airbnb-info button:hover {
+          background-color: #e0484d;
+        }
+      
+        /* Responsive */
+        @media (max-width: 500px) {
+          .airbnb-card {
+            max-width: 100%;
+          }
+      
+          .airbnb-img {
+            height: 180px;
+          }
         }
       </style>
 </head>
@@ -70,18 +112,17 @@
             <p>Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
             <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
             <p>Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
-            <div class="airbnb-container">
-                <div class="airbnb-embed-frame" 
-                     data-id="1160174173295911644" 
-                     data-view="home" 
-                     data-hide-price="true">
-                  <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank">Voir sur Airbnb</a>
-                  <a href="https://www.airbnb.fr/rooms/1160174173295911644" rel="nofollow" target="_blank">
-                    Appartement · Labergement-Sainte-Marie · ★5,0 · 2 chambres · 2 lits · 1 salle de bain et 1 toilette
-                  </a>
-                </div>
-              </div>
-              <script async src="https://www.airbnb.fr/embeddable/airbnb_jssdk"></script>
+            <a href="https://www.airbnb.fr/rooms/1160174173295911644?check_in=2025-05-17&check_out=2025-05-22&guests=1&adults=1&s=67&unique_share_id=37a1645d-c830-4af6-8d12-4fb44e65cb68" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="airbnb-card">
+           <div class="airbnb-img" style="background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1160174173295911644/original/ae0b76f2-2b53-4600-b182-5a5e2c1e6e9f.jpeg');"></div>
+           <div class="airbnb-info">
+             <h3>Appartement à Labergement-Sainte-Marie</h3>
+             <p>★ 5,0 · 2 chambres · 2 lits · 1 salle de bain</p>
+             <button>Voir sur Airbnb</button>
+           </div>
+         </a>
         </section>
     </main>
     <footer>
