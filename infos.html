@@ -62,7 +62,6 @@
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
-    <div id="calendar"></div> <!-- Le calendrier sera affiché ici -->
 
     <script>
         // Fonction pour récupérer le fichier iCalendar
@@ -117,6 +116,7 @@
         function initializeCalendar(events) {
             $('#calendar').fullCalendar({
                 locale: 'fr',
+                height: 'auto', // Ensures the calendar adjusts to show the full month
                 events: events.map(event => ({
                     title: event.title,
                     start: event.start,
