@@ -499,3 +499,97 @@ section {
 .contact-form .btn-submit:hover {
     background: #004a70;
 }
+
+/* Styles pour le calendrier des disponibilités */
+#calendar {
+    margin: 20px auto;
+    max-width: 800px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.fc-toolbar h2 {
+    font-size: 1.5em;
+    color: #005f8d; /* Couleur principale */
+}
+
+.fc-button {
+    background: #005f8d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.fc-button:hover {
+    background: #004a70;
+}
+
+.fc-day-header {
+    background: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.fc-day {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.fc-day.fc-today {
+    background: #eaf6ff;
+    border-color: #005f8d;
+}
+
+.fc-event {
+    background: #005f8d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.fc-event:hover {
+    background: #004a70;
+}
+
+/* Version mobile pour le calendrier */
+@media (max-width: 768px) {
+    #calendar {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .fc-toolbar h2 {
+        font-size: 1.2em;
+    }
+
+    .fc-button {
+        font-size: 0.8em;
+        padding: 5px;
+    }
+
+    .fc-day-header, .fc-day {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+}
