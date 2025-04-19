@@ -6,7 +6,6 @@ body {
     background-color: #f4f4f4;
     text-align: center;
     position: relative;
-    overflow-x: hidden; /* Supprime les scrollbars horizontales */
 }
 
 /* Padding-top uniquement pour la version PC */
@@ -51,6 +50,7 @@ header.header2 {
 }
 
 /* Navigation */
+nav {
     background: #005f8d; /* Bleu rivière */
     padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
     position: fixed; /* Rend le menu fixe */
@@ -272,6 +272,7 @@ section {
         width: 100%; /* La table occupe toute la largeur */
         border-collapse: collapse;
         margin: 20px 0;
+        overflow-x: auto; /* Permet un défilement horizontal si nécessaire */
     }
 
     .equipements-table tr {
@@ -347,6 +348,10 @@ section {
 @media (max-width: 768px) {
     .room-images {
         width: 100%; /* Les images occupent toute la largeur sur mobile */
+    }
+
+    .room-content {
+        flex-direction: column; /* Empile les éléments verticalement */
     }
 }
 
@@ -572,8 +577,9 @@ section {
     height: auto; /* Ajuste automatiquement la hauteur */
     margin: 20px auto; /* Centre le widget avec un espacement */
     display: block; /* S'assure que le widget est un bloc */
-    overflow: hidden; /* Empêche les débordements */
+    overflow: hidden; /* Empêche les débordements internes */
     box-sizing: border-box; /* Inclut les bordures et le padding dans la largeur totale */
+    padding: 0 10px; /* Ajoute un padding pour éviter que le contenu touche les bords */
 }
 
 .airbnb-embed-frame iframe {
@@ -585,8 +591,8 @@ section {
 /* Version mobile pour l'intégration Airbnb */
 @media (max-width: 768px) {
     .airbnb-embed-frame {
-        width: 90%; /* La largeur occupe tout l'écran sur mobile */
+        width: 100%; /* La largeur occupe tout l'écran sur mobile */
         height: auto; /* Ajuste la hauteur automatiquement */
-        padding: 0 10px; /* Ajoute un padding pour éviter que le contenu touche les bords */
+        padding: 0; /* Supprime le padding pour éviter les débordements */
     }
 }
