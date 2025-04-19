@@ -19,12 +19,19 @@
     <script src="scripts/menu-translations.js"></script>
     <script src="scripts/infos-translations.js"></script> <!-- Attention à modifier pour chaque page -->
     <script src="scripts/applyTranslations.js"></script>
-    <!-- FullCalendar CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
 
-<!-- FullCalendar JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
 </head>
 <body>
     <!-- Conteneur pour le menu -->
@@ -55,39 +62,42 @@
     <footer>
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
-    <script>
-        // Effectuer une requête vers ton serveur pour obtenir le fichier .ics
-        fetch('https://ical-proxy-node.onrender.com/ical')
-            .then(response => response.text())  // Traiter la réponse en tant que texte
-            .then(data => {
-                // Afficher le contenu brut du fichier .ics (si tu veux l'afficher tel quel)
-                document.getElementById('calendar').innerText = data;
+    <div id="calendar"></div> <!-- Le calendrier sera affiché ici -->
 
-                // Si tu veux parser le fichier .ics et afficher les événements de manière plus lisible :
-                const parsedEvents = parseICS(data);
-                displayEvents(parsedEvents);
+    <script>
+        // Fonction pour récupérer le fichier iCalendar
+        fetch('https://ical-proxy-node.onrender.com/ical')
+            .then(response => response.text())
+            .then(data => {
+                const events = parseICS(data);
+                initializeCalendar(events);
             })
             .catch(error => console.error('Erreur lors de la récupération du fichier iCal:', error));
 
-        // Fonction pour parser le contenu iCalendar (fichier .ics)
+        // Fonction pour parser le fichier iCalendar (.ics)
         function parseICS(icsData) {
-            // C'est un exemple simple qui te permettra d'extraire les événements du fichier .ics
             const events = [];
-            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;  // Trouver chaque événement
+            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
 
             if (eventsRaw) {
                 eventsRaw.forEach(event => {
                     const eventDetails = {};
                     const summaryPattern = /SUMMARY:(.*)/;
-                    const datePattern = /DTSTART;.*:(\d{8}T\d{6})/;
+                    const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
+                    const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
+                    const descriptionPattern = /DESCRIPTION:(.*)/;
 
                     const summary = event.match(summaryPattern);
-                    const date = event.match(datePattern);
+                    const startDate = event.match(datePatternStart);
+                    const endDate = event.match(datePatternEnd);
+                    const description = event.match(descriptionPattern);
 
-                    if (summary && date) {
-                        eventDetails.summary = summary[1];
-                        eventDetails.date = date[1];
+                    if (summary && startDate && endDate) {
+                        eventDetails.title = summary[1];
+                        eventDetails.start = formatDate(startDate[1]);
+                        eventDetails.end = formatDate(endDate[1]);
+                        eventDetails.description = description ? description[1] : 'Pas de description';
                         events.push(eventDetails);
                     }
                 });
@@ -95,13 +105,24 @@
             return events;
         }
 
-        // Fonction pour afficher les événements sur la page
-        function displayEvents(events) {
-            const calendarDiv = document.getElementById('calendar');
-            events.forEach(event => {
-                const eventDiv = document.createElement('div');
-                eventDiv.innerHTML = `<strong>${event.summary}</strong> - ${event.date}`;
-                calendarDiv.appendChild(eventDiv);
+        // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
+        function formatDate(dateString) {
+            const year = dateString.substring(0, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        // Fonction pour initialiser le calendrier avec FullCalendar
+        function initializeCalendar(events) {
+            $('#calendar').fullCalendar({
+                locale: 'fr',
+                events: events.map(event => ({
+                    title: event.title,
+                    start: event.start,
+                    end: event.end,
+                    description: event.description
+                }))
             });
         }
     </script>
