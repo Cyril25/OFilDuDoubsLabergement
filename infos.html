@@ -94,7 +94,7 @@
                     const description = event.match(descriptionPattern);
 
                     if (summary && startDate && endDate) {
-                        eventDetails.title = summary[1];
+                        eventDetails.title = 'Indisponible'; // On force le titre à "Indisponible"
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
                         eventDetails.description = description ? description[1] : 'Pas de description';
