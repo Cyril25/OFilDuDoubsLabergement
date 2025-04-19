@@ -52,49 +52,54 @@
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const calendarContainer = document.getElementById("calendar-container");
-            const icalUrl = "https://www.airbnb.fr/calendar/ical/1160174173295911644.ics?s=b14aa96311bec7c24999ed2509141cb8";
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        // Effectuer une requête vers ton serveur pour obtenir le fichier .ics
+        fetch('https://ical-proxy-node.onrender.com/ical')
+            .then(response => response.text())  // Traiter la réponse en tant que texte
+            .then(data => {
+                // Afficher le contenu brut du fichier .ics (si tu veux l'afficher tel quel)
+                document.getElementById('calendar').innerText = data;
 
-            fetch(proxyUrl + icalUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erreur lors du chargement du calendrier.");
+                // Si tu veux parser le fichier .ics et afficher les événements de manière plus lisible :
+                const parsedEvents = parseICS(data);
+                displayEvents(parsedEvents);
+            })
+            .catch(error => console.error('Erreur lors de la récupération du fichier iCal:', error));
+
+        // Fonction pour parser le contenu iCalendar (fichier .ics)
+        function parseICS(icsData) {
+            // C'est un exemple simple qui te permettra d'extraire les événements du fichier .ics
+            const events = [];
+            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;  // Trouver chaque événement
+            const eventsRaw = icsData.match(eventPattern);
+
+            if (eventsRaw) {
+                eventsRaw.forEach(event => {
+                    const eventDetails = {};
+                    const summaryPattern = /SUMMARY:(.*)/;
+                    const datePattern = /DTSTART;.*:(\d{8}T\d{6})/;
+
+                    const summary = event.match(summaryPattern);
+                    const date = event.match(datePattern);
+
+                    if (summary && date) {
+                        eventDetails.summary = summary[1];
+                        eventDetails.date = date[1];
+                        events.push(eventDetails);
                     }
-                    return response.text();
-                })
-                .then(data => {
-                    // Simple parsing of iCal data to display events
-                    const events = [];
-                    const lines = data.split("\n");
-                    let event = null;
-
-                    lines.forEach(line => {
-                        if (line.startsWith("BEGIN:VEVENT")) {
-                            event = {};
-                        } else if (line.startsWith("END:VEVENT")) {
-                            if (event) events.push(event);
-                            event = null;
-                        } else if (event) {
-                            const [key, value] = line.split(":");
-                            if (key && value) {
-                                event[key.trim()] = value.trim();
-                            }
-                        }
-                    });
-
-                    // Render events in the calendar container
-                    calendarContainer.innerHTML = "<ul>" + events.map(e => {
-                        const start = e["DTSTART"] ? new Date(e["DTSTART"]).toLocaleDateString() : "Inconnu";
-                        const end = e["DTEND"] ? new Date(e["DTEND"]).toLocaleDateString() : "Inconnu";
-                        return `<li>Du ${start} au ${end}</li>`;
-                    }).join("") + "</ul>";
-                })
-                .catch(error => {
-                    calendarContainer.innerHTML = `<p>Erreur : ${error.message}</p>`;
                 });
-        });
+            }
+            return events;
+        }
+
+        // Fonction pour afficher les événements sur la page
+        function displayEvents(events) {
+            const calendarDiv = document.getElementById('calendar');
+            events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.innerHTML = `<strong>${event.summary}</strong> - ${event.date}`;
+                calendarDiv.appendChild(eventDiv);
+            });
+        }
     </script>
 </body>
 </html>
