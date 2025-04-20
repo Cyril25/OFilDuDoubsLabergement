@@ -17,7 +17,7 @@ body {
 
 /* Header */
 header.header-principal {
-    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center; /* Utilise l'image comme fond */
+    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
     background-size: cover; /* S'assure que l'image couvre toute la largeur */
     color: white;
     padding: 20px;
@@ -31,7 +31,7 @@ header.header-principal {
 
 /* Header 2 */
 header.header2 {
-    background: url('images/banniere/vue-balcon-2.jpg') no-repeat center center; /* Utilise l'image comme fond */
+    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
     background-size: cover; /* S'assure que l'image couvre toute la largeur */
     color: white;
     padding: 20px;
