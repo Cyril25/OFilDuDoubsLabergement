@@ -47,9 +47,11 @@ function applyTranslations(lang, pageTranslations) {
             menuItems[0].textContent = menuTranslation.accueil;
             menuItems[1].textContent = menuTranslation.logement;
             menuItems[2].textContent = menuTranslation.equipements;
-            menuItems[3].textContent = menuTranslation.infos;
-            menuItems[4].textContent = menuTranslation.activites;
-            menuItems[5].textContent = menuTranslation.contact;
+            menuItems[3].textContent = menuTranslation.dispo;
+            menuItems[4].textContent = menuTranslation.infos;
+            menuItems[5].textContent = menuTranslation.activites;
+            menuItems[6].textContent = menuTranslation.commerces;
+            menuItems[7].textContent = menuTranslation.contact;
         }
     }
 
