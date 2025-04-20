@@ -1,14 +1,11 @@
 const dataTranslations = {
     fr: {
-        title: "Activités & commerces du village",
-        subtitle: "Activités et commerces à proximité",
+        title: "Activités",
     },
     en: {
-        title: "Activities & Shops",
-        subtitle: "Activities and shops nearby",
+        title: "Activities",
     },
     de: {
-        title: "Aktivitäten & Geschäfte",
-        subtitle: "Aktivitäten und Geschäfte in der Nähe",
+        title: "Aktivitäten",
     }
 };
