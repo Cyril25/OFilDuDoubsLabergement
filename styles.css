@@ -362,6 +362,13 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Classe pour les images réduites */
+.room-image.small {
+    width: 25%; /* 50% des 50% du div parent */
+    height: auto;
+    margin: 0 auto; /* Centre l'image horizontalement */
+}
+
 .room-text {
     width: 50%;
     text-align: justify;
