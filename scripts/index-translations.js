@@ -1,7 +1,7 @@
 const dataTranslations = {
     fr: {
         title: "O'Fil du Doubs",
-        subtitle: "Un hébergement confortable au bord de l'eau",
+        subtitle: "Un hébergement confortable surplombant la rivière",
         subtitle2: "Meublé de tourisme 4 étoiles",
         welcome: "Bienvenue chez Alisson et Cyril - O'Fil du Doubs",
         description1: "Situé au cœur du village de Labergement-Sainte-Marie, notre logement de 70 m² vous accueille dans un cadre paisible et enchanteur, avec une vue dégagée et sans vis-à-vis.",
