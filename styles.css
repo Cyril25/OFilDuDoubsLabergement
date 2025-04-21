@@ -176,6 +176,13 @@ nav ul li a {
     margin-top: 20px;
 }
 
+.view-image.small {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Section principale */
 main {
     padding: 20px;
@@ -595,6 +602,12 @@ section {
     line-height: 1.6;
     color: #333;
     text-align: justify;
+}
+
+.signature {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 10px;
 }
 
 ul {
