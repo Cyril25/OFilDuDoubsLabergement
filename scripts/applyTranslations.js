@@ -48,7 +48,6 @@ function applyTranslations(lang, pageTranslations) {
             menuItems[1].textContent = menuTranslation.logement;
             menuItems[2].textContent = menuTranslation.equipements;
             menuItems[3].textContent = menuTranslation.dispo;
-            // menuItems[4].textContent = menuTranslation.infos;
             menuItems[4].textContent = menuTranslation.activites;
             menuItems[5].textContent = menuTranslation.commerces;
             menuItems[6].textContent = menuTranslation.contact;

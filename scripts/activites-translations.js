@@ -1,8 +1,8 @@
 const dataTranslations = {
     fr: {
         title: "Activités proche",
-        subtitle: "Découvrez les lieux incontournables et les activités à proximité (Entre 2 et 20 minutes du logement maximum)",
-        description: "Voici une sélection d'activités à proximité du logement. Certaines sont gratuites, d'autres
+        subtitle: "Découvrez les lieux incontournables et les activités à proximité",
+        description: "Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. (Entre 2 et 20 minutes du logement maximum)",
     },
     en: {
         title: "Activities",
