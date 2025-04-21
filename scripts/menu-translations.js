@@ -13,7 +13,7 @@ const menuTranslations = {
         logement: "The accommodation",
         equipements: "Comfort & Equipment",
         dispo: "Rates & Availability",
-        activites: "Activities & Shops",
+        activites: "Activities",
         commerces: "Shops",
         contact: "Contact"
     },
@@ -22,7 +22,7 @@ const menuTranslations = {
         logement: "Die Unterkunft",
         equipements: "Komfort & Ausstattung",
         dispo: "Preise & Verfügbarkeit",
-        activites: "Aktivitäten & Geschäfte",
+        activites: "Aktivitäten",
         commerces: "Geschäfte",
         contact: "Kontakt"
     }
