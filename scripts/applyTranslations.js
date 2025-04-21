@@ -54,19 +54,19 @@ function applyTranslations(lang, pageTranslations) {
         }
     }
 
-// Appliquer les traductions spécifiques à la page
-if (pageTranslations) {
-    Object.keys(pageTranslations).forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            // Vérifie si c'est un champ de formulaire
-            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                element.placeholder = pageTranslations[id];
-            } else {
-                // Sinon, applique le texte comme contenu
-                element.textContent = pageTranslations[id];
+    // Appliquer les traductions spécifiques à la page
+    if (pageTranslations) {
+        Object.keys(pageTranslations).forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                // Vérifie si c'est un champ de formulaire
+                if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                    element.placeholder = pageTranslations[id];
+                } else {
+                    // Applique le texte comme contenu pour les autres balises
+                    element.innerHTML = pageTranslations[id]; // Utilise innerHTML pour gérer les balises imbriquées comme <strong>
+                }
             }
-        }
-    });
-}
+        });
+    }
 }
