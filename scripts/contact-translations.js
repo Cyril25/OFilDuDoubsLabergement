@@ -1,7 +1,8 @@
 const dataTranslations = {
     fr: {
         title: "Contact",
-        contactIntro: "Pour toute question ou réservation, n'hésitez pas à nous contacter via le formulaire ci-dessous :",
+        subtitle: "Nous sommes la pour répondre à vos questions",
+        introduction: "Pour toute question ou demande de réservation, contactez nous via le formulaire ci-dessous",
         labelName: "Nom :",
         name: "Votre nom", // Placeholder pour le champ "name"
         labelEmail: "Email :",
@@ -15,33 +16,9 @@ const dataTranslations = {
         formStatusError: "Une erreur est survenue. Merci de réessayer."
     },
     en: {
-        title: "Contact",
-        contactIntro: "For any questions or reservations, feel free to contact us using the form below:",
-        labelName: "Name:",
-        name: "Your name", // Placeholder for the "name" field
-        labelEmail: "Email:",
-        email: "Your email address", // Placeholder for the "email" field
-        labelPhone: "Phone:",
-        phone: "Your phone number", // Placeholder for the "phone" field
-        labelMessage: "Message:",
-        message: "Your message", // Placeholder for the "message" field
-        submitButton: "Send",
-        formStatusSuccess: "Message sent successfully! Redirecting...",
-        formStatusError: "An error occurred. Please try again."
+        // English translations
     },
     de: {
-        title: "Kontakt",
-        contactIntro: "Für Fragen oder Reservierungen können Sie uns gerne über das untenstehende Formular kontaktieren:",
-        labelName: "Name:",
-        name: "Ihr Name", // Placeholder für das Feld "name"
-        labelEmail: "E-Mail:",
-        email: "Ihre E-Mail-Adresse", // Placeholder für das Feld "email"
-        labelPhone: "Telefon:",
-        phone: "Ihre Telefonnummer", // Placeholder für das Feld "phone"
-        labelMessage: "Nachricht:",
-        message: "Ihre Nachricht", // Placeholder für das Feld "message"
-        submitButton: "Senden",
-        formStatusSuccess: "Nachricht erfolgreich gesendet! Weiterleitung...",
-        formStatusError: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+        // German translations
     }
 };

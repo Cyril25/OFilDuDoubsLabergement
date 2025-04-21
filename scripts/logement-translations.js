@@ -1,8 +1,8 @@
 const dataTranslations = {
     fr: {
         title: "Le logement",
-        subtitle: "Un espace chaleureux et confortable pour votre séjour",
-        introduction: "Découvrez notre logement de charme, conçu pour vous offrir un séjour inoubliable à Labergement-Sainte-Marie. Chaque pièce a été pensée pour allier confort, modernité et convivialité, afin de répondre à tous vos besoins.",
+        subtitle: "Un espace chaleureux pour vous sentir comme à la maison",
+        introduction: "Découvrez notre logement de charme, conçu pour vous offrir un séjour inoubliable à Labergement-Sainte-Marie. Chaque pièce a été pensée pour allier confort, modernité et convivialité, afin de répondre à tous vos besoins. Le logement peut accueillir jusqu'à 4 personnes, idéal pour des séjours en famille ou entre amis.",
         salon_title: "Le Salon",
         salon_description: "Un salon lumineux et accueillant, parfait pour se retrouver en famille ou entre amis. Il dispose d'une télévision grand écran pour vos soirées cinéma, d'une petite table basse et d'une sélection de jeux de société pour des moments de partage et de détente. Un espace intérieur chaleureux, idéal pour se ressourcer après une journée d'activités.",
         cuisine_title: "La Cuisine",
@@ -17,37 +17,9 @@ const dataTranslations = {
         balcon_description: "L'extérieur offre un espace agréable avec un salon confortable, parfait pour un apéritif en plein air tout en profitant d'une vue exceptionnelle. Une table et des chaises sont disponibles pour manger à 4, et un grill électrique est à votre disposition pour réaliser de délicieuses grillades. Un endroit idéal pour se détendre et savourer les beaux jours."
     },
     en: {
-        title: "The accommodation",
-        subtitle: "A warm and comfortable space for your stay",
-        introduction: "Discover our charming accommodation, designed to offer you an unforgettable stay in Labergement-Sainte-Marie. Each room has been thoughtfully designed to combine comfort, modernity, and conviviality to meet all your needs.",
-        salon_title: "The Living Room",
-        salon_description: "A bright and welcoming living room, perfect for gathering with family or friends. It features a large-screen TV for movie nights, a small coffee table, and a selection of board games for moments of sharing and relaxation. A warm indoor space, ideal for recharging after a day of activities.",
-        cuisine_title: "The Kitchen",
-        cuisine_description: "A modern and fully equipped kitchen, perfect for cooking freely during your stay. It includes an oven, a microwave, a dishwasher, a stovetop, a refrigerator with a freezer compartment, a filter coffee maker, a Nespresso machine, a toaster, as well as all the necessary dishes and utensils. For added comfort, you also have a Seb EasyFry appliance, a raclette machine, and a fondue set — perfect for convivial meals after a busy day.",
-        chambre_principale_title: "The Master Bedroom",
-        chambre_principale_description: "A spacious bedroom with a comfortable double bed, elegant decor, and everything you need for a pleasant stay. It features a large wardrobe, a chest of drawers for easy storage, and a TV. Bedside tables with lamps are placed on each side of the bed for added comfort.",
-        chambre_secondaire_title: "The Secondary Bedroom",
-        chambre_secondaire_description: "A cozy bedroom equipped with a double bed, a wardrobe, and bedside tables with lamps for two. Ideal for restful nights in a calm and warm setting.",
-        salle_de_bain_title: "The Bathroom",
-        salle_de_bain_description: "A modern bathroom equipped with a bathtub for a relaxing moment. The lighting, adjustable in intensity and color, creates a soothing ambiance. You will find soft towels, toiletries such as shampoo and shower gel, as well as a hairdryer and a washing machine for added convenience.",
-        balcon_title: "The Balcony",
-        balcon_description: "The outdoor area offers a pleasant space with comfortable seating, perfect for an outdoor aperitif while enjoying an exceptional view. A table and chairs are available for dining for four, and an electric grill is at your disposal for delicious barbecues. An ideal place to relax and enjoy sunny days."
+        // English translations    
     },
     de: {
-        title: "Die Unterkunft",
-        subtitle: "Ein warmer und komfortabler Raum für Ihren Aufenthalt",
-        introduction: "Entdecken Sie unsere charmante Unterkunft, die darauf ausgelegt ist, Ihnen einen unvergesslichen Aufenthalt in Labergement-Sainte-Marie zu bieten. Jedes Zimmer wurde sorgfältig gestaltet, um Komfort, Modernität und Geselligkeit zu vereinen und all Ihren Bedürfnissen gerecht zu werden.",
-        salon_title: "Das Wohnzimmer",
-        salon_description: "Ein helles und einladendes Wohnzimmer, perfekt für Treffen mit Familie oder Freunden. Es verfügt über einen Großbildfernseher für Filmabende, einen kleinen Couchtisch und eine Auswahl an Brettspielen für Momente des Teilens und der Entspannung. Ein warmer Innenraum, ideal zum Auftanken nach einem aktiven Tag.",
-        cuisine_title: "Die Küche",
-        cuisine_description: "Eine moderne und voll ausgestattete Küche, ideal zum freien Kochen während Ihres Aufenthalts. Sie umfasst einen Backofen, eine Mikrowelle, eine Spülmaschine, ein Kochfeld, einen Kühlschrank mit Gefrierfach, eine Filterkaffeemaschine, eine Nespresso-Maschine, einen Toaster sowie alle notwendigen Geschirr- und Kochutensilien. Für zusätzlichen Komfort stehen Ihnen auch ein Seb EasyFry-Gerät, ein Raclette-Gerät und ein Fondue-Set zur Verfügung — perfekt für gesellige Mahlzeiten nach einem ereignisreichen Tag.",
-        chambre_principale_title: "Das Hauptschlafzimmer",
-        chambre_principale_description: "Ein geräumiges Schlafzimmer mit einem komfortablen Doppelbett, eleganter Dekoration und allem, was Sie für einen angenehmen Aufenthalt benötigen. Es verfügt über einen großen Kleiderschrank, eine Kommode für eine einfache Aufbewahrung und einen Fernseher. Nachttische mit Lampen befinden sich auf beiden Seiten des Bettes für zusätzlichen Komfort.",
-        chambre_secondaire_title: "Das Nebenschlafzimmer",
-        chambre_secondaire_description: "Ein gemütliches Schlafzimmer mit einem Doppelbett, einem Kleiderschrank und Nachttischen mit Lampen für zwei Personen. Ideal für erholsame Nächte in einer ruhigen und warmen Umgebung.",
-        salle_de_bain_title: "Das Badezimmer",
-        salle_de_bain_description: "Ein modernes Badezimmer mit einer Badewanne für einen entspannenden Moment. Die Beleuchtung, einstellbar in Intensität und Farbe, schafft eine beruhigende Atmosphäre. Sie finden weiche Handtücher, Toilettenartikel wie Shampoo und Duschgel sowie einen Haartrockner und eine Waschmaschine für zusätzlichen Komfort.",
-        balcon_title: "Der Balkon",
-        balcon_description: "Der Außenbereich bietet einen angenehmen Raum mit bequemen Sitzgelegenheiten, perfekt für einen Aperitif im Freien mit einer außergewöhnlichen Aussicht. Ein Tisch und Stühle stehen für vier Personen zum Essen zur Verfügung, und ein Elektrogrill steht Ihnen für köstliche Grillgerichte zur Verfügung. Ein idealer Ort, um sich zu entspannen und die sonnigen Tage zu genießen."
-    }
+        // German translations    
+    },
 };

@@ -1,14 +1,13 @@
 const dataTranslations = {
     fr: {
-        title: "Disponibilité",
-        subtitle: "Informations pratiques pour votre séjour",
+        title: "Tarifs & Disponibilités",
+        subtitle: "Toutes les infos utiles pour réserver votre séjour",
+        introduction: "Découvrez nos tarifs et disponibilités pour planifier votre séjour. Nous proposons des options flexibles pour répondre à vos besoins, que ce soit pour un week-end ou une semaine complète. Consultez notre calendrier pour voir les dates disponibles et n'hésitez pas à nous contacter pour toute question.",
     },
     en: {
-        title: "Availability",
-        subtitle: "Practical information for your stay",
+        // English translations
     },
     de: {
-        title: "Verfügbarkeit",
-        subtitle: "Praktische Informationen für Ihren Aufenthalt",
+        // German translations
     }
 };
