@@ -110,6 +110,9 @@
         <section>
             <h2>Disponibilités</h2>
             <p>Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
+            <div id="loading-indicator" style="text-align: center; margin: 20px; display: none;">
+                <p>Chargement du calendrier...</p>
+            </div>
             <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
             <p>Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
             <a href="https://www.airbnb.fr/rooms/1160174173295911644?check_in=2025-05-17&check_out=2025-05-22&guests=1&adults=1&s=67&unique_share_id=37a1645d-c830-4af6-8d12-4fb44e65cb68" 
@@ -130,6 +133,10 @@
     </footer>
 
     <script>
+        // Afficher l'indicateur de chargement
+        const loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'block';
+
         // Fonction pour récupérer le fichier iCalendar
         console.log('Début de la récupération du fichier iCalendar');
         fetch('https://ical-proxy-node.onrender.com/ical')
@@ -139,11 +146,15 @@
             })
             .then(data => {
                 console.log('Données iCalendar récupérées avec succès');
+                loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement
                 const events = parseICS(data);
                 console.log('Événements parsés:', events);
                 initializeCalendar(events);
             })
-            .catch(error => console.error('Erreur lors de la récupération du fichier iCal:', error));
+            .catch(error => {
+                console.error('Erreur lors de la récupération du fichier iCal:', error);
+                loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement en cas d'erreur
+            });
 
         // Fonction pour parser le fichier iCalendar (.ics)
         function parseICS(icsData) {
