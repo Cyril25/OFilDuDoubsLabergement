@@ -27,6 +27,8 @@ const dataTranslations = {
         maison_michaud_description: "Plongez dans la vie rurale d’autrefois dans cette ferme comtoise transformée en écomusée. Animations toute l’année.",
         mont_dor_title: "Mont d’Or",
         mont_dor_description: "Point culminant du Doubs. Panorama spectaculaire sur les Alpes depuis le sommet. Accessible à pied depuis Métabief.",
+        et_plus_encore_title: "Et plus encore ...",
+        et_plus_encore_description: "Découvrez encore plus d'activités et de lieux à explorer en visitant le site de l'office du tourisme de Malbuisson.",
     },
     en: {
         title: "Activities",
@@ -56,6 +58,8 @@ const dataTranslations = {
         maison_michaud_description: "Immerse yourself in the rural life of yesteryear in this Comtoise farm turned eco-museum. Events all year round.",
         mont_dor_title: "Mont d’Or",
         mont_dor_description: "The highest point in Doubs. Spectacular panorama of the Alps from the summit. Accessible on foot from Métabief.",
+        et_plus_encore_title: "And more ...",
+        et_plus_encore_description: "Discover even more activities and places to explore by visiting the Malbuisson tourist office website.",
     },
     de: {
         title: "Aktivitäten",
@@ -85,5 +89,7 @@ const dataTranslations = {
         maison_michaud_description: "Tauchen Sie ein in das ländliche Leben von einst in diesem Comtoise-Bauernhof, der in ein Ökomuseum umgewandelt wurde. Veranstaltungen das ganze Jahr über.",
         mont_dor_title: "Mont d’Or",
         mont_dor_description: "Der höchste Punkt im Doubs. Spektakuläres Panorama auf die Alpen vom Gipfel. Zu Fuß von Métabief aus erreichbar.",
+        et_plus_encore_title: "Und mehr ...",
+        et_plus_encore_description: "Entdecken Sie noch mehr Aktivitäten und Orte, die Sie erkunden können, indem Sie die Website des Tourismusbüros von Malbuisson besuchen.",
     }
 };
