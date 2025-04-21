@@ -16,9 +16,35 @@ const dataTranslations = {
         formStatusError: "Une erreur est survenue. Merci de réessayer."
     },
     en: {
-        // English translations
+        title: "Contact",
+        subtitle: "We are here to answer your questions",
+        introduction: "For any questions or booking requests, contact us using the form below",
+        labelName: "Name:",
+        name: "Your name", // Placeholder for the "name" field
+        labelEmail: "Email:",
+        email: "Your email address", // Placeholder for the "email" field
+        labelPhone: "Phone:",
+        phone: "Your phone number", // Placeholder for the "phone" field
+        labelMessage: "Message:",
+        message: "Your message", // Placeholder for the "message" field
+        submitButton: "Send",
+        formStatusSuccess: "Message sent successfully! Redirecting...",
+        formStatusError: "An error occurred. Please try again."
     },
     de: {
-        // German translations
+        title: "Kontakt",
+        subtitle: "Wir sind hier, um Ihre Fragen zu beantworten",
+        introduction: "Für Fragen oder Reservierungsanfragen kontaktieren Sie uns bitte über das untenstehende Formular",
+        labelName: "Name:",
+        name: "Ihr Name", // Placeholder for the "name" field
+        labelEmail: "E-Mail:",
+        email: "Ihre E-Mail-Adresse", // Placeholder for the "email" field
+        labelPhone: "Telefon:",
+        phone: "Ihre Telefonnummer", // Placeholder for the "phone" field
+        labelMessage: "Nachricht:",
+        message: "Ihre Nachricht", // Placeholder for the "message" field
+        submitButton: "Senden",
+        formStatusSuccess: "Nachricht erfolgreich gesendet! Weiterleitung...",
+        formStatusError: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     }
 };
