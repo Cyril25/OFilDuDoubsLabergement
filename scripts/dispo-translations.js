@@ -14,9 +14,31 @@ const dataTranslations = {
         departure_info: "Le départ se fait avant 11h."
     },
     en: {
-        // English translations
+        title: "Rates & Availability",
+        subtitle: "All the useful information to book your stay",
+        introduction: "Discover our rates and availability to plan your stay. We offer flexible options to meet your needs, whether for a weekend or a full week. Check our calendar for available dates and feel free to contact us with any questions.",
+        intro_text: "Discover our rates and availability to plan your stay.",
+        availability_section: "Availability",
+        availability_description: "The calendar below is up-to-date for the availability of our accommodation.",
+        airbnb_info: "To check rates or get more information, you can contact us via the contact form or access up-to-date rates directly on Airbnb via the link below.",
+        airbnb_title: "Apartment in Labergement-Sainte-Marie",
+        airbnb_details: "★ 5.0 · 2 bedrooms · 2 beds · 1 bathroom",
+        practical_info_section: "Practical Information",
+        arrival_info: "Check-in is between 5 PM and 10 PM, with key handover in person or via a key box depending on our availability.",
+        departure_info: "Check-out is before 11 AM."
     },
     de: {
-        // German translations
+        title: "Preise & Verfügbarkeit",
+        subtitle: "Alle nützlichen Informationen, um Ihren Aufenthalt zu buchen",
+        introduction: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen. Wir bieten flexible Optionen, die Ihren Bedürfnissen entsprechen, sei es für ein Wochenende oder eine ganze Woche. Überprüfen Sie unseren Kalender auf verfügbare Daten und zögern Sie nicht, uns bei Fragen zu kontaktieren.",
+        intro_text: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen.",
+        availability_section: "Verfügbarkeit",
+        availability_description: "Der untenstehende Kalender ist für die Verfügbarkeit unserer Unterkunft aktuell.",
+        airbnb_info: "Um Preise zu überprüfen oder weitere Informationen zu erhalten, können Sie uns über das Kontaktformular kontaktieren oder die aktuellen Preise direkt auf Airbnb über den untenstehenden Link einsehen.",
+        airbnb_title: "Apartment in Labergement-Sainte-Marie",
+        airbnb_details: "★ 5,0 · 2 Schlafzimmer · 2 Betten · 1 Badezimmer",
+        practical_info_section: "Praktische Informationen",
+        arrival_info: "Der Check-in erfolgt zwischen 17:00 und 22:00 Uhr, mit Schlüsselübergabe persönlich oder über eine Schlüsselbox, je nach Verfügbarkeit.",
+        departure_info: "Der Check-out erfolgt vor 11:00 Uhr."
     }
 };
