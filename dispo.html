@@ -177,7 +177,7 @@
                         console.log('Réponse reçue du serveur iCalendar');
                         loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement
                         resolve(response.text());
-                    }, 4000); // Simuler un délai de 4 secondes
+                    }, 1); // Simuler un délai de x secondes (en msec)
                 });
             })
             .then(data => {
