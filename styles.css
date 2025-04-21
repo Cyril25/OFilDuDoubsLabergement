@@ -43,6 +43,15 @@ header.header2 {
     align-items: center;
 }
 
+header.header2 h1 {
+    margin-bottom: 10px; /* Reduce spacing between title and subtitle */
+}
+
+header.header2 h2 {
+    font-size: 1.2em; /* Reduce font size of the subtitle */
+    margin-top: 0; /* Remove extra spacing above the subtitle */
+}
+
 .logo {
     margin-top: 10px;
     width: 150px;
