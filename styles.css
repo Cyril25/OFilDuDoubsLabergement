@@ -385,6 +385,13 @@ section {
     margin: 0 auto; /* Centre l'image horizontalement */
 }
 
+/* Classe pour les images encore plus réduites */
+.room-image.extra-small {
+    width: 15%; /* 30% des 50% du div parent */
+    height: auto;
+    margin: 0 auto; /* Centre l'image horizontalement */
+}
+
 .room-text {
     width: 50%;
     text-align: justify;
