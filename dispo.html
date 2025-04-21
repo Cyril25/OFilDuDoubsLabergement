@@ -131,21 +131,29 @@
 
     <script>
         // Fonction pour récupérer le fichier iCalendar
+        console.log('Début de la récupération du fichier iCalendar');
         fetch('https://ical-proxy-node.onrender.com/ical')
-            .then(response => response.text())
+            .then(response => {
+                console.log('Réponse reçue du serveur iCalendar');
+                return response.text();
+            })
             .then(data => {
+                console.log('Données iCalendar récupérées avec succès');
                 const events = parseICS(data);
+                console.log('Événements parsés:', events);
                 initializeCalendar(events);
             })
             .catch(error => console.error('Erreur lors de la récupération du fichier iCal:', error));
 
         // Fonction pour parser le fichier iCalendar (.ics)
         function parseICS(icsData) {
+            console.log('Début du parsing du fichier iCalendar');
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
 
             if (eventsRaw) {
+                console.log(`${eventsRaw.length} événements trouvés dans le fichier iCalendar`);
                 eventsRaw.forEach(event => {
                     const eventDetails = {};
                     const summaryPattern = /SUMMARY:(.*)/;
@@ -163,15 +171,19 @@
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
                         eventDetails.description = description ? description[1] : 'Pas de description';
+                        console.log('Événement parsé:', eventDetails);
                         events.push(eventDetails);
                     }
                 });
+            } else {
+                console.log('Aucun événement trouvé dans le fichier iCalendar');
             }
             return events;
         }
 
         // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
         function formatDate(dateString) {
+            console.log('Formatage de la date:', dateString);
             const year = dateString.substring(0, 4);
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
@@ -180,6 +192,7 @@
 
         // Fonction pour initialiser le calendrier avec FullCalendar
         function initializeCalendar(events) {
+            console.log('Initialisation du calendrier avec les événements:', events);
             $('#calendar').fullCalendar({
                 locale: 'fr',
                 height: 'auto', // Ensures the calendar adjusts to show the full month
@@ -190,6 +203,7 @@
                     description: event.description
                 }))
             });
+            console.log('Calendrier initialisé avec succès');
         }
     </script>
 </body>
