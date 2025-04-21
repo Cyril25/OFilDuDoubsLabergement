@@ -159,22 +159,21 @@
     </footer>
 
     <script>
-        // Afficher l'indicateur de chargement
-        const loadingIndicator = document.getElementById('loading-indicator');
-        loadingIndicator.style.display = 'block';
-
         // Fonction pour récupérer le fichier iCalendar
         console.log('Début de la récupération du fichier iCalendar');
+        loadingIndicator.style.display = 'block'; // Afficher l'indicateur de chargement
         fetch('https://ical-proxy-node.onrender.com/ical')
             .then(response => {
-                console.log('Réponse reçue du serveur iCalendar');
-                return response.text();
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        console.log('Réponse reçue du serveur iCalendar');
+                        loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement
+                        resolve(response.text());
+                    }, 4000); // Simuler un délai de 4 secondes
+                });
             })
             .then(data => {
                 console.log('Données iCalendar récupérées avec succès');
-                setTimeout(() => { // Ajout d'un délai de 3 secondes
-                    loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement
-                }, 3000);
                 const events = parseICS(data);
                 console.log('Événements parsés:', events);
                 initializeCalendar(events);
@@ -247,3 +246,4 @@
     </script>
 </body>
 </html>
+``` 
