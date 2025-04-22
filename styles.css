@@ -598,22 +598,32 @@ section {
 /* Version mobile pour le calendrier */
 @media (max-width: 768px) {
     #calendar {
-        width: 90%;
+        width: 90%; /* Réduit la largeur pour s'adapter à l'écran */
         padding: 15px;
     }
 
-    .fc-toolbar h2 {
-        font-size: 1.2em;
+    .fc-toolbar {
+        flex-direction: column; /* Empile les éléments verticalement */
+        align-items: center; /* Centre les éléments */
+        gap: 10px; /* Ajoute un espace entre les éléments */
+    }
+
+    .fc-toolbar .fc-left,
+    .fc-toolbar .fc-center,
+    .fc-toolbar .fc-right {
+        flex: none; /* Supprime la répartition de l'espace */
+        text-align: center; /* Centre le contenu */
     }
 
     .fc-button {
-        font-size: 0.8em;
-        padding: 5px;
+        font-size: 0.8em; /* Réduit la taille des boutons */
+        padding: 5px; /* Ajuste le padding */
+        margin: 2px; /* Ajoute un espace entre les boutons */
     }
 
     .fc-day-header, .fc-day {
-        font-size: 0.8em;
-        padding: 8px;
+        font-size: 0.8em; /* Réduit la taille du texte */
+        padding: 8px; /* Ajuste le padding */
     }
 }
 
