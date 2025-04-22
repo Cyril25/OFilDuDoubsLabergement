@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Balises Open Graph -->
+        <meta property="og:title" content="O'Fil du Doubs" />
+        <meta property="og:description" content="Bienvenue à O'Fil du Doubs, votre logement touristique à Labergement-Sainte-Marie." />
+        <meta property="og:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp" />
+        <meta property="og:url" content="https://cyril25.github.io/OFilDuDoubsLabergement/" />
+        <meta property="og:type" content="website" />
+
+        <!-- Balise pour Twitter (optionnelle mais recommandée) -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp">
+
+    <title>O'Fil du Doubs - Location de charme</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts/menu-translations.js"></script>
+    <script src="scripts/dispo-translations.js"></script> <!-- Attention à modifier pour chaque page -->
+    <script src="scripts/applyTranslations.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
+    <style>
+        .airbnb-card {
+          display: flex;
+          flex-direction: column;
+          max-width: 450px;
+          margin: auto;
+          text-decoration: none;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          background: #fff;
+          transition: transform 0.2s ease;
+        }
+      
+        .airbnb-card:hover {
+          transform: scale(1.02);
+        }
+      
+        .airbnb-img {
+          width: 100%;
+          height: 200px;
+          background-size: cover;
+          background-position: center;
+        }
+      
+        .airbnb-info {
+          padding: 1em;
+          color: #111;
+        }
+      
+        .airbnb-info h3 {
+          font-size: 1.1em;
+          margin: 0 0 0.3em;
+        }
+      
+        .airbnb-info p {
+          font-size: 0.95em;
+          margin: 0 0 1em;
+          color: #555;
+        }
+      
+        .airbnb-info button {
+          background-color: #FF5A5F;
+          color: white;
+          padding: 0.6em 1em;
+          border: none;
+          border-radius: 8px;
+          font-weight: bold;
+          cursor: pointer;
+          font-size: 0.95em;
+        }
+      
+        .airbnb-info button:hover {
+          background-color: #e0484d;
+        }
+      
+        /* Responsive */
+        @media (max-width: 500px) {
+          .airbnb-card {
+            max-width: 100%;
+          }
+      
+          .airbnb-img {
+            height: 180px;
+          }
+        }
+
+        #loading-indicator {
+            text-align: center;
+            margin: 20px;
+            display: none;
+        }
+
+        #loading-indicator .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #FF5A5F;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+      </style>
+</head>
+<body>
+    <!-- Conteneur pour le menu -->
+    <div id="menu-container"></div>
+    <header class="header2">
+        <h1 id="title">Tarifs & disponibilités</h1>
+        <h2 id="subtitle">Tout ce qu'il faut pour répondre à vos besoins</h2>
+    </header>
+    <main>
+        <p id="intro_text" class="intro-text"></p>
+        <section>
+            <h2 id="availability_section">Disponibilités</h2>
+            <p id="availability_description">Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
+            <div id="loading-indicator">
+                <div class="spinner"></div>
+                <p>Chargement des disponibilités ...</p>
+            </div>
+            <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
+            <p id="airbnb_info">Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
+            <a href="https://www.airbnb.fr/rooms/1160174173295911644?check_in=2025-05-17&check_out=2025-05-22&guests=1&adults=1&s=67&unique_share_id=37a1645d-c830-4af6-8d12-4fb44e65cb68" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="airbnb-card">
+           <div class="airbnb-img" style="background-image: url('images/banniere/vue-coucher.webp');"></div>
+           <div class="airbnb-info">
+             <h3 id="airbnb_title">Appartement à Labergement-Sainte-Marie</h3>
+             <p id="airbnb_details">★ 5,0 · 2 chambres · 2 lits · 1 salle de bain</p>
+             <button>Voir sur Airbnb</button>
+           </div>
+         </a>
+        </section>
+        <section>
+            <h2 id="practical_info_section">Infos pratiques</h2>
+            <p id="arrival_info">Les arrivées se font entre 17h et 22h, avec remise des clés en main propre ou via une boîte à clé selon nos disponibilités.</p>
+            <p id="departure_info">Le départ se fait avant 11h.</p>
+        </section>
+    </main>
+    <footer>
+        <p>© O'Fil du Doubs - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        const loadingIndicator = document.getElementById('loading-indicator'); // Define loadingIndicator
+
+        // Initialisation du calendrier vide
+        console.log('Initialisation du calendrier vide');
+        $('#calendar').fullCalendar({
+            locale: 'fr',
+            height: 'auto', // Ensures the calendar adjusts to show the full month
+            events: [] // Calendrier vide au départ
+        });
+
+        // Fonction pour récupérer le fichier iCalendar
+        console.log('Début de la récupération du fichier iCalendar');
+        loadingIndicator.style.display = 'block'; // Afficher l'indicateur de chargement
+        fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
+            .then(response => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        console.log('Réponse reçue du serveur iCalendar');
+                        loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement
+                        resolve(response.text());
+                    }, 1); // Simuler un délai de x secondes (en msec)
+                });
+            })
+            .then(data => {
+                console.log('Données iCalendar récupérées avec succès');
+                const events = parseICS(data);
+                console.log('Événements parsés:', events);
+                updateCalendar(events); // Mettre à jour le calendrier avec les événements
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du fichier iCal:', error);
+                loadingIndicator.style.display = 'none'; // Masquer l'indicateur de chargement en cas d'erreur
+            });
+
+        // Fonction pour parser le fichier iCalendar (.ics)
+        function parseICS(icsData) {
+            console.log('Début du parsing du fichier iCalendar');
+            const events = [];
+            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
+            const eventsRaw = icsData.match(eventPattern);
+
+            if (eventsRaw) {
+                console.log(`${eventsRaw.length} événements trouvés dans le fichier iCalendar`);
+                eventsRaw.forEach(event => {
+                    const eventDetails = {};
+                    const summaryPattern = /SUMMARY:(.*)/;
+                    const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
+                    const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
+                    const descriptionPattern = /DESCRIPTION:(.*)/;
+
+                    const summary = event.match(summaryPattern);
+                    const startDate = event.match(datePatternStart);
+                    const endDate = event.match(datePatternEnd);
+                    const description = event.match(descriptionPattern);
+
+                    if (summary && startDate && endDate) {
+                        eventDetails.title = 'Indisponible'; // On force le titre à "Indisponible"
+                        eventDetails.start = formatDate(startDate[1]);
+                        eventDetails.end = formatDate(endDate[1]);
+                        eventDetails.description = description ? description[1] : 'Pas de description';
+                        console.log('Événement parsé:', eventDetails);
+                        events.push(eventDetails);
+                    }
+                });
+            } else {
+                console.log('Aucun événement trouvé dans le fichier iCalendar');
+            }
+            return events;
+        }
+
+        // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
+        function formatDate(dateString) {
+            console.log('Formatage de la date:', dateString);
+            const year = dateString.substring(0, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        // Fonction pour mettre à jour le calendrier avec les événements
+        function updateCalendar(events) {
+            console.log('Mise à jour du calendrier avec les événements:', events);
+            $('#calendar').fullCalendar('addEventSource', events); // Ajouter les événements au calendrier existant
+            console.log('Calendrier mis à jour avec succès');
+        }
+    </script>
+</body>
+</html>
