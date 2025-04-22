@@ -139,7 +139,7 @@
             <p id="availability_description">Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.</p>
             <div id="loading-indicator">
                 <div class="spinner"></div>
-                <p>Chargement du calendrier...</p>
+                <p>Chargement des disponibilités ...</p>
             </div>
             <div id="calendar"></div> <!-- C'est ici que les événements seront affichés -->
             <p id="airbnb_info">Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.</p>
@@ -167,6 +167,15 @@
 
     <script>
         const loadingIndicator = document.getElementById('loading-indicator'); // Define loadingIndicator
+
+        // Initialisation du calendrier vide
+        console.log('Initialisation du calendrier vide');
+        $('#calendar').fullCalendar({
+            locale: 'fr',
+            height: 'auto', // Ensures the calendar adjusts to show the full month
+            events: [] // Calendrier vide au départ
+        });
+
         // Fonction pour récupérer le fichier iCalendar
         console.log('Début de la récupération du fichier iCalendar');
         loadingIndicator.style.display = 'block'; // Afficher l'indicateur de chargement
@@ -184,7 +193,7 @@
                 console.log('Données iCalendar récupérées avec succès');
                 const events = parseICS(data);
                 console.log('Événements parsés:', events);
-                initializeCalendar(events);
+                updateCalendar(events); // Mettre à jour le calendrier avec les événements
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération du fichier iCal:', error);
@@ -236,20 +245,11 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Fonction pour initialiser le calendrier avec FullCalendar
-        function initializeCalendar(events) {
-            console.log('Initialisation du calendrier avec les événements:', events);
-            $('#calendar').fullCalendar({
-                locale: 'fr',
-                height: 'auto', // Ensures the calendar adjusts to show the full month
-                events: events.map(event => ({
-                    title: event.title,
-                    start: event.start,
-                    end: event.end,
-                    description: event.description
-                }))
-            });
-            console.log('Calendrier initialisé avec succès');
+        // Fonction pour mettre à jour le calendrier avec les événements
+        function updateCalendar(events) {
+            console.log('Mise à jour du calendrier avec les événements:', events);
+            $('#calendar').fullCalendar('addEventSource', events); // Ajouter les événements au calendrier existant
+            console.log('Calendrier mis à jour avec succès');
         }
     </script>
 </body>
