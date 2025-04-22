@@ -523,6 +523,22 @@ section {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Ensure proper alignment on smaller screens */
+}
+
+.fc-toolbar .fc-left {
+    flex: 1; /* Take up space to push the center content */
+    text-align: left; /* Align buttons to the left */
+}
+
+.fc-toolbar .fc-center {
+    flex: 1; /* Center content takes equal space */
+    text-align: center; /* Center the month name */
+}
+
+.fc-toolbar .fc-right {
+    flex: 1; /* Take up space to balance the layout */
+    text-align: right; /* Align any right-side content */
 }
 
 .fc-toolbar h2 {
