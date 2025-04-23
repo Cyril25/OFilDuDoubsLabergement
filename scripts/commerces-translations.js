@@ -2,7 +2,7 @@ const dataTranslations = {
     fr: {
         title: "Commerces du village",
         subtitle: "Tout ce dont vous avez besoin se trouve à proximité",
-        introduction: "Le village de Labergement-Sainte-Marie offre une variété de commerces et services à proximité de notre logement, tels qu'une boulangerie, une épicerie, et des restaurants. Que vous ayez besoin de faire des courses ou de vous restaurer, tout est à portée de main.",
+        introduction: "Le village de Labergement-Sainte-Marie offre une variété de commerces et services à proximité de notre logement, tels qu'une boulangerie, une épicerie, un tabac jeux presse, et un restaurant. Que vous ayez besoin de faire des courses ou de vous restaurer, tout est à portée de main.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Fromagerie réputée pour ses fromages locaux : Comté, Morbier, Cancoillotte, Mont d’or... ainsi qu’un large choix de produits régionaux (fermé le dimanche après-midi et en début d’après-midi).",
         boucherie_paillard_freres: "Boucherie Paillard Frères",
@@ -39,7 +39,7 @@ const dataTranslations = {
     en: {
         title: "Village Shops",
         subtitle: "Everything you need is nearby",
-        introduction: "The village of Labergement-Sainte-Marie offers a variety of shops and services near our accommodation, such as a bakery, a grocery store, and restaurants. Whether you need to shop or dine, everything is within reach.",
+        introduction: "The village of Labergement-Sainte-Marie offers a variety of shops and services near our accommodation, such as a bakery, a grocery store, a tobacco, press, and lottery shop, and a restaurant. Whether you need to shop or dine, everything is within reach.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Cheese dairy renowned for its local cheeses: Comté, Morbier, Cancoillotte, Mont d’Or... as well as a wide selection of regional products (closed Sunday afternoon and early afternoon).",
         boucherie_paillard_freres: "Paillard Frères Butchery",
@@ -76,7 +76,7 @@ const dataTranslations = {
     de: {
         title: "Dorfläden",
         subtitle: "Alles, was Sie brauchen, ist in der Nähe",
-        introduction: "Das Dorf Labergement-Sainte-Marie bietet eine Vielzahl von Geschäften und Dienstleistungen in der Nähe unserer Unterkunft, wie eine Bäckerei, ein Lebensmittelgeschäft und Restaurants. Ob Sie einkaufen oder essen möchten, alles ist in Reichweite.",
+        introduction: "Das Dorf Labergement-Sainte-Marie bietet eine Vielzahl von Geschäften und Dienstleistungen in der Nähe unserer Unterkunft, wie eine Bäckerei, ein Lebensmittelgeschäft, ein Tabak-, Presse- und Lotteriegeschäft sowie ein Restaurant. Ob Sie einkaufen oder essen möchten, alles ist in Reichweite.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Käserei bekannt für ihre lokalen Käsesorten: Comté, Morbier, Cancoillotte, Mont d’Or... sowie eine große Auswahl an regionalen Produkten (geschlossen Sonntagnachmittag und am frühen Nachmittag).",
         boucherie_paillard_freres: "Metzgerei Paillard Frères",
