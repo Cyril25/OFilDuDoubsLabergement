@@ -1,7 +1,7 @@
 const dataTranslations = {
     fr: {
         title: "Commerces du village",
-        subtitle: "Tout ce dont vous avez besoin se trouve au coeur de village",
+        subtitle: "Tout ce dont vous avez besoin se trouve à proximité",
         introduction: "Le village de Labergement-Sainte-Marie offre une variété de commerces et services à proximité de notre logement, tels qu'une boulangerie, une épicerie, et des restaurants. Que vous ayez besoin de faire des courses ou de vous restaurer, tout est à portée de main.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Fromagerie réputée pour ses fromages locaux : Comté, Morbier, Cancoillotte, Mont d’or... ainsi qu’un large choix de produits régionaux (fermé le dimanche après-midi et en début d’après-midi).",
@@ -38,7 +38,7 @@ const dataTranslations = {
     },
     en: {
         title: "Village Shops",
-        subtitle: "Everything you need is in the heart of the village",
+        subtitle: "Everything you need is nearby",
         introduction: "The village of Labergement-Sainte-Marie offers a variety of shops and services near our accommodation, such as a bakery, a grocery store, and restaurants. Whether you need to shop or dine, everything is within reach.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Cheese dairy renowned for its local cheeses: Comté, Morbier, Cancoillotte, Mont d’Or... as well as a wide selection of regional products (closed Sunday afternoon and early afternoon).",
@@ -75,7 +75,7 @@ const dataTranslations = {
     },
     de: {
         title: "Dorfläden",
-        subtitle: "Alles, was Sie brauchen, befindet sich im Herzen des Dorfes",
+        subtitle: "Alles, was Sie brauchen, ist in der Nähe",
         introduction: "Das Dorf Labergement-Sainte-Marie bietet eine Vielzahl von Geschäften und Dienstleistungen in der Nähe unserer Unterkunft, wie eine Bäckerei, ein Lebensmittelgeschäft und Restaurants. Ob Sie einkaufen oder essen möchten, alles ist in Reichweite.",
         fruitiere_des_lacs: "La Fruitière des Lacs",
         fruitiere_des_lacs_desc: "Käserei bekannt für ihre lokalen Käsesorten: Comté, Morbier, Cancoillotte, Mont d’Or... sowie eine große Auswahl an regionalen Produkten (geschlossen Sonntagnachmittag und am frühen Nachmittag).",
