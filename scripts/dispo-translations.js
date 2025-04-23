@@ -2,7 +2,7 @@ const dataTranslations = {
     fr: {
         title: "Tarifs & Disponibilités",
         subtitle: "Toutes les infos utiles pour réserver votre séjour",
-        introduction: "Découvrez nos tarifs et disponibilités pour planifier votre séjour. Nous proposons des options flexibles pour répondre à vos besoins, que ce soit pour un week-end ou une semaine complète. Consultez notre calendrier pour voir les dates disponibles et n'hésitez pas à nous contacter pour toute question.",
+        introduction: "Découvrez nos tarifs et disponibilités pour planifier votre séjour. Nous proposons des options flexibles pour répondre à vos besoins, que ce soit pour un week-end ou une semaine complète. Les séjours sont de deux nuits minimum. Consultez notre calendrier pour voir les dates disponibles et n'hésitez pas à nous contacter pour toute question.",
         intro_text: "Découvrez nos tarifs et disponibilités pour planifier votre séjour.",
         availability_section: "Disponibilités",
         availability_description: "Le calendrier ci-dessous est à jour pour les disponibilités de notre logement.",
@@ -16,7 +16,7 @@ const dataTranslations = {
     en: {
         title: "Rates & Availability",
         subtitle: "All the useful information to book your stay",
-        introduction: "Discover our rates and availability to plan your stay. We offer flexible options to meet your needs, whether for a weekend or a full week. Check our calendar for available dates and feel free to contact us with any questions.",
+        introduction: "Discover our rates and availability to plan your stay. We offer flexible options to meet your needs, whether for a weekend or a full week. Stays are a minimum of two nights. Check our calendar for available dates and feel free to contact us with any questions.",
         intro_text: "Discover our rates and availability to plan your stay.",
         availability_section: "Availability",
         availability_description: "The calendar below is up-to-date for the availability of our accommodation.",
@@ -30,7 +30,7 @@ const dataTranslations = {
     de: {
         title: "Preise & Verfügbarkeit",
         subtitle: "Alle nützlichen Informationen, um Ihren Aufenthalt zu buchen",
-        introduction: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen. Wir bieten flexible Optionen, die Ihren Bedürfnissen entsprechen, sei es für ein Wochenende oder eine ganze Woche. Überprüfen Sie unseren Kalender auf verfügbare Daten und zögern Sie nicht, uns bei Fragen zu kontaktieren.",
+        introduction: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen. Wir bieten flexible Optionen, die Ihren Bedürfnissen entsprechen, sei es für ein Wochenende oder eine ganze Woche. Aufenthalte sind mindestens zwei Nächte. Überprüfen Sie unseren Kalender auf verfügbare Daten und zögern Sie nicht, uns bei Fragen zu kontaktieren.",
         intro_text: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen.",
         availability_section: "Verfügbarkeit",
         availability_description: "Der untenstehende Kalender ist für die Verfügbarkeit unserer Unterkunft aktuell.",
