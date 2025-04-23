@@ -1,7 +1,7 @@
 const dataTranslations = {
     fr: {
         title: "Contact",
-        subtitle: "Nous sommes la pour répondre à vos questions",
+        subtitle: "Nous sommes là pour répondre à vos questions",
         introduction: "Pour toute question ou demande de réservation, contactez nous via le formulaire ci-dessous",
         labelName: "Nom :",
         name: "Votre nom", // Placeholder pour le champ "name"
