@@ -659,3 +659,9 @@ section {
 ul {
     list-style: none; /* Cache les puces des listes */
 }
+
+h3#subtitle, h3#subtitle2 {
+    font-size: 1.5em; /* Même taille que les anciens h2 */
+    font-weight: bold; /* Même poids que les anciens h2 */
+    margin: 0.5em 0; /* Même espacement que les anciens h2 */
+}
