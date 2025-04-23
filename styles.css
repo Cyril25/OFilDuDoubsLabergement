@@ -442,6 +442,9 @@ section {
 
     .room-text h2 {
         font-size: 1.5em; /* Ajuste la taille du titre pour mobile */
+        word-spacing: normal; /* Prevent excessive spacing between words */
+        line-height: 1.2; /* Improve line height for better readability */
+        text-align: center; /* Center-align the title */
     }
 
     .room-text p {
