@@ -26,6 +26,10 @@
     </style>
 </head>
 <body>
+    <div id="cleaning-slots-list">
+        <h2>Créneaux de ménage</h2>
+        <ul id="cleaning-slots"></ul>
+    </div>
     <div id="calendar"></div>
 
     <script>
@@ -86,7 +90,6 @@
 
             // Calculer les créneaux disponibles pour le ménage
             const cleaningSlots = [];
-
             for (let i = 0; i < events.length - 1; i++) {
                 const currentEventEnd = new Date(events[i].end);
                 const nextEventStart = new Date(events[i + 1].start);
@@ -96,12 +99,13 @@
                 nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
 
                 if (currentEventEnd < nextEventStart) {
-                    // Modifier le titre des créneaux de ménage pour inclure les dates de début et de fin
-                    cleaningSlots.push({
+                    const slot = {
                         title: `Ménage entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
-                        end: nextEventStart.toISOString()
-                    });
+                        end: nextEventStart.toISOString(),
+                        displayText: `Ménage le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h`
+                    };
+                    cleaningSlots.push(slot);
                 }
             }
 
@@ -110,7 +114,22 @@
                 events.push(slot);
             });
 
+            // Mettre à jour la liste des créneaux de ménage
+            updateCleaningSlotsList(cleaningSlots);
+
             return cleaningSlots; // Retourner uniquement les créneaux de ménage
+        }
+
+        // Fonction pour mettre à jour la liste des créneaux de ménage
+        function updateCleaningSlotsList(cleaningSlots) {
+            const listElement = document.getElementById('cleaning-slots');
+            listElement.innerHTML = ''; // Réinitialiser la liste
+
+            cleaningSlots.forEach(slot => {
+                const listItem = document.createElement('li');
+                listItem.textContent = slot.displayText;
+                listElement.appendChild(listItem);
+            });
         }
 
         // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
