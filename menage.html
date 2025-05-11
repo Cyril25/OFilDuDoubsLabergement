@@ -96,8 +96,9 @@
                 nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
 
                 if (currentEventEnd < nextEventStart) {
+                    // Modifier le titre des créneaux de ménage pour inclure les dates de début et de fin
                     cleaningSlots.push({
-                        title: `Test`, // Titre temporaire pour les créneaux
+                        title: `Ménage entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString()
                     });
