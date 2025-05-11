@@ -137,6 +137,7 @@
 
                     if (!isOverlapping) {
                         cleaningSlots.push({
+                            title: `Ménage: ${currentEventEnd.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })} - ${nextEventStart.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`,
                             start: currentEventEnd.toISOString(),
                             end: nextEventStart.toISOString()
                         });
