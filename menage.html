@@ -80,20 +80,33 @@
 
                 // Afficher les événements triés dans les logs
                 events.forEach(event => {
-                    console.log(`Date de début: ${event.start}, Date de fin: ${event.end}`);
+                    console.log(`Date d'arrivée des touristes (à 17h): ${event.start}, Date de départ des touristes (à 11h): ${event.end}`);
                 });
             }
 
             // Calculer les créneaux disponibles pour le ménage
-            const cleaningSlots = calculateCleaningSlots(events);
+            const cleaningSlots = [];
 
-            // Ajouter les créneaux de ménage au calendrier
+            for (let i = 0; i < events.length - 1; i++) {
+                const currentEventEnd = new Date(events[i].end);
+                const nextEventStart = new Date(events[i + 1].start);
+
+                // Ajouter les heures spécifiques pour le ménage
+                currentEventEnd.setHours(11, 0, 0, 0); // Départ à 11h
+                nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
+
+                if (currentEventEnd < nextEventStart) {
+                    cleaningSlots.push({
+                        title: `Test`, // Titre temporaire pour les créneaux
+                        start: currentEventEnd.toISOString(),
+                        end: nextEventStart.toISOString()
+                    });
+                }
+            }
+
+            // Ajouter les créneaux disponibles au calendrier
             cleaningSlots.forEach(slot => {
-                events.push({
-                    title: 'Ménage',
-                    start: slot.start,
-                    end: slot.end
-                });
+                events.push(slot);
             });
 
             return events;
@@ -110,42 +123,6 @@
         // Fonction pour mettre à jour le calendrier avec les créneaux de ménage uniquement
         function updateCalendar(cleaningSlots) {
             $('#calendar').fullCalendar('addEventSource', cleaningSlots); // Ajouter uniquement les créneaux de ménage au calendrier
-        }
-
-        // Fonction pour calculer les créneaux disponibles pour le ménage
-        function calculateCleaningSlots(events) {
-            const cleaningSlots = [];
-
-            for (let i = 0; i < events.length - 1; i++) {
-                const currentEventEnd = new Date(events[i].end);
-                const nextEventStart = new Date(events[i + 1].start);
-
-                // Ajouter les heures spécifiques pour le ménage
-                currentEventEnd.setHours(11, 0, 0, 0); // Départ à 11h
-                nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
-
-                if (currentEventEnd < nextEventStart) {
-                    // Vérifier qu'il n'y a pas de chevauchement avec d'autres événements
-                    const isOverlapping = events.some(event => {
-                        const eventStart = new Date(event.start);
-                        const eventEnd = new Date(event.end);
-                        return (
-                            (currentEventEnd >= eventStart && currentEventEnd < eventEnd) ||
-                            (nextEventStart > eventStart && nextEventStart <= eventEnd)
-                        );
-                    });
-
-                    if (!isOverlapping) {
-                        cleaningSlots.push({
-                            title: `Ménage: ${currentEventEnd.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })} - ${nextEventStart.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`,
-                            start: currentEventEnd.toISOString(),
-                            end: nextEventStart.toISOString()
-                        });
-                    }
-                }
-            }
-
-            return cleaningSlots;
         }
     </script>
 </body>
