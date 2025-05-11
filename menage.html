@@ -107,9 +107,9 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Fonction pour mettre à jour le calendrier avec les événements
-        function updateCalendar(events) {
-            $('#calendar').fullCalendar('addEventSource', events); // Ajouter les événements au calendrier existant
+        // Fonction pour mettre à jour le calendrier avec les créneaux de ménage uniquement
+        function updateCalendar(cleaningSlots) {
+            $('#calendar').fullCalendar('addEventSource', cleaningSlots); // Ajouter uniquement les créneaux de ménage au calendrier
         }
 
         // Fonction pour calculer les créneaux disponibles pour le ménage
