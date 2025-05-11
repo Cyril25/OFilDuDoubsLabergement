@@ -125,10 +125,22 @@
                 nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
 
                 if (currentEventEnd < nextEventStart) {
-                    cleaningSlots.push({
-                        start: currentEventEnd.toISOString(),
-                        end: nextEventStart.toISOString()
+                    // Vérifier qu'il n'y a pas de chevauchement avec d'autres événements
+                    const isOverlapping = events.some(event => {
+                        const eventStart = new Date(event.start);
+                        const eventEnd = new Date(event.end);
+                        return (
+                            (currentEventEnd >= eventStart && currentEventEnd < eventEnd) ||
+                            (nextEventStart > eventStart && nextEventStart <= eventEnd)
+                        );
                     });
+
+                    if (!isOverlapping) {
+                        cleaningSlots.push({
+                            start: currentEventEnd.toISOString(),
+                            end: nextEventStart.toISOString()
+                        });
+                    }
                 }
             }
 
