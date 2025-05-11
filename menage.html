@@ -71,6 +71,7 @@
                     if (startDate && endDate) {
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
+                        console.log(`Date de début: ${eventDetails.start}, Date de fin: ${eventDetails.end}`); // Log des dates début et fin
                         events.push(eventDetails);
                     }
                 });
