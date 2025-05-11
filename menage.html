@@ -141,7 +141,7 @@
 
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
-                        title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
+                        title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long' })} ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long' })} ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
                         displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
