@@ -40,18 +40,14 @@
             events: [] // Calendrier vide au départ
         });
 
-        // Fonction pour récupérer le fichier iCalendar
+        // Étape 1 : Récupérer et parser le fichier iCalendar
         fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
-            .then(response => {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve(response.text());
-                    }, 1); // Simuler un délai de x secondes (en msec)
-                });
-            })
+            .then(response => response.text())
             .then(data => {
                 const events = parseICS(data);
-                updateCalendar(events); // Mettre à jour le calendrier avec les événements
+                const cleaningSlots = calculateCleaningSlots(events);
+                updateCalendar(cleaningSlots);
+                updateCleaningSlotsList(cleaningSlots);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération du fichier iCal:', error);
@@ -65,7 +61,6 @@
 
             if (eventsRaw) {
                 eventsRaw.forEach(event => {
-                    const eventDetails = {};
                     const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
                     const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
 
@@ -73,28 +68,28 @@
                     const endDate = event.match(datePatternEnd);
 
                     if (startDate && endDate) {
-                        eventDetails.start = formatDate(startDate[1]) + 'T17:00:00'; // Ajouter l'heure 17h
-                        eventDetails.end = formatDate(endDate[1]) + 'T11:00:00'; // Ajouter l'heure 11h
-                        events.push(eventDetails);
+                        events.push({
+                            start: formatDate(startDate[1]) + 'T17:00:00', // Arrivée à 17h
+                            end: formatDate(endDate[1]) + 'T11:00:00' // Départ à 11h
+                        });
                     }
                 });
 
                 // Trier les événements par date de début
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
-
-                // Afficher les événements triés dans les logs
-                events.forEach(event => {
-                    console.log(`Date d'arrivée des touristes (à 17h): ${event.start}, Date de départ des touristes (à 11h): ${event.end}`);
-                });
             }
 
-            // Calculer les créneaux disponibles pour le ménage
+            return events;
+        }
+
+        // Étape 2 : Calculer les créneaux de ménage
+        function calculateCleaningSlots(events) {
             const cleaningSlots = [];
+
             for (let i = 0; i < events.length - 1; i++) {
                 const currentEventEnd = new Date(events[i].end);
                 const nextEventStart = new Date(events[i + 1].start);
 
-                // Ajouter les heures spécifiques pour le ménage
                 currentEventEnd.setHours(11, 0, 0, 0); // Départ à 11h
                 nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
 
@@ -108,18 +103,15 @@
                 }
             }
 
-            // Ajouter les créneaux disponibles au calendrier
-            cleaningSlots.forEach(slot => {
-                events.push(slot);
-            });
-
-            // Mettre à jour la liste des créneaux de ménage
-            updateCleaningSlotsList(cleaningSlots);
-
-            return cleaningSlots; // Retourner uniquement les créneaux de ménage
+            return cleaningSlots;
         }
 
-        // Fonction pour mettre à jour la liste des créneaux de ménage
+        // Étape 3 : Mettre à jour le calendrier avec les créneaux de ménage
+        function updateCalendar(cleaningSlots) {
+            $('#calendar').fullCalendar('addEventSource', cleaningSlots);
+        }
+
+        // Étape 4 : Mettre à jour la liste des créneaux de ménage
         function updateCleaningSlotsList(cleaningSlots) {
             const listElement = document.getElementById('cleaning-slots');
             if (!listElement) {
@@ -130,22 +122,17 @@
 
             cleaningSlots.forEach(slot => {
                 const listItem = document.createElement('li');
-                // listItem.textContent = slot.displayText; // Masquer temporairement les titres
+                listItem.textContent = slot.displayText;
                 listElement.appendChild(listItem);
             });
         }
 
-        // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
+        // Fonction utilitaire pour formater les dates au format ISO (YYYY-MM-DD)
         function formatDate(dateString) {
             const year = dateString.substring(0, 4);
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
             return `${year}-${month}-${day}`;
-        }
-
-        // Fonction pour mettre à jour le calendrier avec les créneaux de ménage uniquement
-        function updateCalendar(cleaningSlots) {
-            $('#calendar').fullCalendar('addEventSource', cleaningSlots); // Ajouter uniquement les créneaux de ménage au calendrier
         }
     </script>
 </body>
