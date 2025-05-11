@@ -197,9 +197,9 @@
                     // const summary = event.match(summaryPattern);
                     const startDate = event.match(datePatternStart);
                     const endDate = event.match(datePatternEnd);
-                    const description = event.match(descriptionPattern);
+                    // const description = event.match(descriptionPattern);
 
-                    if (summary && startDate && endDate) {
+                    // if (summary && startDate && endDate) {
                         eventDetails.title = 'Indisponible'; // On force le titre à "Indisponible"
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
