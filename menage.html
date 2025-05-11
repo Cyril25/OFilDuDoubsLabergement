@@ -34,6 +34,7 @@
 
     <script>
         // Initialisation du calendrier vide
+        console.log("Étape 0 : Initialisation du calendrier");
         $('#calendar').fullCalendar({
             locale: 'fr',
             height: 'auto',
@@ -41,13 +42,19 @@
         });
 
         // Étape 1 : Récupérer et parser le fichier iCalendar
+        console.log("Étape 1 : Récupération du fichier iCalendar");
         fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
             .then(response => response.text())
             .then(data => {
+                console.log("Étape 1 : Fichier iCalendar récupéré avec succès");
                 const events = parseICS(data);
+                console.log("Étape 1 : Fichier iCalendar parsé avec succès", events);
                 const cleaningSlots = calculateCleaningSlots(events);
+                console.log("Étape 2 : Créneaux de ménage calculés", cleaningSlots);
                 updateCalendar(cleaningSlots);
+                console.log("Étape 3 : Calendrier mis à jour avec les créneaux de ménage");
                 updateCleaningSlotsList(cleaningSlots);
+                console.log("Étape 4 : Liste des créneaux de ménage mise à jour");
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération du fichier iCal:', error);
@@ -55,6 +62,7 @@
 
         // Fonction pour parser le fichier iCalendar (.ics)
         function parseICS(icsData) {
+            console.log("Parsing du fichier iCalendar...");
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
@@ -79,11 +87,13 @@
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
             }
 
+            console.log("Parsing terminé", events);
             return events;
         }
 
         // Étape 2 : Calculer les créneaux de ménage
         function calculateCleaningSlots(events) {
+            console.log("Calcul des créneaux de ménage...");
             const cleaningSlots = [];
 
             for (let i = 0; i < events.length - 1; i++) {
@@ -95,24 +105,28 @@
 
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
-                        title: `Ménage entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
+                        title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
-                        displayText: `Ménage entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
+                        displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
                     });
                 }
             }
 
+            console.log("Créneaux de ménage calculés", cleaningSlots);
             return cleaningSlots;
         }
 
         // Étape 3 : Mettre à jour le calendrier avec les créneaux de ménage
         function updateCalendar(cleaningSlots) {
+            console.log("Mise à jour du calendrier...");
             $('#calendar').fullCalendar('addEventSource', cleaningSlots);
+            console.log("Calendrier mis à jour");
         }
 
         // Étape 4 : Mettre à jour la liste des créneaux de ménage
         function updateCleaningSlotsList(cleaningSlots) {
+            console.log("Mise à jour de la liste des créneaux de ménage...");
             const listElement = document.getElementById('cleaning-slots');
             if (!listElement) {
                 console.error("L'élément avec l'ID 'cleaning-slots' est introuvable dans le DOM.");
@@ -125,6 +139,8 @@
                 listItem.textContent = slot.displayText;
                 listElement.appendChild(listItem);
             });
+
+            console.log("Liste des créneaux de ménage mise à jour");
         }
 
         // Fonction utilitaire pour formater les dates au format ISO (YYYY-MM-DD)
