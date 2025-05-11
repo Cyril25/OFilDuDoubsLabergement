@@ -83,6 +83,19 @@
                     console.log(`Date de début: ${event.start}, Date de fin: ${event.end}`);
                 });
             }
+
+            // Calculer les créneaux disponibles pour le ménage
+            const cleaningSlots = calculateCleaningSlots(events);
+
+            // Ajouter les créneaux de ménage au calendrier
+            cleaningSlots.forEach(slot => {
+                events.push({
+                    title: 'Ménage',
+                    start: slot.start,
+                    end: slot.end
+                });
+            });
+
             return events;
         }
 
@@ -97,6 +110,29 @@
         // Fonction pour mettre à jour le calendrier avec les événements
         function updateCalendar(events) {
             $('#calendar').fullCalendar('addEventSource', events); // Ajouter les événements au calendrier existant
+        }
+
+        // Fonction pour calculer les créneaux disponibles pour le ménage
+        function calculateCleaningSlots(events) {
+            const cleaningSlots = [];
+
+            for (let i = 0; i < events.length - 1; i++) {
+                const currentEventEnd = new Date(events[i].end);
+                const nextEventStart = new Date(events[i + 1].start);
+
+                // Ajouter les heures spécifiques pour le ménage
+                currentEventEnd.setHours(11, 0, 0, 0); // Départ à 11h
+                nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
+
+                if (currentEventEnd < nextEventStart) {
+                    cleaningSlots.push({
+                        start: currentEventEnd.toISOString(),
+                        end: nextEventStart.toISOString()
+                    });
+                }
+            }
+
+            return cleaningSlots;
         }
     </script>
 </body>
