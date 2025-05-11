@@ -30,7 +30,6 @@
 
     <script>
         // Initialisation du calendrier vide
-        console.log('Initialisation du calendrier vide');
         $('#calendar').fullCalendar({
             locale: 'fr',
             height: 'auto',
@@ -38,20 +37,16 @@
         });
 
         // Fonction pour récupérer le fichier iCalendar
-        console.log('Début de la récupération du fichier iCalendar');
         fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
             .then(response => {
                 return new Promise(resolve => {
                     setTimeout(() => {
-                        console.log('Réponse reçue du serveur iCalendar');
                         resolve(response.text());
                     }, 1); // Simuler un délai de x secondes (en msec)
                 });
             })
             .then(data => {
-                console.log('Données iCalendar récupérées avec succès');
                 const events = parseICS(data);
-                console.log('Événements parsés:', events);
                 updateCalendar(events); // Mettre à jour le calendrier avec les événements
             })
             .catch(error => {
@@ -60,44 +55,31 @@
 
         // Fonction pour parser le fichier iCalendar (.ics)
         function parseICS(icsData) {
-            console.log('Début du parsing du fichier iCalendar');
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
 
             if (eventsRaw) {
-                console.log(`${eventsRaw.length} événements trouvés dans le fichier iCalendar`);
                 eventsRaw.forEach(event => {
                     const eventDetails = {};
-                    const summaryPattern = /SUMMARY:(.*)/;
                     const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
                     const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
-                    const descriptionPattern = /DESCRIPTION:(.*)/;
 
-                    const summary = event.match(summaryPattern);
                     const startDate = event.match(datePatternStart);
                     const endDate = event.match(datePatternEnd);
-                    const description = event.match(descriptionPattern);
 
-                    if (summary && startDate && endDate) {
-                        eventDetails.title = 'Indisponible'; // On force le titre à "Indisponible"
+                    if (startDate && endDate) {
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
-                        eventDetails.description = description ? description[1] : 'Pas de description';
-                        console.log('Événement parsé:', eventDetails);
-                        console.log(`Date de début: ${eventDetails.start}, Date de fin: ${eventDetails.end}`);
                         events.push(eventDetails);
                     }
                 });
-            } else {
-                console.log('Aucun événement trouvé dans le fichier iCalendar');
             }
             return events;
         }
 
         // Fonction pour formater les dates au format ISO (YYYY-MM-DD)
         function formatDate(dateString) {
-            console.log('Formatage de la date:', dateString);
             const year = dateString.substring(0, 4);
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
@@ -106,9 +88,7 @@
 
         // Fonction pour mettre à jour le calendrier avec les événements
         function updateCalendar(events) {
-            console.log('Mise à jour du calendrier avec les événements:', events);
             $('#calendar').fullCalendar('addEventSource', events); // Ajouter les événements au calendrier existant
-            console.log('Calendrier mis à jour avec succès');
         }
     </script>
 </body>
