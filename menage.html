@@ -69,8 +69,8 @@
                     const endDate = event.match(datePatternEnd);
 
                     if (startDate && endDate) {
-                        eventDetails.start = formatDate(startDate[1]);
-                        eventDetails.end = formatDate(endDate[1]);
+                        eventDetails.start = formatDate(startDate[1]) + 'T11:00:00'; // Ajouter l'heure 11h
+                        eventDetails.end = formatDate(endDate[1]) + 'T17:00:00'; // Ajouter l'heure 17h
                         events.push(eventDetails);
                     }
                 });
