@@ -23,6 +23,42 @@
             max-width: 900px;
             margin: 40px auto;
         }
+
+        #cleaning-slots-list {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #cleaning-slots-list h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #cleaning-slots {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cleaning-slots li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 5px;
+            color: #0050b3;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+
+        #cleaning-slots li span {
+            font-weight: bold;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -105,7 +141,7 @@
 
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
-                        title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
+                        // title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
                         // displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
@@ -136,7 +172,7 @@
 
             cleaningSlots.forEach(slot => {
                 const listItem = document.createElement('li');
-                listItem.textContent = slot.displayText;
+                listItem.innerHTML = `<span>${slot.title}</span>`;
                 listElement.appendChild(listItem);
             });
 
