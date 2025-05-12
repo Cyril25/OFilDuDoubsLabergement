@@ -208,15 +208,19 @@
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `<span>${slot.title}</span>`;
                 
-                // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
+
+                // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
                 if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
                 }
 
-                // Ajouter la classe 'weekend' si le créneau est uniquement pendant un weekend
-                if (slotStart.getDay() === 6 || slotStart.getDay() === 0) { // 6 = Saturday, 0 = Sunday
+                // Ajouter la classe 'weekend' si le créneau est entièrement entre samedi 11h et dimanche 17h
+                if (
+                    slotStart.getDay() === 6 && slotStart.getHours() >= 11 && // Saturday 11h or later
+                    slotEnd.getDay() === 0 && slotEnd.getHours() <= 17        // Sunday 17h or earlier
+                ) {
                     listItem.classList.add('weekend');
                 }
 
