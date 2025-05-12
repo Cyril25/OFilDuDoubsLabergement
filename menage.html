@@ -214,7 +214,8 @@
                     listItem.classList.add('urgent');
                     listItem.innerHTML = `<span>Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h</span>`;
                 } else {
-                    listItem.innerHTML = `<span>${slot.title}</span>`;
+                    // Modifier le libellé pour les créneaux normaux et weekend
+                    listItem.innerHTML = `<span>Entre ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 11h et ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 17h</span>`;
                 }
 
                 // Ajouter la classe 'weekend' si le créneau est entièrement entre samedi 11h et dimanche 17h
