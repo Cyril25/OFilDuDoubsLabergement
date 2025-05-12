@@ -38,6 +38,20 @@
             color: #333;
         }
 
+        #legend {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #legend span {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
         #cleaning-slots {
             list-style-type: none;
             padding: 0;
@@ -78,6 +92,11 @@
 <body>
     <div id="cleaning-slots-list">
         <h2>Créneaux de ménage</h2>
+        <div id="legend">
+            <p><span style="background-color: #ffcccc; border: 1px solid #ff4d4f; padding: 2px 5px; border-radius: 3px;">Urgent</span> : Ménage à effectuer le même jour.</p>
+            <p><span style="background-color: #f0f0f0; border: 1px solid #d9d9d9; padding: 2px 5px; border-radius: 3px;">Weekend</span> : Créneau pendant un weekend.</p>
+            <p><span style="background-color: #e6f7ff; border: 1px solid #91d5ff; padding: 2px 5px; border-radius: 3px;">Standard</span> : Créneau classique.</p>
+        </div>
         <ul id="cleaning-slots"></ul>
     </div>
     <div id="calendar"></div>
