@@ -115,6 +115,12 @@
             border-color: #ff4d4f !important; /* Rouge */
             color: #fff !important; /* Texte blanc */
         }
+
+        .fc-event.standard-slot {
+            background-color: #e6f7ff !important; /* Couleur standard */
+            border-color: #91d5ff !important; /* Bordure standard */
+            color: #0050b3 !important; /* Texte standard */
+        }
     </style>
 </head>
 <body>
@@ -223,7 +229,7 @@
                 const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
                 return {
                     ...slot,
-                    className: isSameDay ? 'same-day' : '' // Appliquer la classe si nécessaire
+                    className: isSameDay ? 'same-day' : 'standard-slot' // Appliquer la classe 'standard-slot' pour les créneaux standards
                 };
             }));
         }
@@ -254,7 +260,8 @@
                 // Ajouter la classe 'weekend' si le créneau est entièrement entre samedi 11h et dimanche 17h
                 if (
                     slotStart.getDay() === 6 && slotStart.getHours() >= 11 && // Saturday 11h or later
-                    slotEnd.getDay() === 0 && slotEnd.getHours() <= 17        // Sunday 17h or earlier
+                    slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 &&    // Sunday 17h or earlier
+                    slotStart.toDateString() !== slotEnd.toDateString()      // Ensure it's not a single-day slot
                 ) {
                     listItem.classList.add('weekend');
                 }
