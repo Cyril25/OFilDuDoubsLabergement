@@ -109,6 +109,12 @@
         .fc-time {
             display: none; /* Masquer les éléments avec la classe fc-time */
         }
+
+        .fc-event.same-day {
+            background-color: #ff4d4f !important; /* Rouge */
+            border-color: #ff4d4f !important; /* Rouge */
+            color: #fff !important; /* Texte blanc */
+        }
     </style>
 </head>
 <body>
@@ -209,7 +215,17 @@
 
         // Étape 3 : Mettre à jour le calendrier avec les créneaux de ménage
         function updateCalendar(cleaningSlots) {
-            $('#calendar').fullCalendar('addEventSource', cleaningSlots);
+            $('#calendar').fullCalendar('addEventSource', cleaningSlots.map(slot => {
+                const slotStart = new Date(slot.start);
+                const slotEnd = new Date(slot.end);
+
+                // Ajouter une classe 'same-day' si la date de début et de fin sont identiques
+                const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
+                return {
+                    ...slot,
+                    className: isSameDay ? 'same-day' : '' // Appliquer la classe si nécessaire
+                };
+            }));
         }
 
         // Étape 4 : Mettre à jour la liste des créneaux de ménage
