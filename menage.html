@@ -177,6 +177,9 @@
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
+            const today = new Date();
+            const sixMonthsLater = new Date();
+            sixMonthsLater.setMonth(today.getMonth() + 6);
 
             if (eventsRaw) {
                 eventsRaw.forEach(event => {
@@ -187,6 +190,14 @@
                     const endDate = event.match(datePatternEnd);
 
                     if (startDate && endDate) {
+                        const start = new Date(formatDate(startDate[1]));
+                        const end = new Date(formatDate(endDate[1]));
+
+                        // Ignore events outside the 6-month range
+                        if (start > sixMonthsLater || end < today) {
+                            return;
+                        }
+
                         console.log(`Date récupérée : Start - ${startDate[1]}, End - ${endDate[1]}`);
                         events.push({
                             title: '',
