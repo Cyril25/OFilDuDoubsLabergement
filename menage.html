@@ -44,12 +44,23 @@
             color: #555;
         }
 
+        #legend p {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
         #legend span {
             display: inline-block;
             width: 15px;
             height: 15px;
-            margin-right: 5px;
+            margin-right: 10px;
             border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        #legend p span + span {
+            margin-left: 0; /* Ensure no extra spacing between color box and text */
         }
 
         #cleaning-slots {
@@ -93,9 +104,18 @@
     <div id="cleaning-slots-list">
         <h2>Créneaux de ménage</h2>
         <div id="legend">
-            <p><span style="background-color: #ffcccc; border: 1px solid #ff4d4f; padding: 2px 5px; border-radius: 3px;">Urgent</span> : Ménage à effectuer le même jour.</p>
-            <p><span style="background-color: #f0f0f0; border: 1px solid #d9d9d9; padding: 2px 5px; border-radius: 3px;">Weekend</span> : Créneau pendant un weekend.</p>
-            <p><span style="background-color: #e6f7ff; border: 1px solid #91d5ff; padding: 2px 5px; border-radius: 3px;">Standard</span> : Créneau classique.</p>
+            <p>
+                <span style="background-color: #ffcccc; border: 1px solid #ff4d4f;"></span>
+                <span>Urgent : Ménage à effectuer le même jour.</span>
+            </p>
+            <p>
+                <span style="background-color: #f0f0f0; border: 1px solid #d9d9d9;"></span>
+                <span>Weekend : Créneau pendant un weekend.</span>
+            </p>
+            <p>
+                <span style="background-color: #e6f7ff; border: 1px solid #91d5ff;"></span>
+                <span>Standard : Créneau classique.</span>
+            </p>
         </div>
         <ul id="cleaning-slots"></ul>
     </div>
