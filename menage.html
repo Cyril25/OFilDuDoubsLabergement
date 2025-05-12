@@ -59,6 +59,13 @@
             font-weight: bold;
             color: #000;
         }
+
+        #cleaning-slots li.urgent {
+            background-color: #ffcccc; /* Red background */
+            border: 1px solid #ff4d4f; /* Red border */
+            color: #a8071a; /* Dark red text */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -174,6 +181,14 @@
             cleaningSlots.forEach(slot => {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `<span>${slot.title}</span>`;
+                
+                // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
+                const slotStart = new Date(slot.start);
+                const slotEnd = new Date(slot.end);
+                if (slotStart.toDateString() === slotEnd.toDateString()) {
+                    listItem.classList.add('urgent');
+                }
+
                 listElement.appendChild(listItem);
             });
 
