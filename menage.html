@@ -66,6 +66,13 @@
             color: #a8071a; /* Dark red text */
             font-weight: bold;
         }
+
+        #cleaning-slots li.weekend {
+            background-color: #f0f0f0; /* Light gray background */
+            border: 1px solid #d9d9d9; /* Light gray border */
+            color: #8c8c8c; /* Gray text */
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -187,6 +194,11 @@
                 const slotEnd = new Date(slot.end);
                 if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
+                }
+
+                // Ajouter la classe 'weekend' si le créneau est uniquement pendant un weekend
+                if (slotStart.getDay() === 6 || slotStart.getDay() === 0) { // 6 = Saturday, 0 = Sunday
+                    listItem.classList.add('weekend');
                 }
 
                 listElement.appendChild(listItem);
