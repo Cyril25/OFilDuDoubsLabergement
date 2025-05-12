@@ -113,7 +113,7 @@
         <div id="legend">
             <p>
                 <span class="couleur" style="background-color: #ffcccc; border: 1px solid #ff4d4f;"></span>
-                <span class="libelle">Urgent : Ménage à effectuer le même jour.</span>
+                <span class="libelle">Date fixe : Ménage à effectuer le même jour.</span>
             </p>
             <p>
                 <span class="couleur" style="background-color: #f0f0f0; border: 1px solid #d9d9d9;"></span>
@@ -173,7 +173,7 @@
 
                     if (startDate && endDate) {
                         events.push({
-                            title: 'Ménage',
+                            title: '', // Clear the title to avoid displaying labels
                             start: formatDate(startDate[1]) + 'T17:00:00', // Arrivée à 17h
                             end: formatDate(endDate[1]) + 'T11:00:00' // Départ à 11h
                         });
