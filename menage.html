@@ -206,14 +206,15 @@
 
             cleaningSlots.forEach(slot => {
                 const listItem = document.createElement('li');
-                listItem.innerHTML = `<span>${slot.title}</span>`;
-                
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
 
                 // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
                 if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
+                    listItem.innerHTML = `<span>Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h</span>`;
+                } else {
+                    listItem.innerHTML = `<span>${slot.title}</span>`;
                 }
 
                 // Ajouter la classe 'weekend' si le créneau est entièrement entre samedi 11h et dimanche 17h
