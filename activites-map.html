@@ -151,7 +151,7 @@
         </div>
         <!-- Activités -->
     <!-- Lac de Remoray -->
-    <section class="room">
+    <section class="room" data-tags="randonnée nature">
         <div class="room-content">
             <div class="room-text">
                 <h2 id="lac_remoray_title">Lac de Remoray</h2>
@@ -161,7 +161,7 @@
         </div>
     </section>
     <!-- Maison de la Réserve -->
-    <section class="room">
+    <section class="room" data-tags="musée nature">
         <div class="room-content reverse">
             <div class="room-text">
                 <h2 id="maison_reserve_title">La Maison de la Réserve</h2>
@@ -172,7 +172,7 @@
     </section>
 
     <!-- Fonderie de Cloches Obertino -->
-    <section class="room">
+    <section class="room" data-tags="musée">
         <div class="room-content">
             <div class="room-text">
                 <h2 id="fonderie_cloches_title">Fonderie de Cloches Obertino</h2>
@@ -185,7 +185,7 @@
 
 
     <!-- Château de Joux -->
-    <section class="room">
+    <section class="room" data-tags="musée">
         <div class="room-content reverse">
             <div class="room-text">
                 <h2 id="chateau_joux_title">Château de Joux</h2>
@@ -196,7 +196,7 @@
     </section>
 
     <!-- Fort Saint-Antoine -->
-    <section class="room">
+    <section class="room" data-tags="musée">
         <div class="room-content">
             <div class="room-text">
                 <h2 id="fort_saint_antoine_title">Fort Saint-Antoine</h2>
@@ -207,7 +207,7 @@
     </section>
 
     <!-- Station de Métabief -->
-    <section class="room">
+    <section class="room" data-tags="randonnée nature loisirs">
         <div class="room-content reverse">
             <div class="room-text">
                 <h2 id="station_metabief_title">Station de Métabief</h2>
@@ -217,7 +217,7 @@
         </div>
     </section>
 <!-- Source Bleue -->
-<section class="room">
+<section class="room" data-tags="randonnée nature">
     <div class="room-content">
         <div class="room-text">
             <h2 id="source_bleue_title">Source Bleue</h2>
@@ -227,7 +227,7 @@
     </div>
 </section>
 <!-- Accrobranche Métabief -->
-<section class="room">
+<section class="room" data-tags="loisirs nature">
     <div class="room-content reverse">
         <div class="room-text">
             <h2 id="accrobranche_metabief_title">Accrobranche à Métabief</h2>
@@ -238,7 +238,7 @@
 </section>
 
 <!-- Lac Saint-Point -->
-<section class="room">
+<section class="room" data-tags="randonnée nature baignade">
     <div class="room-content">
         <div class="room-text">
             <h2 id="lac_saint_point_title">Lac Saint-Point</h2>
@@ -249,7 +249,7 @@
 </section>
 
 <!-- Distillerie Guy -->
-<section class="room">
+<section class="room" data-tags="musée">
     <div class="room-content reverse">
         <div class="room-text">
             <h2 id="distillerie_guy_title">Distillerie Guy</h2>
@@ -259,7 +259,7 @@
     </div>
 </section>
    <!-- Maison Michaud -->
-   <section class="room">
+   <section class="room" data-tags="musée">
     <div class="room-content">
         <div class="room-text">
             <h2 id="maison_michaud_title">Maison Michaud</h2>
@@ -270,7 +270,7 @@
 </section>
 
 <!-- Mont d'Or -->
-<section class="room">
+<section class="room" data-tags="randonnée nature">
     <div class="room-content reverse">
         <div class="room-text">
             <h2 id="mont_dor_title">Mont d’Or</h2>
@@ -281,7 +281,7 @@
 </section>
 
 <!-- Et plus encore -->
-<section class="room">
+<section class="room" data-tags="autre">
     <div class="room-content">
         <div class="room-text">
             <h2 id="et_plus_encore_title">Et plus encore ...</h2>
@@ -383,6 +383,47 @@
     restaurants.addTo(map);
     randonnees.addTo(map);
 
+    // --- Ajout du filtrage des sections selon les couches cochées ---
+    // Map entre nom de couche et tag
+    const coucheToTag = {
+        "Musées": "musée",
+        "Restaurants": "restaurant",
+        "Randonnées": "randonnée"
+    };
+
+    // Fonction de filtrage
+    function updateSectionsVisibility() {
+        // Récupère les couches cochées
+        const checkedTags = [];
+        document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]').forEach((cb, idx) => {
+            // L'ordre des couches dans le contrôle correspond à l'ordre des couches ajoutées dans L.control.layers
+            if (cb.checked) {
+                const label = cb.parentElement.textContent.trim();
+                if (coucheToTag[label]) checkedTags.push(coucheToTag[label]);
+            }
+        });
+        // Affiche/masque les sections selon les tags
+        document.querySelectorAll('section.room').forEach(section => {
+            const tags = section.getAttribute('data-tags') || '';
+            // Si au moins un tag de la section est dans les tags cochés, on affiche
+            const visible = checkedTags.some(tag => tags.split(' ').includes(tag));
+            section.style.display = (visible || checkedTags.length === 0) ? '' : 'none';
+        });
+    }
+
+    // Attache l'écouteur sur les cases à cocher du contrôle Leaflet
+    function setupSectionFilter() {
+        // Délai pour attendre que le contrôle soit dans le DOM
+        setTimeout(() => {
+            document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', updateSectionsVisibility);
+            });
+            // Appel initial
+            updateSectionsVisibility();
+        }, 500);
+    }
+
+    // Appeler après l'ajout du contrôle Leaflet
     L.control.layers(null, {
       "Musées": musees,
       "Restaurants": restaurants,
@@ -393,6 +434,9 @@
       .addTo(map)
       .bindPopup("<b>Vous êtes ici</b><br>2 impasse Cotti")
       .openPopup();
+
+    // Appel du setup du filtre après le contrôle
+    setupSectionFilter();
     </script>
 </body>
 </html>
