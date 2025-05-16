@@ -38,21 +38,57 @@
         .legend {
             background: white;
             line-height: 1.5em;
-            padding: 10px;
+            padding: 10px 18px 10px 10px;
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 5px;
             display: flex;
             flex-direction: column;
             gap: 5px;
-            max-width: 350px;
+            max-width: 260px;
             margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
+            align-items: flex-start; /* align items to the left */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .legend div {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            width: 100%;
         }
         .legend img {
             width: 16px;
             height: 25px;
             margin-right: 8px;
             vertical-align: middle;
+        }
+        /* Amélioration du contrôle Leaflet pour éviter l'effet "checkbox" trop visible */
+        .leaflet-control-layers-expanded {
+            width: 160px !important;
+            font-size: 14px;
+            background: rgba(255,255,255,0.97);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .leaflet-control-layers-overlays label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+        }
+        .leaflet-control-layers-overlays input[type="checkbox"] {
+            accent-color: #ff7800;
+            width: 15px;
+            height: 15px;
+        }
+        @media (max-width: 600px) {
+            .legend {
+                max-width: 98vw;
+                font-size: 13px;
+            }
+            #map {
+                height: 220px;
+            }
         }
     </style>
 </head>
@@ -64,7 +100,8 @@
         <h2 id="subtitle">Découvrez les lieux incontournables et les activités à proximité</h2>
     </header>
     <main>
-        <!-- Carte interactive et légende -->
+        <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
+        <!-- Carte interactive et légende déplacées ici -->
         <div id="map"></div>
         <div class="legend">
             <div>
@@ -84,7 +121,6 @@
                 Randonnées / Nature / Loisirs
             </div>
         </div>
-        <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
         <!-- Activités -->
     <!-- Lac de Remoray -->
     <section class="room">
