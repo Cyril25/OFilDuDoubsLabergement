@@ -268,8 +268,23 @@
     </footer>
     <!-- Script de la carte -->
     <script>
-    // ... Code repris de map.html ...
-    var map = L.map('map').setView([46.7750, 6.3039], 12);
+    // Initialisation de la carte avec scrollWheelZoom désactivé
+    var map = L.map('map', {
+      scrollWheelZoom: false
+    }).setView([46.7750, 6.3039], 12);
+
+    // Permettre le zoom à la molette seulement avec Ctrl
+    map.getContainer().addEventListener('wheel', function(e) {
+      if (e.ctrlKey) {
+        map.scrollWheelZoom.enable();
+      } else {
+        map.scrollWheelZoom.disable();
+      }
+    });
+
+    map.on('mouseout', function() {
+      map.scrollWheelZoom.disable();
+    });
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors &copy; CartoDB',
