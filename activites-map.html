@@ -60,27 +60,37 @@
             align-items: flex-start;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             z-index: 500;
+            transition: transform 0.2s;
         }
-        .legend div {
-            display: flex;
-            align-items: center;
-            text-align: left;
-            width: 100%;
+        .legend.hide-legend {
+            transform: translateY(120%);
+            pointer-events: none;
+            opacity: 0.2;
         }
-        .legend img {
-            width: 16px;
-            height: 25px;
-            margin-right: 8px;
-            vertical-align: middle;
+        .legend-toggle-btn {
+            display: none;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            z-index: 501;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
         }
-        /* Un seul fond pour le contrôle Leaflet */
+        /* Contrôle Leaflet adapté mobile */
         .leaflet-control-layers-expanded {
-            width: 160px !important;
-            font-size: 14px;
+            width: 140px !important;
+            font-size: 13px;
             background: rgba(255,255,255,0.93);
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             border-radius: 5px;
-            border: none !important; /* Supprimer la bordure */
+            border: none !important;
+            max-height: 160px;
+            overflow-y: auto;
         }
         .leaflet-control-layers {
             background: transparent !important;
@@ -95,6 +105,7 @@
             background: none !important;
             border: none !important;
             box-shadow: none !important;
+            font-size: 13px;
         }
         .leaflet-control-layers-overlays input[type="checkbox"] {
             accent-color: #ff7800;
@@ -107,12 +118,30 @@
             }
         }
         @media (max-width: 600px) {
-            .legend {
-                max-width: 98vw;
-                font-size: 13px;
-            }
             #map {
                 height: 220px;
+            }
+            .legend {
+                max-width: 90vw;
+                font-size: 12px;
+                padding: 7px 10px 7px 7px;
+                gap: 3px;
+            }
+            .legend div {
+                font-size: 12px;
+            }
+            .legend img {
+                width: 13px;
+                height: 20px;
+                margin-right: 6px;
+            }
+            .leaflet-control-layers-expanded {
+                width: 110px !important;
+                font-size: 12px;
+                max-height: 90px;
+            }
+            .legend-toggle-btn {
+                display: block;
             }
         }
     </style>
@@ -126,10 +155,10 @@
     </header>
     <main>
         <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
-        <!-- Carte interactive et légende intégrée sur la carte, largeur section -->
         <div class="map-section">
             <div id="map">
-                <div class="legend">
+                <button class="legend-toggle-btn" aria-label="Afficher/Masquer la légende" onclick="toggleLegend()">Légende</button>
+                <div class="legend" id="map-legend">
                     <div>
                         <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
                         Vous êtes ici
@@ -437,6 +466,12 @@
 
     // Appel du setup du filtre après le contrôle
     setupSectionFilter();
+
+    // Légende masquable sur mobile
+    function toggleLegend() {
+        var legend = document.getElementById('map-legend');
+        legend.classList.toggle('hide-legend');
+    }
     </script>
 </body>
 </html>
