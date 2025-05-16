@@ -28,14 +28,20 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         /* Carte et légende */
+        .map-section {
+            max-width: 900px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0;
+            position: relative;
+        }
         #map {
             width: 100%;
             height: 350px;
-            margin-bottom: 1.5rem;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             position: relative;
             overflow: hidden;
+            margin-bottom: 0;
         }
         .legend {
             position: absolute;
@@ -95,6 +101,11 @@
             width: 15px;
             height: 15px;
         }
+        @media (max-width: 900px) {
+            .map-section {
+                max-width: 98vw;
+            }
+        }
         @media (max-width: 600px) {
             .legend {
                 max-width: 98vw;
@@ -115,24 +126,26 @@
     </header>
     <main>
         <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
-        <!-- Carte interactive et légende intégrée sur la carte -->
-        <div id="map">
-            <div class="legend">
-                <div>
-                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
-                    Vous êtes ici
-                </div>
-                <div>
-                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
-                    Musées
-                </div>
-                <div>
-                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
-                    Restaurants
-                </div>
-                <div>
-                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
-                    Randonnées / Nature / Loisirs
+        <!-- Carte interactive et légende intégrée sur la carte, largeur section -->
+        <div class="map-section">
+            <div id="map">
+                <div class="legend">
+                    <div>
+                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
+                        Vous êtes ici
+                    </div>
+                    <div>
+                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
+                        Musées
+                    </div>
+                    <div>
+                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
+                        Restaurants
+                    </div>
+                    <div>
+                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
+                        Randonnées / Nature / Loisirs
+                    </div>
                 </div>
             </div>
         </div>
