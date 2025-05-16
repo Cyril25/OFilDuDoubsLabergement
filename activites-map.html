@@ -34,9 +34,14 @@
             margin-bottom: 1.5rem;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
         }
         .legend {
-            background: white;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            background: rgba(255,255,255,0.93);
             line-height: 1.5em;
             padding: 10px 18px 10px 10px;
             font-size: 14px;
@@ -46,10 +51,9 @@
             flex-direction: column;
             gap: 5px;
             max-width: 260px;
-            margin-bottom: 1.5rem;
-            margin-top: 0.5rem;
-            align-items: flex-start; /* align items to the left */
+            align-items: flex-start;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            z-index: 500;
         }
         .legend div {
             display: flex;
@@ -63,18 +67,25 @@
             margin-right: 8px;
             vertical-align: middle;
         }
-        /* Amélioration du contrôle Leaflet pour éviter l'effet "checkbox" trop visible */
+        /* Un seul fond pour le contrôle Leaflet */
         .leaflet-control-layers-expanded {
             width: 160px !important;
             font-size: 14px;
-            background: rgba(255,255,255,0.97);
+            background: rgba(255,255,255,0.93);
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .leaflet-control-layers {
+            background: transparent !important;
+            box-shadow: none !important;
         }
         .leaflet-control-layers-overlays label {
             display: flex;
             align-items: center;
             gap: 6px;
             font-weight: normal;
+            background: none !important;
         }
         .leaflet-control-layers-overlays input[type="checkbox"] {
             accent-color: #ff7800;
@@ -101,24 +112,25 @@
     </header>
     <main>
         <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
-        <!-- Carte interactive et légende déplacées ici -->
-        <div id="map"></div>
-        <div class="legend">
-            <div>
-                <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
-                Vous êtes ici
-            </div>
-            <div>
-                <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
-                Musées
-            </div>
-            <div>
-                <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
-                Restaurants
-            </div>
-            <div>
-                <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
-                Randonnées / Nature / Loisirs
+        <!-- Carte interactive et légende intégrée sur la carte -->
+        <div id="map">
+            <div class="legend">
+                <div>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
+                    Vous êtes ici
+                </div>
+                <div>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
+                    Musées
+                </div>
+                <div>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
+                    Restaurants
+                </div>
+                <div>
+                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
+                    Randonnées / Nature / Loisirs
+                </div>
             </div>
         </div>
         <!-- Activités -->
