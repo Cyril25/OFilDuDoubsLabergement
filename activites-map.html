@@ -74,11 +74,12 @@
             background: rgba(255,255,255,0.93);
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: none !important; /* Supprimer la bordure */
         }
         .leaflet-control-layers {
             background: transparent !important;
             box-shadow: none !important;
+            border: none !important;
         }
         .leaflet-control-layers-overlays label {
             display: flex;
@@ -86,6 +87,8 @@
             gap: 6px;
             font-weight: normal;
             background: none !important;
+            border: none !important;
+            box-shadow: none !important;
         }
         .leaflet-control-layers-overlays input[type="checkbox"] {
             accent-color: #ff7800;
