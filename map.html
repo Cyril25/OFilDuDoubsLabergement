@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carte interactive du Doubs</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #map { height: 90vh; width: 100%; }
+    body { font-family: Arial, sans-serif; margin: 0; }
+    h2 { text-align: center; padding: 1rem; background: #f2f2f2; margin: 0; }
+    .leaflet-control-layers-expanded { width: 200px; }
+    .legend {
+      background: white;
+      line-height: 1.5em;
+      padding: 10px;
+      font-size: 14px;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 1000;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column; /* Align items vertically */
+      gap: 5px; /* Add spacing between items */
+    }
+    .legend img {
+      width: 16px;
+      height: 25px;
+      float: left;
+      margin-right: 8px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .legend .blue { filter: hue-rotate(200deg); }
+    .legend .red { filter: hue-rotate(0deg); }
+    .legend .green { filter: hue-rotate(100deg); }
+    .legend .orange { filter: hue-rotate(45deg); }
+
+    .icon-blue img.leaflet-marker-icon { filter: hue-rotate(200deg) !important; }
+    .icon-red img.leaflet-marker-icon { filter: hue-rotate(0deg) !important; }
+    .icon-green img.leaflet-marker-icon { filter: hue-rotate(100deg) !important; }
+    .icon-orange img.leaflet-marker-icon { filter: hue-rotate(45deg) !important; }
+  </style>
+</head>
+<body>
+  <h2>Carte interactive du Doubs</h2>
+  <div id="map"></div>
+  <div class="legend">
+    <div>
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
+      Vous êtes ici
+    </div>
+    <div>
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
+      Musées
+    </div>
+    <div>
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
+      Restaurants
+    </div>
+    <div>
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
+      Randonnées / Nature / Loisirs
+    </div>
+  </div>
+  <script>
+    var map = L.map('map').setView([46.7750, 6.3039], 12);
+
+    // Fond de carte moderne
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CartoDB',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Limite département Doubs
+    fetch('https://france-geojson.gregoiredavid.fr/departements.geojson')
+      .then(res => res.json())
+      .then(data => {
+        var doubs = {
+          "type": "FeatureCollection",
+          "features": data.features.filter(f => f.properties.code === "25")
+        };
+        L.geoJSON(doubs, {
+          style: { color: "#ff7800", weight: 2, opacity: 0.6 }
+        }).addTo(map);
+      });
+
+    // Définition des groupes
+    var musees = L.layerGroup();
+    var restaurants = L.layerGroup();
+    var randonnees = L.layerGroup();
+
+    // Fonction pour icône colorée avec URLs spécifiques
+    function coloredIcon(hueClass) {
+      const iconUrls = {
+        blue: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        red: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        green: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        orange: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png'
+      };
+
+      return new L.Icon({
+        iconUrl: iconUrls[hueClass], // Utilise l'URL spécifique à la couleur
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+    }
+
+    // Fonction pour ajouter un marqueur
+    function addMarker(lat, lng, label, group, hueClass) {
+      L.marker([lat, lng], { icon: coloredIcon(hueClass) })
+        .bindPopup("<b>" + label + "</b>")
+        .addTo(group);
+    }
+
+    // Musées
+    addMarker(47.2417, 6.0241, "Musée des Beaux-Arts", musees, 'red');
+    addMarker(46.8281, 6.3656, "Maison Michaud", musees, 'red');
+    addMarker(46.9017, 6.3544, "Distillerie Guy", musees, 'red');
+    addMarker(46.9504, 6.3281, "Château de Joux", musees, 'red');
+    addMarker(46.8275, 6.3289, "Fonderie Obertino", musees, 'red');
+    addMarker(46.7783, 6.3047, "Maison de la Réserve", musees, 'red');
+
+    // Restaurants
+    addMarker(46.9047, 6.3527, "Restaurant La Table", restaurants, 'green');
+
+    // Randonnées / Nature / Loisirs
+    addMarker(46.7733, 6.3550, "Mont d'Or", randonnees, 'orange');
+    addMarker(46.7981, 6.3325, "Lac Saint-Point", randonnees, 'orange');
+    addMarker(46.8009, 6.3464, "Accrobranche Métabief", randonnees, 'orange');
+    addMarker(46.7814, 6.3292, "Source Bleue", randonnees, 'orange');
+    addMarker(46.8022, 6.3486, "Station de Métabief", randonnees, 'orange');
+    addMarker(46.9253, 6.3422, "Fort de Saint-Antoine", randonnees, 'orange');
+    addMarker(46.7692, 6.2906, "Lac de Remoray", randonnees, 'orange');
+
+    // Ajout à la carte
+    musees.addTo(map);
+    restaurants.addTo(map);
+    randonnees.addTo(map);
+
+    // Couches visibles par défaut
+    L.control.layers(null, {
+      "Musées": musees,
+      "Restaurants": restaurants,
+      "Randonnées": randonnees
+    }, { collapsed: false }).addTo(map);
+
+    // Point "Vous êtes ici"
+    L.marker([46.77714, 6.30068], { icon: coloredIcon('blue') })
+      .addTo(map)
+      .bindPopup("<b>Vous êtes ici</b><br>2 impasse Cotti")
+      .openPopup();
+  </script>
+</body>
+</html>
