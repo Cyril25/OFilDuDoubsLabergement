@@ -264,10 +264,10 @@
 
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
-                        //title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long' })} ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long' })} ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
+                        title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long' })} ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long' })} ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
-                        // displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
+                        displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
                     });
                 }
             }
@@ -303,13 +303,22 @@
             }
             listElement.innerHTML = ''; // Réinitialiser la liste
 
-            cleaningSlots.forEach(slot => {
+            cleaningSlots.forEach((slot, idx) => {
                 const listItem = document.createElement('li');
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
+                const now = new Date();
 
+                // Cas spécial : premier créneau, commence dans le passé ou maintenant
+                if (
+                    idx === 0 &&
+                    slotStart <= now
+                ) {
+                    // Pas de classe 'urgent' ici, car ce n'est pas forcément un créneau sur une seule journée
+                    listItem.innerHTML = `<span>Entre maintenant et le ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à ${slotEnd.getHours().toString().padStart(2, '0')}h</span>`;
+                }
                 // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
-                if (slotStart.toDateString() === slotEnd.toDateString()) {
+                else if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
                     listItem.innerHTML = `<span>Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h</span>`;
                 } else {
