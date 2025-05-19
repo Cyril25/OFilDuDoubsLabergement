@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Ajout Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Ajout Leaflet Tag Filter Button CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.4.0/src/easy-button.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-tag-filter-button@0.2.1/src/leaflet-tag-filter-button.css" />
     <script src="scripts/menu-translations.js"></script>
     <script src="scripts/activites-translations.js"></script> <!-- Attention à modifier pour chaque page -->
     <script src="scripts/applyTranslations.js"></script>
@@ -176,27 +179,7 @@
     <main>
         <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
         <div class="map-section">
-            <div id="map">
-                <button class="legend-toggle-btn" aria-label="Afficher/Masquer la légende" onclick="toggleLegend()">Légende</button>
-                <div class="legend" id="map-legend">
-                    <div>
-                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" alt="Vous êtes ici">
-                        Vous êtes ici
-                    </div>
-                    <div>
-                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png" alt="Musées">
-                        Musées
-                    </div>
-                    <div>
-                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="Restaurants">
-                        Restaurants
-                    </div>
-                    <div>
-                        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png" alt="Randonnées / Nature / Loisirs">
-                        Randonnées / Nature / Loisirs
-                    </div>
-                </div>
-            </div>
+            <div id="map"></div>
         </div>
         <!-- Activités -->
     <!-- Lac de Remoray -->
@@ -344,6 +327,9 @@
         <p>© O'Fil du Doubs - Tous droits réservés</p>
     </footer>
     <!-- Script de la carte -->
+    <!-- Ajout Leaflet Tag Filter Button JS -->
+    <script src="https://unpkg.com/leaflet-easybutton@2.4.0/src/easy-button.js"></script>
+    <script src="https://unpkg.com/leaflet-tag-filter-button@0.2.1/src/leaflet-tag-filter-button.js"></script>
     <script>
     // Initialisation de la carte avec scrollWheelZoom désactivé
     var map = L.map('map', {
@@ -381,10 +367,8 @@
         }).addTo(map);
       });
 
-    var musees = L.layerGroup();
-    var restaurants = L.layerGroup();
-    var randonnees = L.layerGroup();
-
+    // Ajout des marqueurs avec tags
+    var allMarkers = [];
     function coloredIcon(hueClass) {
       const iconUrls = {
         blue: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -401,97 +385,66 @@
         shadowSize: [41, 41]
       });
     }
-
-    function addMarker(lat, lng, label, group, hueClass) {
-      L.marker([lat, lng], { icon: coloredIcon(hueClass) })
-        .bindPopup("<b>" + label + "</b>")
-        .addTo(group);
+    function addTaggedMarker(lat, lng, label, tags, hueClass) {
+      var marker = L.marker([lat, lng], { icon: coloredIcon(hueClass), tags: tags });
+      marker.bindPopup("<b>" + label + "</b>");
+      marker.addTo(map);
+      allMarkers.push(marker);
     }
-
     // Musées
-    addMarker(47.2417, 6.0241, "Musée des Beaux-Arts", musees, 'red');
-    addMarker(46.8281, 6.3656, "Maison Michaud", musees, 'red');
-    addMarker(46.9017, 6.3544, "Distillerie Guy", musees, 'red');
-    addMarker(46.9504, 6.3281, "Château de Joux", musees, 'red');
-    addMarker(46.8275, 6.3289, "Fonderie Obertino", musees, 'red');
-    addMarker(46.7783, 6.3047, "Maison de la Réserve", musees, 'red');
-
+    addTaggedMarker(47.2417, 6.0241, "Musée des Beaux-Arts", ['musée'], 'red');
+    addTaggedMarker(46.8281, 6.3656, "Maison Michaud", ['musée'], 'red');
+    addTaggedMarker(46.9017, 6.3544, "Distillerie Guy", ['musée'], 'red');
+    addTaggedMarker(46.9504, 6.3281, "Château de Joux", ['musée'], 'red');
+    addTaggedMarker(46.8275, 6.3289, "Fonderie Obertino", ['musée'], 'red');
+    addTaggedMarker(46.7783, 6.3047, "Maison de la Réserve", ['musée'], 'red');
     // Restaurants
-    addMarker(46.9047, 6.3527, "Restaurant La Table", restaurants, 'green');
-
+    addTaggedMarker(46.9047, 6.3527, "Restaurant La Table", ['restaurant'], 'green');
     // Randonnées / Nature / Loisirs
-    addMarker(46.7733, 6.3550, "Mont d'Or", randonnees, 'orange');
-    addMarker(46.7981, 6.3325, "Lac Saint-Point", randonnees, 'orange');
-    addMarker(46.8009, 6.3464, "Accrobranche Métabief", randonnees, 'orange');
-    addMarker(46.7814, 6.3292, "Source Bleue", randonnees, 'orange');
-    addMarker(46.8022, 6.3486, "Station de Métabief", randonnees, 'orange');
-    addMarker(46.9253, 6.3422, "Fort de Saint-Antoine", randonnees, 'orange');
-    addMarker(46.7692, 6.2906, "Lac de Remoray", randonnees, 'orange');
+    addTaggedMarker(46.7733, 6.3550, "Mont d'Or", ['randonnée', 'nature'], 'orange');
+    addTaggedMarker(46.7981, 6.3325, "Lac Saint-Point", ['randonnée', 'nature'], 'orange');
+    addTaggedMarker(46.8009, 6.3464, "Accrobranche Métabief", ['loisirs', 'nature'], 'orange');
+    addTaggedMarker(46.7814, 6.3292, "Source Bleue", ['randonnée', 'nature'], 'orange');
+    addTaggedMarker(46.8022, 6.3486, "Station de Métabief", ['randonnée', 'nature', 'loisirs'], 'orange');
+    addTaggedMarker(46.9253, 6.3422, "Fort de Saint-Antoine", ['randonnée', 'nature'], 'orange');
+    addTaggedMarker(46.7692, 6.2906, "Lac de Remoray", ['randonnée', 'nature'], 'orange');
+    // Point "Vous êtes ici"
+    addTaggedMarker(46.77714, 6.30068, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'blue');
 
-    musees.addTo(map);
-    restaurants.addTo(map);
-    randonnees.addTo(map);
+    // Liste des tags à filtrer
+    var tags = [
+      { tag: 'musée', name: 'Musées' },
+      { tag: 'restaurant', name: 'Restaurants' },
+      { tag: 'randonnée', name: 'Randonnées' },
+      { tag: 'nature', name: 'Nature' },
+      { tag: 'loisirs', name: 'Loisirs' },
+      { tag: 'vous', name: 'Vous êtes ici' }
+    ];
 
-    // --- Ajout du filtrage des sections selon les couches cochées ---
-    // Map entre nom de couche et tag
-    const coucheToTag = {
-        "Musées": "musée",
-        "Restaurants": "restaurant",
-        "Randonnées": "randonnée"
-    };
+    // Ajout du contrôle de filtre par tags
+    L.control.tagFilterButton({
+      data: tags.map(t => t.tag),
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#333" d="M3 5h18v2H3V5m2 4h14v2H5V9m4 4h6v2H9v-2z"/></svg>',
+      filterOnEveryClick: true,
+      clearText: "Tout afficher",
+      filterSelected: [],
+      tagText: function(tag) {
+        var found = tags.find(t => t.tag === tag);
+        return found ? found.name : tag;
+      }
+    }).addTo(map);
 
-    // Fonction de filtrage
-    function updateSectionsVisibility() {
-        // Récupère les couches cochées
-        const checkedTags = [];
-        document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]').forEach((cb, idx) => {
-            // L'ordre des couches dans le contrôle correspond à l'ordre des couches ajoutées dans L.control.layers
-            if (cb.checked) {
-                const label = cb.parentElement.textContent.trim();
-                if (coucheToTag[label]) checkedTags.push(coucheToTag[label]);
-            }
-        });
-        // Affiche/masque les sections selon les tags
-        document.querySelectorAll('section.room').forEach(section => {
-            const tags = section.getAttribute('data-tags') || '';
-            // Si au moins un tag de la section est dans les tags cochés, on affiche
-            const visible = checkedTags.some(tag => tags.split(' ').includes(tag));
-            section.style.display = (visible || checkedTags.length === 0) ? '' : 'none';
-        });
-    }
-
-    // Attache l'écouteur sur les cases à cocher du contrôle Leaflet
-    function setupSectionFilter() {
-        // Délai pour attendre que le contrôle soit dans le DOM
-        setTimeout(() => {
-            document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]').forEach(cb => {
-                cb.addEventListener('change', updateSectionsVisibility);
-            });
-            // Appel initial
-            updateSectionsVisibility();
-        }, 500);
-    }
-
-    // Appeler après l'ajout du contrôle Leaflet
-    L.control.layers(null, {
-      "Musées": musees,
-      "Restaurants": restaurants,
-      "Randonnées": randonnees
-    }, { collapsed: false }).addTo(map);
-
-    L.marker([46.77714, 6.30068], { icon: coloredIcon('blue') })
-      .addTo(map)
-      .bindPopup("<b>Vous êtes ici</b><br>2 impasse Cotti")
-      .openPopup();
-
-    // Appel du setup du filtre après le contrôle
-    setupSectionFilter();
-
-    // Légende masquable sur mobile
-    function toggleLegend() {
-        var legend = document.getElementById('map-legend');
-        legend.classList.toggle('hide-legend');
-    }
+    // Désactiver le zoom molette par défaut
+    map.getContainer().addEventListener('wheel', function(e) {
+      if (e.ctrlKey) {
+        map.scrollWheelZoom.enable();
+      } else {
+        map.scrollWheelZoom.disable();
+      }
+    });
+    map.on('mouseout', function() {
+      map.scrollWheelZoom.disable();
+    });
     </script>
 </body>
 </html>
