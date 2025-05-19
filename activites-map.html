@@ -418,6 +418,10 @@
       { tag: 'vous', name: 'Vous êtes ici' }
     ];
 
+    // Workaround: Attach tagFilterButton to L.control if available globally
+    if (window.LTagFilterButton && !L.control.tagFilterButton) {
+      L.control.tagFilterButton = window.LTagFilterButton;
+    }
     // Debug: Check if tagFilterButton is loaded
     if (!L.control.tagFilterButton) {
       console.error('leaflet-tag-filter-button plugin is NOT loaded or not compatible!');
