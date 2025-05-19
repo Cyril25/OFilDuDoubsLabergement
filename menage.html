@@ -215,6 +215,25 @@
 
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
+                // Vérification : si le logement est libre avant la première réservation
+                if (events.length > 0) {
+                    const first = events[0];
+                    const now = new Date();
+                    const firstStart = new Date(first.start);
+                    if (now < firstStart) {
+                        // Ajoute un créneau de ménage entre maintenant et la première arrivée
+                        // On force l'heure de début à maintenant, l'heure de fin à 17h du jour d'arrivée
+                        const cleaningSlot = {
+                            start: now.toISOString(),
+                            end: firstStart.toISOString(),
+                            _info: "créneau avant première réservation"
+                        };
+                        // On stocke ce créneau dans une propriété spéciale pour l'utiliser dans calculateCleaningSlots
+                        events._preFirstCleaningSlot = cleaningSlot;
+                        console.log("Ajout d'un créneau de ménage avant la première réservation :", cleaningSlot);
+                    }
+                }
+
                 // Affiche les événements triés au format demandé
                 events.forEach(ev => {
                     console.log(`Date récupérée : Start - ${ev._startRaw}, End - ${ev._endRaw}`);
@@ -229,6 +248,11 @@
         // Étape 2 : Calculer les créneaux de ménage
         function calculateCleaningSlots(events) {
             const cleaningSlots = [];
+
+            // Ajout du créneau avant la première réservation si besoin
+            if (events._preFirstCleaningSlot) {
+                cleaningSlots.push(events._preFirstCleaningSlot);
+            }
 
             for (let i = 0; i < events.length - 1; i++) {
                 const currentEventEnd = new Date(events[i].end);
