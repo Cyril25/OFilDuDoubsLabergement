@@ -61,6 +61,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             z-index: 500;
             transition: transform 0.2s;
+            padding-bottom: 38px; /* Ajout d'espace pour le bouton "Légende" */
         }
         .legend.hide-legend {
             transform: translateY(120%);
@@ -112,6 +113,9 @@
             width: 15px;
             height: 15px;
         }
+        .leaflet-control-attribution {
+            display: none !important;
+        }
         @media (max-width: 900px) {
             .map-section {
                 max-width: 98vw;
@@ -126,6 +130,7 @@
                 font-size: 12px;
                 padding: 7px 10px 7px 7px;
                 gap: 3px;
+                padding-bottom: 38px; /* Même espace sur mobile */
             }
             .legend div {
                 font-size: 12px;
