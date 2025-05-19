@@ -226,6 +226,8 @@
                         const cleaningSlot = {
                             start: now.toISOString(),
                             end: firstStart.toISOString(),
+                            title: "Créneau ménage",
+                            displayText:"Créneau ménage",
                             _info: "créneau avant première réservation"
                         };
                         // On stocke ce créneau dans une propriété spéciale pour l'utiliser dans calculateCleaningSlots
@@ -265,10 +267,10 @@
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
                         //title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long' })} ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long' })} ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
-                        title : `Créneau de ménage`,
+                        title : `Créneau ménage`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
-                        displayText : `Créneau de ménage`,
+                        displayText : `Créneau ménage`,
                         //displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
                     });
                 }
