@@ -1,4 +1,11 @@
 /*! leaflet-tag-filter-button.min.css v0.2.1 | MIT License | github.com/trek/leaflet-tag-filter-button */
-/* Minified plugin CSS would be here. For brevity, this is a placeholder. */
-/* In production, use the actual minified CSS from the official repo or CDN. */
-/* https://github.com/trek/leaflet-tag-filter-button */
+.leaflet-control-tagfilter{box-shadow:0 2px 8px rgba(0,0,0,.08);background:#fff;border-radius:5px;overflow:visible;}
+.leaflet-control-tagfilter-button{display:flex;align-items:center;justify-content:center;width:34px;height:34px;cursor:pointer;user-select:none;transition:background .2s;border-radius:5px 5px 0 0;}
+.leaflet-control-tagfilter-button:hover{background:#f5f5f5;}
+.leaflet-control-tagfilter-panel{position:absolute;top:34px;left:0;z-index:1000;background:#fff;border-radius:0 0 5px 5px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px 12px 8px 12px;min-width:120px;min-height:30px;}
+.leaflet-control-tagfilter-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.leaflet-control-tagfilter-list label{font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.leaflet-control-tagfilter-list input[type=checkbox]{margin-right:4px;accent-color:#ff7800;width:16px;height:16px;}
+.leaflet-control-tagfilter-clear{display:block;width:100%;background:#ff7800;color:#fff;border:none;border-radius:3px;padding:4px 0;font-size:13px;cursor:pointer;transition:background .2s;}
+.leaflet-control-tagfilter-clear:hover{background:#e06d00;}
+@media (max-width:600px){.leaflet-control-tagfilter-panel{min-width:90px;padding:7px 7px 7px 7px;}}
