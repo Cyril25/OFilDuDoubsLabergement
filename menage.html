@@ -258,8 +258,9 @@
                 const currentEventEnd = new Date(events[i].end);
                 const nextEventStart = new Date(events[i + 1].start);
 
-                currentEventEnd.setHours(11, 0, 0, 0); // Départ à 11h
-                nextEventStart.setHours(17, 0, 0, 0); // Arrivée à 17h
+                // Ne pas modifier les heures ici, elles sont déjà définies lors du parsing
+                // currentEventEnd.setHours(11, 0, 0, 0); // À NE PAS FAIRE
+                // nextEventStart.setHours(17, 0, 0, 0); // À NE PAS FAIRE
 
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
