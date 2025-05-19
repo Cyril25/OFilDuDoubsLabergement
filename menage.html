@@ -189,6 +189,9 @@
                     const startDate = event.match(datePatternStart);
                     const endDate = event.match(datePatternEnd);
 
+                    // Récupérer toutes les lignes brutes de l'événement
+                    const rawLines = event.split(/\r?\n/).filter(l => l.trim() !== '');
+
                     if (startDate && endDate) {
                         const start = new Date(formatDate(startDate[1]));
                         const end = new Date(formatDate(endDate[1]));
@@ -198,8 +201,11 @@
                             return;
                         }
 
-                        console.log(`Date récupérée : Start - ${startDate[1]}, End - ${endDate[1]}`);
+                        // On loguera après le tri
                         events.push({
+                            _startRaw: startDate[1],
+                            _endRaw: endDate[1],
+                            _raw: rawLines,
                             title: '',
                             start: formatDate(startDate[1]) + 'T17:00:00',
                             end: formatDate(endDate[1]) + 'T11:00:00'
@@ -208,6 +214,13 @@
                 });
 
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+                // Affiche les événements triés au format demandé
+                events.forEach(ev => {
+                    console.log(`Date récupérée : Start - ${ev._startRaw}, End - ${ev._endRaw}`);
+                    console.log("Raw event data:", ev._raw);
+                });
+                console.log("Evénements triés :", events);
             }
 
             return events;
