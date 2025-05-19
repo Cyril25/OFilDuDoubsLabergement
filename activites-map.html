@@ -568,8 +568,12 @@
         var visible = sectionTags.includes('vous') || sectionTags.some(t => selected.includes(t));
         section.style.display = visible ? '' : 'none';
       });
-      // Affichage résumé
-      var label = selected.length === tags.length ? 'Tous' : selected.map(t => (tags.find(x => x.tag === t)||{}).name||t).join(', ');
+      // Affichage résumé simplifié
+      var label = '';
+      if (selected.length === 0) label = 'Aucun';
+      else if (selected.length === tags.length) label = 'Tous';
+      else if (selected.length === 1) label = '1 coché';
+      else label = selected.length + ' cochés';
       document.getElementById('custom-filter-selected').textContent = label;
     }
     // Initialiser le résumé
