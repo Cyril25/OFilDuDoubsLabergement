@@ -503,14 +503,13 @@
     // Point "Vous êtes ici"
     addTaggedMarker(46.77714, 6.30068, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'blue');
 
-    // Liste des tags à filtrer
+    // Liste des tags à filtrer (sans 'vous')
     var tags = [
       { tag: 'musée', name: 'Musées' },
       { tag: 'restaurant', name: 'Restaurants' },
       { tag: 'randonnée', name: 'Randonnées' },
       { tag: 'nature', name: 'Nature' },
-      { tag: 'loisirs', name: 'Loisirs' },
-      { tag: 'vous', name: 'Vous êtes ici' }
+      { tag: 'loisirs', name: 'Loisirs' }
     ];
 
     // --- FILTRE PERSONNALISÉ ---
@@ -554,7 +553,8 @@
       // Marqueurs sur la carte
       allMarkers.forEach(marker => {
         var markerTags = marker.options.tags || [];
-        var visible = markerTags.some(t => selected.includes(t));
+        // Toujours afficher les marqueurs 'vous'
+        var visible = markerTags.includes('vous') || markerTags.some(t => selected.includes(t));
         if (visible) {
           if (!map.hasLayer(marker)) marker.addTo(map);
         } else {
@@ -564,7 +564,8 @@
       // Sections sous la carte
       document.querySelectorAll('section.room').forEach(section => {
         var sectionTags = (section.getAttribute('data-tags')||'').split(/\s+/);
-        var visible = sectionTags.some(t => selected.includes(t));
+        // Toujours afficher les sections 'vous' (si jamais il y en a)
+        var visible = sectionTags.includes('vous') || sectionTags.some(t => selected.includes(t));
         section.style.display = visible ? '' : 'none';
       });
       // Affichage résumé
@@ -573,6 +574,12 @@
     }
     // Initialiser le résumé
     applyCustomFilter();
+
+    // Afficher le popup du marqueur "Vous êtes ici" à l'arrivée sur la page
+setTimeout(function() {
+  var marker = allMarkers.find(m => (m.options.tags||[]).includes('vous'));
+  if (marker) marker.openPopup();
+}, 500);
     </script>
 </body>
 </html>
