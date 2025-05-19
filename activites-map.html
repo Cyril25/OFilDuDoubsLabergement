@@ -465,6 +465,27 @@
       }).addTo(map);
     }
 
+    // Ajout du contrôle de filtre par tags SOUS le contrôle de zoom
+    var zoomControl = map.zoomControl;
+    var tagFilter = L.control.tagFilterButton({
+      data: tags.map(t => t.tag),
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#333" d="M3 5h18v2H3V5m2 4h14v2H5V9m4 4h6v2H9v-2z"/></svg>',
+      filterOnEveryClick: true,
+      clearText: "Tout afficher",
+      filterSelected: [],
+      tagText: function(tag) {
+        var found = tags.find(t => t.tag === tag);
+        return found ? found.name : tag;
+      }
+    });
+    tagFilter.addTo(map);
+    // Place le contrôle sous le zoom
+    var tagFilterEl = document.querySelector('.leaflet-control-tagfilter.leaflet-bar');
+    var zoomEl = document.querySelector('.leaflet-control-zoom.leaflet-bar');
+    if (zoomEl && tagFilterEl && zoomEl.parentNode) {
+      zoomEl.parentNode.insertBefore(tagFilterEl, zoomEl.nextSibling);
+    }
+
     // Désactiver le zoom molette par défaut
     map.getContainer().addEventListener('wheel', function(e) {
       if (e.ctrlKey) {
