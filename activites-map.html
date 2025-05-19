@@ -191,6 +191,65 @@
           transform: scale(1.2);
           transition: 0s;
         }
+        #custom-filter-bar {
+  max-width: 900px;
+  margin: 0 auto 0.5rem auto;
+  background: #fff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px 18px;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+#custom-filter-bar:hover {
+  background: #f5f5f5;
+}
+#custom-filter-panel {
+  max-width: 900px;
+  margin: 0 auto 1rem auto;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 12px 18px 10px 18px;
+  font-size: 16px;
+  z-index: 1001;
+  position: relative;
+}
+#custom-filter-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+#custom-filter-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#custom-filter-checkboxes input[type="checkbox"] {
+  accent-color: #ff7800;
+  width: 18px;
+  height: 18px;
+}
+#custom-filter-all, #custom-filter-none {
+  background: #ff7800;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#custom-filter-all:hover, #custom-filter-none:hover {
+  background: #e06d00;
+}
     </style>
 </head>
 <body>
@@ -202,6 +261,18 @@
     </header>
     <main>
         <p id="introduction" class="intro-text">Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Depuis le logement, partez à la découverte d'une sélection d’activités accessibles en quelques minutes seulement : balades paisibles, sites culturels, visites gourmandes ou expériences insolites. En couple, en famille ou entre amis, chaque sortie promet un moment privilégié, au cœur d’un territoire authentique, généreux et accueillant. Voici une courte sélection d'activités se trouvant entre 2 et 20 minutes de notre logement maximum.</p>
+        <!-- Barre de filtres personnalisée -->
+<div id="custom-filter-bar">
+  <span id="custom-filter-label">Filtres</span>
+  <span id="custom-filter-selected"></span>
+</div>
+<div id="custom-filter-panel" style="display:none;">
+  <div id="custom-filter-checkboxes"></div>
+  <div style="margin-top:10px;display:flex;gap:10px;">
+    <button id="custom-filter-all">Tout cocher</button>
+    <button id="custom-filter-none">Tout décocher</button>
+  </div>
+</div>
         <div class="map-section">
             <div id="map"></div>
         </div>
@@ -442,44 +513,66 @@
       { tag: 'vous', name: 'Vous êtes ici' }
     ];
 
-    // Debug: Check if tagFilterButton is loaded
-    if (!L.control.tagFilterButton) {
-      console.error('leaflet-tag-filter-button plugin is NOT loaded or not compatible!');
-      alert('Erreur : Le filtre par tags ne peut pas être chargé. Vérifiez la connexion internet ou la compatibilité des scripts.');
-    } else {
-      // Ajout du contrôle de filtre par tags SOUS le contrôle de zoom
-      var zoomControl = map.zoomControl;
-      var tagFilter = L.control.tagFilterButton({
-        data: tags.map(t => t.tag),
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#333" d="M3 5h18v2H3V5m2 4h14v2H5V9m4 4h6v2H9v-2z"/></svg>',
-        filterOnEveryClick: true,
-        clearText: "Tout afficher",
-        filterSelected: [],
-        tagText: function(tag) {
-          var found = tags.find(t => t.tag === tag);
-          return found ? found.name : tag;
-        }
-      });
-      tagFilter.addTo(map);
-      // Place le contrôle sous le zoom
-      var tagFilterEl = document.querySelector('.leaflet-control-tagfilter.leaflet-bar');
-      var zoomEl = document.querySelector('.leaflet-control-zoom.leaflet-bar');
-      if (zoomEl && tagFilterEl && zoomEl.parentNode) {
-        zoomEl.parentNode.insertBefore(tagFilterEl, zoomEl.nextSibling);
-      }
+    // --- FILTRE PERSONNALISÉ ---
+    // Génère les cases à cocher
+    function updateCustomFilterPanel() {
+      var html = tags.map(t => `
+        <label><input type="checkbox" value="${t.tag}" checked> ${t.name}</label>
+      `).join('');
+      document.getElementById('custom-filter-checkboxes').innerHTML = html;
+    }
+    updateCustomFilterPanel();
+
+    // Ouvre/ferme le panneau
+    const filterBar = document.getElementById('custom-filter-bar');
+    const filterPanel = document.getElementById('custom-filter-panel');
+    filterBar.onclick = function() {
+      filterPanel.style.display = (filterPanel.style.display === 'none' || filterPanel.style.display === '') ? 'block' : 'none';
+    };
+
+    document.getElementById('custom-filter-all').onclick = function(e) {
+      e.preventDefault();
+      filterPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+      applyCustomFilter();
+    };
+    document.getElementById('custom-filter-none').onclick = function(e) {
+      e.preventDefault();
+      filterPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      applyCustomFilter();
+    };
+
+    filterPanel.addEventListener('change', function(e) {
+      if (e.target.type === 'checkbox') applyCustomFilter();
+    });
+
+    function getSelectedTags() {
+      return Array.from(filterPanel.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
     }
 
-    // Désactiver le zoom molette par défaut
-    map.getContainer().addEventListener('wheel', function(e) {
-      if (e.ctrlKey) {
-        map.scrollWheelZoom.enable();
-      } else {
-        map.scrollWheelZoom.disable();
-      }
-    });
-    map.on('mouseout', function() {
-      map.scrollWheelZoom.disable();
-    });
+    function applyCustomFilter() {
+      var selected = getSelectedTags();
+      // Marqueurs sur la carte
+      allMarkers.forEach(marker => {
+        var markerTags = marker.options.tags || [];
+        var visible = markerTags.some(t => selected.includes(t));
+        if (visible) {
+          if (!map.hasLayer(marker)) marker.addTo(map);
+        } else {
+          if (map.hasLayer(marker)) map.removeLayer(marker);
+        }
+      });
+      // Sections sous la carte
+      document.querySelectorAll('section.room').forEach(section => {
+        var sectionTags = (section.getAttribute('data-tags')||'').split(/\s+/);
+        var visible = sectionTags.some(t => selected.includes(t));
+        section.style.display = visible ? '' : 'none';
+      });
+      // Affichage résumé
+      var label = selected.length === tags.length ? 'Tous' : selected.map(t => (tags.find(x => x.tag === t)||{}).name||t).join(', ');
+      document.getElementById('custom-filter-selected').textContent = label;
+    }
+    // Initialiser le résumé
+    applyCustomFilter();
     </script>
 </body>
 </html>
