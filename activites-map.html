@@ -20,10 +20,10 @@
     <title>O'Fil du Doubs - Location de charme</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Ajout Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-tag-filter-button@0.2.1/dist/leaflet-tag-filter-button.min.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.min.js"></script>
     <script src="https://unpkg.com/leaflet-tag-filter-button@0.2.1/dist/leaflet-tag-filter-button.min.js"></script>
     <script src="scripts/menu-translations.js"></script>
@@ -418,18 +418,24 @@
       { tag: 'vous', name: 'Vous êtes ici' }
     ];
 
-    // Ajout du contrôle de filtre par tags
-    L.control.tagFilterButton({
-      data: tags.map(t => t.tag),
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#333" d="M3 5h18v2H3V5m2 4h14v2H5V9m4 4h6v2H9v-2z"/></svg>',
-      filterOnEveryClick: true,
-      clearText: "Tout afficher",
-      filterSelected: [],
-      tagText: function(tag) {
-        var found = tags.find(t => t.tag === tag);
-        return found ? found.name : tag;
-      }
-    }).addTo(map);
+    // Debug: Check if tagFilterButton is loaded
+    if (!L.control.tagFilterButton) {
+      console.error('leaflet-tag-filter-button plugin is NOT loaded or not compatible!');
+      alert('Erreur : Le filtre par tags ne peut pas être chargé. Vérifiez la connexion internet ou la compatibilité des scripts.');
+    } else {
+      // Ajout du contrôle de filtre par tags
+      L.control.tagFilterButton({
+        data: tags.map(t => t.tag),
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#333" d="M3 5h18v2H3V5m2 4h14v2H5V9m4 4h6v2H9v-2z"/></svg>',
+        filterOnEveryClick: true,
+        clearText: "Tout afficher",
+        filterSelected: [],
+        tagText: function(tag) {
+          var found = tags.find(t => t.tag === tag);
+          return found ? found.name : tag;
+        }
+      }).addTo(map);
+    }
 
     // Désactiver le zoom molette par défaut
     map.getContainer().addEventListener('wheel', function(e) {
