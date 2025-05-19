@@ -22,10 +22,10 @@
     <!-- Ajout Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.2.1/dist/leaflet-tag-filter-button.min.css" />
+    <link rel="stylesheet" href="styles/leaflet-tag-filter-button.min.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.2.1/dist/leaflet-tag-filter-button.min.js"></script>
+    <script src="scripts/leaflet-tag-filter-button.min.js"></script>
     <script src="scripts/menu-translations.js"></script>
     <script src="scripts/activites-translations.js"></script> <!-- Attention à modifier pour chaque page -->
     <script src="scripts/applyTranslations.js"></script>
@@ -166,6 +166,30 @@
             .legend-toggle-btn {
                 display: block;
             }
+        }
+        /* Effet ripple pour les checkboxes du tag-filter-button */
+        .ripple {
+          position: relative;
+          overflow: hidden;
+        }
+        .ripple:after {
+          content: '';
+          display: block;
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          width: 100%;
+          height: 100%;
+          top: 0; left: 0;
+          background: rgba(0,0,0,0.15);
+          opacity: 0;
+          transition: opacity 0.4s, transform 0.4s;
+          transform: scale(0.5);
+        }
+        .ripple:active:after {
+          opacity: 1;
+          transform: scale(1.2);
+          transition: 0s;
         }
     </style>
 </head>
