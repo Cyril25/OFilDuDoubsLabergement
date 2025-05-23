@@ -134,11 +134,18 @@
         .leaflet-control-attribution {
             display: none !important;
         }
-        @media (max-width: 1920px) {
-            .map-section {
-                max-width: 98vw;
-            }
-        }
+        @media (max-width: 600px) {
+            .map-section, #custom-filter-bar {
+    max-width: 98vw; /* 98% of the viewport width */
+  }
+}
+
+@media (min-width: 600px) {
+  .map-section, #custom-filter-bar {
+    max-width: 80%; /* 80% of the page width */
+  }
+}
+
         @media (max-width: 600px) {
             #map {
                 height: 220px;
