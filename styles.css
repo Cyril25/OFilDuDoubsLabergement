@@ -60,7 +60,7 @@ header.header2 h2 {
 
 /* Navigation */
 nav {
-    background: #005f8d; /* Bleu rivière */
+    background: #005f8d; /* Ensure consistent blue color */
     padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
     position: fixed; /* Rend le menu fixe */
     top: 0; /* Positionne le menu en haut */
