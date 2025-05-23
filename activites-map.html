@@ -199,24 +199,21 @@
           transition: 0s;
         }
         #custom-filter-bar {
-  max-width: 1000px; /* Match the width of the sections */
-  margin: 0 auto 0.5rem auto;
-  background: #005f8d; /* Match menu blue */
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 10px 18px;
-  font-size: 17px;
-  font-weight: 500;
+  max-width: 100%; /* Ensure it behaves like map-section */
+  margin: 0 auto; /* Center align */
+  background: #007bff; /* Original blue background */
   color: #fff; /* White text */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
+  padding: 10px 15px; /* Add padding for better appearance */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background 0.3s, color 0.3s; /* Smooth transition for hover effects */
 }
+
 #custom-filter-bar:hover {
-  background: #004a6b; /* Darker shade for hover */
+  background: #0056b3; /* Darker blue on hover */
+  color: #e0e0e0; /* Slightly lighter text on hover */
 }
+
 #custom-filter-panel {
   max-width: 1000px; /* Match the width of the sections */
   margin: 0 auto 1rem auto;
