@@ -192,14 +192,15 @@
           transition: 0s;
         }
         #custom-filter-bar {
-  max-width: 900px;
+  max-width: 1000px; /* Match the width of the sections */
   margin: 0 auto 0.5rem auto;
-  background: #fff;
+  background: #007bff; /* Blue background */
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 10px 18px;
   font-size: 17px;
   font-weight: 500;
+  color: #fff; /* White text */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -207,12 +208,12 @@
   user-select: none;
 }
 #custom-filter-bar:hover {
-  background: #f5f5f5;
+  background: #0056b3; /* Darker blue on hover */
 }
 #custom-filter-panel {
-  max-width: 900px;
+  max-width: 1000px; /* Match the width of the sections */
   margin: 0 auto 1rem auto;
-  background: #fff;
+  background: #f8f9fa; /* Light background */
   border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 12px 18px 10px 18px;
@@ -231,15 +232,16 @@
   gap: 7px;
   font-size: 16px;
   cursor: pointer;
+  color: #007bff; /* Blue text for labels */
 }
 #custom-filter-checkboxes input[type="checkbox"] {
-  accent-color: #ff7800;
+  accent-color: #007bff; /* Blue checkboxes */
   width: 18px;
   height: 18px;
 }
 #custom-filter-all, #custom-filter-none {
-  background: #ff7800;
-  color: #fff;
+  background: #007bff; /* Blue buttons */
+  color: #fff; /* White text */
   border: none;
   border-radius: 5px;
   padding: 6px 16px;
@@ -248,7 +250,7 @@
   transition: background 0.2s;
 }
 #custom-filter-all:hover, #custom-filter-none:hover {
-  background: #e06d00;
+  background: #0056b3; /* Darker blue on hover */
 }
     </style>
 </head>
@@ -484,24 +486,24 @@
       allMarkers.push(marker);
     }
     // Musées
-    addTaggedMarker(47.2417, 6.0241, "Musée des Beaux-Arts", ['musée'], 'red');
-    addTaggedMarker(46.8281, 6.3656, "Maison Michaud", ['musée'], 'red');
-    addTaggedMarker(46.9017, 6.3544, "Distillerie Guy", ['musée'], 'red');
-    addTaggedMarker(46.9504, 6.3281, "Château de Joux", ['musée'], 'red');
-    addTaggedMarker(46.8275, 6.3289, "Fonderie Obertino", ['musée'], 'red');
-    addTaggedMarker(46.7783, 6.3047, "Maison de la Réserve", ['musée'], 'red');
+    addTaggedMarker(47.2417, 6.0241, "Musée des Beaux-Arts", ['musée'], 'green');
+    addTaggedMarker(46.8281, 6.3656, "Maison Michaud", ['musée'], 'green');
+    addTaggedMarker(46.9017, 6.3544, "Distillerie Guy", ['musée'], 'green');
+    addTaggedMarker(46.9504, 6.3281, "Château de Joux", ['musée'], 'green');
+    addTaggedMarker(46.8275, 6.3289, "Fonderie Obertino", ['musée'], 'green');
+    addTaggedMarker(46.7783, 6.3047, "Maison de la Réserve", ['musée'], 'green');
     // Restaurants
     addTaggedMarker(46.9047, 6.3527, "Restaurant La Table", ['restaurant'], 'green');
     // Randonnées / Nature / Loisirs
-    addTaggedMarker(46.7733, 6.3550, "Mont d'Or", ['randonnée', 'nature'], 'orange');
-    addTaggedMarker(46.7981, 6.3325, "Lac Saint-Point", ['randonnée', 'nature'], 'orange');
-    addTaggedMarker(46.8009, 6.3464, "Accrobranche Métabief", ['loisirs', 'nature'], 'orange');
-    addTaggedMarker(46.7814, 6.3292, "Source Bleue", ['randonnée', 'nature'], 'orange');
-    addTaggedMarker(46.8022, 6.3486, "Station de Métabief", ['randonnée', 'nature', 'loisirs'], 'orange');
-    addTaggedMarker(46.9253, 6.3422, "Fort de Saint-Antoine", ['randonnée', 'nature'], 'orange');
-    addTaggedMarker(46.7692, 6.2906, "Lac de Remoray", ['randonnée', 'nature'], 'orange');
+    addTaggedMarker(46.7733, 6.3550, "Mont d'Or", ['randonnée', 'nature'], 'green');
+    addTaggedMarker(46.7981, 6.3325, "Lac Saint-Point", ['randonnée', 'nature'], 'green');
+    addTaggedMarker(46.8009, 6.3464, "Accrobranche Métabief", ['loisirs', 'nature'], 'green');
+    addTaggedMarker(46.7814, 6.3292, "Source Bleue", ['randonnée', 'nature'], 'green');
+    addTaggedMarker(46.8022, 6.3486, "Station de Métabief", ['randonnée', 'nature', 'loisirs'], 'green');
+    addTaggedMarker(46.9253, 6.3422, "Fort de Saint-Antoine", ['randonnée', 'nature'], 'green');
+    addTaggedMarker(46.7692, 6.2906, "Lac de Remoray", ['randonnée', 'nature'], 'green');
     // Point "Vous êtes ici"
-    addTaggedMarker(46.77714, 6.30068, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'blue');
+    addTaggedMarker(46.77714, 6.30068, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'red');
 
     // Liste des tags à filtrer (sans 'vous')
     var tags = [
