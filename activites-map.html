@@ -271,8 +271,8 @@
 <div id="custom-filter-panel" style="display:none;">
   <div id="custom-filter-checkboxes"></div>
   <div style="margin-top:10px;display:flex;gap:10px;">
-    <button id="custom-filter-all">Tout cocher</button>
-    <button id="custom-filter-none">Tout décocher</button>
+    <button id="custom-filter-all" class="custom-filter-btn">Tout cocher</button>
+    <button id="custom-filter-none" class="custom-filter-btn">Tout décocher</button>
   </div>
 </div>
         <div class="map-section">
@@ -518,7 +518,7 @@
     // Génère les cases à cocher
     function updateCustomFilterPanel() {
       var html = tags.map(t => `
-        <label><input type="checkbox" value="${t.tag}" checked> ${t.name}</label>
+    <label class="custom-filter-label"><input type="checkbox" class="custom-filter-checkbox" value="${t.tag}" checked> ${t.name}</label>
       `).join('');
       document.getElementById('custom-filter-checkboxes').innerHTML = html;
     }

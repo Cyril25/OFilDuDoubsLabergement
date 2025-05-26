@@ -665,3 +665,33 @@ h3#subtitle, h3#subtitle2 {
     font-weight: bold; /* Même poids que les anciens h2 */
     margin: 0.5em 0; /* Même espacement que les anciens h2 */
 }
+
+/* Boutons filtre personnalisés */
+.custom-filter-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.custom-filter-btn:hover {
+  background: #0056b3;
+}
+
+/* Checkbox et label du filtre personnalisés */
+.custom-filter-label {
+  color: #007bff;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.custom-filter-checkbox {
+  accent-color: #007bff;
+  width: 18px;
+  height: 18px;
+}
