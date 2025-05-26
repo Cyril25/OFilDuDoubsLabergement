@@ -261,34 +261,52 @@
       marker.addTo(map);
       allMarkers.push(marker);
     }
-    // Musées
-    addTaggedMarker(47.2417, 6.0241, "Musée des Beaux-Arts", ['musée'], 'green');
-    addTaggedMarker(46.8281, 6.3656, "Maison Michaud", ['musée'], 'green');
-    addTaggedMarker(46.9017, 6.3544, "Distillerie Guy", ['musée'], 'green');
-    addTaggedMarker(46.9504, 6.3281, "Château de Joux", ['musée'], 'green');
-    addTaggedMarker(46.8275, 6.3289, "Fonderie Obertino", ['musée'], 'green');
-    addTaggedMarker(46.7783, 6.3047, "Maison de la Réserve", ['musée'], 'green');
-    // Restaurants
-    addTaggedMarker(46.9047, 6.3527, "Restaurant La Table", ['restaurant'], 'green');
-    // Randonnées / Nature / Loisirs
-    addTaggedMarker(46.7733, 6.3550, "Mont d'Or", ['randonnée', 'nature'], 'green');
-    addTaggedMarker(46.7981, 6.3325, "Lac Saint-Point", ['randonnée', 'nature'], 'green');
-    addTaggedMarker(46.8009, 6.3464, "Accrobranche Métabief", ['loisirs', 'nature'], 'green');
-    addTaggedMarker(46.7814, 6.3292, "Source Bleue", ['randonnée', 'nature'], 'green');
-    addTaggedMarker(46.8022, 6.3486, "Station de Métabief", ['randonnée', 'nature', 'loisirs'], 'green');
-    addTaggedMarker(46.9253, 6.3422, "Fort de Saint-Antoine", ['randonnée', 'nature'], 'green');
-    addTaggedMarker(46.7692, 6.2906, "Lac de Remoray", ['randonnée', 'nature'], 'green');
     // Point "Vous êtes ici"
     addTaggedMarker(46.77714, 6.30068, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'red');
 
+addTaggedMarker(46.768, 6.263, "Lac de Remoray", ['nature', 'randonnée', 'loisirs'], 'green');
+addTaggedMarker(46.7721, 6.2632, "La Maison de la Réserve", ['nature', 'visite'], 'green');
+addTaggedMarker(46.7705, 6.2794, "Fonderie de Cloches Obertino", ['artisanat', 'visite'], 'green');
+addTaggedMarker(46.8703, 6.3708, "Château de Joux", ['patrimoine', 'visite'], 'green');
+addTaggedMarker(46.873, 6.37, "Fort Saint-Antoine", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.7737, 6.3506, "Station de Métabief", ['nature', 'sport'], 'green');
+addTaggedMarker(46.80889, 6.324434, "Source Bleue", ['nature'], 'green');
+addTaggedMarker(46.81528, 6.31389, "Lac Saint-Point", ['nature', 'panorama'], 'green');
+addTaggedMarker(46.9062, 6.3645, "Distillerie Guy", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.6294, 6.1407, "Maison Michaud", ['patrimoine', 'visite'], 'green');
+addTaggedMarker(46.7276, 6.357, "Mont d'Or", ['nature', 'randonnée', 'panorama'], 'green');
+addTaggedMarker(46.7666, 6.3579, "Luge sur Rails", ['famille', 'nature'], 'green');
+addTaggedMarker(46.7244, 6.3037, "Trottinettes électriques et bouées", ['famille', 'nature', 'sport'], 'green');
+addTaggedMarker(46.768, 6.263, "Le Coni'fer", ['famille'], 'green');
+addTaggedMarker(46.7629, 6.3477, "Accrobranche Métabief aventure", ['famille', 'nature', 'sport'], 'green');
+addTaggedMarker(46.802, 6.314, "Aqua2Lacs", ['intérieur'], 'green');
+addTaggedMarker(46.802, 6.314, "SPA les rives sauvages", ['famille', 'intérieur'], 'green');
+addTaggedMarker(46.9041, 6.3542, "Cinéma Olympia", ['famille', 'intérieur'], 'green');
+addTaggedMarker(46.7737, 6.3506, "Cinéma Le mont d'Or", ['famille', 'intérieur'], 'green');
+addTaggedMarker(46.8153, 6.3139, "Les bateaux du lac Saint Point", ['panorama'], 'green');
+addTaggedMarker(46.802, 6.314, "La fruitière des lacs", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.7737, 6.3506, "Fromagerie du mont d'Or", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.8703, 6.3708, "Distillerie Emile Pernot", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.811, 6.3042, "Rucher des deux lacs", ['terroir', 'visite'], 'green');
+addTaggedMarker(46.680987, 6.185939, "Chez Liadet", ['terroir', 'famille'], 'green');
+addTaggedMarker(46.9002, 6.2974, "Ferme la batailleuse", ['terroir', 'visite'], 'green');
+    
+    
+
     // Liste des tags à filtrer (sans 'vous')
-    var tags = [
-      { tag: 'musée', name: 'Musées' },
-      { tag: 'restaurant', name: 'Restaurants' },
-      { tag: 'randonnée', name: 'Randonnées' },
-      { tag: 'nature', name: 'Nature' },
-      { tag: 'loisirs', name: 'Loisirs' }
-    ];
+var tags = [
+  "nature",
+  "randonnée",
+  "loisirs",
+  "visite",
+  "artisanat",
+  "patrimoine",
+  "terroir",
+  "sport",
+  "panorama",
+  "famille",
+  "intérieur"
+];
 
     // --- FILTRE PERSONNALISÉ ---
     // Génère les cases à cocher
