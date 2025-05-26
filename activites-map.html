@@ -192,12 +192,11 @@
           transition: 0s;
         }
         #custom-filter-bar {
-  max-width: 1000px; /* Match the width of the sections */
+  width: 80%;
   margin: 0 auto 0.5rem auto;
   background: #005f8d; /* Match menu blue */
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 10px 18px;
   font-size: 17px;
   font-weight: 500;
   color: #fff; /* White text */
@@ -207,21 +206,26 @@
   justify-content: space-between;
   user-select: none;
   z-index: 10; /* Passer sous le menu fixe */
+  padding: 0; /* plus de padding sur la barre elle-même */
 }
-#custom-filter-bar:hover {
-  background: #004a6b; /* Darker shade for hover */
+#custom-filter-bar span {
+  padding: 10px 18px;
+  display: block;
 }
 #custom-filter-panel {
-  max-width: 1000px; /* Match the width of the sections */
+  width: 80%;
   margin: 0 auto 1rem auto;
-  background: #f8f9fa; /* Light background */
+  background: #f8f9fa;
   border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 12px 18px 10px 18px;
   font-size: 16px;
   z-index: 1001;
   position: relative;
-  z-index: 10; /* Passer sous le menu fixe */
+  z-index: 10;
+  padding: 0; /* plus de padding sur le panel lui-même */
+}
+#custom-filter-checkboxes, #custom-filter-panel > div {
+  padding: 12px 18px 10px 18px;
 }
 #custom-filter-checkboxes {
   display: flex;
@@ -254,6 +258,31 @@
 #custom-filter-all:hover, #custom-filter-none:hover {
   background: #0056b3; /* Darker blue on hover */
 }
+        /* Responsive width for filter bar, filter panel, and map section (spécifique à cette page) */
+        .map-section,
+        #custom-filter-bar,
+        #custom-filter-panel {
+          width: 80%;
+          max-width: 1000px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        #map {
+          width: 100%;
+        }
+        @media (max-width: 600px) {
+          .map-section,
+          #custom-filter-bar,
+          #custom-filter-panel {
+            width: 95vw;
+            max-width: 95vw;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          #map {
+            width: 100%;
+          }
+        }
     </style>
 </head>
 <body>
