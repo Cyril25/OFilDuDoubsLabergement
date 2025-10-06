@@ -152,6 +152,15 @@
     <div id="calendar"></div>
 
     <script>
+        // Dates de ménage à ajouter manuellement (format YYYY-MM-DD)
+        const manualCleaningDates = [ '2025-12-29'
+            // Exemple : '2024-07-15', '2024-08-01'
+        ];
+        // Dates à exclure des créneaux de ménage (format YYYY-MM-DD)
+        const excludedCleaningDates = [ '2025-12-27'
+            // Exemple : '2024-07-20', '2024-08-05'
+        ];
+
         // Initialisation du calendrier vide
         $('#calendar').fullCalendar({
             locale: 'fr',
@@ -249,7 +258,7 @@
 
         // Étape 2 : Calculer les créneaux de ménage
         function calculateCleaningSlots(events) {
-            const cleaningSlots = [];
+            let cleaningSlots = [];
 
             // Ajout du créneau avant la première réservation si besoin
             if (events._preFirstCleaningSlot) {
@@ -260,21 +269,52 @@
                 const currentEventEnd = new Date(events[i].end);
                 const nextEventStart = new Date(events[i + 1].start);
 
-                // Ne pas modifier les heures ici, elles sont déjà définies lors du parsing
-                // currentEventEnd.setHours(11, 0, 0, 0); // À NE PAS FAIRE
-                // nextEventStart.setHours(17, 0, 0, 0); // À NE PAS FAIRE
-
                 if (currentEventEnd < nextEventStart) {
                     cleaningSlots.push({
-                        //title: `Entre ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long' })} ${currentEventEnd.toLocaleDateString('fr-FR')} (11h) et ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long' })} ${nextEventStart.toLocaleDateString('fr-FR')} (17h)`,
                         title : `Créneau ménage`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
-                        displayText : `Créneau ménage`,
-                        //displayText: `Entre le ${currentEventEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 11h et le ${nextEventStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à 17h`
+                        displayText : `Créneau ménage`
                     });
                 }
             }
+
+            // Découpage des slots selon les dates manuelles
+            manualCleaningDates.forEach(dateStr => {
+                const manualDate = new Date(dateStr + 'T00:00:00');
+                let newSlots = [];
+                cleaningSlots.forEach(slot => {
+                    const slotStart = new Date(slot.start);
+                    const slotEnd = new Date(slot.end);
+                    if (manualDate > slotStart && manualDate < slotEnd) {
+                        newSlots.push({
+                            title: 'Créneau ménage',
+                            start: slotStart.toISOString(),
+                            end: manualDate.toISOString(),
+                            displayText: 'Créneau ménage (avant date manuelle)'
+                        });
+                        newSlots.push({
+                            title: 'Créneau ménage',
+                            start: manualDate.toISOString(),
+                            end: slotEnd.toISOString(),
+                            displayText: 'Créneau ménage (après date manuelle)'
+                        });
+                    } else {
+                        newSlots.push(slot);
+                    }
+                });
+                cleaningSlots = newSlots;
+            });
+
+            // Suppression des slots contenant une date exclue
+            cleaningSlots = cleaningSlots.filter(slot => {
+                const slotStart = new Date(slot.start);
+                const slotEnd = new Date(slot.end);
+                return !excludedCleaningDates.some(dateStr => {
+                    const excludedDate = new Date(dateStr + 'T00:00:00');
+                    return excludedDate >= slotStart && excludedDate < slotEnd;
+                });
+            });
 
             return cleaningSlots;
         }
