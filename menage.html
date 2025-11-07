@@ -256,13 +256,13 @@
             return events;
         }
 
-        // Étape 2 : Calculer les créneaux de ménage
+        // Étape 2 : Calculer les créneaux de ménage (VERSION ROBUSTE)
         function calculateCleaningSlots(events) {
-            let cleaningSlots = [];
-
-            // Ajout du créneau avant la première réservation si besoin
+            
+            // --- 1. Calculer les créneaux initiaux (votre logique) ---
+            let initialSlots = [];
             if (events._preFirstCleaningSlot) {
-                cleaningSlots.push(events._preFirstCleaningSlot);
+                initialSlots.push(events._preFirstCleaningSlot);
             }
 
             for (let i = 0; i < events.length - 1; i++) {
@@ -270,54 +270,128 @@
                 const nextEventStart = new Date(events[i + 1].start);
 
                 if (currentEventEnd < nextEventStart) {
-                    cleaningSlots.push({
-                        title : `Créneau ménage`,
+                    initialSlots.push({
+                        title: `Créneau ménage`,
                         start: currentEventEnd.toISOString(),
                         end: nextEventStart.toISOString(),
-                        displayText : `Créneau ménage`
+                        displayText: `Créneau ménage`
                     });
                 }
             }
 
-            // Découpage des slots selon les dates manuelles
-            manualCleaningDates.forEach(dateStr => {
-                const manualDate = new Date(dateStr + 'T00:00:00');
-                let newSlots = [];
-                cleaningSlots.forEach(slot => {
-                    const slotStart = new Date(slot.start);
-                    const slotEnd = new Date(slot.end);
-                    if (manualDate > slotStart && manualDate < slotEnd) {
-                        newSlots.push({
-                            title: 'Créneau ménage',
-                            start: slotStart.toISOString(),
-                            end: manualDate.toISOString(),
-                            displayText: 'Créneau ménage (avant date manuelle)'
-                        });
-                        newSlots.push({
-                            title: 'Créneau ménage',
-                            start: manualDate.toISOString(),
-                            end: slotEnd.toISOString(),
-                            displayText: 'Créneau ménage (après date manuelle)'
-                        });
-                    } else {
-                        newSlots.push(slot);
+            // --- 2. "Aplatir" (Unroll) les créneaux en jours (YYYY-MM-DD) ---
+            const allowedCleaningDays = new Set();
+            
+            // Map pour mémoriser les heures de début/fin pour chaque jour
+            // Clé: 'YYYY-MM-DD', Valeur: {start: '...T11:00Z', end: '...T17:00Z'}
+            const dayTimeMap = new Map();
+
+            for (const slot of initialSlots) {
+                const datesInSlot = enumerateDatesInRange(slot.start, slot.end);
+                const startDate = new Date(slot.start).toISOString().split('T')[0];
+                const endDate = new Date(slot.end).toISOString().split('T')[0];
+
+                for (const date of datesInSlot) {
+                    allowedCleaningDays.add(date);
+
+                    // Mémoriser les heures exactes de début et de fin
+                    if (date === startDate) {
+                        let times = dayTimeMap.get(date) || { start: null, end: null };
+                        times.start = slot.start; // Mémorise l'heure de début (ex: 11h)
+                        dayTimeMap.set(date, times);
                     }
-                });
-                cleaningSlots = newSlots;
-            });
-            console.log('Slots après date manuelle:', cleaningSlots);
+                    if (date === endDate) {
+                        let times = dayTimeMap.get(date) || { start: null, end: null };
+                        times.end = slot.end; // Mémorise l'heure de fin (ex: 17h)
+                        dayTimeMap.set(date, times);
+                    }
+                }
+            }
 
-            // Suppression des slots contenant une date exclue
-            cleaningSlots = cleaningSlots.filter(slot => {
-                const slotStart = new Date(slot.start);
-                const slotEnd = new Date(slot.end);
-                return !excludedCleaningDates.some(dateStr => {
-                    const excludedDate = new Date(dateStr + 'T00:00:00');
-                    return excludedDate >= slotStart && excludedDate < slotEnd;
-                });
-            });
+            // --- 3. Modifier le Set de jours ---
+            
+            // D'abord, on retire les exclusions
+            for (const excludeDate of excludedCleaningDates) {
+                allowedCleaningDays.delete(excludeDate);
+            }
 
-            return cleaningSlots;
+            // Ensuite, on ajoute les dates manuelles
+            for (const manualDate of manualCleaningDates) {
+                allowedCleaningDays.add(manualDate);
+                
+                // Si c'est un jour ajouté manuellement qui n'est pas un début/fin
+                // on lui donne des heures par défaut (11h -> 17h UTC)
+                if (!dayTimeMap.has(manualDate)) {
+                    const manualStart = new Date(manualDate + 'T11:00:00Z').toISOString();
+                    const manualEnd = new Date(manualDate + 'T17:00:00Z').toISOString();
+                    dayTimeMap.set(manualDate, { start: manualStart, end: manualEnd });
+                }
+            }
+
+            if (allowedCleaningDays.size === 0) {
+                return [];
+            }
+
+            // --- 4. "Regrouper" (Roll-up) le Set en nouveaux créneaux ---
+            const sortedDates = Array.from(allowedCleaningDays).sort();
+            const finalSlots = [];
+            let currentSlot = null;
+
+            for (const date of sortedDates) {
+                // Le jour suivant attendu (ex: si on est au 14, on attend le 15)
+                const expectedNextDate = currentSlot ? addDaysToISODate(currentSlot._endDateOnly, 1) : null;
+
+                if (currentSlot && date === expectedNextDate) {
+                    // Ce jour est contigu, on ÉTEND le créneau
+                    
+                    // On cherche l'heure de fin mémorisée (ex: 17:00)
+                    const endTime = (dayTimeMap.get(date) && dayTimeMap.get(date).end)
+                                    ? dayTimeMap.get(date).end 
+                                    : new Date(date + 'T17:00:00Z').toISOString(); // Défaut 17h UTC
+                                    
+                    currentSlot.end = endTime;
+                    currentSlot._endDateOnly = date; // Mettre à jour le jour de fin
+                
+                } else {
+                    // Ce jour n'est PAS contigu (ou c'est le premier)
+                    // On sauvegarde l'ancien créneau s'il existe
+                    if (currentSlot) {
+                        finalSlots.push(currentSlot);
+                    }
+                    
+                    // On COMMENCE un nouveau créneau
+                    const startTime = (dayTimeMap.get(date) && dayTimeMap.get(date).start)
+                                    ? dayTimeMap.get(date).start // Heure de début mémorisée (ex: 11:00)
+                                    : new Date(date + 'T11:00:00Z').toISOString(); // Défaut 11h UTC
+                                    
+                    const endTime = (dayTimeMap.get(date) && dayTimeMap.get(date).end)
+                                    ? dayTimeMap.get(date).end // Heure de fin mémorisée (ex: 17:00)
+                                    : new Date(date + 'T17:00:00Z').toISOString(); // Défaut 17h (pour créneaux d'un jour)
+
+                    currentSlot = {
+                        title: 'Créneau ménage',
+                        start: startTime,
+                        end: endTime,
+                        displayText: 'Créneau ménage',
+                        _startDateOnly: date, // Propriété temporaire
+                        _endDateOnly: date  // Propriété temporaire
+                    };
+                }
+            }
+
+            // N'oubliez pas de sauvegarder le tout dernier créneau
+            if (currentSlot) {
+                finalSlots.push(currentSlot);
+            }
+
+            // Nettoyage des propriétés temporaires
+            finalSlots.forEach(slot => {
+                delete slot._startDateOnly;
+                delete slot._endDateOnly;
+            });
+            
+            console.log('Slots finaux recalculés:', finalSlots);
+            return finalSlots;
         }
 
         // Étape 3 : Mettre à jour le calendrier avec les créneaux de ménage
@@ -392,6 +466,39 @@
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
             return `${year}-${month}-${day}`;
+        }
+
+        /**
+         * Ajoute un nombre de jours à une date ISO (YYYY-MM-DD) en UTC.
+         * @param {string} isoDate - La date de début (ex: '2026-02-14').
+         * @param {number} days - Le nombre de jours à ajouter.
+         * @returns {string} La nouvelle date ISO.
+         */
+        function addDaysToISODate(isoDate, days) {
+        // new Date(isoDate) interprète 'YYYY-MM-DD' comme YYYY-MM-DDT00:00:00Z (UTC)
+        const date = new Date(isoDate); 
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.toISOString().split('T')[0];
+        }
+
+        /**
+         * Liste tous les jours (YYYY-MM-DD) d'un créneau, en UTC.
+         * @param {string} startISOString - Date/heure de début (format ISO complet).
+         * @param {string} endISOString - Date/heure de fin (format ISO complet).
+         * @returns {string[]} Un tableau de dates ISO (YYYY-MM-DD).
+         */
+        function enumerateDatesInRange(startISOString, endISOString) {
+        const dates = new Set();
+        // On prend la date en UTC, peu importe l'heure
+        let currentISO = new Date(startISOString).toISOString().split('T')[0];
+        const endDate = new Date(endISOString).toISOString().split('T')[0];
+        const endObj = new Date(endDate); // La date UTC cible
+
+        while (new Date(currentISO) <= endObj) {
+            dates.add(currentISO);
+            currentISO = addDaysToISODate(currentISO, 1);
+        }
+        return Array.from(dates);
         }
     </script>
 </body>
