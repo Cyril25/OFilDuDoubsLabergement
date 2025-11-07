@@ -152,14 +152,38 @@
     <div id="calendar"></div>
 
     <script>
-        // Dates de ménage à ajouter manuellement (format YYYY-MM-DD)
-        const manualCleaningDates = [ '2025-12-29', '2026-02-19'
-            // Exemple : '2024-07-15', '2024-08-01'
+        // Fonction utilitaire pour avoir 'YYYY-MM-DD' en date LOCALE
+        // (Important pour que 'aujourd'hui' corresponde à votre fuseau horaire)
+        function getLocalISODate(date = new Date()) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+        }
+
+        // Définir "aujourd'hui" une seule fois pour tout le script
+        const todayISO = getLocalISODate();
+        console.log("Aujourd'hui (date locale ISO) :", todayISO);
+
+
+        // Dates de ménage à ajouter manuellement (format YYYY-MM-DD) (peuvent inclure le passé)
+        const allManualCleaningDates = [ 
+            '2024-11-01', // <-- Date passée pour l'exemple
+            '2025-12-29', '2026-02-19'
         ];
+
         // Dates à exclure des créneaux de ménage (format YYYY-MM-DD)
-        const excludedCleaningDates = [ '2025-12-27'
-            // Exemple : '2024-07-20', '2024-08-05'
+        const allExcludedCleaningDates = [ 
+            '2024-10-30', // <-- Date passée pour l'exemple
+            '2025-12-27'
         ];
+
+        // Filtrer les listes pour ne garder que le futur (et aujourd'hui)
+        const manualCleaningDates = allManualCleaningDates.filter(date => date >= todayISO);
+        const excludedCleaningDates = allExcludedCleaningDates.filter(date => date >= todayISO);
+
+        console.log("Dates manuelles retenues :", manualCleaningDates);
+        console.log("Dates exclues retenues :", excludedCleaningDates);
 
         // Initialisation du calendrier vide
         $('#calendar').fullCalendar({
