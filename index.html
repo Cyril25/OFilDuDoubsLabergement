@@ -3,62 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Balises Open Graph -->
-        <meta property="og:title" content="O'Fil du Doubs" />
-        <meta property="og:description" content="Bienvenue à O'Fil du Doubs, votre logement touristique à Labergement-Sainte-Marie." />
-        <meta property="og:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp" />
-        <meta property="og:url" content="https://cyril25.github.io/OFilDuDoubsLabergement/" />
-        <meta property="og:type" content="website" />
-
-        <!-- Balise pour Twitter (optionnelle mais recommandée) -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp">
-
+    
+    <meta property="og:title" content="O'Fil du Doubs" />
+    <meta property="og:description" content="Bienvenue à O'Fil du Doubs, votre logement touristique à Labergement-Sainte-Marie." />
+    <meta property="og:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp" />
+    <meta property="og:url" content="https://cyril25.github.io/OFilDuDoubsLabergement/" />
+    <meta property="og:type" content="website" />
     <meta name="description" content="Bienvenue à O'Fil du Doubs, un hébergement de charme à Labergement-Sainte-Marie, idéal pour vos séjours en toutes saisons.">
-    <meta name="keywords" content="Logement Doubs, Labergement, Malbuisson, OFilDuDoubs, hébergement touristique, location vacances, lac Saint-Point, lac Remoray, Métabief, tourisme Doubs, Jura, randonnée, nature préservée, faune et flore, réserve naturelle, paysages du Jura, fromages du Jura, Comté, spécialités régionales, vins du Jura, absinthe, sports d'hiver, ski alpin, raquettes, VTT, baignade, activités nautiques, Château de Joux, écomusée, artisanat local, fonderie de cloches" />
-    <meta name="google-site-verification" content="gI4JZmVO_TIUbTvuwgtUNr8mucAqpkSLXpekC8BfjQU" />
-
+    
     <title>O'Fil du Doubs - Location de charme</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     <script src="scripts/menu-translations.js"></script>
-    <script src="scripts/index-translations.js"></script> <!-- Attention à modifier pour chaque page -->
+    <script src="scripts/index-translations.js"></script>
     <script src="scripts/applyTranslations.js"></script>
+	
+	<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VacationRental",
+      "name": "O'Fil du Doubs",
+      "image": [
+        "https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp",
+        "https://cyril25.github.io/OFilDuDoubsLabergement/images/salon.webp"
+      ],
+      "description": "Hébergement de charme 4 étoiles à Labergement-Sainte-Marie. Vue sur le Doubs, calme, tout confort pour 4 personnes. Proche Lac de Remoray et Métabief.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2 impasse Cotti",
+        "addressLocality": "Labergement-Sainte-Marie",
+        "postalCode": "25160",
+        "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 46.77714,
+        "longitude": 6.30068
+      },
+      "starRating": {
+        "@type": "Rating",
+        "ratingValue": "4"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "31",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "priceRange": "$$",
+      "telephone": "+33683016151", 
+      "url": "https://cyril25.github.io/OFilDuDoubsLabergement/"
+    }
+    </script>
 </head>
 <body>
-    <!-- Conteneur pour le menu -->
-    <div id="menu-container"></div>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="logement.html">Le logement</a></li>
+            <li><a href="equipements.html">Confort et Équipements</a></li>
+            <li><a href="dispo.html">Tarifs et disponibilités</a></li>
+            <li><a href="activites.html">Activités</a></li>
+            <li><a href="commerces.html">Commerces</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+       <div class="language-dropdown">
+			<button class="dropbtn">
+				<img id="current-flag-icon" src="images/fr.png" alt="Langue"> 
+				<span class="arrow">▼</span>
+			</button>
+			<div class="dropdown-content">
+				<a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+				<a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+				<a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+				<a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+				<a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+				<a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+				<a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+			</div>
+		</div>
+    </nav>
+
     <header class="header-principal">
         <div class="star-classification">
-            <!-- <img src="images/meuble-tourisme-4-etoiles.png" alt="Meublé de Tourisme 4 étoiles"> -->
-            <img src="images/meuble-tourisme-4-etoiles.png" alt="Logo indiquant le classement Meublé de Tourisme 4 étoiles">
+            <img src="images/meuble-tourisme-4-etoiles.png" alt="Meublé de Tourisme 4 étoiles">
         </div>
-        
-        <!-- <img src="images/logo-o-fil-du-doubs.jpg" alt="Logo O'Fil du Doubs" class="logo"> -->
         <h1 id="title">O'Fil du Doubs</h1>
         <h3 id="subtitle">Un hébergement confortable surplombant la rivière</h3>
-        <h3 id="subtitle2">Meublé de tourisme 4 étoiles</h3>
+		<h3 id="subtitle2">Meublé de tourisme 4 étoiles</h3>
     </header>
+
     <main>
         <section>
-            <h2 id="welcome">Bienvenue chez Alisson et Cyril - O'Fil du Doubs</h2>
-            <p id="description1">
-                Situé au cœur du village de Labergement-Sainte-Marie, notre logement de 70 m² vous accueille dans un cadre paisible et enchanteur, avec une vue dégagée et sans vis-à-vis.
-            </p>
-            <p id="description2">
-                Se trouvant à quelques pas du lac de Remoray, à 8 km de la station de ski de Métabief et à 17 km de la frontière suisse, O'Fil du Doubs est l’endroit idéal pour se ressourcer en toutes saisons.
-            </p>
-            <p id="description3">
-                Que vous soyez amateur de randonnée, de sports nautiques, de balades à vélo ou de glisse en hiver, vous trouverez ici un point de départ privilégié pour explorer les merveilles naturelles et culturelles de la région.
-            </p>
-            <p id="description4">
-                Nous serons ravis de vous accueillir et de partager avec vous notre coin de paradis !
-            </p>
-            <p class="signature">Alisson & Cyril</p>
-            <img src="images/alisson-et-cyril.jpg" alt="Photo des propriétaires Alisson et Cyril" class="view-image small">
+            <h2 id="welcome">Bienvenue chez Alisson et Cyril</h2>
+            
+            <div class="content-wrapper">
+                <div class="text-block">
+                    <p id="description1">
+                        Situé au cœur du village de Labergement-Sainte-Marie, notre logement de 70 m² vous accueille dans un cadre paisible et enchanteur.
+                    </p>
+                    <p id="description2">
+                        À quelques pas du lac de Remoray et à 8 km de Métabief, O'Fil du Doubs est l’endroit idéal pour se ressourcer en toutes saisons.
+                    </p>
+                    <p id="description3">
+                        Randonnée, sports nautiques ou ski : un point de départ privilégié pour explorer le Jura.
+                    </p>
+                    <p id="description4">
+                        Nous serons ravis de vous accueillir !
+                    </p>
+                    <p class="signature">Alisson et Cyril</p>
+                </div>
+                
+                <div class="image-block">
+                    <img src="images/alisson-et-cyril.jpg" alt="Photo des propriétaires Alisson et Cyril" loading="lazy">
+                </div>
+            </div>
         </section>
-    </main>
-    <footer>
-        <p>© O'Fil du Doubs - Tous droits réservés</p>
+		<section>
+            <h2 id="reviews_title">Ce que nos voyageurs disent</h2>
+            
+            <div class="testimonials-grid">
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div>
+                            <div class="testimonial-author">Dominique</div>
+                            <div class="testimonial-date">Octobre 2025</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p id="review_dominique" class="testimonial-text">
+                        "L’appartement est très agréable : lumineux, fonctionnel, bien situé et parfaitement isolé. La literie est excellente, la vue sur le Doubs est apaisante. Alisson et Cyril sont très sympathiques."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div>
+                            <div class="testimonial-author">Aurore</div>
+                            <div class="testimonial-date">Mai 2025</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p id="review_aurore" class="testimonial-text">
+                        "Le logement est une véritable pépite : très spacieux, décoré avec goût et parfaitement équipé. Situé dans un environnement calme. Alisson et Cyril ont été des hôtes exemplaires."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div>
+                            <div class="testimonial-author">Amelie</div>
+                            <div class="testimonial-date">Janvier 2025</div>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p id="review_amelie" class="testimonial-text">
+                        "Le logement était parfait : tant la propreté, que la qualité des équipements. Tout a été bien pensé pour que l’on soit bien. On s'y sent comme à la maison. Je recommande vivement."
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="airbnb-link-wrapper">
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644/reviews" target="_blank" class="btn-airbnb-review">
+                    <i class="fab fa-airbnb" style="font-size: 1.2rem;"></i> <span id="btn_see_reviews">Voir les 35 avis sur Airbnb</span>
+                </a>
+            </div>
+        </section>
+	</main>
+
+	<footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Nous contacter</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Liens rapides</h3>
+                <a href="index.html" id="footer_link_home">Accueil</a>
+                <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
+                <a href="activites.html" id="footer_link_activities">Activités</a>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a> </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Réserver sur Airbnb</h3>
+                <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+        </div>
     </footer>
 </body>
 </html>

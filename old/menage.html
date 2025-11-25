@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'Fil du Doubs - Ménage</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        #cleaning-slots-list {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #cleaning-slots-list h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #legend {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #legend p {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 5px; /* Ajout de padding */
+        }
+
+        #legend span.couleur {
+            display: inline-block;
+            width: 15px; /* Keep 15px for color box */
+            height: 15px;
+            margin-right: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        #legend span.libelle {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-left: 5px;
+            width: 400px; /* Set width to 200px */
+            display: inline-block; /* Ensure width is applied */
+            text-align: left; /* Alignement à gauche */
+        }
+
+        #cleaning-slots {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cleaning-slots li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 5px;
+            color: #0050b3;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            text-align: left;
+        }
+
+        #cleaning-slots li span {
+            font-weight: bold;
+            color: #000;
+        }
+
+        #cleaning-slots li.urgent {
+            background-color: #ffcccc; /* Red background */
+            border: 1px solid #ff4d4f; /* Red border */
+            color: #a8071a; /* Dark red text */
+            font-weight: bold;
+        }
+
+        #cleaning-slots li.weekend {
+            background-color: #f0f0f0; /* Light gray background */
+            border: 1px solid #d9d9d9; /* Light gray border */
+            color: #8c8c8c; /* Gray text */
+            font-style: italic;
+        }
+
+        .fc-time {
+            display: none; /* Masquer les éléments avec la classe fc-time */
+        }
+
+        .fc-event.same-day {
+            background-color: #ff4d4f !important; /* Rouge */
+            border-color: #ff4d4f !important; /* Rouge */
+            color: #fff !important; /* Texte blanc */
+        }
+
+        .fc-event.standard-slot {
+            background-color: #91d5ff !important; /* Couleur standard */
+            border-color: #91d5ff !important; /* Bordure standard */
+            color: #0050b3 !important; /* Texte standard */
+        }
+
+        .fc-event.weekend-slot {
+            background-color: #d9d9d9 !important; /* Light gray background */
+            border-color: #d9d9d9 !important; /* Light gray border */
+            color: #8c8c8c !important; /* Gray text */
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="cleaning-slots-list">
+        <h2>Créneaux de ménage</h2>
+        <div id="legend">
+            <p>
+                <span class="couleur" style="background-color: #ffcccc; border: 1px solid #ff4d4f;"></span>
+                <span class="libelle">Date fixe : Ménage à effectuer le même jour.</span>
+            </p>
+            <p>
+                <span class="couleur" style="background-color: #f0f0f0; border: 1px solid #d9d9d9;"></span>
+                <span class="libelle">Weekend : Créneau pendant un weekend.</span>
+            </p>
+            <p>
+                <span class="couleur" style="background-color: #e6f7ff; border: 1px solid #91d5ff;"></span>
+                <span class="libelle">Standard : Créneau classique.</span>
+            </p>
+        </div>
+        <ul id="cleaning-slots"></ul>
+    </div>
+    <div id="calendar"></div>
+
+    <script>
+        // Fonction utilitaire pour avoir 'YYYY-MM-DD' en date LOCALE
+        // (Important pour que 'aujourd'hui' corresponde à votre fuseau horaire)
+        function getLocalISODate(date = new Date()) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+        }
+
+        // Définir "aujourd'hui" une seule fois pour tout le script
+        const todayISO = getLocalISODate();
+        console.log("Aujourd'hui (date locale ISO) :", todayISO);
+
+
+        // Dates de ménage à ajouter manuellement (format YYYY-MM-DD) (peuvent inclure le passé)
+        const allManualCleaningDates = [ 
+            '2024-11-01', // <-- Date passée pour l'exemple
+            '2025-12-29', '2026-02-19'
+        ];
+
+        // Dates à exclure des créneaux de ménage (format YYYY-MM-DD)
+        const allExcludedCleaningDates = [ 
+            '2024-10-30', // <-- Date passée pour l'exemple
+            '2025-12-27'
+        ];
+
+        // Filtrer les listes pour ne garder que le futur (et aujourd'hui)
+        const manualCleaningDates = allManualCleaningDates.filter(date => date >= todayISO);
+        const excludedCleaningDates = allExcludedCleaningDates.filter(date => date >= todayISO);
+
+        console.log("Dates manuelles retenues :", manualCleaningDates);
+        console.log("Dates exclues retenues :", excludedCleaningDates);
+
+        // Initialisation du calendrier vide
+        $('#calendar').fullCalendar({
+            locale: 'fr',
+            height: 'auto',
+            events: [] // Calendrier vide au départ
+        });
+
+        // Étape 1 : Récupérer et parser le fichier iCalendar
+        fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
+            .then(response => response.text())
+            .then(data => {
+                const events = parseICS(data);
+                const cleaningSlots = calculateCleaningSlots(events);
+                updateCalendar(cleaningSlots);
+                updateCleaningSlotsList(cleaningSlots);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du fichier iCal:', error);
+            });
+
+        // Fonction pour parser le fichier iCalendar (.ics)
+        function parseICS(icsData) {
+            const events = [];
+            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
+            const eventsRaw = icsData.match(eventPattern);
+            const today = new Date();
+            const sixMonthsLater = new Date();
+            sixMonthsLater.setMonth(today.getMonth() + 6);
+
+            if (eventsRaw) {
+                eventsRaw.forEach(event => {
+                    const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
+                    const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
+
+                    const startDate = event.match(datePatternStart);
+                    const endDate = event.match(datePatternEnd);
+
+                    // Récupérer toutes les lignes brutes de l'événement
+                    const rawLines = event.split(/\r?\n/).filter(l => l.trim() !== '');
+
+                    if (startDate && endDate) {
+                        const start = new Date(formatDate(startDate[1]));
+                        const end = new Date(formatDate(endDate[1]));
+
+                        // Ignore events outside the 6-month range
+                        if (start > sixMonthsLater || end < today) {
+                            return;
+                        }
+
+                        // On loguera après le tri
+                        events.push({
+                            _startRaw: startDate[1],
+                            _endRaw: endDate[1],
+                            _raw: rawLines,
+                            title: '',
+                            start: formatDate(startDate[1]) + 'T17:00:00',
+                            end: formatDate(endDate[1]) + 'T11:00:00'
+                        });
+                    }
+                });
+
+                events.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+                // Vérification : si le logement est libre avant la première réservation
+                if (events.length > 0) {
+                    const first = events[0];
+                    const now = new Date();
+                    const firstStart = new Date(first.start);
+                    if (now < firstStart) {
+                        // Ajoute un créneau de ménage entre maintenant et la première arrivée
+                        // On force l'heure de début à maintenant, l'heure de fin à 17h du jour d'arrivée
+                        const cleaningSlot = {
+                            start: now.toISOString(),
+                            end: firstStart.toISOString(),
+                            title: "Créneau ménage",
+                            displayText:"Créneau ménage",
+                            _info: "créneau avant première réservation"
+                        };
+                        // On stocke ce créneau dans une propriété spéciale pour l'utiliser dans calculateCleaningSlots
+                        events._preFirstCleaningSlot = cleaningSlot;
+                        console.log("Ajout d'un créneau de ménage avant la première réservation :", cleaningSlot);
+                    }
+                }
+
+                // Affiche les événements triés au format demandé
+                events.forEach(ev => {
+                    console.log(`Date récupérée : Start - ${ev._startRaw}, End - ${ev._endRaw}`);
+                    console.log("Raw event data:", ev._raw);
+                });
+                console.log("Evénements triés :", events);
+            }
+
+            return events;
+        }
+
+        // Étape 2 : Calculer les créneaux de ménage (VERSION ROBUSTE)
+        function calculateCleaningSlots(events) {
+            
+            // --- 1. Calculer les créneaux initiaux (votre logique) ---
+            let initialSlots = [];
+            if (events._preFirstCleaningSlot) {
+                initialSlots.push(events._preFirstCleaningSlot);
+            }
+
+            for (let i = 0; i < events.length - 1; i++) {
+                const currentEventEnd = new Date(events[i].end);
+                const nextEventStart = new Date(events[i + 1].start);
+
+                if (currentEventEnd < nextEventStart) {
+                    initialSlots.push({
+                        title: `Créneau ménage`,
+                        start: currentEventEnd.toISOString(),
+                        end: nextEventStart.toISOString(),
+                        displayText: `Créneau ménage`
+                    });
+                }
+            }
+
+            // --- 2. "Aplatir" (Unroll) les créneaux en jours (YYYY-MM-DD) ---
+            const allowedCleaningDays = new Set();
+            
+            // Map pour mémoriser les heures de début/fin pour chaque jour
+            // Clé: 'YYYY-MM-DD', Valeur: {start: '...T11:00Z', end: '...T17:00Z'}
+            const dayTimeMap = new Map();
+
+            for (const slot of initialSlots) {
+                const datesInSlot = enumerateDatesInRange(slot.start, slot.end);
+                const startDate = new Date(slot.start).toISOString().split('T')[0];
+                const endDate = new Date(slot.end).toISOString().split('T')[0];
+
+                for (const date of datesInSlot) {
+                    allowedCleaningDays.add(date);
+
+                    // Mémoriser les heures exactes de début et de fin
+                    if (date === startDate) {
+                        let times = dayTimeMap.get(date) || { start: null, end: null };
+                        times.start = slot.start; // Mémorise l'heure de début (ex: 11h)
+                        dayTimeMap.set(date, times);
+                    }
+                    if (date === endDate) {
+                        let times = dayTimeMap.get(date) || { start: null, end: null };
+                        times.end = slot.end; // Mémorise l'heure de fin (ex: 17h)
+                        dayTimeMap.set(date, times);
+                    }
+                }
+            }
+
+            // --- 3. Modifier le Set de jours ---
+            
+            // D'abord, on retire les exclusions
+            for (const excludeDate of excludedCleaningDates) {
+                allowedCleaningDays.delete(excludeDate);
+            }
+
+            // Ensuite, on ajoute les dates manuelles
+            for (const manualDate of manualCleaningDates) {
+                allowedCleaningDays.add(manualDate);
+                
+                // Si c'est un jour ajouté manuellement qui n'est pas un début/fin
+                // on lui donne des heures par défaut (11h -> 17h UTC)
+                if (!dayTimeMap.has(manualDate)) {
+                    const manualStart = new Date(manualDate + 'T11:00:00Z').toISOString();
+                    const manualEnd = new Date(manualDate + 'T17:00:00Z').toISOString();
+                    dayTimeMap.set(manualDate, { start: manualStart, end: manualEnd });
+                }
+            }
+
+            if (allowedCleaningDays.size === 0) {
+                return [];
+            }
+
+            // --- 4. "Regrouper" (Roll-up) le Set en nouveaux créneaux ---
+            const sortedDates = Array.from(allowedCleaningDays).sort();
+            const finalSlots = [];
+            let currentSlot = null;
+
+            for (const date of sortedDates) {
+                // Le jour suivant attendu (ex: si on est au 14, on attend le 15)
+                const expectedNextDate = currentSlot ? addDaysToISODate(currentSlot._endDateOnly, 1) : null;
+
+                if (currentSlot && date === expectedNextDate) {
+                    // Ce jour est contigu, on ÉTEND le créneau
+                    
+                    // On cherche l'heure de fin mémorisée (ex: 17:00)
+                    const endTime = (dayTimeMap.get(date) && dayTimeMap.get(date).end)
+                                    ? dayTimeMap.get(date).end 
+                                    : new Date(date + 'T17:00:00Z').toISOString(); // Défaut 17h UTC
+                                    
+                    currentSlot.end = endTime;
+                    currentSlot._endDateOnly = date; // Mettre à jour le jour de fin
+                
+                } else {
+                    // Ce jour n'est PAS contigu (ou c'est le premier)
+                    // On sauvegarde l'ancien créneau s'il existe
+                    if (currentSlot) {
+                        finalSlots.push(currentSlot);
+                    }
+                    
+                    // On COMMENCE un nouveau créneau
+                    const startTime = (dayTimeMap.get(date) && dayTimeMap.get(date).start)
+                                    ? dayTimeMap.get(date).start // Heure de début mémorisée (ex: 11:00)
+                                    : new Date(date + 'T11:00:00Z').toISOString(); // Défaut 11h UTC
+                                    
+                    const endTime = (dayTimeMap.get(date) && dayTimeMap.get(date).end)
+                                    ? dayTimeMap.get(date).end // Heure de fin mémorisée (ex: 17:00)
+                                    : new Date(date + 'T17:00:00Z').toISOString(); // Défaut 17h (pour créneaux d'un jour)
+
+                    currentSlot = {
+                        title: 'Créneau ménage',
+                        start: startTime,
+                        end: endTime,
+                        displayText: 'Créneau ménage',
+                        _startDateOnly: date, // Propriété temporaire
+                        _endDateOnly: date  // Propriété temporaire
+                    };
+                }
+            }
+
+            // N'oubliez pas de sauvegarder le tout dernier créneau
+            if (currentSlot) {
+                finalSlots.push(currentSlot);
+            }
+
+            // Nettoyage des propriétés temporaires
+            finalSlots.forEach(slot => {
+                delete slot._startDateOnly;
+                delete slot._endDateOnly;
+            });
+            
+            console.log('Slots finaux recalculés:', finalSlots);
+            return finalSlots;
+        }
+
+        // Étape 3 : Mettre à jour le calendrier avec les créneaux de ménage
+        function updateCalendar(cleaningSlots) {
+            $('#calendar').fullCalendar('addEventSource', cleaningSlots.map(slot => {
+                const slotStart = new Date(slot.start);
+                const slotEnd = new Date(slot.end);
+
+                const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
+                const isWeekendSlot =
+                    slotStart.getDay() === 6 && slotStart.getHours() >= 11 && // Saturday 11h or later
+                    slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 &&    // Sunday 17h or earlier
+                    slotStart.toDateString() !== slotEnd.toDateString();     // Ensure it's not a single-day slot
+
+                return {
+                    ...slot,
+                    className: isSameDay ? 'same-day' : isWeekendSlot ? 'weekend-slot' : 'standard-slot'
+                };
+            }));
+        }
+
+        // Étape 4 : Mettre à jour la liste des créneaux de ménage
+        function updateCleaningSlotsList(cleaningSlots) {
+            const listElement = document.getElementById('cleaning-slots');
+            if (!listElement) {
+                console.error("L'élément avec l'ID 'cleaning-slots' est introuvable dans le DOM.");
+                return;
+            }
+            listElement.innerHTML = ''; // Réinitialiser la liste
+
+            cleaningSlots.forEach((slot, idx) => {
+                const listItem = document.createElement('li');
+                const slotStart = new Date(slot.start);
+                const slotEnd = new Date(slot.end);
+                const now = new Date();
+
+                // Cas spécial : premier créneau, commence dans le passé ou maintenant
+                if (
+                    idx === 0 &&
+                    slotStart <= now
+                ) {
+                    // Pas de classe 'urgent' ici, car ce n'est pas forcément un créneau sur une seule journée
+                    listItem.innerHTML = `<span>Entre maintenant et le ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à ${slotEnd.getHours().toString().padStart(2, '0')}h</span>`;
+                }
+                // Ajouter la classe 'urgent' si le ménage doit se faire un jour précis
+                else if (slotStart.toDateString() === slotEnd.toDateString()) {
+                    listItem.classList.add('urgent');
+                    listItem.innerHTML = `<span>Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h</span>`;
+                } else {
+                    // Modifier le libellé pour les créneaux normaux et weekend
+                    listItem.innerHTML = `<span>Entre ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 11h et ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 17h</span>`;
+                }
+
+                // Ajouter la classe 'weekend' si le créneau est entièrement entre samedi 11h et dimanche 17h
+                if (
+                    slotStart.getDay() === 6 && slotStart.getHours() >= 11 && // Saturday 11h or later
+                    slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 &&    // Sunday 17h or earlier
+                    slotStart.toDateString() !== slotEnd.toDateString()      // Ensure it's not a single-day slot
+                ) {
+                    listItem.classList.add('weekend');
+                }
+
+                listElement.appendChild(listItem);
+            });
+
+            console.log("Liste des créneaux de ménage mise à jour");
+        }
+
+        // Fonction utilitaire pour formater les dates au format ISO (YYYY-MM-DD)
+        function formatDate(dateString) {
+            const year = dateString.substring(0, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        /**
+         * Ajoute un nombre de jours à une date ISO (YYYY-MM-DD) en UTC.
+         * @param {string} isoDate - La date de début (ex: '2026-02-14').
+         * @param {number} days - Le nombre de jours à ajouter.
+         * @returns {string} La nouvelle date ISO.
+         */
+        function addDaysToISODate(isoDate, days) {
+        // new Date(isoDate) interprète 'YYYY-MM-DD' comme YYYY-MM-DDT00:00:00Z (UTC)
+        const date = new Date(isoDate); 
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.toISOString().split('T')[0];
+        }
+
+        /**
+         * Liste tous les jours (YYYY-MM-DD) d'un créneau, en UTC.
+         * @param {string} startISOString - Date/heure de début (format ISO complet).
+         * @param {string} endISOString - Date/heure de fin (format ISO complet).
+         * @returns {string[]} Un tableau de dates ISO (YYYY-MM-DD).
+         */
+        function enumerateDatesInRange(startISOString, endISOString) {
+        const dates = new Set();
+        // On prend la date en UTC, peu importe l'heure
+        let currentISO = new Date(startISOString).toISOString().split('T')[0];
+        const endDate = new Date(endISOString).toISOString().split('T')[0];
+        const endObj = new Date(endDate); // La date UTC cible
+
+        while (new Date(currentISO) <= endObj) {
+            dates.add(currentISO);
+            currentISO = addDaysToISODate(currentISO, 1);
+        }
+        return Array.from(dates);
+        }
+    </script>
+</body>
+</html>

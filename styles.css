@@ -1,469 +1,464 @@
-/* Styles généraux */
+/* =========================================
+   1. CONFIGURATION & VARIABLES
+   ========================================= */
+:root {
+    --primary-color: #005f8d;      /* Ton bleu historique */
+    --secondary-color: #004a70;    /* Bleu plus foncé pour le survol */
+    --accent-color: #eaf6ff;       /* Bleu très clair pour les fonds */
+    --text-color: #333333;         /* Gris foncé pour le texte */
+    --bg-color: #f9f9f9;           /* Fond de page très léger */
+    --font-title: 'Playfair Display', serif;
+    --font-body: 'Lato', sans-serif;
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Import des polices */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Playfair Display',Georgia,"Times New Roman",serif;
+    font-family: var(--font-body);
+    color: var(--text-color);
+    background-color: var(--bg-color);
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    text-align: center;
-    position: relative;
+    line-height: 1.6;
+    text-align: center; /* Gardé pour centrer le contenu global comme avant */
 }
 
-/* Padding-top uniquement pour la version PC */
+/* Padding pour compenser le menu fixe sur PC */
 @media (min-width: 769px) {
-    body {
-        padding-top: 55px; /* Ajout pour éviter que le contenu soit masqué par le menu sur PC */
-    }
+    body { padding-top: 60px; }
 }
 
-/* Header */
-header.header-principal {
-    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
-    background-size: cover; /* S'assure que l'image couvre toute la largeur */
-    color: white;
-    padding: 20px;
-    position: relative;
-    height: 450px; /* Conserve la hauteur actuelle de la bannière */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Header 2 */
-header.header2 {
-    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
-    background-size: cover; /* S'assure que l'image couvre toute la largeur */
-    color: white;
-    padding: 20px;
-    position: relative;
-    height: 100px; /* Conserve la hauteur actuelle de la bannière */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-header.header2 h1 {
-    margin-bottom: 10px; /* Reduce spacing between title and subtitle */
-}
-
-header.header2 h2 {
-    font-size: 1.2em; /* Reduce font size of the subtitle */
-    margin-top: 0; /* Remove extra spacing above the subtitle */
-}
-
-.logo {
-    margin-top: 10px;
-    width: 150px;
-    height: auto;
-}
-
-/* Navigation */
+/* =========================================
+   2. NAVIGATION (MENU)
+   ========================================= */
 nav {
-    background: #005f8d; /* Ensure consistent blue color */
-    padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
-    position: fixed; /* Rend le menu fixe */
-    top: 0; /* Positionne le menu en haut */
+    background: var(--primary-color);
+    height: 60px;
+    padding: 0 5%;
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 100%; /* S'assure que le menu occupe toute la largeur */
-    z-index: 1000; /* Place le menu au-dessus des autres éléments */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour le contraste */
-    display: flex; /* Utilisation de Flexbox */
-    justify-content: space-between; /* Espace entre les éléments */
-    align-items: center; /* Aligne verticalement les éléments */
+    width: 90%; /* 100% - le padding */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex; /* Affiche les éléments du menu en ligne */
-}
-
-nav ul li {
-    margin: 0 15px;
+    display: flex;
+    gap: 20px;
 }
 
 nav ul li a {
     color: white;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 400;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s;
 }
 
-/* Language selector */
-.language-selector {
-    display: flex; /* Affiche les drapeaux en ligne */
-    align-items: center; /* Aligne verticalement les drapeaux */
+nav ul li a:hover {
+    color: #ffd700;
+    text-decoration: underline;
 }
 
-.language-selector img {
-    width: 25px;
-    height: auto;
-    margin: 0 5px;
-    cursor: pointer;
-    border-radius: 50%;
-    border: 2px solid transparent;
+/* =========================================
+   MENU LANGUES (DROPDOWN)
+   ========================================= */
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
 }
 
-.language-selector img:hover {
-    border: 2px solid white; /* Ajoute un effet au survol */
-}
-
-/* Menu burger pour mobile */
-.menu-toggle {
-    display: none;
-    background: #0077b6;
+/* Le bouton principal (Drapeau actuel) */
+.dropbtn {
+    background-color: transparent;
     color: white;
     padding: 10px;
+    font-size: 16px;
+    border: none;
     cursor: pointer;
-    text-align: center;
-    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Version mobile */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column; /* Empile les éléments verticalement */
-        align-items: flex-start; /* Aligne les éléments à gauche */
-    }
-
-    .menu-toggle {
-        display: block; /* Affiche le bouton burger */
-        align-self: flex-end; /* Place le bouton à droite */
-    }
-
-    nav ul {
-        display: none; /* Cache le menu par défaut */
-        flex-direction: column; /* Empile les éléments du menu */
-        background: #005f8d;
-        width: 100%;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        text-align: center;
-    }
-
-    nav ul.active {
-        display: flex; /* Affiche le menu lorsqu'il est activé */
-    }
-
-    nav ul li {
-        padding: 10px 0;
-    }
-
-    .language-selector {
-        margin-top: 10px; /* Place le sélecteur de langue sous le menu */
-        align-self: center; /* Centre le sélecteur de langue */
-    }
+.dropbtn img {
+    width: 25px;
+    height: auto;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    transition: transform 0.2s;
 }
 
-/* Étoiles pour la classification */
-.star-classification {
+.dropbtn .arrow {
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+/* La liste déroulante (Cachée par défaut) */
+.dropdown-content {
+    display: none;
     position: absolute;
-    top: 10px;
-    left: 20px;
+    right: 0; /* Aligné à droite pour ne pas sortir de l'écran */
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1001;
+    border-radius: 8px;
+    overflow: hidden;
+    top: 100%; /* Juste en dessous du bouton */
+}
+
+/* Les liens dans la liste */
+.dropdown-content a {
+    color: #333 !important; /* Force la couleur noire sur fond blanc */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex !important; /* Force flex pour aligner image + texte */
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-content a img {
+    width: 20px;
+    height: auto;
+    border-radius: 2px; /* Drapeaux rectangulaires ou ronds dans la liste */
+}
+
+/* Effets au survol */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: var(--primary-color) !important;
+}
+
+/* Afficher le menu au survol du bloc principal */
+.language-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.language-dropdown:hover .arrow {
+    transform: rotate(180deg); /* La flèche tourne */
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .language-dropdown {
+        position: absolute;
+        right: 60px; /* À gauche du burger menu */
+        top: 15px;   /* Aligné verticalement */
+        margin: 0;
+    }
+    
+    .dropdown-content {
+        right: -50px; /* Ajustement pour ne pas être trop au bord */
+    }
+    
+    /* Sur mobile, on cache le texte des langues pour gagner de la place si besoin, 
+       ou on laisse comme ça. Ici je laisse l'affichage complet. */
+}
+
+/* Menu Burger (Mobile) */
+.menu-toggle {
+    display: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* =========================================
+   3. HEADER & HERO
+   ========================================= */
+header.header-principal {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+                url('images/banniere/vue-balcon-2.webp') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+    padding: 20px;
+    height: 85vh; /* Hauteur immersive */
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+header.header2 {
+    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .star-classification img {
-    width: 100px;
-    height: auto;
+    width: 120px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
 }
 
-/* Image principale */
-.view-image {
-    width: 100%;
-    max-width: 800px;
-    margin-top: 20px;
+header h1 {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.view-image.small {
-    max-width: 100px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
+header h3 {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    opacity: 0.9;
 }
 
-/* Section principale */
+/* =========================================
+   4. LAYOUT GÉNÉRAL (Main & Sections)
+   ========================================= */
 main {
-    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
 section {
     background: white;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin-bottom: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-card);
+    width: auto;
 }
 
-/* Version mobile pour le menu */
+section h2 {
+    font-family: var(--font-title);
+    color: var(--primary-color);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Wrapper Flexbox pour Texte + Image (Accueil) */
+.content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    text-align: left;
+}
+
+.text-block {
+    flex: 1;
+}
+
+.image-block {
+    flex: 1;
+    text-align: center;
+}
+
+.image-block img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.signature {
+    text-align: center;
+    font-family: var(--font-title);
+    font-style: italic;
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+/* =========================================
+   5. RESPONSIVE (MOBILE & TABLETTE)
+   ========================================= */
 @media (max-width: 768px) {
+    /* Ajustements Header Mobile */
+    header.header-principal {
+        height: 60vh;
+        background-attachment: scroll;
+    }
+    header h1 { font-size: 2.2rem; }
+    header h3 { font-size: 1.1rem; }
+    
+    /* Navigation Mobile */
     nav {
-        position: relative; /* Permet de positionner les enfants avec position: absolute */
-        display: flex;
-        justify-content: center; /* Centre le menu hamburger */
-        align-items: center; /* Aligne verticalement les éléments */
-        background: #005f8d; /* Assure que la barre bleue est visible */
-        width: 100%; /* S'assure que la barre occupe toute la largeur */
-        height: 60px; /* Définit une hauteur fixe pour la barre */
+        padding: 0 20px;
+        width: calc(100% - 40px);
     }
 
     .menu-toggle {
-        display: block; /* Affiche le bouton burger */
-        position: absolute; /* Permet de le positionner indépendamment */
-        left: 50%; /* Positionne le centre du bouton au milieu de la page */
-        transform: translateX(-50%); /* Ajuste pour centrer parfaitement */
-        z-index: 2; /* Assure que le menu burger est au-dessus des autres éléments */
-    }
-
-    .language-selector {
-        position: absolute; /* Permet de positionner les drapeaux indépendamment */
-        right: 10px; /* Aligne les drapeaux à droite */
-        top: 50%; /* Centre verticalement les drapeaux */
-        transform: translateY(-50%); /* Ajuste pour centrer parfaitement */
-        display: flex; /* Affiche les drapeaux en ligne */
-        align-items: center; /* Aligne verticalement les drapeaux */
-        z-index: 1; /* Assure que les drapeaux ne chevauchent pas le menu burger */
+        display: block;
     }
 
     nav ul {
-        display: none; /* Cache le menu par défaut */
-        flex-direction: column; /* Empile les éléments du menu */
-        background: #005f8d;
-        width: 100%;
+        display: none; /* Caché par défaut */
+        flex-direction: column;
         position: absolute;
-        top: 60px; /* Place le menu déroulant juste en dessous de la barre */
+        top: 60px;
         left: 0;
-        text-align: center;
-        z-index: 1; /* Assure que le menu déroulant est visible */
+        width: 100%;
+        background: var(--primary-color);
+        padding: 20px 0;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
 
     nav ul.active {
-        display: flex; /* Affiche le menu lorsqu'il est activé */
+        display: flex;
     }
 
     nav ul li {
-        padding: 10px 0;
+        margin: 10px 0;
     }
+    
+    /* Positionnement drapeaux mobile */
+    .language-selector {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+    }
+
+    /* Layout Mobile */
+    .content-wrapper {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    
+    .text-block { text-align: justify; }
 }
 
-/* Version normale pour la page des équipements */
+/* =========================================
+   6. PAGES SPÉCIFIQUES (Gardé de l'ancien fichier)
+   ========================================= */
 
-.equipements-table {
-    width: 100%;
-    border-collapse: collapse;
+/* =========================================
+   ÉQUIPEMENTS : VERSION UNIFORME & COMPACTE
+   ========================================= */
+
+.equipements-grid {
+    display: grid;
+    /* On garde la flexibilité des colonnes */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    
+    /* Espace de 30px */
+    gap: 40px; 
+    margin: 30px 0;
+    
+    /* IMPORTANT : On enlève 'align-items: start' pour que la grille étire 
+       automatiquement les cartes à la même hauteur sur une ligne */
+}
+
+.equipement-card {
+    background: white;
+    padding: 10px 15px; /* Un poil plus de padding vertical pour l'équilibre */
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
     text-align: center;
-    margin: 20px 0;
-    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
-}
-
-.equipements-table td {
-    padding: 15px;
-    vertical-align: top;
-    border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
-    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
-}
-
-.equipements-table img {
-    display: block;
-    margin: 0 auto 10px; /* Centre l'image et ajoute un espace en dessous */
-}
-
-.equipements-table strong {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1.1rem;
-    color: #333;
-}
-
-.equipements-table p {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0;
-}
-
-/* Version mobile pour la table des équipements */
-@media (max-width: 768px) {
-    .equipements-table {
-        width: 100%; /* La table occupe toute la largeur */
-        border-collapse: collapse;
-        margin: 20px 0;
-        overflow-x: auto; /* Permet un défilement horizontal si nécessaire */
-    }
-
-    .equipements-table tr {
-        display: flex; /* Transforme les lignes en flexbox */
-        flex-direction: column; /* Empile les éléments verticalement */
-        margin-bottom: 20px; /* Ajoute un espace entre les groupes d'équipements */
-    }
-
-    .equipements-table td {
-        display: flex; /* Transforme les cellules en blocs flexibles */
-        flex-direction: column; /* Empile le contenu verticalement */
-        align-items: center; /* Centre le contenu horizontalement */
-        text-align: center; /* Center-align text */
-        padding: 15px 0; /* 15px en haut et en bas, 0 sur les côtés */
-        border: none; /* Supprime les bordures pour un style plus léger */
-        width: 100%; /* Chaque équipement occupe toute la largeur */
-    }
-
-    .equipements-table i {
-        font-size: 30px; /* Réduit légèrement la taille des icônes pour mobile */
-        margin-bottom: 10px; /* Ajoute un espace entre l'icône et le texte */
-    }
-
-    .equipements-table strong {
-        font-size: 1.2em; /* Augmente légèrement la taille du texte pour les titres */
-        margin-bottom: 5px;
-        color: #005f8d; /* Couleur principale */
-    }
-
-    .equipements-table p {
-        font-size: 1em; /* Ajuste la taille du texte pour mobile */
-        color: #333;
-        text-align: center; /* Ensure text is centered */
-    }
-
-    ul {
-        text-align: center; /* Center-align the list items */
-        padding: 0; /* Remove any default padding */
-    }
-
-    ul li {
-        margin-bottom: 10px; /* Add spacing between list items */
-    }
-}
-
-/* Section des pièces */
-.room {
-    margin: 40px auto;
-    padding: 20px;
-    /* max-width: 1200px; */
-}
-
-.room-content {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* Flexbox pour gérer l'intérieur */
     display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.room-content.reverse {
-    flex-direction: row-reverse; /* Inverse l'ordre pour alterner image et texte */
-}
-
-.room-text {
-    width: 50%; /* Assure que le texte occupe 50% */
-    text-align: justify;
-}
-
-/* Styles pour les conteneurs d'images */
-.room-images {
-    display: flex; /* Affiche les images en ligne */
-    flex-direction: column; /* Empile les images verticalement */
-    gap: 10px; /* Ajoute un espace entre les images */
-    width: 50%; /* Assure que les images occupent 50% de la largeur */
-}
-
-.room-images img {
-    width: 100%; /* Les images occupent toute la largeur de leur conteneur */
-    height: auto; /* Conserve les proportions des images */
-    border-radius: 10px; /* Ajoute des coins arrondis */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
-}
-
-@media (max-width: 768px) {
-    .room-images {
-        width: 100%; /* Les images occupent toute la largeur sur mobile */
-    }
-
-    .room-content {
-        flex-direction: column; /* Empile les éléments verticalement */
-    }
-}
-
-.room-image {
-    width: 50%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Classe pour les images réduites */
-.room-image.small {
-    width: 25%; /* 50% des 50% du div parent */
-    height: auto;
-    margin: 0 auto; /* Centre l'image horizontalement */
-}
-
-/* Classe pour les images encore plus réduites */
-.room-image.extra-small {
-    width: 15%; /* 30% des 50% du div parent */
-    height: auto;
-    margin: 0 auto; /* Centre l'image horizontalement */
-}
-
-.room-text {
-    width: 50%;
-    text-align: justify;
-}
-
-.room-text h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
-    color: #005f8d; /* Couleur principale */
-}
-
-.room-text p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #333;
-}
-
-.room-content.full {
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    
+    /* IMPORTANT : La carte prend 100% de la hauteur de la cellule de la grille */
+    height: 100%; 
 }
 
-.room-content.full .room-text {
-    width: 100%;
+/* Effet survol */
+.equipement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    border-color: var(--primary-color);
 }
 
-/* Version mobile pour les pièces */
+/* Icône */
+.equipement-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px; /* Un peu d'espace avant le titre */
+    flex-shrink: 0; /* Empêche l'icône de s'écraser si la carte est petite */
+}
+
+.equipement-icon-wrapper i {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+/* Titre */
+.equipement-card h3 {
+    font-family: var(--font-title);
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+}
+
+/* Description */
+.equipement-card p {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 0;
+    
+    /* Optionnel : Si tu veux que le texte prenne toute la place dispo pour pousser vers le bas */
+    flex-grow: 1; 
+}
+
+/* Section Transparente */
+section.transparent-section {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* --- Pièces (Logement) --- */
+.room { margin: 40px auto; padding: 20px; }
+.room-content { display: flex; align-items: center; gap: 20px; }
+.room-content.reverse { flex-direction: row-reverse; }
+.room-text { width: 50%; text-align: justify; }
+.room-images { display: flex; flex-direction: column; gap: 10px; width: 50%; }
+.room-images img { width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
 @media (max-width: 768px) {
-    .room-content {
-        flex-direction: column; /* Empile les éléments verticalement */
-        text-align: center; /* Centre le texte */
-    }
-
-    .room-content.reverse {
-        flex-direction: column; /* Empile également pour les sections inversées */
-    }
-
-    .room-image {
-        width: 100%; /* L'image occupe toute la largeur */
-        margin-top: 10px; /* Ajoute un espace entre le texte et l'image */
-    }
-
-    .room-text {
-        width: 100%; /* Le texte occupe toute la largeur */
-        margin-bottom: 10px; /* Ajoute un espace entre le texte et l'image */
-    }
-
-    .room-text h2 {
-        font-size: 1.5em; /* Ajuste la taille du titre pour mobile */
-        word-spacing: normal; /* Prevent excessive spacing between words */
-        line-height: 1.2; /* Improve line height for better readability */
-        text-align: center; /* Center-align the title */
-    }
-
-    .room-text p {
-        font-size: 1em; /* Ajuste la taille du texte pour mobile */
-        line-height: 1.5; /* Améliore la lisibilité */
-    }
+    .room-content, .room-content.reverse { flex-direction: column; }
+    .room-text, .room-images { width: 100%; }
 }
 
-/* Styles pour le formulaire de contact */
+/* --- Formulaire Contact --- */
 .contact-form {
     max-width: 600px;
     margin: 0 auto;
@@ -472,475 +467,512 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
-
-.contact-form .form-group {
-    margin-bottom: 15px;
-    text-align: left; /* Aligne les labels à gauche */
+.contact-form .form-group { margin-bottom: 15px; text-align: left; }
+.contact-form label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--primary-color); text-align: left; }
+.contact-form input, .contact-form textarea {
+    width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;
 }
-
-.contact-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #005f8d; /* Couleur principale */
-    text-align: left; /* Aligne les labels à gauche */
-}
-
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-    box-sizing: border-box;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color: #005f8d;
-    outline: none;
-}
-
 .contact-form .btn-submit {
-    display: inline-block;
-    background: #005f8d;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    display: inline-block; background: var(--primary-color); color: #fff; padding: 10px 20px;
+    border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s ease;
 }
+.contact-form .btn-submit:hover { background: var(--secondary-color); }
 
-.contact-form .btn-submit:hover {
-    background: #004a70;
-}
-
-/* Styles pour le calendrier des disponibilités */
+/* --- Calendrier --- */
 #calendar {
-    margin: 20px auto;
-    max-width: 800px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto; max-width: 800px; background: white; border: 1px solid #ddd;
+    border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; min-height: 600px;
+}
+.fc-toolbar h2 { font-size: 1.5em; color: var(--primary-color); }
+.fc-button { background: var(--primary-color); color: white; border: none; }
+.fc-button:hover { background: var(--secondary-color); }
+.fc-day.fc-today { background: var(--accent-color); border-color: var(--primary-color); }
+.fc-event { background: var(--primary-color); border: none; }
+
+/* --- Carte Interactive (Leaflet) --- */
+.map-section { margin: 0 auto 1.5rem auto; position: relative; width: 100%; }
+#map { width: 100%; height: 350px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+.legend {
+  position: absolute; left: 10px; bottom: 10px; background: rgba(255,255,255,0.93);
+  padding: 6px 12px; font-size: 12px; border-radius: 5px; display: flex; flex-direction: column;
+  gap: 3px; max-width: 180px; z-index: 500;
+}
+.legend img { width: 13px; height: 20px; margin-right: 6px; }
+.legend-toggle-btn { display: none; }
+
+/* Boutons filtres map */
+#custom-filter-bar {
+  width: 100%; margin: 0 auto 0.5rem auto; background: var(--primary-color);
+  border-radius: 8px 8px 0 0; color: #fff; padding: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+#custom-filter-panel {
+  width: 100%; margin: 0 auto 1rem auto; background: #f8f9fa;
+  border-radius: 0 0 8px 8px; padding: 15px;
+}
+#custom-filter-checkboxes { display: flex; flex-wrap: wrap; gap: 15px; }
+
+@media (max-width: 600px) {
+    #map { height: 220px; }
+    .legend-toggle-btn { display: block; position: absolute; left: 10px; bottom: 10px; z-index: 501; background: #fff; padding: 5px; border-radius: 20px; }
+    .legend.hide-legend { transform: translateY(120%); opacity: 0; }
+}
+
+/* =========================================
+   7. SECTIONS CONTENU (Logement, Commerces...)
+   ========================================= */
+
+/* Conteneur principal */
+.room {
+    margin: 40px auto;
     padding: 20px;
-    min-height: 600px; /* Ensures enough height for the full month */
-    overflow: hidden; /* Prevents scrollbars */
+    width: 100%;
+    box-sizing: border-box; /* Important pour que le padding ne dépasse pas */
 }
 
-.fc-toolbar {
+/* Flexbox : Texte + Image */
+.room-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Ensure proper alignment on smaller screens */
+    gap: 40px; /* Espace plus aéré */
+    justify-content: space-between;
 }
 
-.fc-toolbar .fc-left {
-    flex: 1; /* Take up space to push the center content */
-    text-align: left; /* Align buttons to the left */
+/* Option pour inverser (Image à gauche, Texte à droite) */
+.room-content.reverse {
+    flex-direction: row-reverse;
 }
 
-.fc-toolbar .fc-center {
-    flex: 1; /* Center content takes equal space */
-    text-align: center; /* Center the month name */
-}
-
-.fc-toolbar .fc-right {
-    flex: 1; /* Take up space to balance the layout */
-    text-align: right; /* Align any right-side content */
-}
-
-.fc-toolbar h2 {
-    font-size: 1.5em;
-    color: #005f8d; /* Couleur principale */
-}
-
-.fc-button {
-    background: #005f8d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.fc-button:hover {
-    background: #004a70;
-}
-
-.fc-day-header {
-    background: #f4f4f4;
-    color: #333;
-    font-weight: bold;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-.fc-day {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    vertical-align: top;
-}
-
-.fc-day.fc-today {
-    background: #eaf6ff;
-    border-color: #005f8d;
-}
-
-.fc-event {
-    background: #005f8d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 0.9em;
-    text-align: center;
-}
-
-.fc-event:hover {
-    background: #004a70;
-}
-
-/* Version mobile pour le calendrier */
-@media (max-width: 768px) {
-    #calendar {
-        width: 90%; /* Réduit la largeur pour s'adapter à l'écran */
-        padding: 15px;
-    }
-
-    .fc-toolbar {
-        flex-direction: column; /* Empile les éléments verticalement */
-        align-items: center; /* Centre les éléments */
-        gap: 10px; /* Ajoute un espace entre les éléments */
-    }
-
-    .fc-toolbar .fc-left,
-    .fc-toolbar .fc-center,
-    .fc-toolbar .fc-right {
-        flex: none; /* Supprime la répartition de l'espace */
-        text-align: center; /* Centre le contenu */
-    }
-
-    .fc-button {
-        font-size: 0.8em; /* Réduit la taille des boutons */
-        padding: 5px; /* Ajuste le padding */
-        margin: 2px; /* Ajoute un espace entre les boutons */
-    }
-
-    .fc-day-header, .fc-day {
-        font-size: 0.8em; /* Réduit la taille du texte */
-        padding: 8px; /* Ajuste le padding */
-    }
-}
-
-/* Style pour la classe intro-text */
-.intro-text {
-    font-size: 1.2em;
-    margin: 20px auto; /* Centers the element horizontally */
-    width: 80%; /* Matches the width of sections */
-    line-height: 1.6;
-    color: #333;
+/* Le Texte */
+.room-text {
+    width: 50%; /* Prend la moitié de la place */
     text-align: justify;
 }
 
-.signature {
-    text-align: center;
-    font-style: italic;
-    margin-bottom: 10px;
+.room-text h2 {
+    text-align: left; /* Titres alignés à gauche dans les blocs */
+    margin-top: 0;
 }
 
-ul {
-    list-style: none; /* Cache les puces des listes */
+/* --- CORRECTION ICI : L'Image seule --- */
+.room-image {
+    width: 50%;       /* Force l'image à prendre 50% de la largeur */
+    height: auto;     /* Garde les proportions */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    object-fit: cover; /* S'assure que l'image remplit bien son cadre */
 }
 
-h3#subtitle, h3#subtitle2 {
-    font-size: 1.5em; /* Même taille que les anciens h2 */
-    font-weight: bold; /* Même poids que les anciens h2 */
-    margin: 0.5em 0; /* Même espacement que les anciens h2 */
+/* Cas des groupes d'images (ex: Salon) */
+.room-images {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 50%;
 }
 
-/* Boutons filtre personnalisés */
-.custom-filter-btn {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 16px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.custom-filter-btn:hover {
-  background: #0056b3;
-}
-
-/* Checkbox et label du filtre personnalisés */
-.custom-filter-label {
-  color: #007bff;
-  font-weight: 500;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.custom-filter-checkbox {
-  accent-color: #007bff;
-  width: 18px;
-  height: 18px;
-}
-
-/* Styles spécifiques à activites-map.html */
-.map-section {
-  margin: 0 auto 1.5rem auto;
-  padding: 0;
-  position: relative;
-}
-#map {
-  width: 100%;
-  height: 350px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 0;
-}
-.legend {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  background: rgba(255,255,255,0.93);
-  line-height: 1.4em;
-  padding: 6px 12px 6px 8px;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  max-width: 180px;
-  align-items: flex-start;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  z-index: 500;
-  transition: transform 0.2s;
-  padding-bottom: 0;
-}
-.legend div {
-  font-size: 12px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  text-align: left;
-  justify-content: flex-start;
-}
-.legend img {
-  width: 13px;
-  height: 20px;
-  margin-right: 6px;
-}
-.legend.hide-legend {
-  transform: translateY(120%);
-  pointer-events: none;
-  opacity: 0.2;
-}
-.legend-toggle-btn {
-  display: none;
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 501;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  cursor: pointer;
-}
-.leaflet-control-layers-expanded {
-  width: 140px !important;
-  font-size: 13px;
-  background: rgba(255,255,255,0.93);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  border-radius: 5px;
-  border: none !important;
-  max-height: 160px;
-  overflow-y: auto;
-}
-.leaflet-control-layers {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-.leaflet-control-layers-overlays label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: normal;
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  font-size: 13px;
-}
-.leaflet-control-layers-overlays input[type="checkbox"] {
-  accent-color: #ff7800;
-  width: 15px;
-  height: 15px;
-}
-.leaflet-control-attribution {
-  display: none !important;
-}
-@media (max-width: 1000px) {
-  .map-section {
-    max-width: 98vw;
-  }
-}
-@media (max-width: 600px) {
-  #map {
-    height: 220px;
-  }
-  .legend {
-    max-width: 90vw;
-    font-size: 12px;
-    padding: 7px 10px 38px 7px;
-    gap: 3px;
-    padding-bottom: 38px;
-  }
-  .legend div {
-    font-size: 12px;
-  }
-  .legend img {
-    width: 13px;
-    height: 20px;
-    margin-right: 6px;
-  }
-  .leaflet-control-layers-expanded {
-    width: 110px !important;
-    font-size: 12px;
-    max-height: 90px;
-  }
-  .legend-toggle-btn {
-    display: block;
-  }
-}
-.ripple {
-  position: relative;
-  overflow: hidden;
-}
-.ripple:after {
-  content: '';
-  display: block;
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  width: 100%;
-  height: 100%;
-  top: 0; left: 0;
-  background: rgba(0,0,0,0.15);
-  opacity: 0;
-  transition: opacity 0.4s, transform 0.4s;
-  transform: scale(0.5);
-}
-.ripple:active:after {
-  opacity: 1;
-  transform: scale(1.2);
-  transition: 0s;
-}
-#custom-filter-bar {
-  width: 80%;
-  margin: 0 auto 0.5rem auto;
-  background: #005f8d;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  font-size: 17px;
-  font-weight: 500;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-  z-index: 10;
-  padding: 0;
-}
-#custom-filter-bar span {
-  padding: 10px 18px;
-  display: block;
-}
-#custom-filter-panel {
-  width: 80%;
-  margin: 0 auto 1rem auto;
-  background: #f8f9fa;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  font-size: 16px;
-  z-index: 1001;
-  position: relative;
-  z-index: 10;
-  padding: 0;
-}
-#custom-filter-checkboxes, #custom-filter-panel > div {
-  padding: 12px 18px 10px 18px;
-}
-#custom-filter-checkboxes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-}
-#custom-filter-checkboxes label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #007bff;
-}
-#custom-filter-checkboxes input[type="checkbox"] {
-  accent-color: #007bff;
-  width: 18px;
-  height: 18px;
-}
-#custom-filter-all, #custom-filter-none {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 16px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#custom-filter-all:hover, #custom-filter-none:hover {
-  background: #0056b3;
-}
-
-/* Responsive width for filter bar, filter panel, and map section (spécifique à cette page) */
-.map-section,
-#custom-filter-bar,
-#custom-filter-panel {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-#map {
-  width: 100%;
-}
-@media (max-width: 600px) {
-  .map-section,
-  #custom-filter-bar,
-  #custom-filter-panel {
-    width: 95vw;
-    max-width: 95vw;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #map {
+.room-images img {
     width: 100%;
-  }
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Classes utilitaires pour petites images (utilisées dans Commerces) */
+.room-image.small { width: 25%; margin: 0 auto; display: block; }
+.room-image.extra-small { width: 15%; margin: 0 auto; display: block; }
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .room-content, 
+    .room-content.reverse {
+        flex-direction: column; /* Tout s'empile */
+        text-align: center;
+    }
+
+    .room-text {
+        width: 100%; /* Le texte prend toute la largeur */
+        margin-bottom: 20px;
+    }
+    
+    .room-text h2 {
+        text-align: center; /* Titre centré sur mobile */
+    }
+
+    /* L'image prend toute la largeur sur mobile */
+    .room-image, 
+    .room-images {
+        width: 100%; 
+        max-width: 500px; /* Limite pour ne pas être gigantesque */
+        margin: 0 auto;
+    }
+    
+    /* On remet les petites images plus grosses sur mobile pour qu'on les voie */
+    .room-image.small, 
+    .room-image.extra-small {
+        width: 50%;
+    }
+}
+
+/* =========================================
+   ACTIVITÉS V2 : BARRE D'INFOS PRATIQUES
+   ========================================= */
+
+.activity-infos {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee; /* Petite ligne de séparation */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+/* =========================================
+   ACTIVITÉS V2 : BADGES & BOUTONS
+   ========================================= */
+
+/* Conteneur global de la ligne d'infos */
+.activity-infos {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee; /* Séparation discrète */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+/* 1. LES BADGES DE TRANSPORT (Voiture, Vélo...) */
+.transport-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; 
+    margin-right: auto; /* Pousse les boutons à droite sur PC */
+    margin-bottom: 5px;
+}
+
+.t-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f4f4f4; /* Fond gris clair */
+    padding: 6px 12px;
+    border-radius: 20px; /* Forme arrondie 'pilule' */
+    font-size: 0.85rem;
+    color: #444;
+    border: 1px solid #e0e0e0;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.t-badge i {
+    color: var(--primary-color); /* Icône en bleu */
+    font-size: 1rem;
+}
+
+/* 2. LES BOUTONS D'ACTION (Site & GPS) */
+.btn-activity {
+    text-decoration: none;
+    padding: 8px 16px; /* Un peu plus grand pour le confort */
+    border-radius: 8px; /* Coins légèrement arrondis */
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+/* Bouton Site Web (Clair) */
+.btn-website {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: 1px solid transparent;
+}
+.btn-website:hover {
+    background-color: #d4ebfc;
+    border-color: var(--primary-color);
+}
+
+/* Bouton GPS (Foncé) */
+.btn-maps {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn-maps:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* 3. ADAPTATION MOBILE */
+@media (max-width: 768px) {
+    .activity-infos {
+        flex-direction: column; /* On empile tout */
+        align-items: stretch;   /* On prend toute la largeur */
+        gap: 15px;
+    }
+    
+    .transport-options {
+        margin-right: 0;
+        justify-content: center; /* Badges centrés */
+        width: 100%;
+    }
+
+    .btn-activity {
+        justify-content: center; /* Texte du bouton centré */
+        width: 100%; /* Bouton pleine largeur (plus facile à cliquer) */
+    }
+}
+
+/* =========================================
+   SECTION TÉMOIGNAGES (LIVRE D'OR)
+   ========================================= */
+
+/* 1. La Grille qui contient les avis */
+.testimonials-grid {
+    display: grid;
+    /* S'adapte automatiquement : 1 colonne sur mobile, 3 sur PC */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+    /* Marge importante en bas pour ne pas toucher le bouton Airbnb */
+    margin-bottom: 60px; 
+}
+
+/* 2. La Carte individuelle d'un avis */
+.testimonial-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Nécessaire pour positionner la grosse guillemet */
+    height: 100%; /* Pour qu'elles aient toutes la même hauteur */
+}
+
+/* La grosse guillemet décorative */
+.testimonial-card::before {
+    content: "“";
+    font-family: serif;
+    font-size: 80px;
+    color: var(--accent-color);
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    opacity: 0.5;
+    line-height: 1;
+    pointer-events: none; /* Pour qu'elle ne gêne pas la sélection du texte */
+}
+
+/* L'en-tête de la carte (Nom + Date) */
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative; /* Pour passer au-dessus de la guillemet décorative */
+    z-index: 1;
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+}
+
+.testimonial-date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-left: 10px;
+}
+
+/* Les étoiles dorées */
+.stars {
+    color: #ffc107; /* Jaune or */
+    font-size: 1rem;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Le texte du commentaire */
+.testimonial-text {
+    font-style: italic;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex-grow: 1; /* Pousse le bas de la carte pour aligner */
+    position: relative;
+    z-index: 1;
+    margin: 0;
+}
+
+/* 3. Le Bouton Airbnb en bas */
+.airbnb-link-wrapper {
+    text-align: center;
+    margin-top: 0;
+    padding-bottom: 20px;
+    clear: both; /* Sécurité pour éviter les chevauchements */
+}
+
+.btn-airbnb-review {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #FF5A5F; /* Le rouge officiel Airbnb */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: var(--font-body);
+}
+
+.btn-airbnb-review:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 90, 95, 0.3);
+    color: white; /* S'assure que le texte reste blanc */
+}
+
+/* Ajustement Mobile */
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr; /* Une seule colonne */
+        margin-bottom: 40px;
+    }
+}
+
+/* =========================================
+   FOOTER MODERNE (FINAL)
+   ========================================= */
+
+footer {
+    background-color: var(--secondary-color); /* Bleu foncé */
+    color: white;
+    padding: 50px 20px 20px; /* Un peu plus d'espace en haut */
+    margin-top: 60px;
+    font-family: var(--font-body);
+}
+
+/* Conteneur principal en Grille */
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    text-align: left;
+}
+
+/* Titres des colonnes */
+.footer-col h3 {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #ffffff; /* Blanc pur pour l'élégance */
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* --- 1. Infos de Contact (Icône + Texte alignés) --- */
+.footer-col p {
+    display: flex;          /* Aligne l'icône et le texte */
+    align-items: center;    /* Centre verticalement */
+    gap: 12px;              /* Espace entre icône et texte */
+    margin-bottom: 12px;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Lien dans un paragraphe (ex: tél) */
+.footer-col p a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+/* --- 2. Liens Rapides (Liste verticale) --- */
+/* On cible les liens qui sont directs enfants de la colonne (pas dans un <p>) */
+.footer-col > a {
+    display: block;         /* Un par ligne */
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s, padding-left 0.2s;
+}
+
+/* Effet au survol des liens */
+.footer-col a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer-col > a:hover {
+    padding-left: 5px; /* Petit effet de décalage sympa au survol */
+}
+
+/* Style des petites icônes (FontAwesome) */
+.footer-col i {
+    width: 20px;
+    color: var(--accent-color); /* Bleu clair pour ressortir */
+    text-align: center;
+    flex-shrink: 0; /* Empêche l'icône de s'écraser */
+}
+
+/* --- 3. Bouton Airbnb --- */
+.footer-airbnb {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.1); /* Fond translucide */
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: white !important; /* Force le blanc */
+    font-weight: bold;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.footer-airbnb:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+    text-decoration: none !important;
+}
+
+/* Barre de copyright en bas */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 50px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .footer-content {
+        text-align: center; /* Tout centrer sur mobile */
+    }
+    
+    /* Sur mobile, on recentre les éléments flex (contact) */
+    .footer-col p {
+        justify-content: center;
+    }
+    
+    .footer-airbnb {
+        width: 100%; /* Bouton large sur mobile */
+        justify-content: center;
+    }
 }

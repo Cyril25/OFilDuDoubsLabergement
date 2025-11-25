@@ -1,0 +1,946 @@
+/* Styles généraux */
+body {
+    font-family: 'Playfair Display',Georgia,"Times New Roman",serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+    position: relative;
+}
+
+/* Padding-top uniquement pour la version PC */
+@media (min-width: 769px) {
+    body {
+        padding-top: 55px; /* Ajout pour éviter que le contenu soit masqué par le menu sur PC */
+    }
+}
+
+/* Header */
+header.header-principal {
+    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
+    background-size: cover; /* S'assure que l'image couvre toute la largeur */
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 450px; /* Conserve la hauteur actuelle de la bannière */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Header 2 */
+header.header2 {
+    background: url('images/banniere/vue-balcon-2.webp') no-repeat center center; /* Utilise l'image comme fond */
+    background-size: cover; /* S'assure que l'image couvre toute la largeur */
+    color: white;
+    padding: 20px;
+    position: relative;
+    height: 100px; /* Conserve la hauteur actuelle de la bannière */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+header.header2 h1 {
+    margin-bottom: 10px; /* Reduce spacing between title and subtitle */
+}
+
+header.header2 h2 {
+    font-size: 1.2em; /* Reduce font size of the subtitle */
+    margin-top: 0; /* Remove extra spacing above the subtitle */
+}
+
+.logo {
+    margin-top: 10px;
+    width: 150px;
+    height: auto;
+}
+
+/* Navigation */
+nav {
+    background: #005f8d; /* Ensure consistent blue color */
+    padding: 10px 0px; /* Ajout de padding pour un meilleur espacement */
+    position: fixed; /* Rend le menu fixe */
+    top: 0; /* Positionne le menu en haut */
+    left: 0;
+    width: 100%; /* S'assure que le menu occupe toute la largeur */
+    z-index: 1000; /* Place le menu au-dessus des autres éléments */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour le contraste */
+    display: flex; /* Utilisation de Flexbox */
+    justify-content: space-between; /* Espace entre les éléments */
+    align-items: center; /* Aligne verticalement les éléments */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Affiche les éléments du menu en ligne */
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Language selector */
+.language-selector {
+    display: flex; /* Affiche les drapeaux en ligne */
+    align-items: center; /* Aligne verticalement les drapeaux */
+}
+
+.language-selector img {
+    width: 25px;
+    height: auto;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.language-selector img:hover {
+    border: 2px solid white; /* Ajoute un effet au survol */
+}
+
+/* Menu burger pour mobile */
+.menu-toggle {
+    display: none;
+    background: #0077b6;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+}
+
+/* Version mobile */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Empile les éléments verticalement */
+        align-items: flex-start; /* Aligne les éléments à gauche */
+    }
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+        align-self: flex-end; /* Place le bouton à droite */
+    }
+
+    nav ul {
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column; /* Empile les éléments du menu */
+        background: #005f8d;
+        width: 100%;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        text-align: center;
+    }
+
+    nav ul.active {
+        display: flex; /* Affiche le menu lorsqu'il est activé */
+    }
+
+    nav ul li {
+        padding: 10px 0;
+    }
+
+    .language-selector {
+        margin-top: 10px; /* Place le sélecteur de langue sous le menu */
+        align-self: center; /* Centre le sélecteur de langue */
+    }
+}
+
+/* Étoiles pour la classification */
+.star-classification {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+.star-classification img {
+    width: 100px;
+    height: auto;
+}
+
+/* Image principale */
+.view-image {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.view-image.small {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Section principale */
+main {
+    padding: 20px;
+}
+
+section {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Version mobile pour le menu */
+@media (max-width: 768px) {
+    nav {
+        position: relative; /* Permet de positionner les enfants avec position: absolute */
+        display: flex;
+        justify-content: center; /* Centre le menu hamburger */
+        align-items: center; /* Aligne verticalement les éléments */
+        background: #005f8d; /* Assure que la barre bleue est visible */
+        width: 100%; /* S'assure que la barre occupe toute la largeur */
+        height: 60px; /* Définit une hauteur fixe pour la barre */
+    }
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+        position: absolute; /* Permet de le positionner indépendamment */
+        left: 50%; /* Positionne le centre du bouton au milieu de la page */
+        transform: translateX(-50%); /* Ajuste pour centrer parfaitement */
+        z-index: 2; /* Assure que le menu burger est au-dessus des autres éléments */
+    }
+
+    .language-selector {
+        position: absolute; /* Permet de positionner les drapeaux indépendamment */
+        right: 10px; /* Aligne les drapeaux à droite */
+        top: 50%; /* Centre verticalement les drapeaux */
+        transform: translateY(-50%); /* Ajuste pour centrer parfaitement */
+        display: flex; /* Affiche les drapeaux en ligne */
+        align-items: center; /* Aligne verticalement les drapeaux */
+        z-index: 1; /* Assure que les drapeaux ne chevauchent pas le menu burger */
+    }
+
+    nav ul {
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column; /* Empile les éléments du menu */
+        background: #005f8d;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Place le menu déroulant juste en dessous de la barre */
+        left: 0;
+        text-align: center;
+        z-index: 1; /* Assure que le menu déroulant est visible */
+    }
+
+    nav ul.active {
+        display: flex; /* Affiche le menu lorsqu'il est activé */
+    }
+
+    nav ul li {
+        padding: 10px 0;
+    }
+}
+
+/* Version normale pour la page des équipements */
+
+.equipements-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 20px 0;
+    table-layout: fixed; /* Force les colonnes à avoir la même largeur */
+}
+
+.equipements-table td {
+    padding: 15px;
+    vertical-align: top;
+    border: 1px solid #ddd; /* Optionnel : ajoute une bordure entre les cellules */
+    width: 25%; /* Chaque colonne occupe 25% de la largeur totale */
+}
+
+.equipements-table img {
+    display: block;
+    margin: 0 auto 10px; /* Centre l'image et ajoute un espace en dessous */
+}
+
+.equipements-table strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.equipements-table p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Version mobile pour la table des équipements */
+@media (max-width: 768px) {
+    .equipements-table {
+        width: 100%; /* La table occupe toute la largeur */
+        border-collapse: collapse;
+        margin: 20px 0;
+        overflow-x: auto; /* Permet un défilement horizontal si nécessaire */
+    }
+
+    .equipements-table tr {
+        display: flex; /* Transforme les lignes en flexbox */
+        flex-direction: column; /* Empile les éléments verticalement */
+        margin-bottom: 20px; /* Ajoute un espace entre les groupes d'équipements */
+    }
+
+    .equipements-table td {
+        display: flex; /* Transforme les cellules en blocs flexibles */
+        flex-direction: column; /* Empile le contenu verticalement */
+        align-items: center; /* Centre le contenu horizontalement */
+        text-align: center; /* Center-align text */
+        padding: 15px 0; /* 15px en haut et en bas, 0 sur les côtés */
+        border: none; /* Supprime les bordures pour un style plus léger */
+        width: 100%; /* Chaque équipement occupe toute la largeur */
+    }
+
+    .equipements-table i {
+        font-size: 30px; /* Réduit légèrement la taille des icônes pour mobile */
+        margin-bottom: 10px; /* Ajoute un espace entre l'icône et le texte */
+    }
+
+    .equipements-table strong {
+        font-size: 1.2em; /* Augmente légèrement la taille du texte pour les titres */
+        margin-bottom: 5px;
+        color: #005f8d; /* Couleur principale */
+    }
+
+    .equipements-table p {
+        font-size: 1em; /* Ajuste la taille du texte pour mobile */
+        color: #333;
+        text-align: center; /* Ensure text is centered */
+    }
+
+    ul {
+        text-align: center; /* Center-align the list items */
+        padding: 0; /* Remove any default padding */
+    }
+
+    ul li {
+        margin-bottom: 10px; /* Add spacing between list items */
+    }
+}
+
+/* Section des pièces */
+.room {
+    margin: 40px auto;
+    padding: 20px;
+    /* max-width: 1200px; */
+}
+
+.room-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.room-content.reverse {
+    flex-direction: row-reverse; /* Inverse l'ordre pour alterner image et texte */
+}
+
+.room-text {
+    width: 50%; /* Assure que le texte occupe 50% */
+    text-align: justify;
+}
+
+/* Styles pour les conteneurs d'images */
+.room-images {
+    display: flex; /* Affiche les images en ligne */
+    flex-direction: column; /* Empile les images verticalement */
+    gap: 10px; /* Ajoute un espace entre les images */
+    width: 50%; /* Assure que les images occupent 50% de la largeur */
+}
+
+.room-images img {
+    width: 100%; /* Les images occupent toute la largeur de leur conteneur */
+    height: auto; /* Conserve les proportions des images */
+    border-radius: 10px; /* Ajoute des coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+}
+
+@media (max-width: 768px) {
+    .room-images {
+        width: 100%; /* Les images occupent toute la largeur sur mobile */
+    }
+
+    .room-content {
+        flex-direction: column; /* Empile les éléments verticalement */
+    }
+}
+
+.room-image {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Classe pour les images réduites */
+.room-image.small {
+    width: 25%; /* 50% des 50% du div parent */
+    height: auto;
+    margin: 0 auto; /* Centre l'image horizontalement */
+}
+
+/* Classe pour les images encore plus réduites */
+.room-image.extra-small {
+    width: 15%; /* 30% des 50% du div parent */
+    height: auto;
+    margin: 0 auto; /* Centre l'image horizontalement */
+}
+
+.room-text {
+    width: 50%;
+    text-align: justify;
+}
+
+.room-text h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #005f8d; /* Couleur principale */
+}
+
+.room-text p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.room-content.full {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.room-content.full .room-text {
+    width: 100%;
+}
+
+/* Version mobile pour les pièces */
+@media (max-width: 768px) {
+    .room-content {
+        flex-direction: column; /* Empile les éléments verticalement */
+        text-align: center; /* Centre le texte */
+    }
+
+    .room-content.reverse {
+        flex-direction: column; /* Empile également pour les sections inversées */
+    }
+
+    .room-image {
+        width: 100%; /* L'image occupe toute la largeur */
+        margin-top: 10px; /* Ajoute un espace entre le texte et l'image */
+    }
+
+    .room-text {
+        width: 100%; /* Le texte occupe toute la largeur */
+        margin-bottom: 10px; /* Ajoute un espace entre le texte et l'image */
+    }
+
+    .room-text h2 {
+        font-size: 1.5em; /* Ajuste la taille du titre pour mobile */
+        word-spacing: normal; /* Prevent excessive spacing between words */
+        line-height: 1.2; /* Improve line height for better readability */
+        text-align: center; /* Center-align the title */
+    }
+
+    .room-text p {
+        font-size: 1em; /* Ajuste la taille du texte pour mobile */
+        line-height: 1.5; /* Améliore la lisibilité */
+    }
+}
+
+/* Styles pour le formulaire de contact */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+    text-align: left; /* Aligne les labels à gauche */
+}
+
+.contact-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #005f8d; /* Couleur principale */
+    text-align: left; /* Aligne les labels à gauche */
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #005f8d;
+    outline: none;
+}
+
+.contact-form .btn-submit {
+    display: inline-block;
+    background: #005f8d;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact-form .btn-submit:hover {
+    background: #004a70;
+}
+
+/* Styles pour le calendrier des disponibilités */
+#calendar {
+    margin: 20px auto;
+    max-width: 800px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    min-height: 600px; /* Ensures enough height for the full month */
+    overflow: hidden; /* Prevents scrollbars */
+}
+
+.fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Ensure proper alignment on smaller screens */
+}
+
+.fc-toolbar .fc-left {
+    flex: 1; /* Take up space to push the center content */
+    text-align: left; /* Align buttons to the left */
+}
+
+.fc-toolbar .fc-center {
+    flex: 1; /* Center content takes equal space */
+    text-align: center; /* Center the month name */
+}
+
+.fc-toolbar .fc-right {
+    flex: 1; /* Take up space to balance the layout */
+    text-align: right; /* Align any right-side content */
+}
+
+.fc-toolbar h2 {
+    font-size: 1.5em;
+    color: #005f8d; /* Couleur principale */
+}
+
+.fc-button {
+    background: #005f8d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.fc-button:hover {
+    background: #004a70;
+}
+
+.fc-day-header {
+    background: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.fc-day {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.fc-day.fc-today {
+    background: #eaf6ff;
+    border-color: #005f8d;
+}
+
+.fc-event {
+    background: #005f8d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.fc-event:hover {
+    background: #004a70;
+}
+
+/* Version mobile pour le calendrier */
+@media (max-width: 768px) {
+    #calendar {
+        width: 90%; /* Réduit la largeur pour s'adapter à l'écran */
+        padding: 15px;
+    }
+
+    .fc-toolbar {
+        flex-direction: column; /* Empile les éléments verticalement */
+        align-items: center; /* Centre les éléments */
+        gap: 10px; /* Ajoute un espace entre les éléments */
+    }
+
+    .fc-toolbar .fc-left,
+    .fc-toolbar .fc-center,
+    .fc-toolbar .fc-right {
+        flex: none; /* Supprime la répartition de l'espace */
+        text-align: center; /* Centre le contenu */
+    }
+
+    .fc-button {
+        font-size: 0.8em; /* Réduit la taille des boutons */
+        padding: 5px; /* Ajuste le padding */
+        margin: 2px; /* Ajoute un espace entre les boutons */
+    }
+
+    .fc-day-header, .fc-day {
+        font-size: 0.8em; /* Réduit la taille du texte */
+        padding: 8px; /* Ajuste le padding */
+    }
+}
+
+/* Style pour la classe intro-text */
+.intro-text {
+    font-size: 1.2em;
+    margin: 20px auto; /* Centers the element horizontally */
+    width: 80%; /* Matches the width of sections */
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+}
+
+.signature {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none; /* Cache les puces des listes */
+}
+
+h3#subtitle, h3#subtitle2 {
+    font-size: 1.5em; /* Même taille que les anciens h2 */
+    font-weight: bold; /* Même poids que les anciens h2 */
+    margin: 0.5em 0; /* Même espacement que les anciens h2 */
+}
+
+/* Boutons filtre personnalisés */
+.custom-filter-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.custom-filter-btn:hover {
+  background: #0056b3;
+}
+
+/* Checkbox et label du filtre personnalisés */
+.custom-filter-label {
+  color: #007bff;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.custom-filter-checkbox {
+  accent-color: #007bff;
+  width: 18px;
+  height: 18px;
+}
+
+/* Styles spécifiques à activites-map.html */
+.map-section {
+  margin: 0 auto 1.5rem auto;
+  padding: 0;
+  position: relative;
+}
+#map {
+  width: 100%;
+  height: 350px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.legend {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background: rgba(255,255,255,0.93);
+  line-height: 1.4em;
+  padding: 6px 12px 6px 8px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 180px;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  z-index: 500;
+  transition: transform 0.2s;
+  padding-bottom: 0;
+}
+.legend div {
+  font-size: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  justify-content: flex-start;
+}
+.legend img {
+  width: 13px;
+  height: 20px;
+  margin-right: 6px;
+}
+.legend.hide-legend {
+  transform: translateY(120%);
+  pointer-events: none;
+  opacity: 0.2;
+}
+.legend-toggle-btn {
+  display: none;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 501;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+.leaflet-control-layers-expanded {
+  width: 140px !important;
+  font-size: 13px;
+  background: rgba(255,255,255,0.93);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-radius: 5px;
+  border: none !important;
+  max-height: 160px;
+  overflow-y: auto;
+}
+.leaflet-control-layers {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.leaflet-control-layers-overlays label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: normal;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 13px;
+}
+.leaflet-control-layers-overlays input[type="checkbox"] {
+  accent-color: #ff7800;
+  width: 15px;
+  height: 15px;
+}
+.leaflet-control-attribution {
+  display: none !important;
+}
+@media (max-width: 1000px) {
+  .map-section {
+    max-width: 98vw;
+  }
+}
+@media (max-width: 600px) {
+  #map {
+    height: 220px;
+  }
+  .legend {
+    max-width: 90vw;
+    font-size: 12px;
+    padding: 7px 10px 38px 7px;
+    gap: 3px;
+    padding-bottom: 38px;
+  }
+  .legend div {
+    font-size: 12px;
+  }
+  .legend img {
+    width: 13px;
+    height: 20px;
+    margin-right: 6px;
+  }
+  .leaflet-control-layers-expanded {
+    width: 110px !important;
+    font-size: 12px;
+    max-height: 90px;
+  }
+  .legend-toggle-btn {
+    display: block;
+  }
+}
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple:after {
+  content: '';
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  background: rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.4s, transform 0.4s;
+  transform: scale(0.5);
+}
+.ripple:active:after {
+  opacity: 1;
+  transform: scale(1.2);
+  transition: 0s;
+}
+#custom-filter-bar {
+  width: 80%;
+  margin: 0 auto 0.5rem auto;
+  background: #005f8d;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-size: 17px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  z-index: 10;
+  padding: 0;
+}
+#custom-filter-bar span {
+  padding: 10px 18px;
+  display: block;
+}
+#custom-filter-panel {
+  width: 80%;
+  margin: 0 auto 1rem auto;
+  background: #f8f9fa;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-size: 16px;
+  z-index: 1001;
+  position: relative;
+  z-index: 10;
+  padding: 0;
+}
+#custom-filter-checkboxes, #custom-filter-panel > div {
+  padding: 12px 18px 10px 18px;
+}
+#custom-filter-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+#custom-filter-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #007bff;
+}
+#custom-filter-checkboxes input[type="checkbox"] {
+  accent-color: #007bff;
+  width: 18px;
+  height: 18px;
+}
+#custom-filter-all, #custom-filter-none {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#custom-filter-all:hover, #custom-filter-none:hover {
+  background: #0056b3;
+}
+
+/* Responsive width for filter bar, filter panel, and map section (spécifique à cette page) */
+.map-section,
+#custom-filter-bar,
+#custom-filter-panel {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#map {
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .map-section,
+  #custom-filter-bar,
+  #custom-filter-panel {
+    width: 95vw;
+    max-width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #map {
+    width: 100%;
+  }
+}

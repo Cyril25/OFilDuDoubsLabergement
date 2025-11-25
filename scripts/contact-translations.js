@@ -4,47 +4,195 @@ const dataTranslations = {
         subtitle: "Nous sommes là pour répondre à vos questions",
         introduction: "Pour toute question ou demande de réservation, contactez nous via le formulaire ci-dessous",
         labelName: "Nom :",
-        name: "Votre nom", // Placeholder pour le champ "name"
+        name: "Votre nom",
         labelEmail: "Email :",
-        email: "Votre adresse email", // Placeholder pour le champ "email"
+        email: "Votre adresse email",
         labelPhone: "Téléphone :",
-        phone: "Votre numéro de téléphone", // Placeholder pour le champ "phone"
+        phone: "Votre numéro de téléphone",
         labelMessage: "Message :",
-        message: "Votre message", // Placeholder pour le champ "message"
+        message: "Votre message",
         submitButton: "Envoyer",
         formStatusSuccess: "Message envoyé avec succès ! Redirection...",
-        formStatusError: "Une erreur est survenue. Merci de réessayer."
+        formStatusError: "Une erreur est survenue. Merci de réessayer.",
+
+        // Footer
+        footer_contact_title: "Nous contacter",
+        footer_links_title: "Liens rapides",
+        footer_link_home: "Accueil",
+        footer_link_rates: "Tarifs et Disponibilités",
+        footer_link_activities: "Activités",
+        footer_link_legal: "Mentions Légales",
+        footer_contact_form: "Formulaire de contact",
+        footer_follow_title: "Réserver sur Airbnb",
+        footer_airbnb_text: "Consultez nos avis et réservez en toute sécurité.",
+        footer_rights: "Tous droits réservés"
     },
     en: {
         title: "Contact",
         subtitle: "We are here to answer your questions",
         introduction: "For any questions or booking requests, contact us using the form below",
         labelName: "Name:",
-        name: "Your name", // Placeholder for the "name" field
+        name: "Your name",
         labelEmail: "Email:",
-        email: "Your email address", // Placeholder for the "email" field
+        email: "Your email address",
         labelPhone: "Phone:",
-        phone: "Your phone number", // Placeholder for the "phone" field
+        phone: "Your phone number",
         labelMessage: "Message:",
-        message: "Your message", // Placeholder for the "message" field
+        message: "Your message",
         submitButton: "Send",
         formStatusSuccess: "Message sent successfully! Redirecting...",
-        formStatusError: "An error occurred. Please try again."
+        formStatusError: "An error occurred. Please try again.",
+
+        // Footer
+        footer_contact_title: "Contact us",
+        footer_links_title: "Quick Links",
+        footer_link_home: "Home",
+        footer_link_rates: "Rates and Availability",
+        footer_link_activities: "Activities",
+        footer_link_legal: "Legal Notice",
+        footer_contact_form: "Contact Form",
+        footer_follow_title: "Book on Airbnb",
+        footer_airbnb_text: "Check our reviews and book securely.",
+        footer_rights: "All rights reserved"
     },
     de: {
         title: "Kontakt",
         subtitle: "Wir sind hier, um Ihre Fragen zu beantworten",
         introduction: "Für Fragen oder Reservierungsanfragen kontaktieren Sie uns bitte über das untenstehende Formular",
         labelName: "Name:",
-        name: "Ihr Name", // Placeholder for the "name" field
+        name: "Ihr Name",
         labelEmail: "E-Mail:",
-        email: "Ihre E-Mail-Adresse", // Placeholder for the "email" field
+        email: "Ihre E-Mail-Adresse",
         labelPhone: "Telefon:",
-        phone: "Ihre Telefonnummer", // Placeholder for the "phone" field
+        phone: "Ihre Telefonnummer",
         labelMessage: "Nachricht:",
-        message: "Ihre Nachricht", // Placeholder for the "message" field
+        message: "Ihre Nachricht",
         submitButton: "Senden",
         formStatusSuccess: "Nachricht erfolgreich gesendet! Weiterleitung...",
-        formStatusError: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+        formStatusError: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+
+        // Footer
+        footer_contact_title: "Kontaktieren Sie uns",
+        footer_links_title: "Schnelllinks",
+        footer_link_home: "Startseite",
+        footer_link_rates: "Preise und Verfügbarkeit",
+        footer_link_activities: "Aktivitäten",
+        footer_link_legal: "Impressum",
+        footer_contact_form: "Kontaktformular",
+        footer_follow_title: "Auf Airbnb buchen",
+        footer_airbnb_text: "Bewertungen lesen und sicher buchen.",
+        footer_rights: "Alle Rechte vorbehalten"
+    },
+    nl: {
+        title: "Contact",
+        subtitle: "Wij zijn er om uw vragen te beantwoorden",
+        introduction: "Voor vragen of reserveringsaanvragen kunt u contact met ons opnemen via het onderstaande formulier",
+        labelName: "Naam:",
+        name: "Uw naam",
+        labelEmail: "E-mail:",
+        email: "Uw e-mailadres",
+        labelPhone: "Telefoon:",
+        phone: "Uw telefoonnummer",
+        labelMessage: "Bericht:",
+        message: "Uw bericht",
+        submitButton: "Verzenden",
+        formStatusSuccess: "Bericht succesvol verzonden! Doorverwijzen...",
+        formStatusError: "Er is een fout opgetreden. Probeer het opnieuw.",
+
+        // Footer
+        footer_contact_title: "Neem contact op",
+        footer_links_title: "Snelle links",
+        footer_link_home: "Home",
+        footer_link_rates: "Tarieven en beschikbaarheid",
+        footer_link_activities: "Activiteiten",
+        footer_link_legal: "Colofon",
+        footer_contact_form: "Contactformulier",
+        footer_follow_title: "Reserveren op Airbnb",
+        footer_airbnb_text: "Bekijk onze beoordelingen en reserveer veilig.",
+        footer_rights: "Alle rechten voorbehouden"
+    },
+    es: {
+        title: "Contacto",
+        subtitle: "Estamos aquí para responder a sus preguntas",
+        introduction: "Para cualquier pregunta o solicitud de reserva, contáctenos mediante el siguiente formulario",
+        labelName: "Nombre:",
+        name: "Su nombre",
+        labelEmail: "Email:",
+        email: "Su dirección de correo electrónico",
+        labelPhone: "Teléfono:",
+        phone: "Su número de teléfono",
+        labelMessage: "Mensaje:",
+        message: "Su mensaje",
+        submitButton: "Enviar",
+        formStatusSuccess: "¡Mensaje enviado con éxito! Redirigiendo...",
+        formStatusError: "Ocurrió un error. Por favor inténtelo de nuevo.",
+
+        // Footer
+        footer_contact_title: "Contáctanos",
+        footer_links_title: "Enlaces rápidos",
+        footer_link_home: "Inicio",
+        footer_link_rates: "Tarifas y Disponibilidad",
+        footer_link_activities: "Actividades",
+        footer_link_legal: "Aviso legal",
+        footer_contact_form: "Formulario de contacto",
+        footer_follow_title: "Reservar en Airbnb",
+        footer_airbnb_text: "Lee nuestras reseñas y reserva con seguridad.",
+        footer_rights: "Todos los derechos reservados"
+    },
+    it: {
+        title: "Contatto",
+        subtitle: "Siamo qui per rispondere alle vostre domande",
+        introduction: "Per qualsiasi domanda o richiesta di prenotazione, contattaci tramite il modulo qui sotto",
+        labelName: "Nome:",
+        name: "Il tuo nome",
+        labelEmail: "Email:",
+        email: "Il tuo indirizzo email",
+        labelPhone: "Telefono:",
+        phone: "Il tuo numero di telefono",
+        labelMessage: "Messaggio:",
+        message: "Il tuo messaggio",
+        submitButton: "Inviare",
+        formStatusSuccess: "Messaggio inviato con successo! Reindirizzamento...",
+        formStatusError: "Si è verificato un errore. Per favore riprova.",
+
+        // Footer
+        footer_contact_title: "Contattaci",
+        footer_links_title: "Link rapidi",
+        footer_link_home: "Home",
+        footer_link_rates: "Tariffe e Disponibilità",
+        footer_link_activities: "Attività",
+        footer_link_legal: "Note legali",
+        footer_contact_form: "Modulo di contatto",
+        footer_follow_title: "Prenota su Airbnb",
+        footer_airbnb_text: "Leggi le nostre recensioni e prenota in sicurezza.",
+        footer_rights: "Tutti i diritti riservati"
+    },
+    pt: {
+        title: "Contacto",
+        subtitle: "Estamos aqui para responder às suas perguntas",
+        introduction: "Para qualquer dúvida ou pedido de reserva, contacte-nos através do formulário abaixo",
+        labelName: "Nome:",
+        name: "O seu nome",
+        labelEmail: "Email:",
+        email: "O seu endereço de email",
+        labelPhone: "Telefone:",
+        phone: "O seu número de telefone",
+        labelMessage: "Mensagem:",
+        message: "A sua mensagem",
+        submitButton: "Enviar",
+        formStatusSuccess: "Mensagem enviada com sucesso! A redirecionar...",
+        formStatusError: "Ocorreu um erro. Por favor, tente novamente.",
+
+        // Footer
+        footer_contact_title: "Contacte-nos",
+        footer_links_title: "Links rápidos",
+        footer_link_home: "Início",
+        footer_link_rates: "Tarifas e Disponibilidade",
+        footer_link_activities: "Atividades",
+        footer_link_legal: "Aviso legal",
+        footer_contact_form: "Formulário de contacto",
+        footer_follow_title: "Reservar no Airbnb",
+        footer_airbnb_text: "Veja as nossas avaliações e reserve com segurança.",
+        footer_rights: "Todos os direitos reservados"
     }
 };

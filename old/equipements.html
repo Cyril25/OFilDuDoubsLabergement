@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Balises Open Graph -->
+        <meta property="og:title" content="O'Fil du Doubs" />
+        <meta property="og:description" content="Bienvenue à O'Fil du Doubs, votre logement touristique à Labergement-Sainte-Marie." />
+        <meta property="og:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp" />
+        <meta property="og:url" content="https://cyril25.github.io/OFilDuDoubsLabergement/" />
+        <meta property="og:type" content="website" />
+
+        <!-- Balise pour Twitter (optionnelle mais recommandée) -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp">
+
+    <meta name="description" content="Découvrez les équipements et services disponibles pour un séjour confortable et agréable à O'Fil du Doubs.">
+    <meta name="keywords" content="Logement Doubs, Labergement, Malbuisson, OFilDuDoubs, équipements touristiques, confort, location vacances, tourisme Doubs, Jura, nature préservée, sports d'hiver, activités nautiques, randonnée" />
+
+    <title>O'Fil du Doubs - Location de charme</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="scripts/menu-translations.js"></script>
+    <script src="scripts/equipements-translations.js"></script> <!-- Attention à modifier pour chaque page -->
+    <script src="scripts/applyTranslations.js"></script>
+</head>
+<body>
+    <!-- Conteneur pour le menu -->
+    <div id="menu-container"></div>
+    <header class="header2">
+        <h1 id="title">Confort & équipements</h1>
+        <h2 id="subtitle">Tout ce qu'il faut pour répondre à vos besoins</h2>
+    </header>
+    <main>
+        <p id="introduction" class="intro-text">
+            Découvrez nos équipements et services pour un séjour confortable et agréable.
+        </p>
+        <section>
+            <table class="equipements-table">
+                <tr>
+                    <td>
+                        <i class="fas fa-wifi" style="font-size: 40px;"></i>
+                        <strong id="wifi_title">Wifi</strong>
+                        <p id="wifi_description">Internet accessible par wifi</p>
+                    </td>
+                    <td>
+                        <i class="fas fa-tv" style="font-size: 40px;"></i>
+                        <strong id="multimedia_title">Multimédia</strong>
+                        <p id="multimedia_description">
+                            Télévision 116 cm connectée dans le salon et télévision 80 cm dans la chambre principale
+                        </p>
+                    </td>
+                    <td>
+                        <i class="fas fa-baby" style="font-size: 40px;"></i>
+                        <strong id="baby_title">Pour bébé</strong>
+                        <p id="baby_description">Lit parapluie et chaise haute disponibles</p>
+                    </td>
+                    <td>
+                        <i class="fas fa-window-maximize" style="font-size: 40px;"></i> <!-- Updated icon for Volets électriques -->
+                        <strong id="shutters_title">Volets électriques</strong>
+                        <p id="shutters_description">Tous les volets sont électriques pour votre confort</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fas fa-utensils" style="font-size: 40px;"></i>
+                        <strong id="kitchen_title">A la cuisine</strong>
+                        <p id="kitchen_description">Dosette café, filtre à café, huile, sel et poivre, sachets de thé</p>
+                    </td>
+                    <td>
+                        <i class="fas fa-bed" style="font-size: 40px;"></i>
+                        <strong id="linen_title">Linge fourni</strong>
+                        <p id="linen_description">Linge de lit et linge de bain compris dans la location</p>
+                    </td>
+                    <td>
+                        <i class="fas fa-box" style="font-size: 40px;"></i>
+                        <strong id="consumables_title">Consommables</strong>
+                        <p id="consumables_description">
+                            Papier toilette, essuie-tout, pastilles lave-vaisselle, sac poubelle en petite quantité, savon, gel douche et shampoing
+                        </p>
+                    </td>
+                    <td>
+                        <i class="fas fa-recycle" style="font-size: 40px;"></i>
+                        <strong id="recycling_title">Tri sélectif</strong>
+                        <p id="recycling_description">Bacs à votre disposition pour le tri sélectif</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fas fa-car" style="font-size: 40px;"></i>
+                        <strong id="parking_title">Parking</strong>
+                        <p id="parking_description">Places de parking gratuites disponibles en bas de la résidence</p>
+                    </td>
+                    <td>
+                        <i class="fas fa-chair" style="font-size: 40px;"></i>
+                        <strong id="outdoor_equipment_title">Équipements extérieurs</strong>
+                        <p id="outdoor_equipment_description">
+                            Salon de jardin, table et chaises, barbecue
+                        </p>
+                    </td>
+                    <td>
+                        <i class="fas fa-blender" style="font-size: 40px;"></i>
+                        <strong id="small_appliances_title">Petit électroménager</strong>
+                        <p id="small_appliances_description">
+                            Grille-pain, appareil à raclette, appareil à fondue, friteuse Seb Easy Fry, sèche-cheveux, cafetière Nespresso, bouilloire, cafetière filtre, fer à repasser (avec table et étendoir inclus)
+                        </p>
+                    </td>
+                    <td>
+                        <i class="fas fa-plug" style="font-size: 40px;"></i> <!-- Updated icon for Gros électroménager -->
+                        <strong id="large_appliances_title">Gros électroménager</strong>
+                        <p id="large_appliances_description">
+                            Four, micro-ondes, réfrigérateur-congélateur, plaques à induction, lave-vaisselle, lave-linge
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h2 id="rules_title">Règlement intérieur</h2>
+            <ul>
+                <li id="rule_no_parties">Les fêtes sont strictement interdites.</li>
+                <li id="rule_no_smoking">Il est interdit de fumer à l'intérieur du logement, mais cela est possible sur le balcon.</li>
+                <li id="rule_pets_allowed">Les animaux de compagnie sont acceptés sur demande.</li>
+            </ul>
+        </section>
+        <section>
+            <h2 id="accessibility_title">Accessibilité</h2>
+            <p id="accessibility_description">
+                Le logement est situé au premier étage sans ascenseur. 
+                Il faut monter 16 marches pour y accéder. Une rampe d'escalier est disponible pour aider les personnes ayant besoin de se tenir.
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p id="footer_copyright">© O'Fil du Doubs - Tous droits réservés</p>
+    </footer>
+</body>
+</html>

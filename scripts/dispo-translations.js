@@ -1,6 +1,6 @@
 const dataTranslations = {
     fr: {
-        title: "Tarifs & Disponibilités",
+        title: "Tarifs et Disponibilités",
         subtitle: "Toutes les infos utiles pour réserver votre séjour",
         introduction: "Découvrez nos tarifs et disponibilités pour planifier votre séjour. Nous proposons des options flexibles pour répondre à vos besoins, que ce soit pour un week-end ou une semaine complète. Les séjours sont de deux nuits minimum. Consultez notre calendrier pour voir les dates disponibles et n'hésitez pas à nous contacter pour toute question.",
         intro_text: "Découvrez nos tarifs et disponibilités pour planifier votre séjour.",
@@ -11,10 +11,22 @@ const dataTranslations = {
         airbnb_details: "★ 5,0 · 2 chambres · 2 lits · 1 salle de bain",
         practical_info_section: "Infos pratiques",
         arrival_info: "Les arrivées se font entre 17h et 22h, avec remise des clés en main propre ou via une boîte à clé selon nos disponibilités.",
-        departure_info: "Le départ se fait avant 11h."
+        departure_info: "Le départ se fait avant 11h.",
+
+        // Footer
+        footer_contact_title: "Nous contacter",
+        footer_links_title: "Liens rapides",
+        footer_link_home: "Accueil",
+        footer_link_rates: "Tarifs et Disponibilités",
+        footer_link_activities: "Activités",
+        footer_link_legal: "Mentions Légales",
+        footer_contact_form: "Formulaire de contact",
+        footer_follow_title: "Réserver sur Airbnb",
+        footer_airbnb_text: "Consultez nos avis et réservez en toute sécurité.",
+        footer_rights: "Tous droits réservés"
     },
     en: {
-        title: "Rates & Availability",
+        title: "Rates and Availability",
         subtitle: "All the useful information to book your stay",
         introduction: "Discover our rates and availability to plan your stay. We offer flexible options to meet your needs, whether for a weekend or a full week. Stays are a minimum of two nights. Check our calendar for available dates and feel free to contact us with any questions.",
         intro_text: "Discover our rates and availability to plan your stay.",
@@ -25,10 +37,22 @@ const dataTranslations = {
         airbnb_details: "★ 5.0 · 2 bedrooms · 2 beds · 1 bathroom",
         practical_info_section: "Practical Information",
         arrival_info: "Check-in is between 5 PM and 10 PM, with key handover in person or via a key box depending on our availability.",
-        departure_info: "Check-out is before 11 AM."
+        departure_info: "Check-out is before 11 AM.",
+
+        // Footer
+        footer_contact_title: "Contact us",
+        footer_links_title: "Quick Links",
+        footer_link_home: "Home",
+        footer_link_rates: "Rates and Availability",
+        footer_link_activities: "Activities",
+        footer_link_legal: "Legal Notice",
+        footer_contact_form: "Contact Form",
+        footer_follow_title: "Book on Airbnb",
+        footer_airbnb_text: "Check our reviews and book securely.",
+        footer_rights: "All rights reserved"
     },
     de: {
-        title: "Preise & Verfügbarkeit",
+        title: "Preise und Verfügbarkeit",
         subtitle: "Alle nützlichen Informationen, um Ihren Aufenthalt zu buchen",
         introduction: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen. Wir bieten flexible Optionen, die Ihren Bedürfnissen entsprechen, sei es für ein Wochenende oder eine ganze Woche. Aufenthalte sind mindestens zwei Nächte. Überprüfen Sie unseren Kalender auf verfügbare Daten und zögern Sie nicht, uns bei Fragen zu kontaktieren.",
         intro_text: "Entdecken Sie unsere Preise und Verfügbarkeiten, um Ihren Aufenthalt zu planen.",
@@ -39,6 +63,122 @@ const dataTranslations = {
         airbnb_details: "★ 5,0 · 2 Schlafzimmer · 2 Betten · 1 Badezimmer",
         practical_info_section: "Praktische Informationen",
         arrival_info: "Der Check-in erfolgt zwischen 17:00 und 22:00 Uhr, mit Schlüsselübergabe persönlich oder über eine Schlüsselbox, je nach Verfügbarkeit.",
-        departure_info: "Der Check-out erfolgt vor 11:00 Uhr."
+        departure_info: "Der Check-out erfolgt vor 11:00 Uhr.",
+
+        // Footer
+        footer_contact_title: "Kontaktieren Sie uns",
+        footer_links_title: "Schnelllinks",
+        footer_link_home: "Startseite",
+        footer_link_rates: "Preise und Verfügbarkeit",
+        footer_link_activities: "Aktivitäten",
+        footer_link_legal: "Impressum",
+        footer_contact_form: "Kontaktformular",
+        footer_follow_title: "Auf Airbnb buchen",
+        footer_airbnb_text: "Bewertungen lesen und sicher buchen.",
+        footer_rights: "Alle Rechte vorbehalten"
+    },
+    nl: {
+        title: "Tarieven en Beschikbaarheid",
+        subtitle: "Alle nuttige informatie om uw verblijf te boeken",
+        introduction: "Ontdek onze tarieven en beschikbaarheid om uw verblijf te plannen. Wij bieden flexibele opties aan om aan uw behoeften te voldoen, of het nu voor een weekend of een hele week is. Verblijven zijn minimaal twee nachten. Bekijk onze kalender voor beschikbare data en neem gerust contact met ons op bij vragen.",
+        intro_text: "Ontdek onze tarieven en beschikbaarheid om uw verblijf te plannen.",
+        availability_section: "Beschikbaarheid",
+        availability_description: "De onderstaande kalender is up-to-date voor de beschikbaarheid van onze accommodatie.",
+        airbnb_info: "Om tarieven te controleren of meer informatie te krijgen, kunt u contact met ons opnemen via het contactformulier of de actuele tarieven direct op Airbnb bekijken via de onderstaande link.",
+        airbnb_title: "Appartement in Labergement-Sainte-Marie",
+        airbnb_details: "★ 5,0 · 2 slaapkamers · 2 bedden · 1 badkamer",
+        practical_info_section: "Praktische Informatie",
+        arrival_info: "Aankomsten zijn tussen 17:00 en 22:00 uur, met sleuteloverdracht persoonlijk of via een sleutelkastje afhankelijk van onze beschikbaarheid.",
+        departure_info: "Vertrek is voor 11:00 uur.",
+
+        // Footer
+        footer_contact_title: "Neem contact op",
+        footer_links_title: "Snelle links",
+        footer_link_home: "Home",
+        footer_link_rates: "Tarieven en beschikbaarheid",
+        footer_link_activities: "Activiteiten",
+        footer_link_legal: "Colofon",
+        footer_contact_form: "Contactformulier",
+        footer_follow_title: "Reserveren op Airbnb",
+        footer_airbnb_text: "Bekijk onze beoordelingen en reserveer veilig.",
+        footer_rights: "Alle rechten voorbehouden"
+    },
+    es: {
+        title: "Tarifas y Disponibilidad",
+        subtitle: "Toda la información útil para reservar su estancia",
+        introduction: "Descubra nuestras tarifas y disponibilidad para planificar su estancia. Ofrecemos opciones flexibles para satisfacer sus necesidades, ya sea para un fin de semana o una semana completa. Las estancias son de un mínimo de dos noches. Consulte nuestro calendario para ver las fechas disponibles y no dude en contactarnos si tiene alguna pregunta.",
+        intro_text: "Descubra nuestras tarifas y disponibilidad para planificar su estancia.",
+        availability_section: "Disponibilidad",
+        availability_description: "El calendario a continuación está actualizado con la disponibilidad de nuestro alojamiento.",
+        airbnb_info: "Para consultar tarifas u obtener más información, puede contactarnos a través del formulario de contacto o acceder a las tarifas actualizadas directamente en Airbnb a través del siguiente enlace.",
+        airbnb_title: "Apartamento en Labergement-Sainte-Marie",
+        airbnb_details: "★ 5,0 · 2 habitaciones · 2 camas · 1 baño",
+        practical_info_section: "Información Práctica",
+        arrival_info: "Las llegadas son entre las 17:00 y las 22:00, con entrega de llaves en persona o mediante una caja de llaves según nuestra disponibilidad.",
+        departure_info: "La salida es antes de las 11:00.",
+
+        // Footer
+        footer_contact_title: "Contáctanos",
+        footer_links_title: "Enlaces rápidos",
+        footer_link_home: "Inicio",
+        footer_link_rates: "Tarifas y Disponibilidad",
+        footer_link_activities: "Actividades",
+        footer_link_legal: "Aviso legal",
+        footer_contact_form: "Formulario de contacto",
+        footer_follow_title: "Reservar en Airbnb",
+        footer_airbnb_text: "Lee nuestras reseñas y reserva con seguridad.",
+        footer_rights: "Todos los derechos reservados"
+    },
+    it: {
+        title: "Tariffe e Disponibilità",
+        subtitle: "Tutte le informazioni utili per prenotare il vostro soggiorno",
+        introduction: "Scoprite le nostre tariffe e disponibilità per pianificare il vostro soggiorno. Offriamo opzioni flessibili per soddisfare le vostre esigenze, che sia per un fine settimana o una settimana intera. I soggiorni sono di minimo due notti. Consultate il nostro calendario per vedere le date disponibili e non esitate a contattarci per qualsiasi domanda.",
+        intro_text: "Scoprite le nostre tariffe e disponibilità per pianificare il vostro soggiorno.",
+        availability_section: "Disponibilità",
+        availability_description: "Il calendario qui sotto è aggiornato per la disponibilità del nostro alloggio.",
+        airbnb_info: "Per controllare le tariffe o ottenere maggiori informazioni, potete contattarci tramite il modulo di contatto o accedere alle tariffe aggiornate direttamente su Airbnb tramite il link qui sotto.",
+        airbnb_title: "Appartamento a Labergement-Sainte-Marie",
+        airbnb_details: "★ 5,0 · 2 camere · 2 letti · 1 bagno",
+        practical_info_section: "Informazioni Pratiche",
+        arrival_info: "Gli arrivi sono previsti tra le 17:00 e le 22:00, con consegna delle chiavi di persona o tramite cassetta di sicurezza a seconda della nostra disponibilità.",
+        departure_info: "La partenza deve avvenire entro le 11:00.",
+
+        // Footer
+        footer_contact_title: "Contattaci",
+        footer_links_title: "Link rapidi",
+        footer_link_home: "Home",
+        footer_link_rates: "Tariffe e Disponibilità",
+        footer_link_activities: "Attività",
+        footer_link_legal: "Note legali",
+        footer_contact_form: "Modulo di contatto",
+        footer_follow_title: "Prenota su Airbnb",
+        footer_airbnb_text: "Leggi le nostre recensioni e prenota in sicurezza.",
+        footer_rights: "Tutti i diritti riservati"
+    },
+    pt: {
+        title: "Tarifas e Disponibilidade",
+        subtitle: "Todas as informações úteis para reservar a sua estadia",
+        introduction: "Descubra as nossas tarifas e disponibilidade para planear a sua estadia. Oferecemos opções flexíveis para atender às suas necessidades, seja para um fim de semana ou uma semana completa. As estadias são de no mínimo duas noites. Consulte o nosso calendário para ver as datas disponíveis e não hesite em contactar-nos para qualquer dúvida.",
+        intro_text: "Descubra as nossas tarifas e disponibilidade para planear a sua estadia.",
+        availability_section: "Disponibilidade",
+        availability_description: "O calendário abaixo está atualizado com a disponibilidade do nosso alojamento.",
+        airbnb_info: "Para consultar tarifas ou obter mais informações, pode contactar-nos através do formulário de contacto ou aceder às tarifas atualizadas diretamente no Airbnb através do link abaixo.",
+        airbnb_title: "Apartamento em Labergement-Sainte-Marie",
+        airbnb_details: "★ 5,0 · 2 quartos · 2 camas · 1 casa de banho",
+        practical_info_section: "Informações Práticas",
+        arrival_info: "As chegadas são entre as 17:00 e as 22:00, com entrega das chaves pessoalmente ou através de uma caixa de chaves, dependendo da nossa disponibilidade.",
+        departure_info: "A partida é antes das 11:00.",
+
+        // Footer
+        footer_contact_title: "Contacte-nos",
+        footer_links_title: "Links rápidos",
+        footer_link_home: "Início",
+        footer_link_rates: "Tarifas e Disponibilidade",
+        footer_link_activities: "Atividades",
+        footer_link_legal: "Aviso legal",
+        footer_contact_form: "Formulário de contacto",
+        footer_follow_title: "Reservar no Airbnb",
+        footer_airbnb_text: "Veja as nossas avaliações e reserve com segurança.",
+        footer_rights: "Todos os direitos reservados"
     }
 };

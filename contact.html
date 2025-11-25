@@ -3,35 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Balises Open Graph -->
-        <meta property="og:title" content="O'Fil du Doubs" />
-        <meta property="og:description" content="Bienvenue à O'Fil du Doubs, votre logement touristique à Labergement-Sainte-Marie." />
-        <meta property="og:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp" />
-        <meta property="og:url" content="https://cyril25.github.io/OFilDuDoubsLabergement/" />
-        <meta property="og:type" content="website" />
-
-        <!-- Balise pour Twitter (optionnelle mais recommandée) -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:image" content="https://cyril25.github.io/OFilDuDoubsLabergement/images/banniere/vue-balcon-2.webp">
-
-    <meta name="description" content="Contactez-nous pour toute question ou demande de réservation. Nous sommes à votre disposition pour vous aider.">
-    <meta name="keywords" content="Logement Doubs, Labergement, Malbuisson, OFilDuDoubs, contact hébergement, réservation logement, tourisme Doubs, Jura, séjour familial, activités touristiques" />
-
-    <title>O'Fil du Doubs - Location de charme</title>
+    
+    <meta property="og:title" content="Contact - O'Fil du Doubs" />
+    <meta name="description" content="Contactez-nous pour toute question ou demande de réservation.">
+    
+    <title>Contact - O'Fil du Doubs</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	
     <script src="scripts/menu-translations.js"></script>
-    <script src="scripts/contact-translations.js"></script> <!-- Attention à modifier pour chaque page -->
+    <script src="scripts/contact-translations.js"></script>
     <script src="scripts/applyTranslations.js"></script>
 </head>
 <body>
-    <!-- Conteneur pour le menu -->
-    <div id="menu-container"></div>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="logement.html">Le logement</a></li>
+            <li><a href="equipements.html">Confort et Équipements</a></li>
+            <li><a href="dispo.html">Tarifs et disponibilités</a></li>
+            <li><a href="activites.html">Activités</a></li>
+            <li><a href="commerces.html">Commerces</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+       <div class="language-dropdown">
+			<button class="dropbtn">
+				<img id="current-flag-icon" src="images/fr.png" alt="Langue"> 
+				<span class="arrow">▼</span>
+			</button>
+			<div class="dropdown-content">
+				<a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+				<a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+				<a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+				<a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+				<a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+				<a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+				<a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+			</div>
+		</div>
+    </nav>
+
     <header class="header2">
         <h1 id="title">Contact</h1>
-        <h2 id="subtitle">Nous sommes la pour répondre à vos questions</h2>
+        <h2 id="subtitle">Nous sommes là pour répondre à vos questions</h2>
     </header>
+
     <main>
       <p id="introduction" class="intro-text">Pour toute question ou demande de réservation, contactez nous via le formulaire ci-dessous</p>
+      
       <section>
             <form action="https://formspree.io/f/mzzeqqyl" method="POST" class="contact-form">
               <div class="form-group">
@@ -54,7 +79,6 @@
                 <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
               </div>
             
-              <!-- Champ honeypot -->
               <div style="position: absolute; left: -9999px;" aria-hidden="true">
                 <label for="website">Ne pas remplir ce champ :</label>
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
@@ -71,9 +95,7 @@
                 const submitButton = form.querySelector('button[type="submit"]');
                 const statusText = document.getElementById('formStatus');
             
-                // Vérifie le honeypot
                 if (form.querySelector('[name="website"]').value !== "") {
-                  console.log("Formulaire bloqué par honeypot.");
                   return;
                 }
             
@@ -84,20 +106,18 @@
                 fetch(form.action, {
                   method: 'POST',
                   body: new FormData(form),
-                  headers: {
-                    'Accept': 'application/json'
-                  }
+                  headers: { 'Accept': 'application/json' }
                 }).then(response => {
                   if (response.ok) {
                     statusText.textContent = "Message envoyé avec succès ! Redirection...";
                     setTimeout(() => {
-                      window.location.href = '/OFilDuDoubsLabergement/merci.html'; // 🔁 modifie cette URL
+                      window.location.href = 'merci.html';
                     }, 1000);
                   } else {
                     throw new Error("Erreur lors de l'envoi");
                   }
                 }).catch(error => {
-                  statusText.textContent = "Une erreur est survenue. Merci de réessayer.";
+                  statusText.textContent = "Une erreur est survenue.";
                   console.error(error);
                 }).finally(() => {
                   submitButton.disabled = false;
@@ -107,8 +127,35 @@
             </script>
         </section>
     </main>
-    <footer>
-        <p>© O'Fil du Doubs - Tous droits réservés</p>
+
+	<footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Nous contacter</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Liens rapides</h3>
+                <a href="index.html" id="footer_link_home">Accueil</a>
+                <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
+                <a href="activites.html" id="footer_link_activities">Activités</a>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a> </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Réserver sur Airbnb</h3>
+                <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+        </div>
     </footer>
 </body>
 </html>
