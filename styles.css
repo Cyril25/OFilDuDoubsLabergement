@@ -15,8 +15,15 @@
 /* Import des polices */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
 
+/* --- RÈGLES GLOBALES & SÉCURITÉ MOBILE --- */
+* {
+    box-sizing: border-box; /* Empêche les marges d'agrandir les boîtes */
+}
+
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Indispensable : coupe tout ce qui dépasse à droite */
+    width: 100%;
 }
 
 body {
@@ -26,7 +33,12 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    text-align: center; /* Gardé pour centrer le contenu global comme avant */
+    text-align: center;
+    
+    /* Sécurités supplémentaires pour mobile */
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; 
 }
 
 /* Padding pour compenser le menu fixe sur PC */
@@ -44,7 +56,7 @@ nav {
     position: fixed;
     top: 0;
     left: 0;
-    width: 90%; /* 100% - le padding */
+    width: 100%; /* On force 100% pour éviter les problèmes de calcul */
     z-index: 1000;
     display: flex;
     justify-content: space-between;
@@ -76,7 +88,7 @@ nav ul li a:hover {
 }
 
 /* =========================================
-   MENU LANGUES (DROPDOWN)
+   MENU LANGUES (DROPDOWN) - CORRIGÉ
    ========================================= */
 .language-dropdown {
     position: relative;
@@ -114,22 +126,21 @@ nav ul li a:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    right: 0; /* Aligné à droite pour ne pas sortir de l'écran */
+    right: 0; 
     background-color: #ffffff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1001;
     border-radius: 8px;
     overflow: hidden;
-    top: 100%; /* Juste en dessous du bouton */
+    top: 100%; 
 }
 
-/* Les liens dans la liste */
 .dropdown-content a {
-    color: #333 !important; /* Force la couleur noire sur fond blanc */
+    color: #333 !important; 
     padding: 12px 16px;
     text-decoration: none;
-    display: flex !important; /* Force flex pour aligner image + texte */
+    display: flex !important; 
     align-items: center;
     gap: 10px;
     font-size: 14px;
@@ -139,39 +150,20 @@ nav ul li a:hover {
 .dropdown-content a img {
     width: 20px;
     height: auto;
-    border-radius: 2px; /* Drapeaux rectangulaires ou ronds dans la liste */
+    border-radius: 2px;
 }
 
-/* Effets au survol */
 .dropdown-content a:hover {
     background-color: #f1f1f1;
     color: var(--primary-color) !important;
 }
 
-/* Afficher le menu au survol du bloc principal */
 .language-dropdown:hover .dropdown-content {
     display: block;
 }
 
 .language-dropdown:hover .arrow {
-    transform: rotate(180deg); /* La flèche tourne */
-}
-
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-    .language-dropdown {
-        position: absolute;
-        right: 60px; /* À gauche du burger menu */
-        top: 15px;   /* Aligné verticalement */
-        margin: 0;
-    }
-    
-    .dropdown-content {
-        right: -50px; /* Ajustement pour ne pas être trop au bord */
-    }
-    
-    /* Sur mobile, on cache le texte des langues pour gagner de la place si besoin, 
-       ou on laisse comme ça. Ici je laisse l'affichage complet. */
+    transform: rotate(180deg);
 }
 
 /* Menu Burger (Mobile) */
@@ -193,7 +185,7 @@ header.header-principal {
     background-attachment: fixed;
     color: white;
     padding: 20px;
-    height: 85vh; /* Hauteur immersive */
+    height: 85vh;
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -308,15 +300,22 @@ section h2 {
     /* Navigation Mobile */
     nav {
         padding: 0 20px;
-        width: calc(100% - 40px);
+        /* On enlève width: calc... qui causait des soucis */
     }
 
     .menu-toggle {
         display: block;
+        /* Position absolue pour bien le caler à gauche */
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1100;
     }
 
+    /* Le menu déroulant (liens) */
     nav ul {
-        display: none; /* Caché par défaut */
+        display: none; 
         flex-direction: column;
         position: absolute;
         top: 60px;
@@ -325,6 +324,7 @@ section h2 {
         background: var(--primary-color);
         padding: 20px 0;
         box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box; /* Important */
     }
 
     nav ul.active {
@@ -335,13 +335,21 @@ section h2 {
         margin: 10px 0;
     }
     
-    /* Positionnement drapeaux mobile */
-    .language-selector {
+    /* Positionnement Drapeaux Mobile (CORRIGÉ) */
+    .language-dropdown {
         position: absolute;
-        right: 20px;
+        right: 20px; /* Calé à droite */
         top: 50%;
         transform: translateY(-50%);
         margin: 0;
+        z-index: 1100;
+    }
+    
+    /* On force le menu déroulant des langues à rester dans l'écran */
+    .dropdown-content {
+        right: 0;
+        left: auto;
+        min-width: 150px;
     }
 
     /* Layout Mobile */
@@ -354,51 +362,35 @@ section h2 {
 }
 
 /* =========================================
-   6. PAGES SPÉCIFIQUES (Gardé de l'ancien fichier)
-   ========================================= */
-
-/* =========================================
    ÉQUIPEMENTS : VERSION UNIFORME & COMPACTE
    ========================================= */
 
 .equipements-grid {
     display: grid;
-    /* On garde la flexibilité des colonnes */
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
-    
-    /* Espace de 30px */
-    gap: 40px; 
+    gap: 40px; /* Espace ajusté */
     margin: 30px 0;
-    
-    /* IMPORTANT : On enlève 'align-items: start' pour que la grille étire 
-       automatiquement les cartes à la même hauteur sur une ligne */
 }
 
 .equipement-card {
     background: white;
-    padding: 10px 15px; /* Un poil plus de padding vertical pour l'équilibre */
+    padding: 15px 15px; /* Padding compact */
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    
-    /* Flexbox pour gérer l'intérieur */
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    /* IMPORTANT : La carte prend 100% de la hauteur de la cellule de la grille */
     height: 100%; 
 }
 
-/* Effet survol */
 .equipement-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     border-color: var(--primary-color);
 }
 
-/* Icône */
 .equipement-icon-wrapper {
     width: 40px;
     height: 40px;
@@ -407,8 +399,8 @@ section h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px; /* Un peu d'espace avant le titre */
-    flex-shrink: 0; /* Empêche l'icône de s'écraser si la carte est petite */
+    margin-bottom: 10px; 
+    flex-shrink: 0; 
 }
 
 .equipement-icon-wrapper i {
@@ -416,7 +408,6 @@ section h2 {
     font-size: 18px;
 }
 
-/* Titre */
 .equipement-card h3 {
     font-family: var(--font-title);
     color: var(--primary-color);
@@ -425,15 +416,12 @@ section h2 {
     font-weight: 700;
 }
 
-/* Description */
 .equipement-card p {
     font-family: var(--font-body);
     font-size: 0.9rem;
     color: #666;
     line-height: 1.4;
     margin: 0;
-    
-    /* Optionnel : Si tu veux que le texte prenne toute la place dispo pour pousser vers le bas */
     flex-grow: 1; 
 }
 
@@ -445,20 +433,426 @@ section.transparent-section {
     border: none !important;
 }
 
-/* --- Pièces (Logement) --- */
-.room { margin: 40px auto; padding: 20px; }
-.room-content { display: flex; align-items: center; gap: 20px; }
-.room-content.reverse { flex-direction: row-reverse; }
-.room-text { width: 50%; text-align: justify; }
-.room-images { display: flex; flex-direction: column; gap: 10px; width: 50%; }
-.room-images img { width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+/* =========================================
+   PAGES SPÉCIFIQUES (Logement, Commerces...)
+   ========================================= */
 
-@media (max-width: 768px) {
-    .room-content, .room-content.reverse { flex-direction: column; }
-    .room-text, .room-images { width: 100%; }
+/* Conteneur principal */
+.room {
+    margin: 40px auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box; 
 }
 
-/* --- Formulaire Contact --- */
+/* Flexbox : Texte + Image */
+.room-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.room-content.reverse {
+    flex-direction: row-reverse;
+}
+
+.room-text {
+    width: 50%;
+    text-align: justify;
+}
+
+.room-text h2 {
+    text-align: left;
+    margin-top: 0;
+}
+
+.room-image {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+/* Cas des groupes d'images (ex: Salon) */
+.room-images {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 50%;
+}
+
+.room-images img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-image.small { width: 25%; margin: 0 auto; display: block; }
+.room-image.extra-small { width: 15%; margin: 0 auto; display: block; }
+
+/* Mobile Room */
+@media (max-width: 768px) {
+    .room-content, 
+    .room-content.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .room-text {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .room-text h2 {
+        text-align: center;
+    }
+
+    .room-image, 
+    .room-images {
+        width: 100%; 
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .room-image.small, 
+    .room-image.extra-small {
+        width: 50%;
+    }
+}
+
+/* =========================================
+   ACTIVITÉS V2 : BADGES & BOUTONS
+   ========================================= */
+
+.activity-infos {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Badges de transport */
+.transport-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; 
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+
+.t-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f4f4f4;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #444;
+    border: 1px solid #e0e0e0;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.t-badge i {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+/* Boutons d'action */
+.btn-activity {
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.btn-website {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: 1px solid transparent;
+}
+.btn-website:hover {
+    background-color: #d4ebfc;
+    border-color: var(--primary-color);
+}
+
+.btn-maps {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn-maps:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Mobile Activités */
+@media (max-width: 768px) {
+    .activity-infos {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .transport-options {
+        margin-right: 0;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .btn-activity {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* =========================================
+   SECTION TÉMOIGNAGES (LIVRE D'OR)
+   ========================================= */
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+    margin-bottom: 60px; 
+}
+
+.testimonial-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+
+.testimonial-card::before {
+    content: "“";
+    font-family: serif;
+    font-size: 80px;
+    color: var(--accent-color);
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    opacity: 0.5;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+}
+
+.testimonial-date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-left: 10px;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+}
+
+.airbnb-link-wrapper {
+    text-align: center;
+    margin-top: 0;
+    padding-bottom: 20px;
+    clear: both;
+}
+
+.btn-airbnb-review {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #FF5A5F;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: var(--font-body);
+}
+
+.btn-airbnb-review:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 90, 95, 0.3);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        margin-bottom: 40px;
+    }
+}
+
+/* =========================================
+   FOOTER MODERNE (FINAL)
+   ========================================= */
+
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 50px 20px 20px;
+    margin-top: 60px;
+    font-family: var(--font-body);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    text-align: left;
+}
+
+.footer-col h3 {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Infos de Contact */
+.footer-col p {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.footer-col p a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+/* Liens Rapides */
+.footer-col > a {
+    display: block;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s, padding-left 0.2s;
+}
+
+.footer-col a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer-col > a:hover {
+    padding-left: 5px;
+}
+
+/* Icônes Footer */
+.footer-col i {
+    width: 20px;
+    color: var(--accent-color);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Bouton Airbnb */
+.footer-airbnb {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: white !important;
+    font-weight: bold;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.footer-airbnb:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+    text-decoration: none !important;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 50px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* Footer Mobile */
+@media (max-width: 768px) {
+    .footer-content {
+        text-align: center;
+    }
+    
+    .footer-col p {
+        justify-content: center;
+    }
+    
+    .footer-airbnb {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- Formulaire Contact & Calendrier (Gardé pour compatibilité) --- */
 .contact-form {
     max-width: 600px;
     margin: 0 auto;
@@ -478,7 +872,6 @@ section.transparent-section {
 }
 .contact-form .btn-submit:hover { background: var(--secondary-color); }
 
-/* --- Calendrier --- */
 #calendar {
     margin: 20px auto; max-width: 800px; background: white; border: 1px solid #ddd;
     border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; min-height: 600px;
@@ -489,490 +882,24 @@ section.transparent-section {
 .fc-day.fc-today { background: var(--accent-color); border-color: var(--primary-color); }
 .fc-event { background: var(--primary-color); border: none; }
 
-/* --- Carte Interactive (Leaflet) --- */
-.map-section { margin: 0 auto 1.5rem auto; position: relative; width: 100%; }
-#map { width: 100%; height: 350px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-
-.legend {
-  position: absolute; left: 10px; bottom: 10px; background: rgba(255,255,255,0.93);
-  padding: 6px 12px; font-size: 12px; border-radius: 5px; display: flex; flex-direction: column;
-  gap: 3px; max-width: 180px; z-index: 500;
+/* Styles Airbnb Card */
+.airbnb-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  margin: 20px auto;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  background: #fff;
+  transition: transform 0.2s ease;
 }
-.legend img { width: 13px; height: 20px; margin-right: 6px; }
-.legend-toggle-btn { display: none; }
-
-/* Boutons filtres map */
-#custom-filter-bar {
-  width: 100%; margin: 0 auto 0.5rem auto; background: var(--primary-color);
-  border-radius: 8px 8px 0 0; color: #fff; padding: 10px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-#custom-filter-panel {
-  width: 100%; margin: 0 auto 1rem auto; background: #f8f9fa;
-  border-radius: 0 0 8px 8px; padding: 15px;
-}
-#custom-filter-checkboxes { display: flex; flex-wrap: wrap; gap: 15px; }
-
-@media (max-width: 600px) {
-    #map { height: 220px; }
-    .legend-toggle-btn { display: block; position: absolute; left: 10px; bottom: 10px; z-index: 501; background: #fff; padding: 5px; border-radius: 20px; }
-    .legend.hide-legend { transform: translateY(120%); opacity: 0; }
-}
-
-/* =========================================
-   7. SECTIONS CONTENU (Logement, Commerces...)
-   ========================================= */
-
-/* Conteneur principal */
-.room {
-    margin: 40px auto;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box; /* Important pour que le padding ne dépasse pas */
-}
-
-/* Flexbox : Texte + Image */
-.room-content {
-    display: flex;
-    align-items: center;
-    gap: 40px; /* Espace plus aéré */
-    justify-content: space-between;
-}
-
-/* Option pour inverser (Image à gauche, Texte à droite) */
-.room-content.reverse {
-    flex-direction: row-reverse;
-}
-
-/* Le Texte */
-.room-text {
-    width: 50%; /* Prend la moitié de la place */
-    text-align: justify;
-}
-
-.room-text h2 {
-    text-align: left; /* Titres alignés à gauche dans les blocs */
-    margin-top: 0;
-}
-
-/* --- CORRECTION ICI : L'Image seule --- */
-.room-image {
-    width: 50%;       /* Force l'image à prendre 50% de la largeur */
-    height: auto;     /* Garde les proportions */
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    object-fit: cover; /* S'assure que l'image remplit bien son cadre */
-}
-
-/* Cas des groupes d'images (ex: Salon) */
-.room-images {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 50%;
-}
-
-.room-images img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Classes utilitaires pour petites images (utilisées dans Commerces) */
-.room-image.small { width: 25%; margin: 0 auto; display: block; }
-.room-image.extra-small { width: 15%; margin: 0 auto; display: block; }
-
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-    .room-content, 
-    .room-content.reverse {
-        flex-direction: column; /* Tout s'empile */
-        text-align: center;
-    }
-
-    .room-text {
-        width: 100%; /* Le texte prend toute la largeur */
-        margin-bottom: 20px;
-    }
-    
-    .room-text h2 {
-        text-align: center; /* Titre centré sur mobile */
-    }
-
-    /* L'image prend toute la largeur sur mobile */
-    .room-image, 
-    .room-images {
-        width: 100%; 
-        max-width: 500px; /* Limite pour ne pas être gigantesque */
-        margin: 0 auto;
-    }
-    
-    /* On remet les petites images plus grosses sur mobile pour qu'on les voie */
-    .room-image.small, 
-    .room-image.extra-small {
-        width: 50%;
-    }
-}
-
-/* =========================================
-   ACTIVITÉS V2 : BARRE D'INFOS PRATIQUES
-   ========================================= */
-
-.activity-infos {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eee; /* Petite ligne de séparation */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-}
-/* =========================================
-   ACTIVITÉS V2 : BADGES & BOUTONS
-   ========================================= */
-
-/* Conteneur global de la ligne d'infos */
-.activity-infos {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eee; /* Séparation discrète */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-}
-
-/* 1. LES BADGES DE TRANSPORT (Voiture, Vélo...) */
-.transport-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; 
-    margin-right: auto; /* Pousse les boutons à droite sur PC */
-    margin-bottom: 5px;
-}
-
-.t-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background-color: #f4f4f4; /* Fond gris clair */
-    padding: 6px 12px;
-    border-radius: 20px; /* Forme arrondie 'pilule' */
-    font-size: 0.85rem;
-    color: #444;
-    border: 1px solid #e0e0e0;
-    white-space: nowrap;
-    font-weight: 600;
-}
-
-.t-badge i {
-    color: var(--primary-color); /* Icône en bleu */
-    font-size: 1rem;
-}
-
-/* 2. LES BOUTONS D'ACTION (Site & GPS) */
-.btn-activity {
-    text-decoration: none;
-    padding: 8px 16px; /* Un peu plus grand pour le confort */
-    border-radius: 8px; /* Coins légèrement arrondis */
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    line-height: 1;
-}
-
-/* Bouton Site Web (Clair) */
-.btn-website {
-    background-color: var(--accent-color);
-    color: var(--primary-color);
-    border: 1px solid transparent;
-}
-.btn-website:hover {
-    background-color: #d4ebfc;
-    border-color: var(--primary-color);
-}
-
-/* Bouton GPS (Foncé) */
-.btn-maps {
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.btn-maps:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-/* 3. ADAPTATION MOBILE */
-@media (max-width: 768px) {
-    .activity-infos {
-        flex-direction: column; /* On empile tout */
-        align-items: stretch;   /* On prend toute la largeur */
-        gap: 15px;
-    }
-    
-    .transport-options {
-        margin-right: 0;
-        justify-content: center; /* Badges centrés */
-        width: 100%;
-    }
-
-    .btn-activity {
-        justify-content: center; /* Texte du bouton centré */
-        width: 100%; /* Bouton pleine largeur (plus facile à cliquer) */
-    }
-}
-
-/* =========================================
-   SECTION TÉMOIGNAGES (LIVRE D'OR)
-   ========================================= */
-
-/* 1. La Grille qui contient les avis */
-.testimonials-grid {
-    display: grid;
-    /* S'adapte automatiquement : 1 colonne sur mobile, 3 sur PC */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
-    /* Marge importante en bas pour ne pas toucher le bouton Airbnb */
-    margin-bottom: 60px; 
-}
-
-/* 2. La Carte individuelle d'un avis */
-.testimonial-card {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    border: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-    position: relative; /* Nécessaire pour positionner la grosse guillemet */
-    height: 100%; /* Pour qu'elles aient toutes la même hauteur */
-}
-
-/* La grosse guillemet décorative */
-.testimonial-card::before {
-    content: "“";
-    font-family: serif;
-    font-size: 80px;
-    color: var(--accent-color);
-    position: absolute;
-    top: -10px;
-    left: 15px;
-    opacity: 0.5;
-    line-height: 1;
-    pointer-events: none; /* Pour qu'elle ne gêne pas la sélection du texte */
-}
-
-/* L'en-tête de la carte (Nom + Date) */
-.testimonial-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    position: relative; /* Pour passer au-dessus de la guillemet décorative */
-    z-index: 1;
-}
-
-.testimonial-author {
-    font-weight: bold;
-    color: var(--primary-color);
-    font-family: var(--font-title);
-    font-size: 1.1rem;
-}
-
-.testimonial-date {
-    font-size: 0.85rem;
-    color: #888;
-    margin-left: 10px;
-}
-
-/* Les étoiles dorées */
-.stars {
-    color: #ffc107; /* Jaune or */
-    font-size: 1rem;
-    margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
-}
-
-/* Le texte du commentaire */
-.testimonial-text {
-    font-style: italic;
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    flex-grow: 1; /* Pousse le bas de la carte pour aligner */
-    position: relative;
-    z-index: 1;
-    margin: 0;
-}
-
-/* 3. Le Bouton Airbnb en bas */
-.airbnb-link-wrapper {
-    text-align: center;
-    margin-top: 0;
-    padding-bottom: 20px;
-    clear: both; /* Sécurité pour éviter les chevauchements */
-}
-
-.btn-airbnb-review {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #FF5A5F; /* Le rouge officiel Airbnb */
-    color: white;
-    padding: 12px 25px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.2s, box-shadow 0.2s;
-    font-family: var(--font-body);
-}
-
-.btn-airbnb-review:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 90, 95, 0.3);
-    color: white; /* S'assure que le texte reste blanc */
-}
-
-/* Ajustement Mobile */
-@media (max-width: 768px) {
-    .testimonials-grid {
-        grid-template-columns: 1fr; /* Une seule colonne */
-        margin-bottom: 40px;
-    }
-}
-
-/* =========================================
-   FOOTER MODERNE (FINAL)
-   ========================================= */
-
-footer {
-    background-color: var(--secondary-color); /* Bleu foncé */
-    color: white;
-    padding: 50px 20px 20px; /* Un peu plus d'espace en haut */
-    margin-top: 60px;
-    font-family: var(--font-body);
-}
-
-/* Conteneur principal en Grille */
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    text-align: left;
-}
-
-/* Titres des colonnes */
-.footer-col h3 {
-    font-family: var(--font-title);
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    color: #ffffff; /* Blanc pur pour l'élégance */
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-/* --- 1. Infos de Contact (Icône + Texte alignés) --- */
-.footer-col p {
-    display: flex;          /* Aligne l'icône et le texte */
-    align-items: center;    /* Centre verticalement */
-    gap: 12px;              /* Espace entre icône et texte */
-    margin-bottom: 12px;
-    color: #e0e0e0;
-    font-size: 0.95rem;
-    line-height: 1.4;
-}
-
-/* Lien dans un paragraphe (ex: tél) */
-.footer-col p a {
-    color: #e0e0e0;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-/* --- 2. Liens Rapides (Liste verticale) --- */
-/* On cible les liens qui sont directs enfants de la colonne (pas dans un <p>) */
-.footer-col > a {
-    display: block;         /* Un par ligne */
-    margin-bottom: 10px;
-    color: #e0e0e0;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.2s, padding-left 0.2s;
-}
-
-/* Effet au survol des liens */
-.footer-col a:hover {
-    color: white;
-    text-decoration: underline;
-}
-
-.footer-col > a:hover {
-    padding-left: 5px; /* Petit effet de décalage sympa au survol */
-}
-
-/* Style des petites icônes (FontAwesome) */
-.footer-col i {
-    width: 20px;
-    color: var(--accent-color); /* Bleu clair pour ressortir */
-    text-align: center;
-    flex-shrink: 0; /* Empêche l'icône de s'écraser */
-}
-
-/* --- 3. Bouton Airbnb --- */
-.footer-airbnb {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.1); /* Fond translucide */
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 15px;
-    color: white !important; /* Force le blanc */
-    font-weight: bold;
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: all 0.3s ease;
-}
-
-.footer-airbnb:hover {
-    background: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-    text-decoration: none !important;
-}
-
-/* Barre de copyright en bas */
-.footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.1);
-    margin-top: 50px;
-    padding-top: 20px;
-    text-align: center;
-    font-size: 0.85rem;
-    color: #aaa;
-}
-
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-    .footer-content {
-        text-align: center; /* Tout centrer sur mobile */
-    }
-    
-    /* Sur mobile, on recentre les éléments flex (contact) */
-    .footer-col p {
-        justify-content: center;
-    }
-    
-    .footer-airbnb {
-        width: 100%; /* Bouton large sur mobile */
-        justify-content: center;
-    }
-}
+.airbnb-card:hover { transform: scale(1.02); }
+.airbnb-img { width: 100%; height: 200px; background-size: cover; background-position: center; }
+.airbnb-info { padding: 1.5em; color: #111; text-align: left; }
+.airbnb-info h3 { font-family: 'Lato', sans-serif; font-size: 1.2em; margin: 0 0 0.5em; color: #333; }
+.airbnb-info p { font-family: 'Lato', sans-serif; font-size: 0.95em; margin: 0 0 1.5em; color: #666; }
+.airbnb-info .btn-airbnb { display: block; text-align: center; background-color: #FF5A5F; color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1em; width: auto; }
+.airbnb-info .btn-airbnb:hover { background-color: #e0484d; }
+@media (max-width: 500px) { .airbnb-card { max-width: 100%; } .airbnb-img { height: 180px; } }
