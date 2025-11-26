@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://cyril25.github.io/OFilDuDoubsLabergement/sitemap.xml
+Sitemap: https://ofildudoubs.fr/sitemap.xml
