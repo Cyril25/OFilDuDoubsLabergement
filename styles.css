@@ -39,10 +39,7 @@ body {
     overflow-x: hidden; 
 }
 
-/* Padding pour compenser le menu fixe sur PC */
-@media (min-width: 769px) {
     body { padding-top: 60px; }
-}
 
 /* =========================================
    2. NAVIGATION (MENU)
