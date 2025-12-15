@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta property="og:title" content="Tarifs et disponibilités - O'Fil du Doubs" />
-    <meta property="og:description" content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie." />
+    <meta property="og:description"
+        content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie." />
     <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp" />
     <meta property="og:url" content="https://ofildudoubs.fr/" />
     <meta property="og:type" content="website" />
-    <meta name="description" content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie. Réservez dès maintenant pour un séjour inoubliable.">
-    
+    <meta name="description"
+        content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie. Réservez dès maintenant pour un séjour inoubliable.">
+
     <title>Disponibilités - O'Fil du Doubs</title>
-    
-	<link rel="canonical" href="https://ofildudoubs.fr/dispo.html">
-	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
+
+    <link rel="canonical" href="https://ofildudoubs.fr/dispo.html">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
@@ -33,78 +39,122 @@
 
     <style>
         .airbnb-card {
-          display: flex;
-          flex-direction: column;
-          max-width: 450px;
-          margin: 20px auto;
-          text-decoration: none;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-          background: #fff;
-          transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            max-width: 450px;
+            margin: 20px auto;
+            text-decoration: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            transition: transform 0.2s ease;
         }
-      
+
         .airbnb-card:hover {
-          transform: scale(1.02);
+            transform: scale(1.02);
         }
-      
+
         .airbnb-img {
-          width: 100%;
-          height: 200px;
-          background-size: cover;
-          background-position: center;
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
         }
-      
+
         .airbnb-info {
-          padding: 1.5em;
-          color: #111;
-          text-align: left;
+            padding: 1.5em;
+            color: #111;
+            text-align: left;
         }
-      
+
         .airbnb-info h3 {
-          font-family: 'Lato', sans-serif;
-          font-size: 1.2em;
-          margin: 0 0 0.5em;
-          color: #333;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.2em;
+            margin: 0 0 0.5em;
+            color: #333;
         }
-      
+
         .airbnb-info p {
-          font-family: 'Lato', sans-serif;
-          font-size: 0.95em;
-          margin: 0 0 1.5em;
-          color: #666;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95em;
+            margin: 0 0 1.5em;
+            color: #666;
         }
-      
+
         /* CORRECTION: On style une classe .btn-airbnb au lieu de la balise button */
-        .airbnb-info .btn-airbnb {
-          display: block;
-          text-align: center;
-          background-color: #FF5A5F;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 8px;
-          font-weight: bold;
-          cursor: pointer;
-          font-size: 1em;
-          width: auto;
-        }
-      
-        .airbnb-info .btn-airbnb:hover {
-          background-color: #e0484d;
-        }
-      
+        /* Removed old specific .airbnb-info .btn-airbnb block to promote shared styles */
+
         @media (max-width: 500px) {
-          .airbnb-card {
-            max-width: 100%;
-          }
-          .airbnb-img {
-            height: 180px;
-          }
+            .airbnb-card {
+                max-width: 100%;
+            }
+
+            .airbnb-img {
+                height: 180px;
+            }
         }
+
+        /* Modification: Card is now a div, remove scale effect on whole card if undesired, or keep it */
+        .airbnb-card {
+            /* ... existing styles ... */
+            cursor: default;
+            /* Since it's no longer a link itself */
+        }
+
+        /* Only scale if we want the container to scale, but maybe less aggressively or not at all 
+           if we want users to focus on buttons. Let's keep the slight lift for polish. 
+        */
+
+        .card-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-airbnb,
+        .btn-booking {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            /* Important! was missing for booking */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            flex: 1;
+            min-width: 140px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-airbnb {
+            background-color: #FF5A5F;
+        }
+
+        .btn-airbnb:hover {
+            background-color: #e0484d;
+        }
+
+        .btn-booking {
+            background-color: #003580;
+        }
+
+        .btn-booking:hover {
+            background-color: #00224f;
+        }
+
+        /* Remove the previous media query specific to 500px for card width if it conflicts, 
+           but generally it is fine. 
+        */
     </style>
 </head>
+
 <body>
 
     <nav>
@@ -118,21 +168,21 @@
             <li><a href="commerces.html">Commerces</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
-       <div class="language-dropdown">
-			<button class="dropbtn">
-				<img id="current-flag-icon" src="images/fr.png" alt="Langue"> 
-				<span class="arrow">▼</span>
-			</button>
-			<div class="dropdown-content">
-				<a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
-				<a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
-				<a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
-				<a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
-				<a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
-				<a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
-				<a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
-			</div>
-		</div>
+        <div class="language-dropdown">
+            <button class="dropbtn">
+                <img id="current-flag-icon" src="images/fr.png" alt="Langue">
+                <span class="arrow">▼</span>
+            </button>
+            <div class="dropdown-content">
+                <a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+                <a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+                <a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+                <a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+                <a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+                <a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+                <a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+            </div>
+        </div>
     </nav>
 
     <header class="header2">
@@ -142,43 +192,54 @@
 
     <main>
         <p id="intro_text" class="intro-text">
-            </p>
+        </p>
 
         <section>
             <h2 id="availability_section">Disponibilités</h2>
-            
+
             <div id="calendar"></div>
-            
+
             <p id="airbnb_info" style="margin-top: 30px;">
-                Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.
+                Pour consulter les tarifs ou obtenir plus d'informations, vous pouvez nous contacter via le formulaire
+                de contact ou accéder aux tarifs à jour directement sur Airbnb via le lien ci-dessous.
             </p>
-            
-            <a href="https://www.airbnb.fr/rooms/1160174173295911644" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="airbnb-card">
-               <div class="airbnb-img" style="background-image: url('images/banniere/vue-coucher.webp');"></div>
-               <div class="airbnb-info">
-                 <h3 id="airbnb_title">Appartement à Labergement-Sainte-Marie</h3>
-                 <p id="airbnb_details">★ 5,0 · 2 chambres · 2 lits · 1 salle de bain</p>
-                 <span class="btn-airbnb">Voir sur Airbnb</span>
-               </div>
-            </a>
+
+            <div class="airbnb-card">
+                <div class="airbnb-img" style="background-image: url('images/banniere/vue-coucher.webp');"></div>
+                <div class="airbnb-info">
+                    <h3 id="airbnb_title">Appartement à Labergement-Sainte-Marie</h3>
+                    <p id="airbnb_details">★ 5,0 · 2 chambres · 2 lits · 1 salle de bain</p>
+
+                    <div class="card-buttons">
+                        <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank"
+                            rel="noopener noreferrer" class="btn-airbnb">
+                            Voir sur Airbnb
+                        </a>
+
+                        <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&sid=9ec07d920783404e24ab32215d33bb1c&dist=0&keep_landing=1&sb_price_type=total&type=total&chal_t=1765790180198&force_referer="
+                            target="_blank" rel="noopener noreferrer" class="btn-booking">
+                            Voir sur Booking
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section>
             <h2 id="practical_info_section">Infos pratiques</h2>
-            <p id="arrival_info">Les arrivées se font entre 17h et 22h, avec remise des clés en main propre ou via une boîte à clé selon nos disponibilités.</p>
+            <p id="arrival_info">Les arrivées se font entre 17h et 22h, avec remise des clés en main propre ou via une
+                boîte à clé selon nos disponibilités.</p>
             <p id="departure_info">Le départ se fait avant 11h.</p>
         </section>
     </main>
 
-	<footer>
+    <footer>
         <div class="footer-content">
             <div class="footer-col">
                 <h3 id="footer_contact_title">Nous contacter</h3>
                 <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
-                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de
+                        contact</a></p>
                 <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
             </div>
 
@@ -187,13 +248,18 @@
                 <a href="index.html" id="footer_link_home">Accueil</a>
                 <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
                 <a href="activites.html" id="footer_link_activities">Activités</a>
-                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a> </div>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a>
+            </div>
 
             <div class="footer-col">
-                <h3 id="footer_follow_title">Réserver sur Airbnb</h3>
+                <h3 id="footer_follow_title">Réserver en ligne</h3>
                 <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
                 <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" class="footer-airbnb">
                     <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+                <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&sid=9ec07d920783404e24ab32215d33bb1c&dist=0&keep_landing=1&sb_price_type=total&type=total&chal_t=1765790180198&force_referer="
+                    target="_blank" class="footer-airbnb">
+                    <i class="fas fa-hotel"></i> Page Booking
                 </a>
             </div>
         </div>
@@ -207,8 +273,8 @@
         console.log('Initialisation du calendrier vide');
         $('#calendar').fullCalendar({
             locale: 'fr',
-            height: 'auto', 
-            events: [] 
+            height: 'auto',
+            events: []
         });
 
         console.log('Début de la récupération du fichier iCalendar');
@@ -217,12 +283,12 @@
                 return new Promise(resolve => {
                     setTimeout(() => {
                         resolve(response.text());
-                    }, 1); 
+                    }, 1);
                 });
             })
             .then(data => {
                 const events = parseICS(data);
-                updateCalendar(events); 
+                updateCalendar(events);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération du fichier iCal:', error);
@@ -247,7 +313,7 @@
                     const description = event.match(descriptionPattern);
 
                     if (summary && startDate && endDate) {
-                        eventDetails.title = 'Indisponible'; 
+                        eventDetails.title = 'Indisponible';
                         eventDetails.start = formatDate(startDate[1]);
                         eventDetails.end = formatDate(endDate[1]);
                         eventDetails.description = description ? description[1] : 'Pas de description';
@@ -266,8 +332,9 @@
         }
 
         function updateCalendar(events) {
-            $('#calendar').fullCalendar('addEventSource', events); 
+            $('#calendar').fullCalendar('addEventSource', events);
         }
     </script>
 </body>
+
 </html>
