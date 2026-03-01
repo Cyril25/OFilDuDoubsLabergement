@@ -365,7 +365,7 @@
                             <span class="t-badge"><i class="fas fa-car"></i> 5 min (4 km)</span>
                             <span class="t-badge"><i class="fas fa-bicycle"></i> 15 min</span>
                         </div>
-                        <a href="https://www.destination-haut-doubs.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
+                        <a href="https://www.destination-haut-doubs.com/malbuisson-les-lacs.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=Lac+Saint+Point&query_place_id=ChIJKU_MFk6ljUcRg9t9nERigFs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
                     </div>
                 </div>
@@ -439,7 +439,7 @@
                             <span class="t-badge"><i class="fas fa-car"></i> 15 min (13 km)</span>
                             <span class="t-badge"><i class="fas fa-walking"></i> Balade 30 min</span>
                         </div>
-                        <a href="https://www.otmouthe.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
+                        <a href="https://www.destination-haut-doubs.com/val-de-mouthe.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=Station+de+la+Source+du+Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
                     </div>
                 </div>
@@ -513,6 +513,7 @@
                             <span class="t-badge"><i class="fas fa-car"></i> 4 min (2.6 km)</span>
                             <span class="t-badge"><i class="fas fa-walking"></i> 35 min</span>
                         </div>
+                        <a href="https://www.lerucherdes2lacs.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=Le+Rucher+des+2+Lacs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
                     </div>
                 </div>
@@ -716,14 +717,10 @@
         }).addTo(map);
 
         // Contours du Doubs
-        fetch('https://france-geojson.gregoiredavid.fr/departements.geojson')
+        fetch('data/doubs.geojson')
             .then(res => res.json())
             .then(data => {
-                var doubs = {
-                    "type": "FeatureCollection",
-                    "features": data.features.filter(f => f.properties.code === "25")
-                };
-                L.geoJSON(doubs, {
+                L.geoJSON(data, {
                     style: { color: "#ff7800", weight: 2, opacity: 0.6 }
                 }).addTo(map);
             });
