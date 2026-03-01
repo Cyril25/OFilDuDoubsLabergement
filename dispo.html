@@ -9,7 +9,7 @@
     <meta property="og:description"
         content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie." />
     <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp" />
-    <meta property="og:url" content="https://ofildudoubs.fr/" />
+    <meta property="og:url" content="https://ofildudoubs.fr/dispo.html" />
     <meta property="og:type" content="website" />
     <meta name="description"
         content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie. Réservez dès maintenant pour un séjour inoubliable.">
@@ -33,9 +33,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
 
-    <script src="scripts/menu-translations.js"></script>
-    <script src="scripts/dispo-translations.js"></script>
-    <script src="scripts/applyTranslations.js"></script>
+    <script src="scripts/menu-translations.js" defer></script>
+    <script src="scripts/dispo-translations.js" defer></script>
+    <script src="scripts/applyTranslations.js" defer></script>
 
     <style>
         .airbnb-card {
@@ -258,7 +258,7 @@
                     <i class="fab fa-airbnb"></i> Page Airbnb
                 </a>
                 <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&sid=9ec07d920783404e24ab32215d33bb1c&dist=0&keep_landing=1&sb_price_type=total&type=total&chal_t=1765790180198&force_referer="
-                    target="_blank" class="footer-airbnb">
+                    target="_blank" rel="noopener noreferrer" class="footer-airbnb">
                     <i class="fas fa-hotel"></i> Page Booking
                 </a>
             </div>
@@ -269,27 +269,19 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2025 O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+            <p>&copy; <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
         </div>
     </footer>
 
     <script>
-        console.log('Initialisation du calendrier vide');
         $('#calendar').fullCalendar({
             locale: 'fr',
             height: 'auto',
             events: []
         });
 
-        console.log('Début de la récupération du fichier iCalendar');
         fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
-            .then(response => {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve(response.text());
-                    }, 1);
-                });
-            })
+            .then(response => response.text())
             .then(data => {
                 const events = parseICS(data);
                 updateCalendar(events);

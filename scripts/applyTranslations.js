@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const lang = localStorage.getItem('language') || 'fr'; 
+    const lang = localStorage.getItem('language') || 'fr';
+
+    // 0. MISE À JOUR DE L'ANNÉE DU COPYRIGHT
+    document.querySelectorAll('.copyright-year').forEach(el => {
+        el.textContent = new Date().getFullYear();
+    });
 
     // 1. MISE À JOUR VISUELLE DU DRAPEAU ACTUEL
     const currentFlagIcon = document.getElementById("current-flag-icon");
