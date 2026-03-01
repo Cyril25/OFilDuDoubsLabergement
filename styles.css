@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap');
+
 /* =========================================
    1. CONFIGURATION & VARIABLES
    ========================================= */
@@ -208,8 +210,11 @@ header.header2 {
 }
 
 header h1 {
-    font-family: var(--font-title);
+    font-family: 'Josefin Sans', sans-serif;
     font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     margin: 0;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     line-height: 1.2;
