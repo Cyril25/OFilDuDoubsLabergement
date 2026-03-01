@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 	
     <script src="scripts/menu-translations.js" defer></script>
     <script src="scripts/contact-translations.js" defer></script>
@@ -129,6 +130,28 @@
             </script>
         </section>
     </main>
+
+    <section class="map-section">
+        <h2 id="map_title">Où nous trouver</h2>
+        <p id="map_address"><i class="fas fa-map-marker-alt"></i> 2 Impasse Cotti, 25160 Labergement-Sainte-Marie</p>
+        <div id="contact-map"></div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=46.768914,6.280725" target="_blank" rel="noopener noreferrer" class="btn-maps">
+            <i class="fas fa-directions"></i> Itinéraire Google Maps
+        </a>
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var contactMap = L.map('contact-map', { scrollWheelZoom: false }).setView([46.768914, 6.280725], 16);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            maxZoom: 19
+        }).addTo(contactMap);
+        L.marker([46.768914, 6.280725])
+            .addTo(contactMap)
+            .bindPopup("<strong>O'Fil du Doubs</strong><br>2 Impasse Cotti<br>25160 Labergement-Sainte-Marie")
+            .openPopup();
+    </script>
 
 	<footer>
         <div class="footer-content">
