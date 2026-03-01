@@ -103,6 +103,28 @@
             #custom-filter-checkboxes { gap: 10px; }
             .custom-filter-label { font-size: 0.9em; }
         }
+
+        /* Badges de tags sur les sections d'activités */
+        .activity-tag-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0 14px 0;
+        }
+        .activity-tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 95, 141, 0.08);
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 95, 141, 0.25);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .activity-tag-badge i { font-size: 0.72rem; }
     </style>
 </head>
 <body>
@@ -849,6 +871,41 @@
             var marker = allMarkers.find(m => (m.options.tags||[]).includes('vous'));
             if (marker) marker.openPopup();
         }, 500);
+
+        // Génère les badges de tags sur chaque section d'activité
+        (function() {
+            var tagIcons = {
+                nature: 'fa-leaf', randonnée: 'fa-hiking', loisirs: 'fa-star',
+                visite: 'fa-binoculars', artisanat: 'fa-hammer', patrimoine: 'fa-landmark',
+                terroir: 'fa-cheese', sport: 'fa-running', panorama: 'fa-mountain',
+                famille: 'fa-users', baignade: 'fa-swimmer', musée: 'fa-university',
+                photo: 'fa-camera', calme: 'fa-spa', détente: 'fa-hot-tub',
+                intérieur: 'fa-home', autre: 'fa-map-marker-alt'
+            };
+            var tagNames = {};
+            tags.forEach(function(t) { tagNames[t.tag] = t.name; });
+
+            document.querySelectorAll('section.room[data-tags]').forEach(function(section) {
+                var sectionTags = (section.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
+                if (!sectionTags.length) return;
+
+                var container = document.createElement('div');
+                container.className = 'activity-tag-badges';
+
+                sectionTags.forEach(function(tag) {
+                    if (tag === 'vous') return;
+                    var span = document.createElement('span');
+                    span.className = 'activity-tag-badge';
+                    var icon = tagIcons[tag] || 'fa-tag';
+                    var label = tagNames[tag] || (tag.charAt(0).toUpperCase() + tag.slice(1));
+                    span.innerHTML = '<i class="fas ' + icon + '"></i> ' + label;
+                    container.appendChild(span);
+                });
+
+                var h2 = section.querySelector('.room-text h2');
+                if (h2) h2.after(container);
+            });
+        })();
 
     </script>
 </body>
