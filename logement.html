@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     
     <script src="scripts/menu-translations.js" defer></script>
     <script src="scripts/logement-translations.js" defer></script>
@@ -72,8 +73,12 @@
                     <p id="salon_description">Un espace lumineux et accueillant, parfait pour se retrouver en famille ou entre amis. Il dispose d'une télévision grand écran, d'une table à manger pour 4 personnes, et de jeux de société.</p>
                 </div>
                 <div class="room-images">
-                    <img src="images/salon.webp" alt="Salon lumineux" class="room-image" loading="lazy">
-                    <img src="images/salle-a-manger.webp" alt="Salle à manger" class="room-image" loading="lazy">
+                    <a href="images/salon.webp" class="glightbox" data-gallery="logement" data-title="Le salon">
+                        <img src="images/salon.webp" alt="Salon lumineux" class="room-image" loading="lazy">
+                    </a>
+                    <a href="images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="La salle à manger">
+                        <img src="images/salle-a-manger.webp" alt="Salle à manger" class="room-image" loading="lazy">
+                    </a>
                 </div>
             </div>
         </section>
@@ -84,7 +89,9 @@
                     <h2 id="cuisine_title">La Cuisine</h2>
                     <p id="cuisine_description">Une cuisine moderne et entièrement équipée : four, lave-vaisselle, Nespresso, appareil à raclette et à fondue...</p>
                 </div>
-                <img src="images/cuisine.webp" alt="Cuisine moderne" class="room-image" loading="lazy">
+                <a href="images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="La cuisine">
+                    <img src="images/cuisine.webp" alt="Cuisine moderne" class="room-image" loading="lazy">
+                </a>
             </div>
         </section>
     
@@ -94,7 +101,9 @@
                     <h2 id="chambre_principale_title">La Chambre Principale</h2>
                     <p id="chambre_principale_description">Chambre spacieuse avec lit double, grande armoire, télévision et accès direct au balcon.</p>
                 </div>
-                <img src="images/chambre-principale.webp" alt="Chambre principale" class="room-image" loading="lazy">
+                <a href="images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="La chambre principale">
+                    <img src="images/chambre-principale.webp" alt="Chambre principale" class="room-image" loading="lazy">
+                </a>
             </div>
         </section>
 
@@ -104,7 +113,9 @@
                     <h2 id="chambre_secondaire_title">La Chambre Secondaire</h2>
                     <p id="chambre_secondaire_description">Chambre accueillante avec lit double et accès balcon, idéale pour des nuits reposantes.</p>
                 </div>
-                <img src="images/chambre-secondaire.jpg" alt="Chambre secondaire" class="room-image" loading="lazy">
+                <a href="images/chambre-secondaire.jpg" class="glightbox" data-gallery="logement" data-title="La chambre secondaire">
+                    <img src="images/chambre-secondaire.jpg" alt="Chambre secondaire" class="room-image" loading="lazy">
+                </a>
             </div>
         </section>
     
@@ -114,7 +125,9 @@
                     <h2 id="salle_de_bain_title">La Salle de Bain</h2>
                     <p id="salle_de_bain_description">Salle de bain moderne avec baignoire, ambiance lumineuse apaisante et machine à laver.</p>
                 </div>
-                <img src="images/salle-de-bain.webp" alt="Salle de bain" class="room-image" loading="lazy">
+                <a href="images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="La salle de bain">
+                    <img src="images/salle-de-bain.webp" alt="Salle de bain" class="room-image" loading="lazy">
+                </a>
             </div>
         </section>
 
@@ -125,12 +138,21 @@
               <p id="balcon_description">Profitez d'une vue exceptionnelle, d'un salon de jardin et d'un grill électrique pour vos repas en extérieur.</p>
             </div>
             <div class="room-images">
-              <img src="images/balcon-ete.webp" alt="Balcon été" class="room-image" loading="lazy">
-              <img src="images/balcon-hiver.webp" alt="Balcon hiver" class="room-image" loading="lazy">
+              <a href="images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en été">
+                  <img src="images/balcon-ete.webp" alt="Balcon été" class="room-image" loading="lazy">
+              </a>
+              <a href="images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en hiver">
+                  <img src="images/balcon-hiver.webp" alt="Balcon hiver" class="room-image" loading="lazy">
+              </a>
             </div>
           </div>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
+
 	<footer>
         <div class="footer-content">
             <div class="footer-col">

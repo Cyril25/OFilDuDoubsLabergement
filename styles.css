@@ -787,4 +787,93 @@ footer {
 .btn-maps { display: inline-block; background: var(--primary-color); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: 'Lato', sans-serif; transition: background 0.2s ease; }
 .btn-maps i { margin-right: 0.4rem; }
 .btn-maps:hover { background: var(--secondary-color); color: white; }
+
+/* === LIGHTBOX : images cliquables === */
+a.glightbox { display: contents; }
+a.glightbox img.room-image { cursor: zoom-in; }
+
+/* === CONTACT : accès rapide téléphone / email === */
+.contact-quick {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: var(--accent-color);
+    border: 1px solid #c8e6f5;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    overflow: hidden;
+}
+.contact-quick-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.05rem;
+    flex: 1;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.contact-quick-item:hover { background: #d0edf9; color: var(--secondary-color); }
+.contact-quick-item i { font-size: 1.2rem; }
+.contact-quick-sep { width: 1px; background: #c8e6f5; align-self: stretch; }
+
+/* === DISPO : section tarifs === */
+.rates-section { padding: 2rem 0 1rem; }
+.rates-section h2 { font-family: var(--font-title); color: var(--primary-color); text-align: center; font-size: 2rem; margin-bottom: 0.4rem; }
+.rates-intro { text-align: center; color: #666; margin-bottom: 2rem; font-size: 1rem; }
+
+.rates-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+.rate-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+    max-width: 260px;
+    transition: transform 0.2s;
+}
+.rate-card:hover { transform: translateY(-4px); }
+.rate-card--featured {
+    border: 2px solid var(--primary-color);
+    background: var(--accent-color);
+}
+.rate-icon { font-size: 2rem; color: var(--primary-color); margin-bottom: 0.8rem; }
+.rate-card h3 { font-family: var(--font-title); color: var(--primary-color); font-size: 1.2rem; margin-bottom: 0.5rem; }
+.rate-period { color: #888; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem; }
+.rate-price { font-family: var(--font-body); font-size: 1.1rem; color: var(--text-color); }
+.rate-price strong { font-size: 1.6rem; color: var(--primary-color); }
+
+.rates-supplements {
+    background: #fff8e1;
+    border-left: 4px solid #f5c842;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    max-width: 520px;
+    margin: 0 auto;
+}
+.rates-supplements p { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text-color); }
+.rates-supplements ul { list-style: none; padding: 0; margin: 0; }
+.rates-supplements ul li { padding: 0.3rem 0; color: #555; font-size: 0.95rem; }
+.rates-supplements ul li i { color: #c8a800; margin-right: 0.5rem; width: 1rem; }
+
+@media (max-width: 768px) {
+    .rates-cards { flex-direction: column; align-items: center; }
+    .rate-card { max-width: 100%; width: 100%; }
+    .contact-quick { flex-direction: column; }
+    .contact-quick-sep { width: auto; height: 1px; align-self: stretch; }
+}
 @media (max-width: 500px) { .airbnb-card { max-width: 100%; } .airbnb-img { height: 180px; } }
