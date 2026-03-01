@@ -263,7 +263,7 @@
             </div>
         </section>
 
-        <section class="room" data-tags="musée terroir visite">
+        <section class="room" data-tags="musée terroir visite intérieur">
             <div class="room-content">
                 <div class="room-text">
                     <h2 id="fort_saint_antoine_title">Fort Saint-Antoine</h2>
@@ -373,7 +373,7 @@
             </div>
         </section>
 
-        <section class="room" data-tags="musée terroir visite">
+        <section class="room" data-tags="musée terroir visite intérieur">
             <div class="room-content">
                 <div class="room-text">
                     <h2 id="distillerie_guy_title">Distillerie Guy</h2>
@@ -391,7 +391,7 @@
             </div>
         </section>
 
-        <section class="room" data-tags="musée patrimoine visite">
+        <section class="room" data-tags="musée patrimoine visite intérieur">
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="maison_michaud_title">Maison Michaud</h2>
@@ -466,7 +466,7 @@
         </section>
 
         <!-- 4. Belvédère des 2 Lacs -->
-        <section class="room" data-tags="panorama nature photo">
+        <section class="room" data-tags="panorama nature">
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="belvedere_2lacs_title">Belvédère des 2 Lacs</h2>
@@ -503,7 +503,7 @@
         </section>
 
         <!-- 6. Le Rucher des Deux Lacs -->
-        <section class="room" data-tags="terroir artisanat famille">
+        <section class="room" data-tags="terroir artisanat famille intérieur">
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="rucher_title">Le Rucher des Deux Lacs</h2>
@@ -521,7 +521,7 @@
         </section>
 
         <!-- 7. Fromagerie du Mont d’Or -->
-        <section class="room" data-tags="terroir visite">
+        <section class="room" data-tags="terroir visite intérieur">
             <div class="room-content">
                 <div class="room-text">
                     <h2 id="fromagerie_montdor_title">Fromagerie du Mont d’Or</h2>
@@ -539,7 +539,7 @@
         </section>
 
         <!-- 8. Distillerie Les Fils d’Émile Pernot -->
-        <section class="room" data-tags="terroir visite patrimoine">
+        <section class="room" data-tags="terroir visite patrimoine intérieur">
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="distillerie_pernot_title">Distillerie Émile Pernot</h2>
@@ -647,7 +647,7 @@
             </div>
         </section>
 
-        <section class="room" data-tags="autre">
+        <section class="room" data-tags="">
             <div class="room-content">
                 <div class="room-text" style="width: 100%; text-align: center;">
                     <h2 id="et_plus_encore_title">Et plus encore ...</h2>
@@ -746,7 +746,12 @@
 
         function addTaggedMarker(lat, lng, label, tags, hueClass) {
             var marker = L.marker([lat, lng], { icon: coloredIcon(hueClass), tags: tags });
-            marker.bindPopup("<b>" + label + "</b>");
+            var gmapsUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+            var popupContent = '<b>' + label + '</b>'
+                + '<br><a href="' + gmapsUrl + '" target="_blank" rel="noopener"'
+                + ' style="display:inline-block;margin-top:6px;font-size:0.82em;color:#1a73e8;text-decoration:none;">'
+                + '&#x1F4CD; Ouvrir dans Google Maps</a>';
+            marker.bindPopup(popupContent);
             marker.addTo(map);
             allMarkers.push(marker);
         }
@@ -759,12 +764,12 @@
         addTaggedMarker(46.76881524697742, 6.276171127712943, "La Maison de la Réserve", ['nature', 'visite', 'musée'], 'green');
         addTaggedMarker(46.77061883932468, 6.279467100000001, "Fonderie de Cloches Obertino", ['artisanat', 'visite', 'musée'], 'green');
         addTaggedMarker(46.87192615888924, 6.372001800000001, "Château de Joux", ['patrimoine', 'visite', 'musée'], 'green');
-        addTaggedMarker(46.788646392045784, 6.331945128834878, "Fort Saint-Antoine", ['terroir', 'visite', 'musée'], 'green');
+        addTaggedMarker(46.788646392045784, 6.331945128834878, "Fort Saint-Antoine", ['terroir', 'visite', 'musée', 'intérieur'], 'green');
         addTaggedMarker(46.76845219469759, 6.356981544174395, "Station de Métabief", ['nature', 'sport', 'loisirs'], 'green');
         addTaggedMarker(46.81067488289089, 6.32231366923565, "Source Bleue", ['nature', 'randonnée'], 'green');
         addTaggedMarker(46.80259538836122, 6.304919815611472, "Lac Saint-Point", ['nature', 'randonnée', 'panorama', 'baignade'], 'green');
-        addTaggedMarker(46.90613515276898, 6.364507557669758, "Distillerie Guy", ['terroir', 'visite', 'musée'], 'green');
-        addTaggedMarker(46.629624574574905, 6.140704284660481, "Maison Michaud", ['patrimoine', 'visite', 'musée'], 'green');
+        addTaggedMarker(46.90613515276898, 6.364507557669758, "Distillerie Guy", ['terroir', 'visite', 'musée', 'intérieur'], 'green');
+        addTaggedMarker(46.629624574574905, 6.140704284660481, "Maison Michaud", ['patrimoine', 'visite', 'musée', 'intérieur'], 'green');
         addTaggedMarker(46.73503617312605, 6.3517159796611615, "Mont d'Or", ['nature', 'randonnée', 'panorama'], 'green');
         addTaggedMarker(46.767099256711525, 6.357687671165121, "Luge sur Rails", ['famille', 'nature', 'loisirs'], 'green');
         addTaggedMarker(46.76320836207209, 6.347980915339516, "Accrobranche Métabief", ['famille', 'nature', 'sport', 'loisirs'], 'green');
@@ -774,9 +779,9 @@
         addTaggedMarker(46.70489822756042, 6.209188888326366, "Source du Doubs", ['nature', 'randonnée'], 'green');
         addTaggedMarker(46.75572672582575, 6.253160943595951, "Belvédère des 2 Lacs", ['panorama', 'nature'], 'green');
         addTaggedMarker(46.76876086794902, 6.274985942166348, "Réserve du Lac de Remoray", ['nature', 'randonnée', 'famille'], 'green');
-        addTaggedMarker(46.788584108182484, 6.274083788751302, "Le Rucher des Deux Lacs", ['terroir', 'famille'], 'green');
-        addTaggedMarker(46.775981182590385, 6.3548824591672926, "Fromagerie du Mont d'Or", ['terroir', 'visite'], 'green');
-        addTaggedMarker(46.872050370627136, 6.378350004513328, "Distillerie Émile Pernot", ['terroir', 'visite', 'patrimoine'], 'green');
+        addTaggedMarker(46.788584108182484, 6.274083788751302, "Le Rucher des Deux Lacs", ['terroir', 'famille', 'intérieur'], 'green');
+        addTaggedMarker(46.775981182590385, 6.3548824591672926, "Fromagerie du Mont d'Or", ['terroir', 'visite', 'intérieur'], 'green');
+        addTaggedMarker(46.872050370627136, 6.378350004513328, "Distillerie Émile Pernot", ['terroir', 'visite', 'patrimoine', 'intérieur'], 'green');
         addTaggedMarker(46.80231152129973, 6.304965033113403, "Base Nautique Malbuisson", ['sport', 'loisirs', 'baignade', 'famille'], 'green');
         addTaggedMarker(46.76973292308771, 6.3569430604607104, "Location VTT Électrique", ['sport', 'loisirs', 'nature'], 'green');
         addTaggedMarker(46.74176564971926, 6.289674389471722, "Spot de Pêche (Doubs)", ['nature', 'calme', 'loisirs'], 'green');
@@ -795,7 +800,9 @@
             { tag: "sport", name: "Sport" },
             { tag: "panorama", name: "Panorama" },
             { tag: "famille", name: "Famille" },
-            { tag: "baignade", name: "Baignade" }
+            { tag: "baignade", name: "Baignade" },
+            { tag: "musée", name: "Musée" },
+            { tag: "intérieur", name: "Intérieur" }
         ];
 
         function updateCustomFilterPanel() {
