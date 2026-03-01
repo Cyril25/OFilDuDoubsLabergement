@@ -751,12 +751,13 @@ footer {
 
 #calendar {
     margin: 20px auto; max-width: 800px; background: white; border: 1px solid #ddd;
-    border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; min-height: 600px;
+    border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; min-height: 400px;
 }
-.fc-toolbar h2 { font-size: 1.5em; color: var(--primary-color); }
-.fc-button { background: var(--primary-color); color: white; border: none; }
-.fc-button:hover { background: var(--secondary-color); }
-.fc-day.fc-today { background: var(--accent-color); border-color: var(--primary-color); }
+/* FullCalendar v6 overrides */
+.fc-toolbar-title { font-size: 1.5em; color: var(--primary-color); }
+.fc-button-primary { background: var(--primary-color) !important; border-color: var(--primary-color) !important; }
+.fc-button-primary:hover { background: var(--secondary-color) !important; border-color: var(--secondary-color) !important; }
+.fc-day-today { background: var(--accent-color) !important; }
 .fc-event { background: var(--primary-color); border: none; }
 
 .airbnb-card {
@@ -877,3 +878,48 @@ a.glightbox img.room-image { cursor: zoom-in; }
     .contact-quick-sep { width: auto; height: 1px; align-self: stretch; }
 }
 @media (max-width: 500px) { .airbnb-card { max-width: 100%; } .airbnb-img { height: 180px; } }
+
+/* === INFOS PRATIQUES : liste avec icônes === */
+.practical-info-list { list-style: none; padding: 0; max-width: 640px; margin: 0 auto; }
+.practical-info-list li { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.75rem 0; border-bottom: 1px solid #eee; font-size: 1rem; color: var(--text-color); }
+.practical-info-list li:last-child { border-bottom: none; }
+.practical-info-list li i { color: var(--primary-color); font-size: 1.1rem; margin-top: 0.1rem; min-width: 1.2rem; text-align: center; }
+
+/* === RGPD BANNER === */
+#rgpd-banner {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(20, 20, 20, 0.96);
+    color: #e5e5e5;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    z-index: 9999;
+    font-family: var(--font-body); font-size: 0.88rem;
+    backdrop-filter: blur(4px);
+}
+#rgpd-banner p { margin: 0; flex: 1; line-height: 1.5; }
+#rgpd-banner a { color: #7dd3fc; text-decoration: underline; }
+#rgpd-accept {
+    background: #fff; color: #222; border: none;
+    padding: 0.55rem 1.4rem; border-radius: 6px;
+    cursor: pointer; font-weight: 700; white-space: nowrap; font-size: 0.88rem;
+    transition: background 0.2s;
+}
+#rgpd-accept:hover { background: #e0f2fe; }
+
+/* === WHATSAPP BUTTON === */
+#whatsapp-btn {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: #25D366; color: white;
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+    z-index: 1001; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+#whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.28); color: white; }
+
+@media (max-width: 768px) {
+    #rgpd-banner { flex-direction: column; text-align: center; padding: 1rem; }
+    #whatsapp-btn { bottom: 1rem; right: 1rem; width: 50px; height: 50px; font-size: 1.6rem; }
+}
