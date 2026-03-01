@@ -58,6 +58,11 @@ nav {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+/* Offset scroll pour compenser le menu fixe (60px + marge) */
+h2[id] {
+    scroll-margin-top: 80px;
+}
+
 nav ul {
     list-style: none;
     padding: 0;
