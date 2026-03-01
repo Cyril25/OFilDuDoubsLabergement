@@ -2,7 +2,7 @@ const dataTranslations = {
     fr: {
         title: "Activités",
         subtitle: "Découvrez les lieux incontournables et les activités à proximité",
-        introduction: "Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Découvrez notre sélection de 26 activités incontournables autour du logement.",
+        introduction: "Entre lacs majestueux, paysages préservés, savoir-faire locaux et aventures en plein air, notre région a tant à offrir. Découvrez notre sélection de 25 activités incontournables autour du logement.",
         
         // --- 13 ANCIENNES ACTIVITÉS (Celles-ci marchaient déjà) ---
         lac_remoray_title: "Lac de Remoray",
@@ -96,7 +96,7 @@ const dataTranslations = {
     en: {
         title: "Activities",
         subtitle: "Discover must-see places and nearby activities",
-        introduction: "Between majestic lakes, preserved landscapes, local craftsmanship, and outdoor adventures, our region has so much to offer. Discover our selection of 26 must-see activities around the accommodation.",
+        introduction: "Between majestic lakes, preserved landscapes, local craftsmanship, and outdoor adventures, our region has so much to offer. Discover our selection of 25 must-see activities around the accommodation.",
         
         lac_remoray_title: "Lac de Remoray",
         lac_remoray_description: "A protected natural reserve, ideal for walks, bird watching, and peaceful moments by the water.",
@@ -188,7 +188,7 @@ const dataTranslations = {
     de: {
         title: "Aktivitäten",
         subtitle: "Entdecken Sie die Sehenswürdigkeiten und Aktivitäten in der Nähe",
-        introduction: "Zwischen majestätischen Seen, unberührten Landschaften, lokalem Handwerk und Outdoor-Abenteuern hat unsere Region so viel zu bieten. Entdecken Sie unsere Auswahl von 26 unumgänglichen Aktivitäten rund um die Unterkunft.",
+        introduction: "Zwischen majestätischen Seen, unberührten Landschaften, lokalem Handwerk und Outdoor-Abenteuern hat unsere Region so viel zu bieten. Entdecken Sie unsere Auswahl von 25 unumgänglichen Aktivitäten rund um die Unterkunft.",
 
         lac_remoray_title: "Lac de Remoray",
         lac_remoray_description: "Ein geschütztes Naturreservat, ideal für Spaziergänge, Vogelbeobachtungen und ruhige Momente am Wasser.",
@@ -280,7 +280,7 @@ const dataTranslations = {
     nl: {
         title: "Activiteiten",
         subtitle: "Ontdek bezienswaardigheden en activiteiten in de buurt",
-        introduction: "Tussen majestueuze meren, ongerepte landschappen, lokaal vakmanschap en buitenavonturen heeft onze regio zoveel te bieden. Ontdek onze selectie van 26 onmisbare activiteiten rond de accommodatie.",
+        introduction: "Tussen majestueuze meren, ongerepte landschappen, lokaal vakmanschap en buitenavonturen heeft onze regio zoveel te bieden. Ontdek onze selectie van 25 onmisbare activiteiten rond de accommodatie.",
 
         lac_remoray_title: "Meer van Remoray",
         lac_remoray_description: "Een beschermd natuurreservaat, ideaal voor wandelingen, vogels kijken en rustige momenten aan het water.",
@@ -372,7 +372,7 @@ const dataTranslations = {
     es: {
         title: "Actividades",
         subtitle: "Descubra los lugares imprescindibles y actividades cercanas",
-        introduction: "Entre lagos majestuosos, paisajes preservados, artesanía local y aventuras al aire libre, nuestra región tiene mucho que ofrecer. Descubra nuestra selección de 26 actividades imprescindibles alrededor del alojamiento.",
+        introduction: "Entre lagos majestuosos, paisajes preservados, artesanía local y aventuras al aire libre, nuestra región tiene mucho que ofrecer. Descubra nuestra selección de 25 actividades imprescindibles alrededor del alojamiento.",
         
         lac_remoray_title: "Lago de Remoray",
         lac_remoray_description: "Reserva natural protegida, ideal para paseos, observación de aves y momentos de tranquilidad junto al agua.",
@@ -464,7 +464,7 @@ const dataTranslations = {
     it: {
         title: "Attività",
         subtitle: "Scoprite i luoghi imperdibili e le attività nelle vicinanze",
-        introduction: "Tra laghi maestosi, paesaggi incontaminati, artigianato locale e avventure all'aria aperta, la nostra regione ha molto da offrire. Scoprite la nostra selezione di 26 attività imperdibili nei dintorni dell'alloggio.",
+        introduction: "Tra laghi maestosi, paesaggi incontaminati, artigianato locale e avventure all'aria aperta, la nostra regione ha molto da offrire. Scoprite la nostra selezione di 25 attività imperdibili nei dintorni dell'alloggio.",
 
         lac_remoray_title: "Lago di Remoray",
         lac_remoray_description: "Riserva naturale protetta, ideale per passeggiate, birdwatching e momenti di tranquillità in riva all'acqua.",
@@ -556,7 +556,7 @@ const dataTranslations = {
     pt: {
         title: "Atividades",
         subtitle: "Descubra os locais imperdíveis e atividades nas proximidades",
-        introduction: "Entre lagos majestosos, paisagens preservadas, artesanato local e aventuras ao ar livre, a nossa região tem muito para oferecer. Descubra a nossa seleção de 26 atividades imperdíveis à volta do alojamento.",
+        introduction: "Entre lagos majestosos, paisagens preservadas, artesanato local e aventuras ao ar livre, a nossa região tem muito para oferecer. Descubra a nossa seleção de 25 atividades imperdíveis à volta do alojamento.",
         
         lac_remoray_title: "Lago de Remoray",
         lac_remoray_description: "Reserva natural protegida, ideal para passeios, observação de aves e momentos de tranquilidade à beira da água.",
