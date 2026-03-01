@@ -757,6 +757,7 @@ footer {
 .fc-toolbar-title { font-size: 1.5em; color: var(--primary-color); }
 .fc-button-primary { background: var(--primary-color) !important; border-color: var(--primary-color) !important; }
 .fc-button-primary:hover { background: var(--secondary-color) !important; border-color: var(--secondary-color) !important; }
+.fc-button-primary:focus:not(:focus-visible) { box-shadow: none !important; outline: none !important; }
 .fc-day-today { background: var(--accent-color) !important; }
 .fc-event { background: var(--primary-color); border: none; }
 
