@@ -255,20 +255,63 @@
 
     <script>
         // =============================================
-        // PERSISTANCE (localStorage)
+        // PERSISTANCE (Cloudflare Worker KV + fallback localStorage)
         // =============================================
+
+        // URL du Worker Cloudflare pour l'état partagé.
+        // Mettre à jour après déploiement du worker (voir workers/menage-state-worker.js)
+        const STATE_API_URL = 'https://menage-state.cyril-samson41.workers.dev/';
+
         const STORAGE_KEY = 'ofildudoubs_menage_state';
 
-        function loadState() {
+        // Cache mémoire de l'état (évite les lectures répétées)
+        let cachedState = null;
+
+        // Charge l'état depuis le serveur distant, avec fallback localStorage
+        async function loadStateFromServer() {
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                const response = await fetch(STATE_API_URL);
+                if (!response.ok) throw new Error('API indisponible');
+                const state = await response.json();
+                // Synchronise le localStorage comme cache de secours
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                cachedState = state;
+                return state;
             } catch (e) {
+                console.warn('Fallback localStorage:', e.message);
+                return loadStateLocal();
+            }
+        }
+
+        function loadStateLocal() {
+            try {
+                const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                cachedState = state;
+                return state;
+            } catch (e) {
+                cachedState = {};
                 return {};
             }
         }
 
-        function saveState(state) {
+        // Sauvegarde l'état sur le serveur distant + localStorage
+        async function saveStateToServer(state) {
+            cachedState = state;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            try {
+                await fetch(STATE_API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(state),
+                });
+            } catch (e) {
+                console.warn('Sauvegarde distante échouée (localStorage OK):', e.message);
+            }
+        }
+
+        // Accès synchrone à l'état en cache (pour le rendu)
+        function getState() {
+            return cachedState || {};
         }
 
         // Génère un identifiant unique pour un créneau basé sur ses dates.
@@ -294,8 +337,8 @@
             return state;
         }
 
-        function toggleSlotStatus(fingerprint, slot) {
-            const state = loadState();
+        async function toggleSlotStatus(fingerprint, slot) {
+            const state = getState();
             const current = state[fingerprint];
             const isDone = current && current.status === 'done';
 
@@ -306,19 +349,14 @@
                 endDate: new Date(slot.end).toISOString().split('T')[0]
             };
 
-            saveState(cleanupState(state));
+            const cleaned = cleanupState(state);
+            await saveStateToServer(cleaned);
             return state[fingerprint].status;
         }
 
         function getSlotStatus(fingerprint) {
-            const state = loadState();
+            const state = getState();
             return (state[fingerprint] && state[fingerprint].status) || 'todo';
-        }
-
-        // Détecte si un créneau est "nouveau" (pas dans l'état sauvegardé)
-        function isNewSlot(fingerprint) {
-            const state = loadState();
-            return !state[fingerprint];
         }
 
         // =============================================
@@ -352,25 +390,30 @@
         // Variable globale pour permettre le refresh du calendrier
         let currentCleaningSlots = [];
 
-        fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
-            .then(response => response.text())
-            .then(data => {
-                const events = parseICS(data);
-                currentCleaningSlots = calculateCleaningSlots(events);
+        // Chargement parallèle : état distant + flux iCal
+        async function init() {
+            const [_, icalResponse] = await Promise.all([
+                loadStateFromServer(),
+                fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
+            ]);
 
-                // Enregistre les fingerprints actuels pour la détection de changements
-                markCurrentSlots(currentCleaningSlots);
+            const icalData = await icalResponse.text();
+            const events = parseICS(icalData);
+            currentCleaningSlots = calculateCleaningSlots(events);
 
-                updateCalendar(currentCleaningSlots);
-                updateCleaningSlotsList(currentCleaningSlots);
-            })
-            .catch(error => {
-                console.error('Erreur iCal:', error);
-            });
+            // Enregistre les fingerprints actuels pour la détection de changements
+            await markCurrentSlots(currentCleaningSlots);
+
+            updateCalendar(currentCleaningSlots);
+            updateCleaningSlotsList(currentCleaningSlots);
+        }
+
+        init().catch(error => console.error('Erreur initialisation:', error));
 
         // Enregistre les créneaux actuels dans le state (sans écraser le statut)
-        function markCurrentSlots(slots) {
-            const state = loadState();
+        async function markCurrentSlots(slots) {
+            const state = getState();
+            let changed = false;
             for (const slot of slots) {
                 const fp = slotFingerprint(slot);
                 if (!state[fp]) {
@@ -380,9 +423,10 @@
                         startDate: new Date(slot.start).toISOString().split('T')[0],
                         endDate: new Date(slot.end).toISOString().split('T')[0]
                     };
+                    changed = true;
                 }
             }
-            saveState(cleanupState(state));
+            if (changed) await saveStateToServer(cleanupState(state));
         }
 
         // =============================================
@@ -566,8 +610,6 @@
                 const fp = slotFingerprint(slot);
                 const status = getSlotStatus(fp);
                 const isDone = status === 'done';
-                const isNew = isNewSlot(fp);
-
                 if (isDone) doneCount++;
                 else todoCount++;
 
@@ -608,9 +650,10 @@
                 btn.innerHTML = isDone
                     ? '<i class="fas fa-check-circle"></i> Fait'
                     : '<i class="fas fa-broom"></i> Valider';
-                btn.addEventListener('click', function() {
-                    const newStatus = toggleSlotStatus(fp, slot);
-                    // Rafraîchir l'affichage
+                btn.addEventListener('click', async function() {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    await toggleSlotStatus(fp, slot);
                     updateCleaningSlotsList(currentCleaningSlots);
                     updateCalendar(currentCleaningSlots);
                 });
