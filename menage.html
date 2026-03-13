@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta name="robots" content="noindex, nofollow">
 
     <title>Planning Ménage - O'Fil du Doubs</title>
@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -93,6 +93,10 @@
             font-size: 16px;
             text-align: left;
             font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         #cleaning-slots li.urgent {
@@ -107,6 +111,67 @@
             border-left-color: #d9d9d9;
             color: #595959;
             font-style: italic;
+        }
+
+        /* Statut "fait" */
+        #cleaning-slots li.done {
+            background-color: #f6ffed;
+            border-left-color: #52c41a;
+            color: #389e0d;
+            opacity: 0.75;
+        }
+
+        #cleaning-slots li.done .slot-text {
+            text-decoration: line-through;
+        }
+
+        /* Bouton de validation */
+        .btn-status {
+            flex-shrink: 0;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-status.todo {
+            background-color: #1890ff;
+            color: #fff;
+        }
+
+        .btn-status.todo:hover {
+            background-color: #096dd9;
+        }
+
+        .btn-status.is-done {
+            background-color: #52c41a;
+            color: #fff;
+        }
+
+        .btn-status.is-done:hover {
+            background-color: #389e0d;
+        }
+
+        /* Indicateur de changement iCal */
+        .slot-changed-badge {
+            display: inline-block;
+            background-color: #faad14;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         /* FullCalendar Overrides */
@@ -127,9 +192,33 @@
             border-color: #d9d9d9 !important;
             color: #8c8c8c !important;
         }
-        
+
+        .fc-event.slot-done {
+            background-color: #52c41a !important;
+            border-color: #52c41a !important;
+            color: #fff !important;
+            opacity: 0.7;
+        }
+
         /* Masquer l'heure dans le calendrier */
         .fc-time { display: none; }
+
+        /* Compteur résumé */
+        #status-summary {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+            color: #555;
+            font-family: var(--font-body);
+        }
+
+        #status-summary strong {
+            color: #ff4d4f;
+        }
+
+        #status-summary .done-count {
+            color: #52c41a;
+        }
     </style>
 </head>
 <body>
@@ -153,14 +242,88 @@
                 <span class="couleur" style="background-color: #f0f0f0; border: 1px solid #d9d9d9;"></span>
                 <span class="libelle">Weekend</span>
             </p>
+            <p>
+                <span class="couleur" style="background-color: #f6ffed; border: 1px solid #52c41a;"></span>
+                <span class="libelle">Ménage effectué</span>
+            </p>
         </div>
+        <div id="status-summary"></div>
         <ul id="cleaning-slots"></ul>
     </div>
 
     <div id="calendar"></div>
 
     <script>
-        // Fonction utilitaire pour avoir 'YYYY-MM-DD' en date LOCALE
+        // =============================================
+        // PERSISTANCE (localStorage)
+        // =============================================
+        const STORAGE_KEY = 'ofildudoubs_menage_state';
+
+        function loadState() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveState(state) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        // Génère un identifiant unique pour un créneau basé sur ses dates.
+        // Si le iCal change (nouvelle résa insérée), les fingerprints changent
+        // => les anciens statuts "fait" ne s'appliquent plus => diff automatique.
+        function slotFingerprint(slot) {
+            const startDate = new Date(slot.start).toISOString().split('T')[0];
+            const endDate = new Date(slot.end).toISOString().split('T')[0];
+            return `slot_${startDate}_${endDate}`;
+        }
+
+        // Nettoie les entrées obsolètes (créneaux passés depuis > 30 jours)
+        function cleanupState(state) {
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - 30);
+            const cutoffISO = cutoff.toISOString().split('T')[0];
+
+            for (const key of Object.keys(state)) {
+                if (state[key].endDate && state[key].endDate < cutoffISO) {
+                    delete state[key];
+                }
+            }
+            return state;
+        }
+
+        function toggleSlotStatus(fingerprint, slot) {
+            const state = loadState();
+            const current = state[fingerprint];
+            const isDone = current && current.status === 'done';
+
+            state[fingerprint] = {
+                status: isDone ? 'todo' : 'done',
+                updatedAt: new Date().toISOString(),
+                startDate: new Date(slot.start).toISOString().split('T')[0],
+                endDate: new Date(slot.end).toISOString().split('T')[0]
+            };
+
+            saveState(cleanupState(state));
+            return state[fingerprint].status;
+        }
+
+        function getSlotStatus(fingerprint) {
+            const state = loadState();
+            return (state[fingerprint] && state[fingerprint].status) || 'todo';
+        }
+
+        // Détecte si un créneau est "nouveau" (pas dans l'état sauvegardé)
+        function isNewSlot(fingerprint) {
+            const state = loadState();
+            return !state[fingerprint];
+        }
+
+        // =============================================
+        // UTILITAIRES DE DATE
+        // =============================================
         function getLocalISODate(date = new Date()) {
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -169,7 +332,7 @@
         }
 
         const todayISO = getLocalISODate();
-        
+
         // Dates manuelles et exclusions (A mettre à jour ici si besoin)
         const allManualCleaningDates = ['2024-11-01', '2025-12-29', '2026-02-19'];
         const allExcludedCleaningDates = ['2024-10-30', '2025-12-27'];
@@ -177,28 +340,54 @@
         const manualCleaningDates = allManualCleaningDates.filter(date => date >= todayISO);
         const excludedCleaningDates = allExcludedCleaningDates.filter(date => date >= todayISO);
 
-        // Initialisation du calendrier
+        // =============================================
+        // INITIALISATION
+        // =============================================
         $('#calendar').fullCalendar({
             locale: 'fr',
             height: 'auto',
-            events: [] 
+            events: []
         });
 
-        // Récupération iCal
+        // Variable globale pour permettre le refresh du calendrier
+        let currentCleaningSlots = [];
+
         fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
             .then(response => response.text())
             .then(data => {
                 const events = parseICS(data);
-                const cleaningSlots = calculateCleaningSlots(events);
-                updateCalendar(cleaningSlots);
-                updateCleaningSlotsList(cleaningSlots);
+                currentCleaningSlots = calculateCleaningSlots(events);
+
+                // Enregistre les fingerprints actuels pour la détection de changements
+                markCurrentSlots(currentCleaningSlots);
+
+                updateCalendar(currentCleaningSlots);
+                updateCleaningSlotsList(currentCleaningSlots);
             })
             .catch(error => {
                 console.error('Erreur iCal:', error);
             });
 
-        // --- FONCTIONS DE CALCUL (Ton code original) ---
-        
+        // Enregistre les créneaux actuels dans le state (sans écraser le statut)
+        function markCurrentSlots(slots) {
+            const state = loadState();
+            for (const slot of slots) {
+                const fp = slotFingerprint(slot);
+                if (!state[fp]) {
+                    state[fp] = {
+                        status: 'todo',
+                        updatedAt: new Date().toISOString(),
+                        startDate: new Date(slot.start).toISOString().split('T')[0],
+                        endDate: new Date(slot.end).toISOString().split('T')[0]
+                    };
+                }
+            }
+            saveState(cleanupState(state));
+        }
+
+        // =============================================
+        // PARSING iCAL
+        // =============================================
         function parseICS(icsData) {
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
@@ -244,6 +433,9 @@
             return events;
         }
 
+        // =============================================
+        // CALCUL DES CRÉNEAUX
+        // =============================================
         function calculateCleaningSlots(events) {
             let initialSlots = [];
             if (events._preFirstCleaningSlot) initialSlots.push(events._preFirstCleaningSlot);
@@ -288,9 +480,9 @@
             for (const manualDate of manualCleaningDates) {
                 allowedCleaningDays.add(manualDate);
                 if (!dayTimeMap.has(manualDate)) {
-                    dayTimeMap.set(manualDate, { 
-                        start: new Date(manualDate + 'T11:00:00Z').toISOString(), 
-                        end: new Date(manualDate + 'T17:00:00Z').toISOString() 
+                    dayTimeMap.set(manualDate, {
+                        start: new Date(manualDate + 'T11:00:00Z').toISOString(),
+                        end: new Date(manualDate + 'T17:00:00Z').toISOString()
                     });
                 }
             }
@@ -325,47 +517,122 @@
             return finalSlots;
         }
 
+        // =============================================
+        // MISE À JOUR DU CALENDRIER
+        // =============================================
         function updateCalendar(cleaningSlots) {
+            $('#calendar').fullCalendar('removeEventSources');
             $('#calendar').fullCalendar('addEventSource', cleaningSlots.map(slot => {
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
                 const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
                 const isWeekendSlot = slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString();
 
+                const fp = slotFingerprint(slot);
+                const status = getSlotStatus(fp);
+                const isDone = status === 'done';
+
+                let className;
+                if (isDone) {
+                    className = 'slot-done';
+                } else if (isSameDay) {
+                    className = 'same-day';
+                } else if (isWeekendSlot) {
+                    className = 'weekend-slot';
+                } else {
+                    className = 'standard-slot';
+                }
+
                 return {
                     ...slot,
-                    className: isSameDay ? 'same-day' : isWeekendSlot ? 'weekend-slot' : 'standard-slot'
+                    title: isDone ? 'Ménage fait' : slot.title,
+                    className: className
                 };
             }));
         }
 
+        // =============================================
+        // MISE À JOUR DE LA LISTE
+        // =============================================
         function updateCleaningSlotsList(cleaningSlots) {
             const listElement = document.getElementById('cleaning-slots');
             if (!listElement) return;
             listElement.innerHTML = '';
 
+            let todoCount = 0;
+            let doneCount = 0;
+
             cleaningSlots.forEach((slot, idx) => {
+                const fp = slotFingerprint(slot);
+                const status = getSlotStatus(fp);
+                const isDone = status === 'done';
+                const isNew = isNewSlot(fp);
+
+                if (isDone) doneCount++;
+                else todoCount++;
+
                 const listItem = document.createElement('li');
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
                 const now = new Date();
 
-                if (idx === 0 && slotStart <= now) {
-                    listItem.innerHTML = `<span>Entre maintenant et le ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à ${slotEnd.getHours().toString().padStart(2, '0')}h</span>`;
-                } else if (slotStart.toDateString() === slotEnd.toDateString()) {
+                // Classe de type de créneau
+                if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
-                    listItem.innerHTML = `<span>Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h</span>`;
-                } else {
-                    listItem.innerHTML = `<span>Entre ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 11h et ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 17h</span>`;
-                }
-
-                if (slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString()) {
+                } else if (slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString()) {
                     listItem.classList.add('weekend');
                 }
+
+                // Classe de statut
+                if (isDone) {
+                    listItem.classList.add('done');
+                }
+
+                // Texte du créneau
+                const textSpan = document.createElement('span');
+                textSpan.className = 'slot-text';
+
+                if (idx === 0 && slotStart <= now) {
+                    textSpan.innerHTML = `Entre maintenant et le ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à ${slotEnd.getHours().toString().padStart(2, '0')}h`;
+                } else if (slotStart.toDateString() === slotEnd.toDateString()) {
+                    textSpan.innerHTML = `Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h`;
+                } else {
+                    textSpan.innerHTML = `Entre ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 11h et ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 17h`;
+                }
+
+                listItem.appendChild(textSpan);
+
+                // Bouton de validation
+                const btn = document.createElement('button');
+                btn.className = isDone ? 'btn-status is-done' : 'btn-status todo';
+                btn.innerHTML = isDone
+                    ? '<i class="fas fa-check-circle"></i> Fait'
+                    : '<i class="fas fa-broom"></i> Valider';
+                btn.addEventListener('click', function() {
+                    const newStatus = toggleSlotStatus(fp, slot);
+                    // Rafraîchir l'affichage
+                    updateCleaningSlotsList(currentCleaningSlots);
+                    updateCalendar(currentCleaningSlots);
+                });
+
+                listItem.appendChild(btn);
                 listElement.appendChild(listItem);
             });
+
+            // Mise à jour du résumé
+            const summary = document.getElementById('status-summary');
+            if (summary) {
+                if (cleaningSlots.length === 0) {
+                    summary.innerHTML = 'Aucun créneau de ménage à venir.';
+                } else {
+                    summary.innerHTML = `<strong>${todoCount} à faire</strong> · <span class="done-count">${doneCount} effectué(s)</span> · ${cleaningSlots.length} total`;
+                }
+            }
         }
 
+        // =============================================
+        // UTILITAIRES
+        // =============================================
         function formatDate(dateString) {
             const year = dateString.substring(0, 4);
             const month = dateString.substring(4, 6);
@@ -374,7 +641,7 @@
         }
 
         function addDaysToISODate(isoDate, days) {
-            const date = new Date(isoDate); 
+            const date = new Date(isoDate);
             date.setUTCDate(date.getUTCDate() + days);
             return date.toISOString().split('T')[0];
         }
