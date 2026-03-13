@@ -592,14 +592,28 @@
                 eventsRaw.forEach(event => {
                     const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
                     const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
+                    const summaryPattern = /SUMMARY:(.*)/;
                     const startDate = event.match(datePatternStart);
                     const endDate = event.match(datePatternEnd);
+                    const summaryMatch = event.match(summaryPattern);
+                    const summary = summaryMatch ? summaryMatch[1].trim() : '';
 
                     if (startDate && endDate) {
                         const start = new Date(formatDate(startDate[1]));
                         const end = new Date(formatDate(endDate[1]));
 
                         if (start > sixMonthsLater) return;
+
+                        // Bloc "Not available" d'1 jour = jour de turnover (checkout)
+                        // On l'exclut des événements et on l'utilise comme date de départ
+                        const durationDays = (end - start) / (1000 * 60 * 60 * 24);
+                        if (durationDays <= 1 && summary.includes('Not available')) {
+                            const checkoutISO = formatDate(startDate[1]) + 'T11:00:00';
+                            if (!lastPastCheckout || checkoutISO > lastPastCheckout) {
+                                lastPastCheckout = checkoutISO;
+                            }
+                            return;
+                        }
 
                         // Événement passé : on garde la date de départ la plus récente
                         if (end < today) {
