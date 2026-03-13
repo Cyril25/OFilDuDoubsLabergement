@@ -244,6 +244,104 @@
         #status-summary .done-count {
             color: #52c41a;
         }
+
+        /* Select prestataire */
+        .select-cleaner {
+            flex-shrink: 0;
+            padding: 6px 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: var(--font-body);
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .select-cleaner:focus {
+            outline: none;
+            border-color: #1890ff;
+        }
+
+        /* Actions wrapper (select + bouton sur la même ligne) */
+        .slot-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Section créneaux passés */
+        #past-slots-section {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        #past-slots-section h2 {
+            text-align: center;
+            color: var(--primary-color);
+            font-family: var(--font-title);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #past-slots-section h2 i {
+            font-size: 14px;
+            margin-left: 8px;
+            transition: transform 0.2s;
+        }
+
+        #past-slots-section h2.collapsed i {
+            transform: rotate(-90deg);
+        }
+
+        #past-slots-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+
+        #past-slots-table thead th {
+            background-color: #f5f5f5;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 2px solid #e8e8e8;
+        }
+
+        #past-slots-table tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        #past-slots-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+
+        #past-slots-table .status-done {
+            color: #52c41a;
+            font-weight: bold;
+        }
+
+        #past-slots-table .status-missed {
+            color: #ff4d4f;
+            font-weight: bold;
+        }
+
+        .past-empty {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 15px;
+        }
     </style>
 </head>
 <body>
@@ -277,6 +375,25 @@
     </div>
 
     <div id="calendar"></div>
+
+    <div id="past-slots-section">
+        <h2 id="past-slots-toggle" class="collapsed">
+            Créneaux passés <i class="fas fa-chevron-down"></i>
+        </h2>
+        <div id="past-slots-content" style="display: none;">
+            <table id="past-slots-table">
+                <thead>
+                    <tr>
+                        <th>Créneau</th>
+                        <th>Statut</th>
+                        <th>Fait par</th>
+                        <th>Date validation</th>
+                    </tr>
+                </thead>
+                <tbody id="past-slots-body"></tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         // =============================================
@@ -348,21 +465,10 @@
             return `slot_${startDate}_${endDate}`;
         }
 
-        // Nettoie les entrées obsolètes (créneaux passés depuis > 30 jours)
-        function cleanupState(state) {
-            const cutoff = new Date();
-            cutoff.setDate(cutoff.getDate() - 30);
-            const cutoffISO = cutoff.toISOString().split('T')[0];
+        // Liste des prestataires
+        const CLEANERS = ['Fanny & Lolita', 'Fanny', 'Lolita', 'Nathalie', 'Autre'];
 
-            for (const key of Object.keys(state)) {
-                if (state[key].endDate && state[key].endDate < cutoffISO) {
-                    delete state[key];
-                }
-            }
-            return state;
-        }
-
-        async function toggleSlotStatus(fingerprint, slot) {
+        async function toggleSlotStatus(fingerprint, slot, doneBy) {
             const state = getState();
             const current = state[fingerprint];
             const isDone = current && current.status === 'done';
@@ -370,12 +476,12 @@
             state[fingerprint] = {
                 status: isDone ? 'todo' : 'done',
                 updatedAt: new Date().toISOString(),
+                doneBy: isDone ? '' : (doneBy || ''),
                 startDate: new Date(slot.start).toISOString().split('T')[0],
                 endDate: new Date(slot.end).toISOString().split('T')[0]
             };
 
-            const cleaned = cleanupState(state);
-            await saveStateToServer(cleaned);
+            await saveStateToServer(state);
             return state[fingerprint].status;
         }
 
@@ -390,6 +496,11 @@
                 return new Date(state[fingerprint].updatedAt).toLocaleDateString('fr-FR');
             }
             return null;
+        }
+
+        function getSlotDoneBy(fingerprint) {
+            const state = getState();
+            return (state[fingerprint] && state[fingerprint].doneBy) || '';
         }
 
         // =============================================
@@ -439,6 +550,7 @@
 
             updateCalendar(currentCleaningSlots);
             updateCleaningSlotsList(currentCleaningSlots);
+            updatePastSlotsList();
         }
 
         init().catch(error => console.error('Erreur initialisation:', error));
@@ -459,7 +571,7 @@
                     changed = true;
                 }
             }
-            if (changed) await saveStateToServer(cleanupState(state));
+            if (changed) await saveStateToServer(state);
         }
 
         // =============================================
@@ -681,11 +793,13 @@
                 const slotStarted = slotStart <= now;
 
                 if (isDone) {
-                    // Afficher la date de validation + bouton pour annuler
+                    // Afficher la date de validation + qui + bouton annuler
                     const doneDate = getSlotDoneDate(fp);
+                    const doneBy = getSlotDoneBy(fp);
                     const doneInfo = document.createElement('span');
                     doneInfo.className = 'done-info';
-                    doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}`;
+                    const byText = doneBy ? ` par ${doneBy}` : '';
+                    doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
                     listItem.appendChild(doneInfo);
 
                     const btnUndo = document.createElement('button');
@@ -694,24 +808,38 @@
                     btnUndo.addEventListener('click', async function() {
                         btnUndo.disabled = true;
                         btnUndo.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await toggleSlotStatus(fp, slot);
+                        await toggleSlotStatus(fp, slot, '');
                         updateCleaningSlotsList(currentCleaningSlots);
                         updateCalendar(currentCleaningSlots);
+                        updatePastSlotsList();
                     });
                     listItem.appendChild(btnUndo);
                 } else if (slotStarted) {
-                    // Créneau en cours ou passé : bouton Valider actif
+                    // Créneau en cours ou passé : select + bouton Valider
+                    const actions = document.createElement('div');
+                    actions.className = 'slot-actions';
+
+                    const select = document.createElement('select');
+                    select.className = 'select-cleaner';
+                    select.innerHTML = '<option value="">Qui ?</option>' +
+                        CLEANERS.map(c => `<option value="${c}">${c}</option>`).join('');
+                    // Pré-sélectionner "Fanny & Lolita"
+                    select.value = 'Fanny & Lolita';
+                    actions.appendChild(select);
+
                     const btn = document.createElement('button');
                     btn.className = 'btn-status todo';
                     btn.innerHTML = '<i class="fas fa-broom"></i> Valider';
                     btn.addEventListener('click', async function() {
                         btn.disabled = true;
                         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await toggleSlotStatus(fp, slot);
+                        await toggleSlotStatus(fp, slot, select.value);
                         updateCleaningSlotsList(currentCleaningSlots);
                         updateCalendar(currentCleaningSlots);
+                        updatePastSlotsList();
                     });
-                    listItem.appendChild(btn);
+                    actions.appendChild(btn);
+                    listItem.appendChild(actions);
                 } else {
                     // Créneau futur : pas encore actionnable
                     const badge = document.createElement('span');
@@ -730,6 +858,86 @@
                 } else {
                     summary.innerHTML = `<strong>${todoCount} à faire</strong> · <span class="done-count">${doneCount} effectué(s)</span> · ${cleaningSlots.length} total`;
                 }
+            }
+        }
+
+        // =============================================
+        // CRÉNEAUX PASSÉS (historique en lecture seule)
+        // =============================================
+
+        // Toggle affichage/masquage
+        document.getElementById('past-slots-toggle').addEventListener('click', function() {
+            const content = document.getElementById('past-slots-content');
+            const isHidden = content.style.display === 'none';
+            content.style.display = isHidden ? 'block' : 'none';
+            this.classList.toggle('collapsed', !isHidden);
+        });
+
+        function updatePastSlotsList() {
+            const tbody = document.getElementById('past-slots-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const state = getState();
+            const now = new Date();
+            const todayStr = getLocalISODate(now);
+
+            // Collecter les créneaux passés depuis le state
+            // Un créneau est "passé" si sa date de fin est avant aujourd'hui
+            // ET qu'il n'est plus dans les slots actifs du iCal
+            const activeFingerprints = new Set(currentCleaningSlots.map(s => slotFingerprint(s)));
+
+            const pastEntries = Object.entries(state)
+                .filter(([key, entry]) => {
+                    if (!key.startsWith('slot_')) return false;
+                    // Passé = date de fin avant aujourd'hui OU n'existe plus dans les slots actifs et marqué done
+                    return entry.endDate && entry.endDate < todayStr;
+                })
+                .sort((a, b) => b[1].endDate.localeCompare(a[1].endDate)); // Plus récent en premier
+
+            if (pastEntries.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="past-empty">Aucun historique pour le moment.</td></tr>';
+                return;
+            }
+
+            for (const [key, entry] of pastEntries) {
+                const tr = document.createElement('tr');
+
+                // Créneau
+                const tdSlot = document.createElement('td');
+                const start = new Date(entry.startDate + 'T12:00:00');
+                const end = new Date(entry.endDate + 'T12:00:00');
+                if (start.toDateString() === end.toDateString()) {
+                    tdSlot.textContent = start.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+                } else {
+                    tdSlot.textContent = `${start.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}`;
+                }
+                tr.appendChild(tdSlot);
+
+                // Statut
+                const tdStatus = document.createElement('td');
+                if (entry.status === 'done') {
+                    tdStatus.innerHTML = '<span class="status-done"><i class="fas fa-check-circle"></i> Fait</span>';
+                } else {
+                    tdStatus.innerHTML = '<span class="status-missed"><i class="fas fa-times-circle"></i> Non renseigné</span>';
+                }
+                tr.appendChild(tdStatus);
+
+                // Fait par
+                const tdBy = document.createElement('td');
+                tdBy.textContent = entry.doneBy || '-';
+                tr.appendChild(tdBy);
+
+                // Date validation
+                const tdDate = document.createElement('td');
+                if (entry.status === 'done' && entry.updatedAt) {
+                    tdDate.textContent = new Date(entry.updatedAt).toLocaleDateString('fr-FR');
+                } else {
+                    tdDate.textContent = '-';
+                }
+                tr.appendChild(tdDate);
+
+                tbody.appendChild(tr);
             }
         }
 
