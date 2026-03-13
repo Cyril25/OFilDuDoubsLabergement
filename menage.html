@@ -342,6 +342,52 @@
             font-style: italic;
             padding: 15px;
         }
+
+        /* ===== Responsive mobile ===== */
+        @media (max-width: 600px) {
+            #cleaning-slots li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .slot-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .btn-status {
+                flex: 1;
+                text-align: center;
+            }
+
+            .select-cleaner {
+                flex: 1;
+            }
+
+            .done-info {
+                white-space: normal;
+            }
+
+            .badge-future {
+                white-space: normal;
+            }
+
+            /* Tableau passés : scroll horizontal */
+            #past-slots-section {
+                padding: 10px;
+            }
+
+            #past-slots-table {
+                font-size: 12px;
+                display: block;
+                overflow-x: auto;
+            }
+
+            #cleaning-slots-list {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
