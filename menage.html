@@ -156,6 +156,31 @@
             background-color: #389e0d;
         }
 
+        /* Info "Fait le ..." */
+        .done-info {
+            font-size: 13px;
+            color: #52c41a;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .done-info i {
+            margin-right: 4px;
+        }
+
+        /* Badge "À venir" */
+        .badge-future {
+            flex-shrink: 0;
+            font-size: 13px;
+            color: #999;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .badge-future i {
+            margin-right: 4px;
+        }
+
         /* Indicateur de changement iCal */
         .slot-changed-badge {
             display: inline-block;
@@ -357,6 +382,14 @@
         function getSlotStatus(fingerprint) {
             const state = getState();
             return (state[fingerprint] && state[fingerprint].status) || 'todo';
+        }
+
+        function getSlotDoneDate(fingerprint) {
+            const state = getState();
+            if (state[fingerprint] && state[fingerprint].status === 'done' && state[fingerprint].updatedAt) {
+                return new Date(state[fingerprint].updatedAt).toLocaleDateString('fr-FR');
+            }
+            return null;
         }
 
         // =============================================
@@ -644,21 +677,48 @@
 
                 listItem.appendChild(textSpan);
 
-                // Bouton de validation
-                const btn = document.createElement('button');
-                btn.className = isDone ? 'btn-status is-done' : 'btn-status todo';
-                btn.innerHTML = isDone
-                    ? '<i class="fas fa-check-circle"></i> Fait'
-                    : '<i class="fas fa-broom"></i> Valider';
-                btn.addEventListener('click', async function() {
-                    btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    await toggleSlotStatus(fp, slot);
-                    updateCleaningSlotsList(currentCleaningSlots);
-                    updateCalendar(currentCleaningSlots);
-                });
+                // Le créneau est-il actionnable ? (date de début passée)
+                const slotStarted = slotStart <= now;
 
-                listItem.appendChild(btn);
+                if (isDone) {
+                    // Afficher la date de validation + bouton pour annuler
+                    const doneDate = getSlotDoneDate(fp);
+                    const doneInfo = document.createElement('span');
+                    doneInfo.className = 'done-info';
+                    doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}`;
+                    listItem.appendChild(doneInfo);
+
+                    const btnUndo = document.createElement('button');
+                    btnUndo.className = 'btn-status is-done';
+                    btnUndo.innerHTML = '<i class="fas fa-undo"></i> Annuler';
+                    btnUndo.addEventListener('click', async function() {
+                        btnUndo.disabled = true;
+                        btnUndo.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        await toggleSlotStatus(fp, slot);
+                        updateCleaningSlotsList(currentCleaningSlots);
+                        updateCalendar(currentCleaningSlots);
+                    });
+                    listItem.appendChild(btnUndo);
+                } else if (slotStarted) {
+                    // Créneau en cours ou passé : bouton Valider actif
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-status todo';
+                    btn.innerHTML = '<i class="fas fa-broom"></i> Valider';
+                    btn.addEventListener('click', async function() {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        await toggleSlotStatus(fp, slot);
+                        updateCleaningSlotsList(currentCleaningSlots);
+                        updateCalendar(currentCleaningSlots);
+                    });
+                    listItem.appendChild(btn);
+                } else {
+                    // Créneau futur : pas encore actionnable
+                    const badge = document.createElement('span');
+                    badge.className = 'badge-future';
+                    badge.innerHTML = '<i class="fas fa-clock"></i> À venir';
+                    listItem.appendChild(badge);
+                }
                 listElement.appendChild(listItem);
             });
 
