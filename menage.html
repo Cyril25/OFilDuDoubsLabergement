@@ -877,9 +877,7 @@
                 const textSpan = document.createElement('span');
                 textSpan.className = 'slot-text';
 
-                if (idx === 0 && slotStart <= now) {
-                    textSpan.innerHTML = `Entre maintenant et le ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} à ${slotEnd.getHours().toString().padStart(2, '0')}h`;
-                } else if (slotStart.toDateString() === slotEnd.toDateString()) {
+                if (slotStart.toDateString() === slotEnd.toDateString()) {
                     textSpan.innerHTML = `Le ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} entre 11h et 17h`;
                 } else {
                     textSpan.innerHTML = `Entre ${slotStart.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 11h et ${slotEnd.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} 17h`;
