@@ -678,6 +678,23 @@
                 });
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
+                // Persister lastPastCheckout dans le KV pour survivre à la suppression
+                // des événements passés par Airbnb
+                if (lastPastCheckout) {
+                    // On a trouvé un checkout dans le iCal → le sauvegarder
+                    const st = getState();
+                    if (st._lastCheckout !== lastPastCheckout) {
+                        st._lastCheckout = lastPastCheckout;
+                        saveStateToServer(st);
+                    }
+                } else {
+                    // Airbnb a supprimé les événements passés → récupérer depuis le KV
+                    const st = getState();
+                    if (st._lastCheckout) {
+                        lastPastCheckout = st._lastCheckout;
+                    }
+                }
+
                 if (events.length > 0) {
                     const first = events[0];
                     const firstStart = new Date(first.start);
