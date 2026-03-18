@@ -207,6 +207,62 @@
             background-color: #d48806;
         }
 
+        .btn-unpay {
+            flex-shrink: 0;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #ff4d4f;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-unpay:hover {
+            background-color: #a8071a;
+        }
+
+        /* Layout créneau "fait" : 2 lignes claires */
+        .slot-done-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .slot-done-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .slot-done-row .done-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .payment-row {
+            border-top: 1px dashed #d9d9d9;
+            padding-top: 8px;
+        }
+
+        .payment-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .payment-actions input[type="date"] {
+            padding: 3px 6px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
         /* Badge "À venir" */
         .badge-future {
             flex-shrink: 0;
@@ -409,6 +465,34 @@
             }
 
             .badge-future {
+                white-space: normal;
+            }
+
+            .slot-done-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .slot-done-row .btn-status {
+                width: 100%;
+                text-align: center;
+            }
+
+            .payment-actions {
+                width: 100%;
+            }
+
+            .payment-actions input[type="date"] {
+                flex: 1;
+            }
+
+            .payment-actions button {
+                flex: 1;
+                text-align: center;
+            }
+
+            .payment-info {
                 white-space: normal;
             }
 
@@ -1143,58 +1227,29 @@
                 const slotStarted = slotStart <= now;
 
                 if (isDone) {
-                    // Afficher la date de validation + qui + bouton annuler
                     const doneDate = getSlotDoneDate(fp);
                     const doneBy = getSlotDoneBy(fp);
                     const state = getState();
                     const slotState = state[fp] || {};
                     const paidAt = slotState.paidAt || null;
+                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
 
-                    const infoWrapper = document.createElement('div');
-                    infoWrapper.style.cssText = 'display:flex; flex-direction:column; gap:4px;';
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'slot-done-wrapper';
+
+                    // === Ligne 1 : "Fait le ... par ..." + bouton Annuler ménage ===
+                    const row1 = document.createElement('div');
+                    row1.className = 'slot-done-row';
 
                     const doneInfo = document.createElement('span');
                     doneInfo.className = 'done-info';
                     const byText = doneBy ? ` par ${doneBy}` : '';
                     doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
-                    infoWrapper.appendChild(doneInfo);
-
-                    // Statut paiement
-                    const paymentInfo = document.createElement('span');
-                    if (paidAt) {
-                        paymentInfo.className = 'payment-info paid';
-                        paymentInfo.innerHTML = `<i class="fas fa-euro-sign"></i> Payé le ${new Date(paidAt).toLocaleDateString('fr-FR')}`;
-                    } else {
-                        paymentInfo.className = 'payment-info pending';
-                        paymentInfo.innerHTML = `<i class="fas fa-hourglass-half"></i> En attente de paiement`;
-                    }
-                    infoWrapper.appendChild(paymentInfo);
-                    listItem.appendChild(infoWrapper);
-
-                    // Actions admin : bouton payer + annuler
-                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.style.cssText = 'display:flex; gap:6px; align-items:center;';
-
-                    if (isAdmin && !paidAt) {
-                        const btnPay = document.createElement('button');
-                        btnPay.className = 'btn-pay';
-                        btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
-                        btnPay.addEventListener('click', async function() {
-                            btnPay.disabled = true;
-                            btnPay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                            const st = getState();
-                            st[fp].paidAt = new Date().toISOString();
-                            await saveStateToServer(st);
-                            updateCleaningSlotsList(currentCleaningSlots);
-                            updatePastSlotsList();
-                        });
-                        actionsDiv.appendChild(btnPay);
-                    }
+                    row1.appendChild(doneInfo);
 
                     const btnUndo = document.createElement('button');
                     btnUndo.className = 'btn-status is-done';
-                    btnUndo.innerHTML = '<i class="fas fa-undo"></i> Annuler';
+                    btnUndo.innerHTML = '<i class="fas fa-undo"></i> Annuler ménage';
                     btnUndo.addEventListener('click', async function() {
                         btnUndo.disabled = true;
                         btnUndo.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
@@ -1203,8 +1258,82 @@
                         updateCalendar(currentCleaningSlots);
                         updatePastSlotsList();
                     });
-                    actionsDiv.appendChild(btnUndo);
-                    listItem.appendChild(actionsDiv);
+                    row1.appendChild(btnUndo);
+                    wrapper.appendChild(row1);
+
+                    // === Ligne 2 : statut paiement + actions admin ===
+                    const row2 = document.createElement('div');
+                    row2.className = 'slot-done-row payment-row';
+
+                    const paymentInfo = document.createElement('span');
+                    if (paidAt) {
+                        paymentInfo.className = 'payment-info paid';
+                        paymentInfo.innerHTML = `<i class="fas fa-euro-sign"></i> Payé le ${new Date(paidAt).toLocaleDateString('fr-FR')}`;
+                    } else {
+                        paymentInfo.className = 'payment-info pending';
+                        paymentInfo.innerHTML = `<i class="fas fa-hourglass-half"></i> En attente de paiement`;
+                    }
+                    row2.appendChild(paymentInfo);
+
+                    if (isAdmin) {
+                        const payActions = document.createElement('div');
+                        payActions.className = 'payment-actions';
+
+                        const dateInput = document.createElement('input');
+                        dateInput.type = 'date';
+                        dateInput.value = paidAt ? new Date(paidAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+                        payActions.appendChild(dateInput);
+
+                        if (!paidAt) {
+                            // Bouton "Marquer payé"
+                            const btnPay = document.createElement('button');
+                            btnPay.className = 'btn-pay';
+                            btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
+                            btnPay.addEventListener('click', async function() {
+                                btnPay.disabled = true;
+                                btnPay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                const st = getState();
+                                st[fp].paidAt = new Date(dateInput.value + 'T12:00:00').toISOString();
+                                await saveStateToServer(st);
+                                updateCleaningSlotsList(currentCleaningSlots);
+                                updatePastSlotsList();
+                            });
+                            payActions.appendChild(btnPay);
+                        } else {
+                            // Bouton "Modifier date"
+                            const btnEdit = document.createElement('button');
+                            btnEdit.className = 'btn-pay';
+                            btnEdit.innerHTML = '<i class="fas fa-edit"></i> Modifier';
+                            btnEdit.addEventListener('click', async function() {
+                                btnEdit.disabled = true;
+                                btnEdit.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                const st = getState();
+                                st[fp].paidAt = new Date(dateInput.value + 'T12:00:00').toISOString();
+                                await saveStateToServer(st);
+                                updateCleaningSlotsList(currentCleaningSlots);
+                                updatePastSlotsList();
+                            });
+                            payActions.appendChild(btnEdit);
+
+                            // Bouton "Annuler paiement"
+                            const btnUnpay = document.createElement('button');
+                            btnUnpay.className = 'btn-unpay';
+                            btnUnpay.innerHTML = '<i class="fas fa-times"></i> Annuler';
+                            btnUnpay.addEventListener('click', async function() {
+                                btnUnpay.disabled = true;
+                                btnUnpay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                const st = getState();
+                                delete st[fp].paidAt;
+                                await saveStateToServer(st);
+                                updateCleaningSlotsList(currentCleaningSlots);
+                                updatePastSlotsList();
+                            });
+                            payActions.appendChild(btnUnpay);
+                        }
+                        row2.appendChild(payActions);
+                    }
+                    wrapper.appendChild(row2);
+                    listItem.appendChild(wrapper);
                 } else if (slotStarted) {
                     // Créneau en cours ou passé : select + bouton Valider
                     const actions = document.createElement('div');
