@@ -454,6 +454,9 @@
 
         // Cache mémoire de l'état (évite les lectures répétées)
         let cachedState = null;
+        // Indique si l'état a été chargé depuis le serveur (vs fallback localStorage)
+        // Empêche le localStorage obsolète d'écraser les données du serveur
+        let serverLoaded = false;
 
         // Charge l'état depuis le serveur distant, avec fallback localStorage
         async function loadStateFromServer() {
@@ -464,9 +467,11 @@
                 // Synchronise le localStorage comme cache de secours
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                 cachedState = state;
+                serverLoaded = true;
                 return state;
             } catch (e) {
                 console.warn('Fallback localStorage:', e.message);
+                serverLoaded = false;
                 return loadStateLocal();
             }
         }
@@ -483,9 +488,15 @@
         }
 
         // Sauvegarde l'état sur le serveur distant + localStorage
+        // Ne sauvegarde sur le serveur QUE si on a chargé depuis le serveur,
+        // pour éviter que le localStorage obsolète n'écrase les données distantes.
         async function saveStateToServer(state) {
             cachedState = state;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            if (!serverLoaded) {
+                console.warn('État non chargé depuis le serveur → sauvegarde locale uniquement');
+                return;
+            }
             try {
                 await fetch(STATE_API_URL, {
                     method: 'PUT',
@@ -682,8 +693,9 @@
                 // des événements passés par Airbnb
                 if (lastPastCheckout) {
                     // On a trouvé un checkout dans le iCal → le sauvegarder
+                    // Seulement si plus récent que la valeur existante (ne jamais reculer)
                     const st = getState();
-                    if (st._lastCheckout !== lastPastCheckout) {
+                    if (!st._lastCheckout || lastPastCheckout > st._lastCheckout) {
                         st._lastCheckout = lastPastCheckout;
                         saveStateToServer(st);
                     }
