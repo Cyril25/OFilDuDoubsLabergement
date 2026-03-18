@@ -1376,8 +1376,11 @@
         document.getElementById('admin-login-btn').addEventListener('click', async () => {
             const user = auth.currentUser;
             if (user && user.email === ADMIN_EMAIL) {
-                // Déjà connecté
+                // Déjà connecté — recharger les dates pour être à jour
                 document.getElementById('admin-panel').style.display = 'block';
+                const datesData = await loadDatesFromServer();
+                allManualCleaningDates = datesData.manual || [];
+                allExcludedCleaningDates = datesData.excluded || [];
                 renderAdminDates();
                 return;
             }
@@ -1391,7 +1394,6 @@
                 }
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('admin-login-btn').style.display = 'none';
-                renderAdminDates();
             } catch (e) {
                 if (e.code !== 'auth/popup-closed-by-user') {
                     alert('Erreur connexion : ' + e.message);
@@ -1415,10 +1417,14 @@
         });
 
         // Restaurer la session si déjà connecté
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async user => {
             if (user && user.email === ADMIN_EMAIL) {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('admin-login-btn').style.display = 'none';
+                // Charger les dates depuis le serveur (init() n'a peut-être pas encore fini)
+                const datesData = await loadDatesFromServer();
+                allManualCleaningDates = datesData.manual || [];
+                allExcludedCleaningDates = datesData.excluded || [];
                 renderAdminDates();
             }
         });
