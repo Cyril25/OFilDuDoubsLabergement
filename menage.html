@@ -23,6 +23,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/fr.js"></script>
 
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
     <style>
         /* Ajustement car il n'y a pas de menu fixe sur cette page */
         body { padding-top: 20px; }
@@ -388,6 +392,126 @@
                 padding: 10px;
             }
         }
+
+        /* ===== Admin panel ===== */
+        #admin-login-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        #admin-login-btn:hover {
+            color: #999;
+        }
+
+        #admin-panel {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        #admin-panel h2 {
+            color: var(--primary-color);
+            font-family: var(--font-title);
+            margin: 0;
+        }
+
+        #admin-panel h3 {
+            font-family: var(--font-body);
+            color: #333;
+            margin: 15px 0 8px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .admin-date-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .admin-date-row input[type="date"] {
+            padding: 6px 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: var(--font-body);
+        }
+
+        .admin-date-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-date-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            margin: 4px 0;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+
+        .admin-date-list li button {
+            background: none;
+            border: none;
+            color: #ff4d4f;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 2px 6px;
+        }
+
+        .admin-date-list li button:hover {
+            color: #a8071a;
+        }
+
+        .btn-admin-add {
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #1890ff;
+            color: #fff;
+        }
+
+        .btn-admin-add:hover {
+            background-color: #096dd9;
+        }
+
+        .btn-admin-logout {
+            border: none;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #ff4d4f;
+            color: #fff;
+        }
+
+        .admin-empty {
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
+            padding: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -441,6 +565,35 @@
         </div>
     </div>
 
+    <!-- Bouton admin discret -->
+    <div style="text-align:center; margin: 40px 0 10px;">
+        <button id="admin-login-btn" title="Administration">Admin</button>
+    </div>
+
+    <!-- Panneau admin (masqué par défaut) -->
+    <div id="admin-panel" style="display:none;">
+        <div class="admin-header">
+            <h2>Administration des dates</h2>
+            <button id="admin-logout-btn" class="btn-admin-logout">Déconnexion</button>
+        </div>
+
+        <h3>Dates de ménage manuelles</h3>
+        <p style="font-size:12px; color:#888; margin:0 0 8px;">Ajouter un ménage qui n'apparaît pas dans le calendrier Airbnb (ex: réservation Booking)</p>
+        <div class="admin-date-row">
+            <input type="date" id="manual-date-input">
+            <button id="add-manual-date" class="btn-admin-add">Ajouter</button>
+        </div>
+        <ul id="manual-dates-list" class="admin-date-list"></ul>
+
+        <h3>Dates exclues</h3>
+        <p style="font-size:12px; color:#888; margin:0 0 8px;">Supprimer un ménage calculé à tort (ex: fausse coupure entre deux réservations Booking)</p>
+        <div class="admin-date-row">
+            <input type="date" id="excluded-date-input">
+            <button id="add-excluded-date" class="btn-admin-add">Ajouter</button>
+        </div>
+        <ul id="excluded-dates-list" class="admin-date-list"></ul>
+    </div>
+
     <script>
         // =============================================
         // PERSISTANCE (Cloudflare Worker KV + fallback localStorage)
@@ -449,8 +602,20 @@
         // URL du Worker Cloudflare pour l'état partagé.
         // Mettre à jour après déploiement du worker (voir workers/menage-state-worker.js)
         const STATE_API_URL = 'https://menage-state.cyril-samson41.workers.dev/';
+        const DATES_API_URL = STATE_API_URL + 'dates';
 
         const STORAGE_KEY = 'ofildudoubs_menage_state';
+
+        // Firebase Auth
+        firebase.initializeApp({
+            apiKey: "AIzaSyCZ_uO-eolAZJs6As82aicoSuZYmT-DeaY",
+            authDomain: "asso-billet-site.firebaseapp.com",
+            projectId: "asso-billet-site",
+            storageBucket: "asso-billet-site.appspot.com",
+            messagingSenderId: "644448143950",
+            appId: "1:644448143950:web:f64ccc8f62883507ea111f"
+        });
+        const auth = firebase.auth();
 
         // Cache mémoire de l'état (évite les lectures répétées)
         let cachedState = null;
@@ -572,12 +737,41 @@
 
         const todayISO = getLocalISODate();
 
-        // Dates manuelles et exclusions (A mettre à jour ici si besoin)
-        const allManualCleaningDates = ['2024-11-01', '2025-12-29', '2026-02-19', '2026-06-13'];
-        const allExcludedCleaningDates = ['2024-10-30', '2025-12-27'];
+        // Dates manuelles et exclusions (chargées dynamiquement depuis le serveur)
+        let allManualCleaningDates = [];
+        let allExcludedCleaningDates = [];
+        let manualCleaningDates = [];
+        let excludedCleaningDates = [];
 
-        const manualCleaningDates = allManualCleaningDates.filter(date => date >= todayISO);
-        const excludedCleaningDates = allExcludedCleaningDates.filter(date => date >= todayISO);
+        // Charge les dates depuis le serveur (public, pas d'auth)
+        async function loadDatesFromServer() {
+            try {
+                const resp = await fetch(DATES_API_URL);
+                return await resp.json();
+            } catch (e) {
+                console.warn('Erreur chargement dates:', e.message);
+                return { manual: [], excluded: [] };
+            }
+        }
+
+        // Sauvegarde les dates (nécessite auth Firebase)
+        async function saveDatesToServer(dates) {
+            const user = auth.currentUser;
+            if (!user) throw new Error('Non connecté');
+            const token = await user.getIdToken();
+            const resp = await fetch(DATES_API_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(dates)
+            });
+            if (!resp.ok) {
+                const err = await resp.json();
+                throw new Error(err.error || 'Erreur serveur');
+            }
+        }
 
         // =============================================
         // INITIALISATION
@@ -591,12 +785,19 @@
         // Variable globale pour permettre le refresh du calendrier
         let currentCleaningSlots = [];
 
-        // Chargement parallèle : état distant + flux iCal
+        // Chargement parallèle : état distant + flux iCal + dates admin
         async function init() {
-            const [_, icalResponse] = await Promise.all([
+            const [_, icalResponse, datesData] = await Promise.all([
                 loadStateFromServer(),
-                fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
+                fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/'),
+                loadDatesFromServer()
             ]);
+
+            // Mettre à jour les dates manuelles/exclues
+            allManualCleaningDates = datesData.manual || [];
+            allExcludedCleaningDates = datesData.excluded || [];
+            manualCleaningDates = allManualCleaningDates.filter(d => d >= todayISO);
+            excludedCleaningDates = allExcludedCleaningDates.filter(d => d >= todayISO);
 
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
@@ -1076,6 +1277,151 @@
             }
             return Array.from(dates);
         }
+
+        // =============================================
+        // ADMIN : gestion des dates manuelles/exclues
+        // =============================================
+        const ADMIN_EMAIL = 'cyril.samson41@gmail.com';
+
+        function formatDateFR(isoDate) {
+            return new Date(isoDate + 'T12:00:00').toLocaleDateString('fr-FR', {
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+            });
+        }
+
+        function renderAdminDates() {
+            const manualList = document.getElementById('manual-dates-list');
+            const excludedList = document.getElementById('excluded-dates-list');
+            manualList.innerHTML = '';
+            excludedList.innerHTML = '';
+
+            const sortedManual = [...allManualCleaningDates].sort();
+            const sortedExcluded = [...allExcludedCleaningDates].sort();
+
+            if (sortedManual.length === 0) {
+                manualList.innerHTML = '<li class="admin-empty">Aucune date manuelle</li>';
+            } else {
+                for (const date of sortedManual) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${formatDateFR(date)}</span>`;
+                    const btn = document.createElement('button');
+                    btn.innerHTML = '<i class="fas fa-trash"></i>';
+                    btn.title = 'Supprimer';
+                    btn.addEventListener('click', () => removeDate('manual', date));
+                    li.appendChild(btn);
+                    manualList.appendChild(li);
+                }
+            }
+
+            if (sortedExcluded.length === 0) {
+                excludedList.innerHTML = '<li class="admin-empty">Aucune date exclue</li>';
+            } else {
+                for (const date of sortedExcluded) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${formatDateFR(date)}</span>`;
+                    const btn = document.createElement('button');
+                    btn.innerHTML = '<i class="fas fa-trash"></i>';
+                    btn.title = 'Supprimer';
+                    btn.addEventListener('click', () => removeDate('excluded', date));
+                    li.appendChild(btn);
+                    excludedList.appendChild(li);
+                }
+            }
+        }
+
+        async function addDate(type, date) {
+            if (!date) return;
+            const arr = type === 'manual' ? allManualCleaningDates : allExcludedCleaningDates;
+            if (arr.includes(date)) return alert('Cette date existe déjà.');
+            arr.push(date);
+            try {
+                await saveDatesToServer({ manual: allManualCleaningDates, excluded: allExcludedCleaningDates });
+                renderAdminDates();
+                await refreshCalendar();
+            } catch (e) {
+                arr.splice(arr.indexOf(date), 1);
+                alert('Erreur : ' + e.message);
+            }
+        }
+
+        async function removeDate(type, date) {
+            const arr = type === 'manual' ? allManualCleaningDates : allExcludedCleaningDates;
+            const idx = arr.indexOf(date);
+            if (idx === -1) return;
+            arr.splice(idx, 1);
+            try {
+                await saveDatesToServer({ manual: allManualCleaningDates, excluded: allExcludedCleaningDates });
+                renderAdminDates();
+                await refreshCalendar();
+            } catch (e) {
+                arr.splice(idx, 0, date); // Remettre
+                alert('Erreur : ' + e.message);
+            }
+        }
+
+        async function refreshCalendar() {
+            manualCleaningDates = allManualCleaningDates.filter(d => d >= todayISO);
+            excludedCleaningDates = allExcludedCleaningDates.filter(d => d >= todayISO);
+            const icalResponse = await fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/');
+            const icalData = await icalResponse.text();
+            const events = parseICS(icalData);
+            currentCleaningSlots = calculateCleaningSlots(events);
+            await markCurrentSlots(currentCleaningSlots);
+            updateCalendar(currentCleaningSlots);
+            updateCleaningSlotsList(currentCleaningSlots);
+            updatePastSlotsList();
+        }
+
+        // Bouton admin : connexion Google
+        document.getElementById('admin-login-btn').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (user && user.email === ADMIN_EMAIL) {
+                // Déjà connecté
+                document.getElementById('admin-panel').style.display = 'block';
+                renderAdminDates();
+                return;
+            }
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                if (result.user.email !== ADMIN_EMAIL) {
+                    await auth.signOut();
+                    alert('Accès non autorisé.');
+                    return;
+                }
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('admin-login-btn').style.display = 'none';
+                renderAdminDates();
+            } catch (e) {
+                if (e.code !== 'auth/popup-closed-by-user') {
+                    alert('Erreur connexion : ' + e.message);
+                }
+            }
+        });
+
+        // Bouton déconnexion
+        document.getElementById('admin-logout-btn').addEventListener('click', async () => {
+            await auth.signOut();
+            document.getElementById('admin-panel').style.display = 'none';
+            document.getElementById('admin-login-btn').style.display = '';
+        });
+
+        // Boutons ajouter
+        document.getElementById('add-manual-date').addEventListener('click', () => {
+            addDate('manual', document.getElementById('manual-date-input').value);
+        });
+        document.getElementById('add-excluded-date').addEventListener('click', () => {
+            addDate('excluded', document.getElementById('excluded-date-input').value);
+        });
+
+        // Restaurer la session si déjà connecté
+        auth.onAuthStateChanged(user => {
+            if (user && user.email === ADMIN_EMAIL) {
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('admin-login-btn').style.display = 'none';
+                renderAdminDates();
+            }
+        });
     </script>
 </body>
 </html>
