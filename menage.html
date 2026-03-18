@@ -172,6 +172,41 @@
             margin-right: 4px;
         }
 
+        /* Statut paiement */
+        .payment-info {
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .payment-info.pending {
+            color: #faad14;
+        }
+
+        .payment-info.paid {
+            color: #52c41a;
+        }
+
+        .payment-info i {
+            margin-right: 4px;
+        }
+
+        .btn-pay {
+            flex-shrink: 0;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #faad14;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-pay:hover {
+            background-color: #d48806;
+        }
+
         /* Badge "À venir" */
         .badge-future {
             flex-shrink: 0;
@@ -558,6 +593,7 @@
                         <th>Statut</th>
                         <th>Fait par</th>
                         <th>Date validation</th>
+                        <th>Paiement</th>
                     </tr>
                 </thead>
                 <tbody id="past-slots-body"></tbody>
@@ -695,13 +731,18 @@
             const current = state[fingerprint];
             const isDone = current && current.status === 'done';
 
-            state[fingerprint] = {
+            const newEntry = {
                 status: isDone ? 'todo' : 'done',
                 updatedAt: new Date().toISOString(),
                 doneBy: isDone ? '' : (doneBy || ''),
                 startDate: new Date(slot.start).toISOString().split('T')[0],
                 endDate: new Date(slot.end).toISOString().split('T')[0]
             };
+            // Conserver paidAt si on revalide, supprimer si on annule
+            if (!isDone && current && current.paidAt) {
+                newEntry.paidAt = current.paidAt;
+            }
+            state[fingerprint] = newEntry;
 
             await saveStateToServer(state);
             return state[fingerprint].status;
@@ -1105,11 +1146,51 @@
                     // Afficher la date de validation + qui + bouton annuler
                     const doneDate = getSlotDoneDate(fp);
                     const doneBy = getSlotDoneBy(fp);
+                    const state = getState();
+                    const slotState = state[fp] || {};
+                    const paidAt = slotState.paidAt || null;
+
+                    const infoWrapper = document.createElement('div');
+                    infoWrapper.style.cssText = 'display:flex; flex-direction:column; gap:4px;';
+
                     const doneInfo = document.createElement('span');
                     doneInfo.className = 'done-info';
                     const byText = doneBy ? ` par ${doneBy}` : '';
                     doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
-                    listItem.appendChild(doneInfo);
+                    infoWrapper.appendChild(doneInfo);
+
+                    // Statut paiement
+                    const paymentInfo = document.createElement('span');
+                    if (paidAt) {
+                        paymentInfo.className = 'payment-info paid';
+                        paymentInfo.innerHTML = `<i class="fas fa-euro-sign"></i> Payé le ${new Date(paidAt).toLocaleDateString('fr-FR')}`;
+                    } else {
+                        paymentInfo.className = 'payment-info pending';
+                        paymentInfo.innerHTML = `<i class="fas fa-hourglass-half"></i> En attente de paiement`;
+                    }
+                    infoWrapper.appendChild(paymentInfo);
+                    listItem.appendChild(infoWrapper);
+
+                    // Actions admin : bouton payer + annuler
+                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.style.cssText = 'display:flex; gap:6px; align-items:center;';
+
+                    if (isAdmin && !paidAt) {
+                        const btnPay = document.createElement('button');
+                        btnPay.className = 'btn-pay';
+                        btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
+                        btnPay.addEventListener('click', async function() {
+                            btnPay.disabled = true;
+                            btnPay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            const st = getState();
+                            st[fp].paidAt = new Date().toISOString();
+                            await saveStateToServer(st);
+                            updateCleaningSlotsList(currentCleaningSlots);
+                            updatePastSlotsList();
+                        });
+                        actionsDiv.appendChild(btnPay);
+                    }
 
                     const btnUndo = document.createElement('button');
                     btnUndo.className = 'btn-status is-done';
@@ -1122,7 +1203,8 @@
                         updateCalendar(currentCleaningSlots);
                         updatePastSlotsList();
                     });
-                    listItem.appendChild(btnUndo);
+                    actionsDiv.appendChild(btnUndo);
+                    listItem.appendChild(actionsDiv);
                 } else if (slotStarted) {
                     // Créneau en cours ou passé : select + bouton Valider
                     const actions = document.createElement('div');
@@ -1205,7 +1287,7 @@
                 .sort((a, b) => b[1].endDate.localeCompare(a[1].endDate)); // Plus récent en premier
 
             if (pastEntries.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="past-empty">Aucun historique pour le moment.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="past-empty">Aucun historique pour le moment.</td></tr>';
                 return;
             }
 
@@ -1245,6 +1327,17 @@
                     tdDate.textContent = '-';
                 }
                 tr.appendChild(tdDate);
+
+                // Paiement
+                const tdPay = document.createElement('td');
+                if (entry.paidAt) {
+                    tdPay.innerHTML = `<span class="status-done"><i class="fas fa-euro-sign"></i> ${new Date(entry.paidAt).toLocaleDateString('fr-FR')}</span>`;
+                } else if (entry.status === 'done') {
+                    tdPay.innerHTML = '<span class="status-missed"><i class="fas fa-hourglass-half"></i> En attente</span>';
+                } else {
+                    tdPay.textContent = '-';
+                }
+                tr.appendChild(tdPay);
 
                 tbody.appendChild(tr);
             }
