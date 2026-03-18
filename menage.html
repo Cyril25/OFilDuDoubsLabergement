@@ -661,20 +661,19 @@
 
                         if (start > sixMonthsLater) return;
 
-                        // Bloc "Not available" d'1 jour = jour de turnover (checkout)
-                        // On l'exclut des événements et on l'utilise comme date de départ
-                        const durationDays = (end - start) / (1000 * 60 * 60 * 24);
-                        if (durationDays <= 1 && summary.includes('Not available')) {
-                            const checkoutISO = formatDate(startDate[1]) + 'T11:00:00';
-                            if (!lastPastCheckout || checkoutISO > lastPastCheckout) {
-                                lastPastCheckout = checkoutISO;
-                            }
-                            return;
-                        }
+                        // Blocs "Not available" : DTEND est exclusif (convention iCal)
+                        // → le checkout réel est DTEND - 1 jour
+                        const isNotAvailable = summary.includes('Not available');
+                        const effectiveEnd = isNotAvailable
+                            ? new Date(end.getTime() - 24 * 60 * 60 * 1000)
+                            : end;
+                        const effectiveEndStr = isNotAvailable
+                            ? addDaysToISODate(formatDate(endDate[1]), -1)
+                            : formatDate(endDate[1]);
 
                         // Événement passé : on garde la date de départ la plus récente
-                        if (end < today) {
-                            const checkoutISO = formatDate(endDate[1]) + 'T11:00:00';
+                        if (effectiveEnd < today) {
+                            const checkoutISO = effectiveEndStr + 'T11:00:00';
                             if (!lastPastCheckout || checkoutISO > lastPastCheckout) {
                                 lastPastCheckout = checkoutISO;
                             }
@@ -683,7 +682,7 @@
 
                         events.push({
                             start: formatDate(startDate[1]) + 'T17:00:00',
-                            end: formatDate(endDate[1]) + 'T11:00:00'
+                            end: effectiveEndStr + 'T11:00:00'
                         });
                     }
                 });
