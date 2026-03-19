@@ -716,15 +716,12 @@
 
     <script>
         // =============================================
-        // PERSISTANCE (Cloudflare Worker KV + fallback localStorage)
+        // PERSISTANCE (Cloudflare Worker KV uniquement)
         // =============================================
 
         // URL du Worker Cloudflare pour l'état partagé.
-        // Mettre à jour après déploiement du worker (voir workers/menage-state-worker.js)
         const STATE_API_URL = 'https://menage-state.cyril-samson41.workers.dev/';
         const DATES_API_URL = STATE_API_URL + 'dates';
-
-        const STORAGE_KEY = 'ofildudoubs_menage_state';
 
         // Firebase Auth
         firebase.initializeApp({
@@ -740,46 +737,23 @@
         // Cache mémoire de l'état (évite les lectures répétées)
         let cachedState = null;
 
-        // Charge l'état depuis le serveur distant, avec fallback localStorage
+        // Charge l'état depuis le serveur distant
         async function loadStateFromServer() {
-            try {
-                const response = await fetch(STATE_API_URL);
-                if (!response.ok) throw new Error('API indisponible');
-                const state = await response.json();
-                // Synchronise le localStorage comme cache de secours
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-                cachedState = state;
-                return state;
-            } catch (e) {
-                console.warn('Fallback localStorage:', e.message);
-                return loadStateLocal();
-            }
+            const response = await fetch(STATE_API_URL);
+            if (!response.ok) throw new Error('Impossible de charger l\'état depuis le serveur');
+            const state = await response.json();
+            cachedState = state;
+            return state;
         }
 
-        function loadStateLocal() {
-            try {
-                const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                cachedState = state;
-                return state;
-            } catch (e) {
-                cachedState = {};
-                return {};
-            }
-        }
-
-        // Sauvegarde l'état sur le serveur distant + localStorage
+        // Sauvegarde l'état sur le serveur distant
         async function saveStateToServer(state) {
             cachedState = state;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-            try {
-                await fetch(STATE_API_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(state),
-                });
-            } catch (e) {
-                console.warn('Sauvegarde distante échouée (localStorage OK):', e.message);
-            }
+            await fetch(STATE_API_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(state),
+            });
         }
 
         // Accès synchrone à l'état en cache (pour le rendu)
@@ -927,12 +901,16 @@
 
         init().catch(error => console.error('Erreur initialisation:', error));
 
-        // Enregistre les créneaux actuels dans le state (sans écraser le statut)
+        // Enregistre les créneaux actuels et nettoie les slots obsolètes
         async function markCurrentSlots(slots) {
             const state = getState();
             let changed = false;
+
+            // 1. Ajouter les nouveaux slots
+            const currentFingerprints = new Set();
             for (const slot of slots) {
                 const fp = slotFingerprint(slot);
+                currentFingerprints.add(fp);
                 if (!state[fp]) {
                     state[fp] = {
                         status: 'todo',
@@ -943,6 +921,21 @@
                     changed = true;
                 }
             }
+
+            // 2. Supprimer les slots qui ne correspondent à aucun créneau actuel
+            //    (sauf les slots "done" passés, conservés pour l'historique)
+            for (const key of Object.keys(state)) {
+                if (!key.startsWith('slot_')) continue;
+                if (currentFingerprints.has(key)) continue;
+
+                // Garder les slots "done" dont la date de fin est passée (historique)
+                const slotData = state[key];
+                if (slotData.status === 'done' && slotData.endDate && slotData.endDate < todayISO) continue;
+
+                delete state[key];
+                changed = true;
+            }
+
             if (changed) await saveStateToServer(state);
         }
 
