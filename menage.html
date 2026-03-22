@@ -98,9 +98,8 @@
             text-align: left;
             font-family: var(--font-body);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            flex-direction: column;
+            gap: 6px;
         }
 
         #cleaning-slots li.urgent {
@@ -263,6 +262,75 @@
             font-size: 12px;
         }
 
+        /* Info créneau (nb personnes + commentaire) */
+        .slot-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        .slot-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .slot-info .info-item i {
+            color: #1890ff;
+        }
+
+        .slot-info .info-comment {
+            font-style: italic;
+            color: #888;
+        }
+
+        .slot-info-admin {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed #d9d9d9;
+        }
+
+        .slot-info-admin input[type="number"] {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .slot-info-admin input[type="text"] {
+            flex: 1;
+            min-width: 120px;
+            padding: 4px 6px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .btn-save-info {
+            flex-shrink: 0;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #1890ff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-save-info:hover {
+            background-color: #096dd9;
+        }
+
         /* Badge "À venir" */
         .badge-future {
             flex-shrink: 0;
@@ -364,6 +432,11 @@
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
+            align-self: flex-end;
+        }
+
+        .badge-future, .btn-status:not(.is-done) {
+            align-self: flex-end;
         }
 
         /* Section créneaux passés */
@@ -674,6 +747,7 @@
                 <thead>
                     <tr>
                         <th>Créneau</th>
+                        <th>Pers.</th>
                         <th>Statut</th>
                         <th>Fait par</th>
                         <th>Date validation</th>
@@ -812,6 +886,36 @@
             const state = getState();
             return (state[fingerprint] && state[fingerprint].doneBy) || '';
         }
+
+        // Info créneau (nb personnes + commentaire), clé = date de fin du slot
+        function getSlotInfoKey(slot) {
+            const endDate = new Date(slot.end).toISOString().split('T')[0];
+            return `info_${endDate}`;
+        }
+
+        function getSlotInfo(slot) {
+            const state = getState();
+            const key = getSlotInfoKey(slot);
+            return state[key] || {};
+        }
+
+        async function saveSlotInfo(slot, nbPersons, comment, lang) {
+            const state = getState();
+            const key = getSlotInfoKey(slot);
+            const existing = state[key] || {};
+            state[key] = {
+                nbPersons: nbPersons || null,
+                comment: comment || '',
+                lang: lang || existing.lang || 'fr'
+            };
+            await saveStateToServer(state);
+        }
+
+        const LANG_OPTIONS = [
+            { code: 'fr', flag: '🇫🇷', label: 'Français' },
+            { code: 'en', flag: '🇬🇧', label: 'Anglais' },
+            { code: 'de', flag: '🇩🇪', label: 'Allemand' }
+        ];
 
         // =============================================
         // UTILITAIRES DE DATE
@@ -1204,6 +1308,72 @@
 
                 listItem.appendChild(textSpan);
 
+                // Info créneau (nb personnes + commentaire)
+                const slotInfoData = getSlotInfo(slot);
+                const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+
+                const langData = LANG_OPTIONS.find(l => l.code === (slotInfoData.lang || 'fr')) || LANG_OPTIONS[0];
+                if (slotInfoData.nbPersons || slotInfoData.comment || slotInfoData.lang) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'slot-info';
+                    // Drapeau langue
+                    const langItem = document.createElement('span');
+                    langItem.className = 'info-item';
+                    langItem.innerHTML = `${langData.flag} ${langData.label}`;
+                    infoDiv.appendChild(langItem);
+                    if (slotInfoData.nbPersons) {
+                        const nbItem = document.createElement('span');
+                        nbItem.className = 'info-item';
+                        nbItem.innerHTML = `<i class="fas fa-users"></i> ${slotInfoData.nbPersons} pers.`;
+                        infoDiv.appendChild(nbItem);
+                    }
+                    if (slotInfoData.comment) {
+                        const commentItem = document.createElement('span');
+                        commentItem.className = 'info-comment';
+                        commentItem.innerHTML = `<i class="fas fa-comment"></i> ${slotInfoData.comment}`;
+                        infoDiv.appendChild(commentItem);
+                    }
+                    listItem.appendChild(infoDiv);
+                }
+
+                if (isAdmin) {
+                    const infoAdmin = document.createElement('div');
+                    infoAdmin.className = 'slot-info-admin';
+
+                    const langSelect = document.createElement('select');
+                    langSelect.className = 'select-cleaner';
+                    langSelect.innerHTML = LANG_OPTIONS.map(l =>
+                        `<option value="${l.code}" ${(slotInfoData.lang || 'fr') === l.code ? 'selected' : ''}>${l.flag} ${l.label}</option>`
+                    ).join('');
+                    infoAdmin.appendChild(langSelect);
+
+                    const nbInput = document.createElement('input');
+                    nbInput.type = 'number';
+                    nbInput.min = '1';
+                    nbInput.max = '20';
+                    nbInput.placeholder = 'Nb pers.';
+                    nbInput.value = slotInfoData.nbPersons || '';
+                    infoAdmin.appendChild(nbInput);
+
+                    const commentInput = document.createElement('input');
+                    commentInput.type = 'text';
+                    commentInput.placeholder = 'Commentaire (optionnel)';
+                    commentInput.value = slotInfoData.comment || '';
+                    infoAdmin.appendChild(commentInput);
+
+                    const btnSave = document.createElement('button');
+                    btnSave.className = 'btn-save-info';
+                    btnSave.innerHTML = '<i class="fas fa-save"></i>';
+                    btnSave.addEventListener('click', async function() {
+                        btnSave.disabled = true;
+                        btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        await saveSlotInfo(slot, parseInt(nbInput.value) || null, commentInput.value.trim(), langSelect.value);
+                        updateCleaningSlotsList(currentCleaningSlots);
+                    });
+                    infoAdmin.appendChild(btnSave);
+                    listItem.appendChild(infoAdmin);
+                }
+
                 // Le créneau est-il actionnable ? (date de début passée)
                 const slotStarted = slotStart <= now;
 
@@ -1397,7 +1567,7 @@
                 .sort((a, b) => b[1].endDate.localeCompare(a[1].endDate)); // Plus récent en premier
 
             if (pastEntries.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="past-empty">Aucun historique pour le moment.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="past-empty">Aucun historique pour le moment.</td></tr>';
                 return;
             }
 
@@ -1414,6 +1584,14 @@
                     tdSlot.textContent = `${start.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}`;
                 }
                 tr.appendChild(tdSlot);
+
+                // Nb personnes + langue
+                const tdPers = document.createElement('td');
+                const infoKey = `info_${entry.endDate}`;
+                const info = state[infoKey] || {};
+                const entryLang = LANG_OPTIONS.find(l => l.code === (info.lang || 'fr')) || LANG_OPTIONS[0];
+                tdPers.textContent = `${entryLang.flag} ${info.nbPersons || '-'}`;
+                tr.appendChild(tdPers);
 
                 // Statut
                 const tdStatus = document.createElement('td');
