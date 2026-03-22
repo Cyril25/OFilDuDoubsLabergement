@@ -1590,7 +1590,7 @@
                 const infoKey = `info_${entry.endDate}`;
                 const info = state[infoKey] || {};
                 const entryLang = LANG_OPTIONS.find(l => l.code === (info.lang || 'fr')) || LANG_OPTIONS[0];
-                tdPers.textContent = `${entryLang.flag} ${info.nbPersons || '-'}`;
+                tdPers.innerHTML = `${entryLang.flag} ${info.nbPersons || '-'}`;
                 tr.appendChild(tdPers);
 
                 // Statut
