@@ -736,6 +736,17 @@
         .reservation-row .resa-source.booking {
             background-color: #003580;
         }
+
+        .reservation-row .resa-comment {
+            font-style: italic;
+            font-size: 12px;
+            color: #8c6d1f;
+            margin-left: auto;
+        }
+
+        .reservation-row .resa-comment i {
+            margin-right: 4px;
+        }
     </style>
 </head>
 <body>
@@ -807,6 +818,7 @@
         <p style="font-size:12px; color:#888; margin:0 0 8px;">Ajouter un ménage qui n'apparaît pas dans le calendrier Airbnb (ex: réservation Booking)</p>
         <div class="admin-date-row">
             <input type="date" id="manual-date-input">
+            <input type="text" id="manual-comment-input" placeholder="Commentaire (optionnel)" style="flex:1; padding:6px 10px; border:1px solid #d9d9d9; border-radius:6px; font-size:13px;">
             <button id="add-manual-date" class="btn-admin-add">Ajouter</button>
         </div>
         <ul id="manual-dates-list" class="admin-date-list"></ul>
@@ -815,6 +827,7 @@
         <p style="font-size:12px; color:#888; margin:0 0 8px;">Supprimer un ménage calculé à tort (ex: fausse coupure entre deux réservations Booking)</p>
         <div class="admin-date-row">
             <input type="date" id="excluded-date-input">
+            <input type="text" id="excluded-comment-input" placeholder="Commentaire (optionnel)" style="flex:1; padding:6px 10px; border:1px solid #d9d9d9; border-radius:6px; font-size:13px;">
             <button id="add-excluded-date" class="btn-admin-add">Ajouter</button>
         </div>
         <ul id="excluded-dates-list" class="admin-date-list"></ul>
@@ -962,10 +975,22 @@
         const todayISO = getLocalISODate();
 
         // Dates manuelles et exclusions (chargées dynamiquement depuis le serveur)
+        // Format : [{date: "2026-08-08", comment: "..."}, ...]
         let allManualCleaningDates = [];
         let allExcludedCleaningDates = [];
         let manualCleaningDates = [];
         let excludedCleaningDates = [];
+
+        // Rétrocompatibilité : convertir ancien format (string[]) en nouveau ({date, comment}[])
+        function normalizeDatesArray(arr) {
+            return arr.map(item => typeof item === 'string' ? { date: item, comment: '' } : item);
+        }
+
+        // Helper : trouver le commentaire d'une date dans un tableau
+        function getDateComment(arr, dateStr) {
+            const entry = arr.find(d => d.date === dateStr);
+            return entry ? entry.comment : '';
+        }
 
         // Charge les dates depuis le serveur (public, pas d'auth)
         async function loadDatesFromServer() {
@@ -1019,10 +1044,10 @@
             ]);
 
             // Mettre à jour les dates manuelles/exclues
-            allManualCleaningDates = datesData.manual || [];
-            allExcludedCleaningDates = datesData.excluded || [];
-            manualCleaningDates = allManualCleaningDates.filter(d => d >= todayISO);
-            excludedCleaningDates = allExcludedCleaningDates.filter(d => d >= todayISO);
+            allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
+            allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
+            manualCleaningDates = allManualCleaningDates.filter(d => d.date >= todayISO);
+            excludedCleaningDates = allExcludedCleaningDates.filter(d => d.date >= todayISO);
 
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
@@ -1229,13 +1254,13 @@
                 }
             }
 
-            for (const excludeDate of excludedCleaningDates) allowedCleaningDays.delete(excludeDate);
-            for (const manualDate of manualCleaningDates) {
-                allowedCleaningDays.add(manualDate);
-                if (!dayTimeMap.has(manualDate)) {
-                    dayTimeMap.set(manualDate, {
-                        start: new Date(manualDate + 'T11:00:00Z').toISOString(),
-                        end: new Date(manualDate + 'T17:00:00Z').toISOString()
+            for (const excl of excludedCleaningDates) allowedCleaningDays.delete(excl.date);
+            for (const manual of manualCleaningDates) {
+                allowedCleaningDays.add(manual.date);
+                if (!dayTimeMap.has(manual.date)) {
+                    dayTimeMap.set(manual.date, {
+                        start: new Date(manual.date + 'T11:00:00Z').toISOString(),
+                        end: new Date(manual.date + 'T17:00:00Z').toISOString()
                     });
                 }
             }
@@ -1575,7 +1600,7 @@
                         return evStart >= slotEndDate && evStart < nextSlotStart;
                     });
 
-                    resasBetween.forEach(resa => {
+                    resasBetween.forEach((resa, resaIdx) => {
                         const resaDiv = document.createElement('div');
                         resaDiv.className = 'reservation-row';
 
@@ -1589,6 +1614,19 @@
                         const resaText = document.createElement('span');
                         resaText.textContent = `Réservation du ${resaStart.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au ${resaEnd.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                         resaDiv.appendChild(resaText);
+
+                        // Afficher le commentaire d'une date exclue entre cette résa et la suivante
+                        const nextResa = resasBetween[resaIdx + 1];
+                        if (nextResa) {
+                            const resaEndDate = resa.end.split('T')[0];
+                            const comment = getDateComment(allExcludedCleaningDates, resaEndDate);
+                            if (comment) {
+                                const commentSpan = document.createElement('span');
+                                commentSpan.className = 'resa-comment';
+                                commentSpan.innerHTML = `<i class="fas fa-info-circle"></i> ${comment}`;
+                                resaDiv.appendChild(commentSpan);
+                            }
+                        }
 
                         listElement.appendChild(resaDiv);
                     });
@@ -1750,19 +1788,20 @@
             manualList.innerHTML = '';
             excludedList.innerHTML = '';
 
-            const sortedManual = [...allManualCleaningDates].sort();
-            const sortedExcluded = [...allExcludedCleaningDates].sort();
+            const sortedManual = [...allManualCleaningDates].sort((a, b) => a.date.localeCompare(b.date));
+            const sortedExcluded = [...allExcludedCleaningDates].sort((a, b) => a.date.localeCompare(b.date));
 
             if (sortedManual.length === 0) {
                 manualList.innerHTML = '<li class="admin-empty">Aucune date manuelle</li>';
             } else {
-                for (const date of sortedManual) {
+                for (const entry of sortedManual) {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span>${formatDateFR(date)}</span>`;
+                    const commentText = entry.comment ? ` — ${entry.comment}` : '';
+                    li.innerHTML = `<span>${formatDateFR(entry.date)}${commentText}</span>`;
                     const btn = document.createElement('button');
                     btn.innerHTML = '<i class="fas fa-trash"></i>';
                     btn.title = 'Supprimer';
-                    btn.addEventListener('click', () => removeDate('manual', date));
+                    btn.addEventListener('click', () => removeDate('manual', entry.date));
                     li.appendChild(btn);
                     manualList.appendChild(li);
                 }
@@ -1771,52 +1810,54 @@
             if (sortedExcluded.length === 0) {
                 excludedList.innerHTML = '<li class="admin-empty">Aucune date exclue</li>';
             } else {
-                for (const date of sortedExcluded) {
+                for (const entry of sortedExcluded) {
                     const li = document.createElement('li');
-                    li.innerHTML = `<span>${formatDateFR(date)}</span>`;
+                    const commentText = entry.comment ? ` — ${entry.comment}` : '';
+                    li.innerHTML = `<span>${formatDateFR(entry.date)}${commentText}</span>`;
                     const btn = document.createElement('button');
                     btn.innerHTML = '<i class="fas fa-trash"></i>';
                     btn.title = 'Supprimer';
-                    btn.addEventListener('click', () => removeDate('excluded', date));
+                    btn.addEventListener('click', () => removeDate('excluded', entry.date));
                     li.appendChild(btn);
                     excludedList.appendChild(li);
                 }
             }
         }
 
-        async function addDate(type, date) {
+        async function addDate(type, date, comment) {
             if (!date) return;
             const arr = type === 'manual' ? allManualCleaningDates : allExcludedCleaningDates;
-            if (arr.includes(date)) return alert('Cette date existe déjà.');
-            arr.push(date);
+            if (arr.some(d => d.date === date)) return alert('Cette date existe déjà.');
+            const entry = { date, comment: (comment || '').trim() };
+            arr.push(entry);
             try {
                 await saveDatesToServer({ manual: allManualCleaningDates, excluded: allExcludedCleaningDates });
                 renderAdminDates();
                 await refreshCalendar();
             } catch (e) {
-                arr.splice(arr.indexOf(date), 1);
+                arr.splice(arr.indexOf(entry), 1);
                 alert('Erreur : ' + e.message);
             }
         }
 
-        async function removeDate(type, date) {
+        async function removeDate(type, dateStr) {
             const arr = type === 'manual' ? allManualCleaningDates : allExcludedCleaningDates;
-            const idx = arr.indexOf(date);
+            const idx = arr.findIndex(d => d.date === dateStr);
             if (idx === -1) return;
-            arr.splice(idx, 1);
+            const removed = arr.splice(idx, 1)[0];
             try {
                 await saveDatesToServer({ manual: allManualCleaningDates, excluded: allExcludedCleaningDates });
                 renderAdminDates();
                 await refreshCalendar();
             } catch (e) {
-                arr.splice(idx, 0, date); // Remettre
+                arr.splice(idx, 0, removed); // Remettre
                 alert('Erreur : ' + e.message);
             }
         }
 
         async function refreshCalendar() {
-            manualCleaningDates = allManualCleaningDates.filter(d => d >= todayISO);
-            excludedCleaningDates = allExcludedCleaningDates.filter(d => d >= todayISO);
+            manualCleaningDates = allManualCleaningDates.filter(d => d.date >= todayISO);
+            excludedCleaningDates = allExcludedCleaningDates.filter(d => d.date >= todayISO);
             const icalResponse = await fetch('https://menage-state.cyril-samson41.workers.dev/ical');
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
@@ -1835,8 +1876,8 @@
                 // Déjà connecté — recharger les dates pour être à jour
                 document.getElementById('admin-panel').style.display = 'block';
                 const datesData = await loadDatesFromServer();
-                allManualCleaningDates = datesData.manual || [];
-                allExcludedCleaningDates = datesData.excluded || [];
+                allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
+                allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
                 renderAdminDates();
                 return;
             }
@@ -1866,10 +1907,12 @@
 
         // Boutons ajouter
         document.getElementById('add-manual-date').addEventListener('click', () => {
-            addDate('manual', document.getElementById('manual-date-input').value);
+            addDate('manual', document.getElementById('manual-date-input').value, document.getElementById('manual-comment-input').value);
+            document.getElementById('manual-comment-input').value = '';
         });
         document.getElementById('add-excluded-date').addEventListener('click', () => {
-            addDate('excluded', document.getElementById('excluded-date-input').value);
+            addDate('excluded', document.getElementById('excluded-date-input').value, document.getElementById('excluded-comment-input').value);
+            document.getElementById('excluded-comment-input').value = '';
         });
 
         // Restaurer la session si déjà connecté
@@ -1879,8 +1922,8 @@
                 document.getElementById('admin-login-btn').style.display = 'none';
                 // Charger les dates depuis le serveur (init() n'a peut-être pas encore fini)
                 const datesData = await loadDatesFromServer();
-                allManualCleaningDates = datesData.manual || [];
-                allExcludedCleaningDates = datesData.excluded || [];
+                allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
+                allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
                 renderAdminDates();
             }
         });
