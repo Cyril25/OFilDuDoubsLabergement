@@ -737,15 +737,21 @@
             background-color: #003580;
         }
 
-        .reservation-row .resa-comment {
+        /* Commentaire entre deux réservations (date exclue) */
+        .excluded-comment-row {
+            margin: 2px 0;
+            padding: 6px 15px;
+            background-color: #f9f0ff;
+            border-left: 5px solid #b37feb;
+            border-radius: 4px;
+            font-size: 13px;
             font-style: italic;
-            font-size: 12px;
-            color: #8c6d1f;
-            margin-left: auto;
+            color: #722ed1;
+            font-family: var(--font-body);
         }
 
-        .reservation-row .resa-comment i {
-            margin-right: 4px;
+        .excluded-comment-row i {
+            margin-right: 6px;
         }
     </style>
 </head>
@@ -1615,20 +1621,20 @@
                         resaText.textContent = `Réservation du ${resaStart.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au ${resaEnd.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                         resaDiv.appendChild(resaText);
 
+                        listElement.appendChild(resaDiv);
+
                         // Afficher le commentaire d'une date exclue entre cette résa et la suivante
                         const nextResa = resasBetween[resaIdx + 1];
                         if (nextResa) {
                             const resaEndDate = resa.end.split('T')[0];
                             const comment = getDateComment(allExcludedCleaningDates, resaEndDate);
                             if (comment) {
-                                const commentSpan = document.createElement('span');
-                                commentSpan.className = 'resa-comment';
-                                commentSpan.innerHTML = `<i class="fas fa-info-circle"></i> ${comment}`;
-                                resaDiv.appendChild(commentSpan);
+                                const commentDiv = document.createElement('div');
+                                commentDiv.className = 'excluded-comment-row';
+                                commentDiv.innerHTML = `<i class="fas fa-info-circle"></i> ${comment}`;
+                                listElement.appendChild(commentDiv);
                             }
                         }
-
-                        listElement.appendChild(resaDiv);
                     });
                 }
             });
