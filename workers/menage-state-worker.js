@@ -16,12 +16,19 @@
  *   PUT  /       → Sauvegarde l'état JSON (body = JSON)
  *   GET  /dates  → Retourne les dates manuelles/exclues (public)
  *   PUT  /dates  → Sauvegarde les dates (auth Firebase requise)
+ *   GET  /ical   → Retourne les flux iCal Airbnb + Booking fusionnés
  */
 
 const KV_KEY = 'menage_state';
 const KV_KEY_DATES = 'menage_dates';
 const FIREBASE_PROJECT_ID = 'asso-billet-site';
 const ADMIN_EMAIL = 'cyril.samson41@gmail.com';
+
+// Flux iCal à fusionner
+const ICAL_FEEDS = [
+    'https://www.airbnb.fr/calendar/ical/1160174173295911644.ics?t=afb5b1f0949f4c54a5f835b2f90b185a',
+    'https://ical.booking.com/v1/export?t=c119dfb3-9bf3-4f72-ba36-1ceb917c400c',
+];
 
 // Origines autorisées (à ajuster selon tes domaines)
 const ALLOWED_ORIGINS = [
@@ -128,6 +135,35 @@ export default {
                 }
             }
 
+            return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+        }
+
+        // ============ Route /ical (flux fusionnés) ============
+        if (path === '/ical') {
+            if (request.method === 'GET') {
+                try {
+                    const results = await Promise.all(
+                        ICAL_FEEDS.map(url => fetch(url).then(r => r.text()))
+                    );
+                    // Extraire tous les VEVENT de chaque flux
+                    const allEvents = results
+                        .flatMap(ics => ics.match(/BEGIN:VEVENT[\s\S]+?END:VEVENT/g) || []);
+                    // Reconstruire un iCal unique
+                    const merged = [
+                        'BEGIN:VCALENDAR',
+                        'VERSION:2.0',
+                        'PRODID:-//Menage Proxy//Merged//EN',
+                        'CALSCALE:GREGORIAN',
+                        ...allEvents,
+                        'END:VCALENDAR',
+                    ].join('\r\n');
+                    return new Response(merged, {
+                        headers: { ...corsHeaders, 'Content-Type': 'text/calendar; charset=utf-8' },
+                    });
+                } catch (e) {
+                    return jsonResponse({ error: 'Erreur fetch iCal: ' + e.message }, 502, corsHeaders);
+                }
+            }
             return new Response('Method not allowed', { status: 405, headers: corsHeaders });
         }
 

@@ -981,7 +981,7 @@
         async function init() {
             const [_, icalResponse, datesData] = await Promise.all([
                 loadStateFromServer(),
-                fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/'),
+                fetch('https://menage-state.cyril-samson41.workers.dev/ical'),
                 loadDatesFromServer()
             ]);
 
@@ -1743,7 +1743,7 @@
         async function refreshCalendar() {
             manualCleaningDates = allManualCleaningDates.filter(d => d >= todayISO);
             excludedCleaningDates = allExcludedCleaningDates.filter(d => d >= todayISO);
-            const icalResponse = await fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/');
+            const icalResponse = await fetch('https://menage-state.cyril-samson41.workers.dev/ical');
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
             currentCleaningSlots = calculateCleaningSlots(events);
