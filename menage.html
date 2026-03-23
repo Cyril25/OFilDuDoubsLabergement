@@ -1563,31 +1563,35 @@
                 }
                 listElement.appendChild(listItem);
 
-                // Admin : afficher la réservation qui suit ce créneau
+                // Admin : afficher les réservations entre ce créneau et le suivant
                 if (isAdmin && currentIcalEvents.length > 0) {
-                    const slotEndDate = slot.end.split('T')[0];
-                    // Trouver la réservation qui commence juste après ce créneau
-                    const nextResa = currentIcalEvents.find(ev => {
-                        const evStart = ev.start.split('T')[0];
-                        return evStart === slotEndDate;
+                    const slotEndDate = new Date(slot.end);
+                    const nextSlot = cleaningSlots[idx + 1];
+                    const nextSlotStart = nextSlot ? new Date(nextSlot.start) : new Date('2099-12-31');
+
+                    // Trouver toutes les réservations entre la fin de ce créneau et le début du suivant
+                    const resasBetween = currentIcalEvents.filter(ev => {
+                        const evStart = new Date(ev.start);
+                        return evStart >= slotEndDate && evStart < nextSlotStart;
                     });
-                    if (nextResa) {
+
+                    resasBetween.forEach(resa => {
                         const resaDiv = document.createElement('div');
                         resaDiv.className = 'reservation-row';
 
                         const badge = document.createElement('span');
-                        badge.className = 'resa-source ' + nextResa.source.toLowerCase();
-                        badge.textContent = nextResa.source;
+                        badge.className = 'resa-source ' + resa.source.toLowerCase();
+                        badge.textContent = resa.source;
                         resaDiv.appendChild(badge);
 
-                        const resaStart = new Date(nextResa.start);
-                        const resaEnd = new Date(nextResa.end);
+                        const resaStart = new Date(resa.start);
+                        const resaEnd = new Date(resa.end);
                         const resaText = document.createElement('span');
                         resaText.textContent = `Réservation du ${resaStart.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au ${resaEnd.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                         resaDiv.appendChild(resaText);
 
                         listElement.appendChild(resaDiv);
-                    }
+                    });
                 }
             });
 
