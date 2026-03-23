@@ -1138,11 +1138,11 @@
 
                         if (start > sixMonthsLater) return;
 
-                        // Bloc "Not available" d'1 jour = jour de turnover (checkout)
-                        // On l'exclut des événements et on l'utilise comme date de départ
+                        // Bloc "Not available" d'1 jour = dernier jour d'occupation
+                        // DTEND (exclusif) = jour du checkout → on l'utilise comme date de départ
                         const durationDays = (end - start) / (1000 * 60 * 60 * 24);
                         if (durationDays <= 1 && summary.includes('Not available')) {
-                            const checkoutISO = formatDate(startDate[1]) + 'T11:00:00';
+                            const checkoutISO = formatDate(endDate[1]) + 'T11:00:00';
                             if (!lastPastCheckout || checkoutISO > lastPastCheckout) {
                                 lastPastCheckout = checkoutISO;
                             }
