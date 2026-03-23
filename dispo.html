@@ -315,6 +315,28 @@
         </div>
     </footer>
 
+    <style>
+        /* Dates passées grisées */
+        .fc-day-past {
+            background-color: #f5f5f5 !important;
+            opacity: 0.5;
+        }
+        .fc-day-past .fc-daygrid-day-number {
+            color: #bbb !important;
+        }
+        /* Masquer les événements sur les jours passés */
+        .fc-day-past .fc-event {
+            display: none !important;
+        }
+        /* Jour d'aujourd'hui bien visible */
+        .fc-day-today {
+            background-color: #e6f7ff !important;
+        }
+        .fc-day-today .fc-daygrid-day-number {
+            color: #005f8d !important;
+            font-weight: bold !important;
+        }
+    </style>
     <script>
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -327,7 +349,13 @@
                 right: ''
             },
             eventColor: '#005f8d',
-            events: []
+            events: [],
+            dayCellClassNames: function(arg) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (arg.date < today) return ['fc-day-past'];
+                return [];
+            }
         });
         calendar.render();
 
@@ -345,26 +373,29 @@
             const events = [];
             const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
             const eventsRaw = icsData.match(eventPattern);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
             if (eventsRaw) {
                 eventsRaw.forEach(event => {
-                    const eventDetails = {};
                     const summaryPattern = /SUMMARY:(.*)/;
                     const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
                     const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
-                    const descriptionPattern = /DESCRIPTION:(.*)/;
 
                     const summary = event.match(summaryPattern);
                     const startDate = event.match(datePatternStart);
                     const endDate = event.match(datePatternEnd);
-                    const description = event.match(descriptionPattern);
 
                     if (summary && startDate && endDate) {
-                        eventDetails.title = 'Indisponible';
-                        eventDetails.start = formatDate(startDate[1]);
-                        eventDetails.end = formatDate(endDate[1]);
-                        eventDetails.description = description ? description[1] : 'Pas de description';
-                        events.push(eventDetails);
+                        const endDateObj = new Date(formatDate(endDate[1]));
+                        // Ne pas afficher les événements entièrement passés
+                        if (endDateObj < today) return;
+
+                        events.push({
+                            title: 'Indisponible',
+                            start: formatDate(startDate[1]),
+                            end: formatDate(endDate[1])
+                        });
                     }
                 });
             }
