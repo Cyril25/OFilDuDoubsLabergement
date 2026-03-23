@@ -331,7 +331,7 @@
         });
         calendar.render();
 
-        fetch('https://airbnb-ical-proxy.cyril-samson41.workers.dev/')
+        fetch('https://menage-state.cyril-samson41.workers.dev/ical')
             .then(response => response.text())
             .then(data => {
                 const events = parseICS(data);
