@@ -704,6 +704,38 @@
             font-size: 13px;
             padding: 5px 0;
         }
+
+        /* Ligne réservation admin (entre les créneaux ménage) */
+        .reservation-row {
+            margin: 4px 0;
+            padding: 8px 15px;
+            background-color: #fff7e6;
+            border-left: 5px solid #faad14;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #ad6800;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reservation-row .resa-source {
+            font-weight: bold;
+            background-color: #faad14;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .reservation-row .resa-source.airbnb {
+            background-color: #FF5A5F;
+        }
+
+        .reservation-row .resa-source.booking {
+            background-color: #003580;
+        }
     </style>
 </head>
 <body>
@@ -976,6 +1008,7 @@
 
         // Variable globale pour permettre le refresh du calendrier
         let currentCleaningSlots = [];
+        let currentIcalEvents = [];
 
         // Chargement parallèle : état distant + flux iCal + dates admin
         async function init() {
@@ -993,6 +1026,7 @@
 
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
+            currentIcalEvents = events;
             currentCleaningSlots = calculateCleaningSlots(events);
 
             // Enregistre les fingerprints actuels pour la détection de changements
@@ -1093,9 +1127,18 @@
                             return;
                         }
 
+                        // Détecter la source (Airbnb ou Booking)
+                        const uidMatch = event.match(/UID:(.*)/);
+                        const uid = uidMatch ? uidMatch[1].trim() : '';
+                        let source = 'Autre';
+                        if (uid.includes('@airbnb.com') || summary === 'Reserved') source = 'Airbnb';
+                        else if (uid.includes('@booking.com') || summary.includes('CLOSED')) source = 'Booking';
+
                         events.push({
                             start: formatDate(startDate[1]) + 'T17:00:00',
-                            end: formatDate(endDate[1]) + 'T11:00:00'
+                            end: formatDate(endDate[1]) + 'T11:00:00',
+                            source: source,
+                            summary: summary
                         });
                     }
                 });
@@ -1519,6 +1562,33 @@
                     listItem.appendChild(badge);
                 }
                 listElement.appendChild(listItem);
+
+                // Admin : afficher la réservation qui suit ce créneau
+                if (isAdmin && currentIcalEvents.length > 0) {
+                    const slotEndDate = slot.end.split('T')[0];
+                    // Trouver la réservation qui commence juste après ce créneau
+                    const nextResa = currentIcalEvents.find(ev => {
+                        const evStart = ev.start.split('T')[0];
+                        return evStart === slotEndDate;
+                    });
+                    if (nextResa) {
+                        const resaDiv = document.createElement('div');
+                        resaDiv.className = 'reservation-row';
+
+                        const badge = document.createElement('span');
+                        badge.className = 'resa-source ' + nextResa.source.toLowerCase();
+                        badge.textContent = nextResa.source;
+                        resaDiv.appendChild(badge);
+
+                        const resaStart = new Date(nextResa.start);
+                        const resaEnd = new Date(nextResa.end);
+                        const resaText = document.createElement('span');
+                        resaText.textContent = `Réservation du ${resaStart.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au ${resaEnd.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+                        resaDiv.appendChild(resaText);
+
+                        listElement.appendChild(resaDiv);
+                    }
+                }
             });
 
             // Mise à jour du résumé
@@ -1746,6 +1816,7 @@
             const icalResponse = await fetch('https://menage-state.cyril-samson41.workers.dev/ical');
             const icalData = await icalResponse.text();
             const events = parseICS(icalData);
+            currentIcalEvents = events;
             currentCleaningSlots = calculateCleaningSlots(events);
             await markCurrentSlots(currentCleaningSlots);
             updateCalendar(currentCleaningSlots);
