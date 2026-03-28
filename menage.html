@@ -1754,22 +1754,75 @@
                 // Paiement
                 const tdPay = document.createElement('td');
                 if (entry.paidAt) {
-                    tdPay.innerHTML = `<span class="status-done"><i class="fas fa-euro-sign"></i> ${new Date(entry.paidAt).toLocaleDateString('fr-FR')}</span>`;
-                } else if (entry.status === 'done') {
                     const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
                     if (isAdmin) {
-                        const btnPay = document.createElement('button');
-                        btnPay.className = 'btn-pay';
-                        btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Marquer payé';
-                        btnPay.addEventListener('click', async () => {
-                            const state = getState();
-                            if (state[key]) {
-                                state[key].paidAt = new Date().toISOString();
-                                await saveStateToServer(state);
+                        const payActions = document.createElement('div');
+                        payActions.className = 'payment-actions';
+
+                        const dateInput = document.createElement('input');
+                        dateInput.type = 'date';
+                        dateInput.value = new Date(entry.paidAt).toISOString().split('T')[0];
+                        payActions.appendChild(dateInput);
+
+                        const btnEdit = document.createElement('button');
+                        btnEdit.className = 'btn-pay';
+                        btnEdit.innerHTML = '<i class="fas fa-edit"></i> Modifier';
+                        btnEdit.addEventListener('click', async () => {
+                            btnEdit.disabled = true;
+                            btnEdit.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            const st = getState();
+                            if (st[key]) {
+                                st[key].paidAt = new Date(dateInput.value + 'T12:00:00').toISOString();
+                                await saveStateToServer(st);
                                 updatePastSlotsList();
                             }
                         });
-                        tdPay.appendChild(btnPay);
+                        payActions.appendChild(btnEdit);
+
+                        const btnUnpay = document.createElement('button');
+                        btnUnpay.className = 'btn-unpay';
+                        btnUnpay.innerHTML = '<i class="fas fa-times"></i> Annuler';
+                        btnUnpay.addEventListener('click', async () => {
+                            btnUnpay.disabled = true;
+                            btnUnpay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            const st = getState();
+                            if (st[key]) {
+                                delete st[key].paidAt;
+                                await saveStateToServer(st);
+                                updatePastSlotsList();
+                            }
+                        });
+                        payActions.appendChild(btnUnpay);
+                        tdPay.appendChild(payActions);
+                    } else {
+                        tdPay.innerHTML = `<span class="status-done"><i class="fas fa-euro-sign"></i> Payé le ${new Date(entry.paidAt).toLocaleDateString('fr-FR')}</span>`;
+                    }
+                } else if (entry.status === 'done') {
+                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                    if (isAdmin) {
+                        const payActions = document.createElement('div');
+                        payActions.className = 'payment-actions';
+
+                        const dateInput = document.createElement('input');
+                        dateInput.type = 'date';
+                        dateInput.value = new Date().toISOString().split('T')[0];
+                        payActions.appendChild(dateInput);
+
+                        const btnPay = document.createElement('button');
+                        btnPay.className = 'btn-pay';
+                        btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
+                        btnPay.addEventListener('click', async () => {
+                            btnPay.disabled = true;
+                            btnPay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            const st = getState();
+                            if (st[key]) {
+                                st[key].paidAt = new Date(dateInput.value + 'T12:00:00').toISOString();
+                                await saveStateToServer(st);
+                                updatePastSlotsList();
+                            }
+                        });
+                        payActions.appendChild(btnPay);
+                        tdPay.appendChild(payActions);
                     } else {
                         tdPay.innerHTML = '<span class="status-missed"><i class="fas fa-hourglass-half"></i> En attente</span>';
                     }
