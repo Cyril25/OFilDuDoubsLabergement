@@ -255,6 +255,17 @@
             flex-wrap: wrap;
         }
 
+        .btn-pay {
+            background-color: #52c41a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-pay:hover { background-color: #389e0d; }
+
         .payment-actions input[type="date"] {
             padding: 3px 6px;
             border: 1px solid #d9d9d9;
@@ -785,13 +796,11 @@
         <ul id="cleaning-slots"></ul>
     </div>
 
-    <div id="calendar"></div>
-
     <div id="past-slots-section">
-        <h2 id="past-slots-toggle" class="collapsed">
+        <h2 id="past-slots-toggle">
             Créneaux passés <i class="fas fa-chevron-down"></i>
         </h2>
-        <div id="past-slots-content" style="display: none;">
+        <div id="past-slots-content">
             <table id="past-slots-table">
                 <thead>
                     <tr>
@@ -807,6 +816,8 @@
             </table>
         </div>
     </div>
+
+    <div id="calendar"></div>
 
     <!-- Bouton admin discret -->
     <div style="text-align:center; margin: 40px 0 10px;">
@@ -1745,7 +1756,23 @@
                 if (entry.paidAt) {
                     tdPay.innerHTML = `<span class="status-done"><i class="fas fa-euro-sign"></i> ${new Date(entry.paidAt).toLocaleDateString('fr-FR')}</span>`;
                 } else if (entry.status === 'done') {
-                    tdPay.innerHTML = '<span class="status-missed"><i class="fas fa-hourglass-half"></i> En attente</span>';
+                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                    if (isAdmin) {
+                        const btnPay = document.createElement('button');
+                        btnPay.className = 'btn-pay';
+                        btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Marquer payé';
+                        btnPay.addEventListener('click', async () => {
+                            const state = getState();
+                            if (state[key]) {
+                                state[key].paidAt = new Date().toISOString();
+                                await saveStateToServer(state);
+                                updatePastSlotsList();
+                            }
+                        });
+                        tdPay.appendChild(btnPay);
+                    } else {
+                        tdPay.innerHTML = '<span class="status-missed"><i class="fas fa-hourglass-half"></i> En attente</span>';
+                    }
                 } else {
                     tdPay.textContent = '-';
                 }
