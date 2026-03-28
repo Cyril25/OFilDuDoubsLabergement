@@ -1097,9 +1097,9 @@
                 if (!key.startsWith('slot_')) continue;
                 if (currentFingerprints.has(key)) continue;
 
-                // Garder les slots "done" dont la date de fin est passée (historique)
+                // Garder tous les slots dont la date de fin est passée (historique, done ou non)
                 const slotData = state[key];
-                if (slotData.status === 'done' && slotData.endDate && slotData.endDate < todayISO) continue;
+                if (slotData.endDate && slotData.endDate < todayISO) continue;
 
                 delete state[key];
                 changed = true;
