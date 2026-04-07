@@ -1729,9 +1729,12 @@
                 tdPers.innerHTML = `${entryLang.flag} ${info.nbPersons || '-'}`;
                 tr.appendChild(tdPers);
 
+                const isAdminUser = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                const isDoneEntry = entry.status === 'done';
+
                 // Statut
                 const tdStatus = document.createElement('td');
-                if (entry.status === 'done') {
+                if (isDoneEntry) {
                     tdStatus.innerHTML = '<span class="status-done"><i class="fas fa-check-circle"></i> Fait</span>';
                 } else {
                     tdStatus.innerHTML = '<span class="status-missed"><i class="fas fa-times-circle"></i> Non renseigné</span>';
@@ -1740,16 +1743,56 @@
 
                 // Fait par
                 const tdBy = document.createElement('td');
-                tdBy.textContent = entry.doneBy || '-';
-                tr.appendChild(tdBy);
-
                 // Date validation
                 const tdDate = document.createElement('td');
-                if (entry.status === 'done' && entry.updatedAt) {
-                    tdDate.textContent = new Date(entry.updatedAt).toLocaleDateString('fr-FR');
+
+                if (isAdminUser && !isDoneEntry) {
+                    // Formulaire pour renseigner a posteriori
+                    const selectBy = document.createElement('select');
+                    selectBy.className = 'select-cleaner';
+                    selectBy.innerHTML = '<option value="">Qui ?</option>' +
+                        CLEANERS.map(c => `<option value="${c}">${c}</option>`).join('');
+                    selectBy.value = 'Fanny & Lolita';
+                    tdBy.appendChild(selectBy);
+
+                    const dateValidate = document.createElement('input');
+                    dateValidate.type = 'date';
+                    // Par défaut : date de fin du créneau (jour du ménage)
+                    dateValidate.value = entry.endDate;
+
+                    const btnValidate = document.createElement('button');
+                    btnValidate.className = 'btn-status todo';
+                    btnValidate.innerHTML = '<i class="fas fa-broom"></i> Valider';
+                    btnValidate.addEventListener('click', async () => {
+                        btnValidate.disabled = true;
+                        btnValidate.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        const st = getState();
+                        if (st[key]) {
+                            st[key].status = 'done';
+                            st[key].doneBy = selectBy.value || '';
+                            st[key].updatedAt = new Date(dateValidate.value + 'T12:00:00').toISOString();
+                            await saveStateToServer(st);
+                            updatePastSlotsList();
+                            updateCleaningSlotsList(currentCleaningSlots);
+                            updateCalendar(currentCleaningSlots);
+                        }
+                    });
+
+                    const dateWrap = document.createElement('div');
+                    dateWrap.className = 'payment-actions';
+                    dateWrap.appendChild(dateValidate);
+                    dateWrap.appendChild(btnValidate);
+                    tdDate.appendChild(dateWrap);
                 } else {
-                    tdDate.textContent = '-';
+                    tdBy.textContent = entry.doneBy || '-';
+                    if (isDoneEntry && entry.updatedAt) {
+                        tdDate.textContent = new Date(entry.updatedAt).toLocaleDateString('fr-FR');
+                    } else {
+                        tdDate.textContent = '-';
+                    }
                 }
+
+                tr.appendChild(tdBy);
                 tr.appendChild(tdDate);
 
                 // Paiement
