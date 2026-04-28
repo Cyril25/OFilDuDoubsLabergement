@@ -2264,7 +2264,14 @@
                 console.warn('Erreur chargement messages:', resp.status);
                 return [];
             }
-            return await resp.json();
+            const data = await resp.json();
+            // Garde-fou : si le worker n'a pas encore la route /messages déployée,
+            // le fallback GET / renvoie l'état des ménages (objet, pas tableau).
+            if (!Array.isArray(data)) {
+                console.warn('Réponse /messages inattendue (worker pas à jour ?), reçu :', typeof data);
+                return [];
+            }
+            return data;
         }
 
         async function saveMessagesToServer(messages) {
