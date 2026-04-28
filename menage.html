@@ -2065,6 +2065,12 @@
                 allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
                 allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
                 renderAdminDates();
+                // Re-rendre les listes : init() a pu finir avant que l'auth soit résolu,
+                // donc les lignes de résa et les boutons admin n'ont pas été affichés.
+                if (currentCleaningSlots && currentCleaningSlots.length) {
+                    updateCleaningSlotsList(currentCleaningSlots);
+                }
+                updatePastSlotsList();
             }
         });
     </script>
