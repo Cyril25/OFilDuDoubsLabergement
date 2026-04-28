@@ -714,6 +714,24 @@
         }
 
         /* ===== Messages types ===== */
+        #messages-section {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        #messages-section h2 {
+            margin: 0;
+            color: var(--primary-color);
+            font-family: var(--font-title);
+            font-size: 22px;
+        }
+        #messages-content {
+            margin-top: 12px;
+        }
         .messages-header {
             cursor: pointer;
             user-select: none;
@@ -920,6 +938,19 @@
         <h1 style="font-family: var(--font-title); color: var(--primary-color);">Planning Ménage</h1>
     </header>
 
+    <!-- Accordéon : messages types (visible admins seulement) -->
+    <div id="messages-section" style="display:none;">
+        <h2 id="messages-toggle" class="messages-header collapsed">
+            Messages types <i class="fas fa-chevron-down"></i>
+        </h2>
+        <div id="messages-content" style="display:none;">
+            <ul id="messages-list" class="messages-list"></ul>
+            <button id="add-message-btn" class="btn-admin-add" style="margin-top:10px;">
+                <i class="fas fa-plus"></i> Ajouter un message
+            </button>
+        </div>
+    </div>
+
     <div id="cleaning-slots-list">
         <h2>Prochains Créneaux</h2>
         <div id="legend">
@@ -996,30 +1027,17 @@
             <button id="add-excluded-date" class="btn-admin-add">Ajouter</button>
         </div>
         <ul id="excluded-dates-list" class="admin-date-list"></ul>
+    </div>
 
-        <!-- Accordéon : messages types -->
-        <div id="messages-section" style="margin-top:20px;">
-            <h3 id="messages-toggle" class="messages-header collapsed">
-                Messages types <i class="fas fa-chevron-down"></i>
-            </h3>
-            <div id="messages-content" style="display:none;">
-                <ul id="messages-list" class="messages-list"></ul>
-                <button id="add-message-btn" class="btn-admin-add" style="margin-top:10px;">
-                    <i class="fas fa-plus"></i> Ajouter un message
-                </button>
-            </div>
-        </div>
-
-        <!-- Modale formulaire message -->
-        <div id="message-modal" class="message-modal" style="display:none;">
-            <div class="message-modal-content">
-                <h3 id="message-modal-title">Nouveau message</h3>
-                <input type="text" id="message-form-title" placeholder="Titre (ex : Arrivée autonome)">
-                <textarea id="message-form-body" placeholder="Corps du message..." rows="10"></textarea>
-                <div class="message-modal-actions">
-                    <button id="message-form-cancel" class="btn-admin-logout">Annuler</button>
-                    <button id="message-form-save" class="btn-admin-add">Enregistrer</button>
-                </div>
+    <!-- Modale formulaire message (au niveau body pour rester au-dessus) -->
+    <div id="message-modal" class="message-modal" style="display:none;">
+        <div class="message-modal-content">
+            <h3 id="message-modal-title">Nouveau message</h3>
+            <input type="text" id="message-form-title" placeholder="Titre (ex : Arrivée autonome)">
+            <textarea id="message-form-body" placeholder="Corps du message..." rows="10"></textarea>
+            <div class="message-modal-actions">
+                <button id="message-form-cancel" class="btn-admin-logout">Annuler</button>
+                <button id="message-form-save" class="btn-admin-add">Enregistrer</button>
             </div>
         </div>
     </div>
