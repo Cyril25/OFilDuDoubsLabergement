@@ -713,6 +713,150 @@
             color: #fff;
         }
 
+        /* ===== Messages types ===== */
+        .messages-header {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .messages-header i {
+            transition: transform 0.2s;
+            font-size: 13px;
+            color: #888;
+        }
+        .messages-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+        .messages-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .message-item {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin: 6px 0;
+            overflow: hidden;
+        }
+        .message-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+        .message-item-header i.chevron {
+            transition: transform 0.2s;
+            font-size: 12px;
+            color: #888;
+            margin-right: 6px;
+        }
+        .message-item-header.collapsed i.chevron {
+            transform: rotate(-90deg);
+        }
+        .message-item-title-wrap {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        .message-item-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .message-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        .message-item-actions button:hover { background: #eee; }
+        .message-item-actions .btn-copy { color: #1890ff; }
+        .message-item-actions .btn-edit { color: #555; }
+        .message-item-actions .btn-delete { color: #ff4d4f; }
+        .message-item-body {
+            padding: 0 12px 12px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            white-space: pre-wrap;
+            color: #333;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            background: #fff;
+        }
+        .messages-empty {
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+        .message-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .message-modal-content {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .message-modal-content h3 {
+            margin: 0 0 12px;
+            font-family: var(--font-body);
+        }
+        .message-modal-content input,
+        .message-modal-content textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .message-modal-content textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        .message-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .copy-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        .copy-toast.show { opacity: 1; }
+
         .admin-empty {
             color: #999;
             font-style: italic;
@@ -852,6 +996,32 @@
             <button id="add-excluded-date" class="btn-admin-add">Ajouter</button>
         </div>
         <ul id="excluded-dates-list" class="admin-date-list"></ul>
+
+        <!-- Accordéon : messages types -->
+        <div id="messages-section" style="margin-top:20px;">
+            <h3 id="messages-toggle" class="messages-header collapsed">
+                Messages types <i class="fas fa-chevron-down"></i>
+            </h3>
+            <div id="messages-content" style="display:none;">
+                <ul id="messages-list" class="messages-list"></ul>
+                <button id="add-message-btn" class="btn-admin-add" style="margin-top:10px;">
+                    <i class="fas fa-plus"></i> Ajouter un message
+                </button>
+            </div>
+        </div>
+
+        <!-- Modale formulaire message -->
+        <div id="message-modal" class="message-modal" style="display:none;">
+            <div class="message-modal-content">
+                <h3 id="message-modal-title">Nouveau message</h3>
+                <input type="text" id="message-form-title" placeholder="Titre (ex : Arrivée autonome)">
+                <textarea id="message-form-body" placeholder="Corps du message..." rows="10"></textarea>
+                <div class="message-modal-actions">
+                    <button id="message-form-cancel" class="btn-admin-logout">Annuler</button>
+                    <button id="message-form-save" class="btn-admin-add">Enregistrer</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -862,6 +1032,7 @@
         // URL du Worker Cloudflare pour l'état partagé.
         const STATE_API_URL = 'https://menage-state.cyril-samson41.workers.dev/';
         const DATES_API_URL = STATE_API_URL + 'dates';
+        const MESSAGES_API_URL = STATE_API_URL + 'messages';
 
         // Firebase Auth
         firebase.initializeApp({
@@ -1406,7 +1577,7 @@
 
                 // Info créneau (nb personnes + commentaire)
                 const slotInfoData = getSlotInfo(slot);
-                const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                const adminMode = isAdmin(auth.currentUser);
 
                 const langData = LANG_OPTIONS.find(l => l.code === (slotInfoData.lang || 'fr')) || LANG_OPTIONS[0];
                 if (slotInfoData.nbPersons || slotInfoData.comment || slotInfoData.lang) {
@@ -1432,7 +1603,7 @@
                     listItem.appendChild(infoDiv);
                 }
 
-                if (isAdmin) {
+                if (adminMode) {
                     const infoAdmin = document.createElement('div');
                     infoAdmin.className = 'slot-info-admin';
 
@@ -1479,7 +1650,7 @@
                     const state = getState();
                     const slotState = state[fp] || {};
                     const paidAt = slotState.paidAt || null;
-                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                    const adminMode = isAdmin(auth.currentUser);
 
                     const wrapper = document.createElement('div');
                     wrapper.className = 'slot-done-wrapper';
@@ -1522,7 +1693,7 @@
                     }
                     row2.appendChild(paymentInfo);
 
-                    if (isAdmin) {
+                    if (adminMode) {
                         const payActions = document.createElement('div');
                         payActions.className = 'payment-actions';
 
@@ -1617,7 +1788,7 @@
                 listElement.appendChild(listItem);
 
                 // Admin : afficher les réservations entre ce créneau et le suivant
-                if (isAdmin && currentIcalEvents.length > 0) {
+                if (adminMode && currentIcalEvents.length > 0) {
                     const slotEndDate = new Date(slot.end);
                     const nextSlot = cleaningSlots[idx + 1];
                     const nextSlotStart = nextSlot ? new Date(nextSlot.start) : new Date('2099-12-31');
@@ -1733,7 +1904,7 @@
                 tdPers.innerHTML = `${entryLang.flag} ${info.nbPersons || '-'}`;
                 tr.appendChild(tdPers);
 
-                const isAdminUser = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                const isAdminUser = isAdmin(auth.currentUser);
                 const isDoneEntry = entry.status === 'done';
 
                 // Statut
@@ -1802,8 +1973,8 @@
                 // Paiement
                 const tdPay = document.createElement('td');
                 if (entry.paidAt) {
-                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
-                    if (isAdmin) {
+                    const adminMode = isAdmin(auth.currentUser);
+                    if (adminMode) {
                         const payActions = document.createElement('div');
                         payActions.className = 'payment-actions';
 
@@ -1846,8 +2017,8 @@
                         tdPay.innerHTML = `<span class="status-done"><i class="fas fa-euro-sign"></i> Payé le ${new Date(entry.paidAt).toLocaleDateString('fr-FR')}</span>`;
                     }
                 } else if (entry.status === 'done') {
-                    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
-                    if (isAdmin) {
+                    const adminMode = isAdmin(auth.currentUser);
+                    if (adminMode) {
                         const payActions = document.createElement('div');
                         payActions.className = 'payment-actions';
 
@@ -1914,7 +2085,10 @@
         // =============================================
         // ADMIN : gestion des dates manuelles/exclues
         // =============================================
-        const ADMIN_EMAIL = 'cyril.samson41@gmail.com';
+        const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
+        function isAdmin(user) {
+            return !!(user && ADMIN_EMAILS.includes(user.email));
+        }
 
         function formatDateFR(isoDate) {
             return new Date(isoDate + 'T12:00:00').toLocaleDateString('fr-FR', {
@@ -2012,19 +2186,20 @@
         // Bouton admin : connexion Google
         document.getElementById('admin-login-btn').addEventListener('click', async () => {
             const user = auth.currentUser;
-            if (user && user.email === ADMIN_EMAIL) {
+            if (isAdmin(user)) {
                 // Déjà connecté — recharger les dates pour être à jour
                 document.getElementById('admin-panel').style.display = 'block';
                 const datesData = await loadDatesFromServer();
                 allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
                 allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
                 renderAdminDates();
+                await loadAndRenderMessages();
                 return;
             }
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const result = await auth.signInWithPopup(provider);
-                if (result.user.email !== ADMIN_EMAIL) {
+                if (!isAdmin(result.user)) {
                     await auth.signOut();
                     alert('Accès non autorisé.');
                     return;
@@ -2055,9 +2230,228 @@
             document.getElementById('excluded-comment-input').value = '';
         });
 
+        // =============================================
+        // MESSAGES TYPES (admin uniquement)
+        // =============================================
+        let messagesCache = [];
+
+        async function loadMessagesFromServer() {
+            const user = auth.currentUser;
+            if (!user) return [];
+            const token = await user.getIdToken();
+            const resp = await fetch(MESSAGES_API_URL, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!resp.ok) {
+                console.warn('Erreur chargement messages:', resp.status);
+                return [];
+            }
+            return await resp.json();
+        }
+
+        async function saveMessagesToServer(messages) {
+            const user = auth.currentUser;
+            if (!user) throw new Error('Non connecté');
+            const token = await user.getIdToken();
+            const resp = await fetch(MESSAGES_API_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(messages)
+            });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.error || 'Erreur serveur');
+            }
+        }
+
+        async function loadAndRenderMessages() {
+            document.getElementById('messages-section').style.display = '';
+            messagesCache = await loadMessagesFromServer();
+            renderMessages();
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('messages-list');
+            list.innerHTML = '';
+            if (!messagesCache.length) {
+                list.innerHTML = '<li class="messages-empty">Aucun message pour le moment.</li>';
+                return;
+            }
+            messagesCache.forEach((msg, idx) => {
+                const li = document.createElement('li');
+                li.className = 'message-item';
+
+                const header = document.createElement('div');
+                header.className = 'message-item-header collapsed';
+
+                const titleWrap = document.createElement('div');
+                titleWrap.className = 'message-item-title-wrap';
+                titleWrap.innerHTML = `<i class="fas fa-chevron-down chevron"></i><span>${escapeHtml(msg.title || '(sans titre)')}</span>`;
+                header.appendChild(titleWrap);
+
+                const actions = document.createElement('div');
+                actions.className = 'message-item-actions';
+
+                const btnCopy = document.createElement('button');
+                btnCopy.className = 'btn-copy';
+                btnCopy.title = 'Copier';
+                btnCopy.innerHTML = '<i class="fas fa-copy"></i>';
+                btnCopy.addEventListener('click', e => {
+                    e.stopPropagation();
+                    copyToClipboard(msg.body || '');
+                });
+                actions.appendChild(btnCopy);
+
+                const btnEdit = document.createElement('button');
+                btnEdit.className = 'btn-edit';
+                btnEdit.title = 'Modifier';
+                btnEdit.innerHTML = '<i class="fas fa-edit"></i>';
+                btnEdit.addEventListener('click', e => {
+                    e.stopPropagation();
+                    openMessageEditor(idx);
+                });
+                actions.appendChild(btnEdit);
+
+                const btnDelete = document.createElement('button');
+                btnDelete.className = 'btn-delete';
+                btnDelete.title = 'Supprimer';
+                btnDelete.innerHTML = '<i class="fas fa-trash"></i>';
+                btnDelete.addEventListener('click', async e => {
+                    e.stopPropagation();
+                    if (!confirm(`Supprimer "${msg.title}" ?`)) return;
+                    messagesCache.splice(idx, 1);
+                    try {
+                        await saveMessagesToServer(messagesCache);
+                        renderMessages();
+                    } catch (err) {
+                        alert('Erreur : ' + err.message);
+                        messagesCache = await loadMessagesFromServer();
+                        renderMessages();
+                    }
+                });
+                actions.appendChild(btnDelete);
+
+                header.appendChild(actions);
+
+                const body = document.createElement('div');
+                body.className = 'message-item-body';
+                body.style.display = 'none';
+                body.textContent = msg.body || '';
+
+                header.addEventListener('click', () => {
+                    const isCollapsed = header.classList.contains('collapsed');
+                    header.classList.toggle('collapsed', !isCollapsed);
+                    body.style.display = isCollapsed ? 'block' : 'none';
+                });
+
+                li.appendChild(header);
+                li.appendChild(body);
+                list.appendChild(li);
+            });
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copié dans le presse-papier');
+            }).catch(() => {
+                // Fallback : textarea temporaire
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Copié');
+            });
+        }
+
+        let toastTimeout = null;
+        function showToast(text) {
+            let toast = document.getElementById('copy-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copy-toast';
+                toast.className = 'copy-toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = text;
+            toast.classList.add('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 1500);
+        }
+
+        // Modale édition
+        let editingIndex = null; // null = nouveau, number = index existant
+        function openMessageEditor(idx) {
+            editingIndex = (typeof idx === 'number') ? idx : null;
+            const modal = document.getElementById('message-modal');
+            const titleInput = document.getElementById('message-form-title');
+            const bodyInput = document.getElementById('message-form-body');
+            const modalTitle = document.getElementById('message-modal-title');
+            if (editingIndex !== null) {
+                modalTitle.textContent = 'Modifier le message';
+                titleInput.value = messagesCache[editingIndex].title || '';
+                bodyInput.value = messagesCache[editingIndex].body || '';
+            } else {
+                modalTitle.textContent = 'Nouveau message';
+                titleInput.value = '';
+                bodyInput.value = '';
+            }
+            modal.style.display = 'flex';
+            titleInput.focus();
+        }
+
+        function closeMessageEditor() {
+            document.getElementById('message-modal').style.display = 'none';
+            editingIndex = null;
+        }
+
+        // Toggle accordéon principal
+        document.getElementById('messages-toggle').addEventListener('click', function() {
+            const content = document.getElementById('messages-content');
+            const isCollapsed = this.classList.contains('collapsed');
+            this.classList.toggle('collapsed', !isCollapsed);
+            content.style.display = isCollapsed ? 'block' : 'none';
+        });
+
+        document.getElementById('add-message-btn').addEventListener('click', () => openMessageEditor(null));
+        document.getElementById('message-form-cancel').addEventListener('click', closeMessageEditor);
+        document.getElementById('message-form-save').addEventListener('click', async () => {
+            const title = document.getElementById('message-form-title').value.trim();
+            const body = document.getElementById('message-form-body').value;
+            if (!title) {
+                alert('Le titre est obligatoire.');
+                return;
+            }
+            const entry = { title, body };
+            if (editingIndex !== null) {
+                messagesCache[editingIndex] = entry;
+            } else {
+                messagesCache.push(entry);
+            }
+            try {
+                await saveMessagesToServer(messagesCache);
+                closeMessageEditor();
+                renderMessages();
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+                messagesCache = await loadMessagesFromServer();
+                renderMessages();
+            }
+        });
+
         // Restaurer la session si déjà connecté
         auth.onAuthStateChanged(async user => {
-            if (user && user.email === ADMIN_EMAIL) {
+            if (isAdmin(user)) {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('admin-login-btn').style.display = 'none';
                 // Charger les dates depuis le serveur (init() n'a peut-être pas encore fini)
@@ -2065,12 +2459,15 @@
                 allManualCleaningDates = normalizeDatesArray(datesData.manual || []);
                 allExcludedCleaningDates = normalizeDatesArray(datesData.excluded || []);
                 renderAdminDates();
+                await loadAndRenderMessages();
                 // Re-rendre les listes : init() a pu finir avant que l'auth soit résolu,
                 // donc les lignes de résa et les boutons admin n'ont pas été affichés.
                 if (currentCleaningSlots && currentCleaningSlots.length) {
                     updateCleaningSlotsList(currentCleaningSlots);
                 }
                 updatePastSlotsList();
+            } else {
+                document.getElementById('messages-section').style.display = 'none';
             }
         });
     </script>

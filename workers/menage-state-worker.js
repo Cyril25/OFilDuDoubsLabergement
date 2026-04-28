@@ -21,8 +21,9 @@
 
 const KV_KEY = 'menage_state';
 const KV_KEY_DATES = 'menage_dates';
+const KV_KEY_MESSAGES = 'menage_messages';
 const FIREBASE_PROJECT_ID = 'asso-billet-site';
-const ADMIN_EMAIL = 'cyril.samson41@gmail.com';
+const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
 
 // Flux iCal à fusionner
 const ICAL_FEEDS = [
@@ -83,7 +84,7 @@ async function verifyFirebaseToken(idToken) {
     if (payload.exp < now) throw new Error('Token expiré');
     if (payload.iss !== `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`) throw new Error('Issuer invalide');
     if (payload.aud !== FIREBASE_PROJECT_ID) throw new Error('Audience invalide');
-    if (payload.email !== ADMIN_EMAIL) throw new Error('Email non autorisé');
+    if (!ADMIN_EMAILS.includes(payload.email)) throw new Error('Email non autorisé');
 
     return payload;
 }
@@ -132,6 +133,44 @@ export default {
                 } catch (e) {
                     const status = e.message.includes('non autorisé') ? 403 : 401;
                     return jsonResponse({ error: e.message }, status, corsHeaders);
+                }
+            }
+
+            return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+        }
+
+        // ============ Route /messages (modèles de messages) ============
+        if (path === '/messages') {
+            // Lecture et écriture protégées par Firebase Auth
+            try {
+                const authHeader = request.headers.get('Authorization') || '';
+                if (!authHeader.startsWith('Bearer ')) {
+                    return jsonResponse({ error: 'Token manquant' }, 401, corsHeaders);
+                }
+                await verifyFirebaseToken(authHeader.slice(7));
+            } catch (e) {
+                const status = e.message.includes('non autorisé') ? 403 : 401;
+                return jsonResponse({ error: e.message }, status, corsHeaders);
+            }
+
+            if (request.method === 'GET') {
+                const messages = await env.MENAGE_KV.get(KV_KEY_MESSAGES);
+                return new Response(messages || '[]', {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                });
+            }
+
+            if (request.method === 'PUT') {
+                try {
+                    const body = await request.text();
+                    const parsed = JSON.parse(body);
+                    if (!Array.isArray(parsed)) {
+                        return jsonResponse({ error: 'Tableau attendu' }, 400, corsHeaders);
+                    }
+                    await env.MENAGE_KV.put(KV_KEY_MESSAGES, body);
+                    return jsonResponse({ ok: true }, 200, corsHeaders);
+                } catch (e) {
+                    return jsonResponse({ error: 'JSON invalide' }, 400, corsHeaders);
                 }
             }
 
