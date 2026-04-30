@@ -2327,7 +2327,7 @@
                 btnCopy.innerHTML = '<i class="fas fa-copy"></i>';
                 btnCopy.addEventListener('click', e => {
                     e.stopPropagation();
-                    copyToClipboard(msg.body || '');
+                    copyToClipboard(applyTimeTags(msg.body || ''));
                 });
                 actions.appendChild(btnCopy);
 
@@ -2383,6 +2383,15 @@
             return String(s).replace(/[&<>"']/g, c => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[c]));
+        }
+
+        // Remplace les tags {avant18h/après18h} selon l'heure courante.
+        // Ex : {Bonjour/Bonsoir} → "Bonjour" avant 18h, "Bonsoir" à partir de 18h00.
+        function applyTimeTags(text) {
+            const isEvening = new Date().getHours() >= 18;
+            return text.replace(/\{([^{}/]*)\/([^{}]*)\}/g, (_, day, evening) =>
+                isEvening ? evening : day
+            );
         }
 
         function copyToClipboard(text) {
