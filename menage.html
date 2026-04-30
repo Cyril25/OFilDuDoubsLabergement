@@ -801,6 +801,9 @@
         .message-item-actions .btn-copy { color: #1890ff; }
         .message-item-actions .btn-edit { color: #555; }
         .message-item-actions .btn-delete { color: #ff4d4f; }
+        .message-item-actions .btn-move { color: #888; }
+        .message-item-actions button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .message-item-actions button:disabled:hover { background: none; }
         .message-item-body {
             padding: 0 12px 12px;
             font-family: var(--font-body);
@@ -2321,6 +2324,28 @@
                 const actions = document.createElement('div');
                 actions.className = 'message-item-actions';
 
+                const btnUp = document.createElement('button');
+                btnUp.className = 'btn-move';
+                btnUp.title = 'Monter';
+                btnUp.innerHTML = '<i class="fas fa-arrow-up"></i>';
+                btnUp.disabled = idx === 0;
+                btnUp.addEventListener('click', e => {
+                    e.stopPropagation();
+                    moveMessage(idx, idx - 1);
+                });
+                actions.appendChild(btnUp);
+
+                const btnDown = document.createElement('button');
+                btnDown.className = 'btn-move';
+                btnDown.title = 'Descendre';
+                btnDown.innerHTML = '<i class="fas fa-arrow-down"></i>';
+                btnDown.disabled = idx === messagesCache.length - 1;
+                btnDown.addEventListener('click', e => {
+                    e.stopPropagation();
+                    moveMessage(idx, idx + 1);
+                });
+                actions.appendChild(btnDown);
+
                 const btnCopy = document.createElement('button');
                 btnCopy.className = 'btn-copy';
                 btnCopy.title = 'Copier';
@@ -2383,6 +2408,20 @@
             return String(s).replace(/[&<>"']/g, c => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[c]));
+        }
+
+        async function moveMessage(from, to) {
+            if (to < 0 || to >= messagesCache.length || from === to) return;
+            const [item] = messagesCache.splice(from, 1);
+            messagesCache.splice(to, 0, item);
+            renderMessages();
+            try {
+                await saveMessagesToServer(messagesCache);
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+                messagesCache = await loadMessagesFromServer();
+                renderMessages();
+            }
         }
 
         // Remplace les tags {avant18h/après18h} selon l'heure courante.
