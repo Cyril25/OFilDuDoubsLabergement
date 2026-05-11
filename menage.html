@@ -252,6 +252,40 @@
             padding-top: 8px;
         }
 
+        /* Bloc paiement = 2 lignes (readonly + édition) */
+        .payment-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .payment-readonly {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .payment-edit-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .payment-edit-row .pay-comment {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .payment-buttons {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
         .payment-actions {
             display: flex;
             align-items: center;
@@ -623,6 +657,24 @@
             }
 
             .payment-actions button {
+                flex: 1;
+                text-align: center;
+            }
+
+            .payment-edit-row {
+                width: 100%;
+            }
+
+            .payment-edit-row input[type="date"] {
+                flex: 1;
+            }
+
+            .payment-buttons {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .payment-buttons button {
                 flex: 1;
                 text-align: center;
             }
@@ -1553,10 +1605,12 @@
         // =============================================
         // RENDU DU BLOC PAIEMENT (factorisé)
         // =============================================
-        // Génère la "ligne paiement" complète d'un créneau marqué "done".
+        // Génère le bloc paiement complet d'un créneau marqué "done".
+        // Layout : 2 lignes claires
+        //   Ligne 1 (toujours) : statut readonly (Payé le X · 50€ · commentaire)
+        //   Ligne 2 (admin)    : date | montant | commentaire | bouton(s)
         // - key  : clé KV du slot (ex: "slot_<fingerprint>")
-        // - opts.onRefresh : callbacks de refresh à exécuter après une action
-        // Retourne un <div class="slot-done-row payment-row"> prêt à être inséré.
+        // - opts.onRefresh : callback de refresh à exécuter après une action
         function renderPaymentBlock(key, opts) {
             const onRefresh = (opts && opts.onRefresh) || function() {};
             const state = getState();
@@ -1566,15 +1620,15 @@
             const paidComment = entry.paidComment || '';
             const adminMode = isAdmin(auth.currentUser);
 
-            const row = document.createElement('div');
-            row.className = 'slot-done-row payment-row';
+            const block = document.createElement('div');
+            block.className = 'payment-block';
 
-            // --- Bloc statut (gauche) ---
+            // === Ligne 1 : statut readonly ===
+            const readRow = document.createElement('div');
+            readRow.className = 'slot-done-row payment-row';
+
             const infoWrap = document.createElement('span');
-            infoWrap.style.display = 'inline-flex';
-            infoWrap.style.flexWrap = 'wrap';
-            infoWrap.style.alignItems = 'center';
-            infoWrap.style.gap = '6px';
+            infoWrap.className = 'payment-readonly';
 
             const paymentInfo = document.createElement('span');
             if (paidAt) {
@@ -1586,7 +1640,6 @@
             }
             infoWrap.appendChild(paymentInfo);
 
-            // Détails montant + commentaire (lecture) — affichés si renseignés
             if (paidAt && (paidAmount || paidComment)) {
                 const detail = document.createElement('span');
                 detail.className = 'payment-detail';
@@ -1596,19 +1649,20 @@
                 detail.innerHTML = parts.join(' · ');
                 infoWrap.appendChild(detail);
             }
-            row.appendChild(infoWrap);
+            readRow.appendChild(infoWrap);
+            block.appendChild(readRow);
 
-            // --- Actions admin (droite) ---
+            // === Ligne 2 : édition admin ===
             if (adminMode) {
-                const payActions = document.createElement('div');
-                payActions.className = 'payment-actions';
+                const editRow = document.createElement('div');
+                editRow.className = 'payment-edit-row';
 
                 const dateInput = document.createElement('input');
                 dateInput.type = 'date';
                 dateInput.value = paidAt
                     ? new Date(paidAt).toISOString().split('T')[0]
                     : new Date().toISOString().split('T')[0];
-                payActions.appendChild(dateInput);
+                editRow.appendChild(dateInput);
 
                 const amountInput = document.createElement('input');
                 amountInput.type = 'number';
@@ -1617,14 +1671,17 @@
                 amountInput.step = '0.01';
                 amountInput.placeholder = '€';
                 amountInput.value = paidAmount != null ? paidAmount : '';
-                payActions.appendChild(amountInput);
+                editRow.appendChild(amountInput);
 
                 const commentInput = document.createElement('input');
                 commentInput.type = 'text';
                 commentInput.className = 'pay-comment';
                 commentInput.placeholder = 'Commentaire paiement';
                 commentInput.value = paidComment;
-                payActions.appendChild(commentInput);
+                editRow.appendChild(commentInput);
+
+                const btnGroup = document.createElement('div');
+                btnGroup.className = 'payment-buttons';
 
                 const savePayment = async function(btn, markPaid) {
                     btn.disabled = true;
@@ -1649,13 +1706,13 @@
                     btnPay.className = 'btn-pay';
                     btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
                     btnPay.addEventListener('click', function() { savePayment(btnPay, true); });
-                    payActions.appendChild(btnPay);
+                    btnGroup.appendChild(btnPay);
                 } else {
                     const btnEdit = document.createElement('button');
                     btnEdit.className = 'btn-pay';
                     btnEdit.innerHTML = '<i class="fas fa-edit"></i> Modifier';
                     btnEdit.addEventListener('click', function() { savePayment(btnEdit, true); });
-                    payActions.appendChild(btnEdit);
+                    btnGroup.appendChild(btnEdit);
 
                     const btnUnpay = document.createElement('button');
                     btnUnpay.className = 'btn-unpay';
@@ -1672,12 +1729,13 @@
                         }
                         onRefresh();
                     });
-                    payActions.appendChild(btnUnpay);
+                    btnGroup.appendChild(btnUnpay);
                 }
-                row.appendChild(payActions);
+                editRow.appendChild(btnGroup);
+                block.appendChild(editRow);
             }
 
-            return row;
+            return block;
         }
 
         // =============================================
