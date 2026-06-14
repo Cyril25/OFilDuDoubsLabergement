@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Où manger - O'Fil du Doubs" />
+    <meta property="og:description" content="Restaurants et planning des food trucks à Labergement-Sainte-Marie et dans les villages voisins." />
+    <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp" />
+    <meta property="og:url" content="https://ofildudoubs.fr/ou-manger.html" />
+    <meta property="og:type" content="website" />
+    <meta name="description" content="Où se restaurer autour de Labergement-Sainte-Marie : notre sélection de restaurants et le planning quotidien des food trucks du secteur.">
+
+    <title>Où manger - O'Fil du Doubs</title>
+
+    <link rel="canonical" href="https://ofildudoubs.fr/ou-manger.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="scripts/menu-translations.js" defer></script>
+    <script src="scripts/oumanger-translations.js" defer></script>
+    <script src="scripts/oumanger.js" defer></script>
+    <script src="scripts/applyTranslations.js" defer></script>
+    <script src="scripts/ui.js" defer></script>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="logement.html">Le logement</a></li>
+            <li><a href="equipements.html">Confort et Équipements</a></li>
+            <li><a href="dispo.html">Tarifs et disponibilités</a></li>
+            <li><a href="activites.html">Activités</a></li>
+            <li><a href="commerces.html">Commerces</a></li>
+            <li><a href="ou-manger.html">Où manger</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+       <div class="language-dropdown">
+			<button class="dropbtn">
+				<img id="current-flag-icon" src="images/fr.png" alt="Langue">
+				<span class="arrow">▼</span>
+			</button>
+			<div class="dropdown-content">
+				<a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+				<a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+				<a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+				<a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+				<a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+				<a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+				<a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+			</div>
+		</div>
+    </nav>
+
+    <header class="header2">
+        <h1 id="title">Où manger</h1>
+        <h2 id="subtitle">Restaurants et food trucks autour du logement</h2>
+    </header>
+
+    <main>
+        <p id="introduction" class="intro-text">
+            Envie de vous régaler sans cuisiner ? Retrouvez le planning des food trucks qui s'installent chaque jour à Labergement-Sainte-Marie et dans les villages voisins, ainsi que notre sélection de restaurants des environs.
+        </p>
+
+        <section id="restaurants-section">
+            <h2 id="restaurants_title">Restaurants</h2>
+            <p id="restaurants_intro" class="rates-intro">
+                Une sélection de bonnes tables autour du logement : du bistrot de village à la table gastronomique, sans oublier les spécialités fromagères du Haut-Doubs. Pensez à réserver, surtout en haute saison et pour les adresses les plus prisées.
+            </p>
+            <div id="resto-list" class="resto-grid"></div>
+        </section>
+
+        <section id="foodtrucks-section">
+            <h2 id="foodtrucks_title">Food trucks</h2>
+            <p id="foodtrucks_intro" class="rates-intro">
+                Pour chaque jour de la semaine, retrouvez les food trucks présents et leur emplacement. La plupart s'installent en fin de journée et en soirée. Ceux situés à Labergement sont accessibles à pied depuis le logement. Pensez à les appeler pour connaître les horaires exacts et la carte du jour.
+            </p>
+
+            <div id="ft-day-selector"></div>
+            <div id="ft-day-content"></div>
+
+            <h3 id="ft_directory_title" class="ft-subtitle">Tous nos food trucks</h3>
+            <div id="ft-directory" class="ft-directory-grid"></div>
+
+            <p id="foodtrucks_note" class="ft-note">
+                Liste susceptible d'évoluer. Les cartes sont principalement disponibles sur Facebook — n'hésitez pas à nous contacter si vous ne trouvez pas votre bonheur.
+            </p>
+        </section>
+    </main>
+
+	<footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Nous contacter</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Liens rapides</h3>
+                <a href="index.html" id="footer_link_home">Accueil</a>
+                <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
+                <a href="activites.html" id="footer_link_activities">Activités</a>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a> </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Réserver en ligne</h3>
+                <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+                <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&sid=9ec07d920783404e24ab32215d33bb1c&dist=0&keep_landing=1&sb_price_type=total&type=total&chal_t=1765790180198&force_referer=" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fas fa-hotel"></i> Page Booking
+                </a>
+            </div>
+
+            <div class="footer-col">
+                <img src="images/traveller-review-awards-2026.png" alt="Traveller Review Awards 2026" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+        </div>
+    </footer>
+</body>
+</html>

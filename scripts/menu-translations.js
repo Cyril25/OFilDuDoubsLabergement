@@ -6,6 +6,7 @@ const menuTranslations = {
         dispo: "Tarifs et Disponibilités",
         activites: "Activités",
         commerces: "Commerces",
+        oumanger: "Où manger",
         contact: "Contact"
     },
     en: {
@@ -15,6 +16,7 @@ const menuTranslations = {
         dispo: "Rates and Availability",
         activites: "Activities",
         commerces: "Shops",
+        oumanger: "Where to eat",
         contact: "Contact"
     },
     de: {
@@ -24,6 +26,7 @@ const menuTranslations = {
         dispo: "Preise und Verfügbarkeit",
         activites: "Aktivitäten",
         commerces: "Geschäfte",
+        oumanger: "Wo essen",
         contact: "Kontakt"
     },
     nl: {
@@ -33,6 +36,7 @@ const menuTranslations = {
         dispo: "Tarieven en Beschikbaarheid",
         activites: "Activiteiten",
         commerces: "Winkels",
+        oumanger: "Waar eten",
         contact: "Contact"
     },
     es: {
@@ -42,6 +46,7 @@ const menuTranslations = {
         dispo: "Tarifas y Disponibilidad",
         activites: "Actividades",
         commerces: "Comercios",
+        oumanger: "Dónde comer",
         contact: "Contacto"
     },
     it: {
@@ -51,6 +56,7 @@ const menuTranslations = {
         dispo: "Tariffe e Disponibilità",
         activites: "Attività",
         commerces: "Negozi",
+        oumanger: "Dove mangiare",
         contact: "Contatto"
     },
     pt: {
@@ -60,6 +66,7 @@ const menuTranslations = {
         dispo: "Tarifas e Disponibilidade",
         activites: "Atividades",
         commerces: "Comércio",
+        oumanger: "Onde comer",
         contact: "Contacto"
     }
 };

@@ -46,20 +46,26 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function applyTranslations(lang, pageTranslations) {
-    // A. Traduction du Menu
+    // A. Traduction du Menu (mapping par lien : robuste quel que soit le nombre/ordre d'items)
     if (typeof menuTranslations !== 'undefined' && menuTranslations[lang]) {
         const menuTranslation = menuTranslations[lang];
-        const menuLinks = document.querySelectorAll("#menu-items li a");
-        
-        if (menuLinks.length >= 7) {
-            menuLinks[0].textContent = menuTranslation.accueil;
-            menuLinks[1].textContent = menuTranslation.logement;
-            menuLinks[2].textContent = menuTranslation.equipements;
-            menuLinks[3].textContent = menuTranslation.dispo;
-            menuLinks[4].textContent = menuTranslation.activites;
-            menuLinks[5].textContent = menuTranslation.commerces;
-            menuLinks[6].textContent = menuTranslation.contact;
-        }
+        const hrefKeyMap = {
+            'index.html': 'accueil',
+            'logement.html': 'logement',
+            'equipements.html': 'equipements',
+            'dispo.html': 'dispo',
+            'activites.html': 'activites',
+            'commerces.html': 'commerces',
+            'ou-manger.html': 'oumanger',
+            'contact.html': 'contact'
+        };
+        document.querySelectorAll("#menu-items li a").forEach(link => {
+            const file = (link.getAttribute('href') || '').split('/').pop();
+            const key = hrefKeyMap[file];
+            if (key && menuTranslation[key]) {
+                link.textContent = menuTranslation[key];
+            }
+        });
     }
 
     // B. Traduction du contenu par ID (Texte standard)
