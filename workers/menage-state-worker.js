@@ -22,6 +22,7 @@
 const KV_KEY = 'menage_state';
 const KV_KEY_DATES = 'menage_dates';
 const KV_KEY_MESSAGES = 'menage_messages';
+const KV_KEY_EVOLUTION = 'evolution_state';
 const FIREBASE_PROJECT_ID = 'asso-billet-site';
 const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
 
@@ -174,6 +175,28 @@ export default {
                 }
             }
 
+            return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+        }
+
+        // ============ Route /evolution (page technique évolution du contenu) ============
+        // Lecture et écriture publiques (page interne non indexée, faible enjeu).
+        if (path === '/evolution') {
+            if (request.method === 'GET') {
+                const state = await env.MENAGE_KV.get(KV_KEY_EVOLUTION);
+                return new Response(state || '{}', {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                });
+            }
+            if (request.method === 'PUT') {
+                try {
+                    const body = await request.text();
+                    JSON.parse(body); // valide le JSON
+                    await env.MENAGE_KV.put(KV_KEY_EVOLUTION, body);
+                    return jsonResponse({ ok: true }, 200, corsHeaders);
+                } catch (e) {
+                    return jsonResponse({ error: 'JSON invalide' }, 400, corsHeaders);
+                }
+            }
             return new Response('Method not allowed', { status: 405, headers: corsHeaders });
         }
 

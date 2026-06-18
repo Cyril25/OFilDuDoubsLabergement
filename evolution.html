@@ -167,21 +167,22 @@
                 <span class="chip" data-k="reject"><i class="fas fa-times-circle"></i> Écarté <span class="count" id="cnt-reject">0</span></span>
             </div>
             <div class="spacer"></div>
+            <span id="save-status" style="font-size:.8rem;font-weight:700;color:#777;white-space:nowrap;"></span>
             <button class="btn ghost" id="btn-export"><i class="fas fa-file-export"></i> Exporter</button>
             <button class="btn ghost" id="btn-reset"><i class="fas fa-undo"></i> Réinitialiser</button>
         </div>
 
         <p class="hint">
             Cliquez sur 🟢🟠🔵🔴 pour changer le statut d'un élément, cliquez sur la zone grise pour ajouter une note,
-            et utilisez le champ en bas de chaque section pour ajouter une idée. Tout est enregistré automatiquement dans ce navigateur.
-            « Exporter » copie un récapitulatif à me transmettre pour décider de l'implémentation.
+            et utilisez le champ en bas de chaque section pour ajouter une idée. Tout est enregistré automatiquement en ligne
+            (synchronisé entre vos appareils) — je peux donc relire vos choix directement quand vous me demandez d'implémenter, sans export.
         </p>
 
         <div id="board"></div>
     </div>
 
     <footer class="tech">
-        O'Fil du Doubs — outil interne de réflexion sur le contenu. Aucune donnée n'est envoyée en ligne.
+        O'Fil du Doubs — outil interne de réflexion sur le contenu, synchronisé en ligne (Cloudflare KV).
     </footer>
 
     <script>
@@ -302,9 +303,12 @@
     const STATUS_ICON = { online: "fa-check", idea: "fa-lightbulb", todo: "fa-hammer", reject: "fa-times" };
     const STATUS_TITLE = { online: "En ligne", idea: "Idée à étudier", todo: "Validé — à implémenter", reject: "Écarté" };
     const STORE_KEY = "ofd_evolution_v1";
+    const API_URL = "https://menage-state.cyril-samson41.workers.dev/evolution";
 
     // ---- État ----
-    let state = load();
+    let state = null;
+    let needsInitialSave = false;
+    let remoteReady = false;   // n'autorise la sauvegarde serveur qu'une fois la route /evolution confirmée
 
     function buildSeedState() {
         const s = { cats: {} };
@@ -317,19 +321,46 @@
         return s;
     }
 
-    function load() {
-        let s;
+    // Charge l'état : serveur (source de vérité) → cache local → graine initiale
+    async function loadState() {
+        try {
+            const r = await fetch(API_URL, { cache: "no-store" });
+            if (r.ok) {
+                const txt = await r.text();
+                const data = txt ? JSON.parse(txt) : {};
+                if (data && data.cats) {
+                    // Données de cette page : route OK
+                    remoteReady = true;
+                    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+                    return mergeSuggestions(data);
+                }
+                if (!data || Object.keys(data).length === 0) {
+                    // Serveur vide : route /evolution active, première initialisation
+                    remoteReady = true;
+                    needsInitialSave = true;
+                } else {
+                    // Réponse non vide mais étrangère (route /evolution pas encore déployée
+                    // → c'est l'état d'une autre clé). On NE sauvegarde PAS pour ne rien écraser.
+                    remoteReady = false;
+                    setStatus("route-missing");
+                }
+            }
+        } catch (e) {
+            setStatus("offline");
+        }
+        // Repli : cache local, sinon graine
         try {
             const raw = localStorage.getItem(STORE_KEY);
-            s = raw ? JSON.parse(raw) : buildSeedState();
-        } catch (e) { s = buildSeedState(); }
-        return mergeSuggestions(s);
+            if (raw) return mergeSuggestions(JSON.parse(raw));
+        } catch (e) {}
+        needsInitialSave = true;
+        return mergeSuggestions(buildSeedState());
     }
 
     // Ajoute les suggestions de recherche jamais vues, sans toucher au reste
     function mergeSuggestions(s) {
+        s.cats = s.cats || {};
         s.seenSuggestions = s.seenSuggestions || [];
-        let added = false;
         SUGGESTIONS.forEach(sug => {
             const key = sug.cat + "|" + sug.name;
             if (s.seenSuggestions.includes(key)) return;        // déjà traitée (gardée ou supprimée)
@@ -342,12 +373,48 @@
                 });
             }
             s.seenSuggestions.push(key);
-            added = true;
+            needsInitialSave = true;   // un ajout => on synchronisera
         });
-        if (added) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {} }
         return s;
     }
-    function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+    // ---- Sauvegarde : cache local immédiat + push serveur (anti-rebond) ----
+    let saveTimer = null;
+    function save() {
+        try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+        setStatus("saving");
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(remoteSave, 700);
+    }
+    async function remoteSave() {
+        if (!remoteReady) { setStatus("route-missing"); return; }
+        try {
+            const r = await fetch(API_URL, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(state)
+            });
+            setStatus(r.ok ? "saved" : "error");
+        } catch (e) {
+            setStatus("offline");
+        }
+    }
+
+    // ---- Indicateur d'état de sauvegarde ----
+    function setStatus(kind) {
+        const el = document.getElementById("save-status");
+        if (!el) return;
+        const map = {
+            saving:  ['<i class="fas fa-circle-notch fa-spin"></i> Enregistrement…', "#777"],
+            saved:   ['<i class="fas fa-cloud"></i> Enregistré en ligne', "var(--c-online)"],
+            offline: ['<i class="fas fa-exclamation-triangle"></i> Hors ligne — sauvegarde locale', "var(--c-idea)"],
+            "route-missing": ['<i class="fas fa-plug"></i> Worker à redéployer — sauvegarde locale seulement', "var(--c-reject)"],
+            error:   ['<i class="fas fa-exclamation-circle"></i> Erreur de sauvegarde', "var(--c-reject)"]
+        };
+        const m = map[kind] || map.saved;
+        el.innerHTML = m[0];
+        el.style.color = m[1];
+    }
 
     // ---- Rendu ----
     const board = document.getElementById("board");
@@ -525,7 +592,14 @@
         }
     });
 
-    render();
+    // ---- Démarrage ----
+    (async function init() {
+        setStatus("saving");
+        state = await loadState();
+        render();
+        if (needsInitialSave) { save(); }
+        else { setStatus("saved"); }
+    })();
     </script>
 </body>
 </html>
