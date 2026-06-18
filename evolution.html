@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Évolution du contenu — page technique — O'Fil du Doubs</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #005f8d;
+            --secondary-color: #004a70;
+            --text-color: #333;
+            --bg-color: #f4f6f8;
+
+            --c-online: #2e7d32;   --c-online-bg: #e8f5e9;
+            --c-idea:   #e69100;   --c-idea-bg:   #fff4e0;
+            --c-todo:   #1565c0;   --c-todo-bg:   #e3f0fb;
+            --c-reject: #c62828;   --c-reject-bg: #fdecea;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--text-color);
+            background: var(--bg-color);
+            margin: 0;
+            line-height: 1.5;
+        }
+        header.tech {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 22px 20px 18px;
+        }
+        header.tech h1 {
+            font-family: 'Playfair Display', serif;
+            margin: 0 0 4px;
+            font-size: 1.6rem;
+        }
+        header.tech p { margin: 0; opacity: .9; font-size: .92rem; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        /* Bandeau outils */
+        .toolbar {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            background: #fff; border: 1px solid #e0e4e8; border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 18px;
+            position: sticky; top: 0; z-index: 20;
+            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+        }
+        .toolbar .spacer { flex: 1 1 auto; }
+        .btn {
+            border: 1px solid var(--primary-color); background: #fff; color: var(--primary-color);
+            border-radius: 7px; padding: 7px 12px; font-size: .85rem; cursor: pointer;
+            font-family: inherit; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+            transition: background .15s, color .15s;
+        }
+        .btn:hover { background: var(--primary-color); color: #fff; }
+        .btn.ghost { border-color: #c4ccd4; color: #555; }
+        .btn.ghost:hover { background: #555; border-color: #555; color: #fff; }
+
+        /* Légende / filtres */
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip {
+            border-radius: 20px; padding: 5px 12px; font-size: .82rem; font-weight: 700;
+            cursor: pointer; border: 1.5px solid transparent; user-select: none;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .chip .count { font-weight: 700; opacity: .75; font-size: .78rem; }
+        .chip[data-k="online"] { background: var(--c-online-bg); color: var(--c-online); border-color: var(--c-online); }
+        .chip[data-k="idea"]   { background: var(--c-idea-bg);   color: var(--c-idea);   border-color: var(--c-idea); }
+        .chip[data-k="todo"]   { background: var(--c-todo-bg);   color: var(--c-todo);   border-color: var(--c-todo); }
+        .chip[data-k="reject"] { background: var(--c-reject-bg); color: var(--c-reject); border-color: var(--c-reject); }
+        .chip.off { opacity: .35; filter: grayscale(.6); }
+
+        /* Sections */
+        section.cat {
+            background: #fff; border: 1px solid #e0e4e8; border-radius: 12px;
+            margin-bottom: 18px; overflow: hidden;
+        }
+        .cat-head {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px 16px; background: #fafbfc; border-bottom: 1px solid #eef1f4;
+        }
+        .cat-head h2 {
+            font-family: 'Playfair Display', serif; margin: 0; font-size: 1.2rem; color: var(--primary-color);
+            flex: 1 1 auto;
+        }
+        .cat-head .cat-counts { font-size: .8rem; color: #777; display: flex; gap: 10px; }
+        .cat-head .cat-counts b { font-weight: 700; }
+
+        .items { list-style: none; margin: 0; padding: 8px 12px 14px; }
+        .item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 9px 10px; border-radius: 8px; border-left: 5px solid #ccc;
+            background: #fcfcfd; margin-top: 8px;
+        }
+        .item[data-status="online"] { border-left-color: var(--c-online); background: var(--c-online-bg); }
+        .item[data-status="idea"]   { border-left-color: var(--c-idea);   background: var(--c-idea-bg); }
+        .item[data-status="todo"]   { border-left-color: var(--c-todo);   background: var(--c-todo-bg); }
+        .item[data-status="reject"] { border-left-color: var(--c-reject); background: var(--c-reject-bg); }
+        .item[data-status="reject"] .it-name { text-decoration: line-through; opacity: .7; }
+
+        .it-body { flex: 1 1 auto; min-width: 0; }
+        .it-name { font-weight: 700; font-size: .95rem; }
+        .it-name span.src { font-weight: 400; font-size: .76rem; color: #888; margin-left: 6px; }
+        .it-note {
+            font-size: .83rem; color: #555; margin-top: 2px;
+            border: 1px dashed transparent; border-radius: 5px; padding: 1px 4px; min-height: 1.1em;
+            cursor: text;
+        }
+        .it-note:hover, .it-note:focus { border-color: #c4ccd4; background: rgba(255,255,255,.6); outline: none; }
+        .it-note:empty:before { content: 'Ajouter une note…'; color: #aaa; font-style: italic; }
+
+        .it-actions { display: flex; gap: 4px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+        .sbtn {
+            width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #d0d6dc;
+            background: #fff; cursor: pointer; font-size: .8rem; display: inline-flex;
+            align-items: center; justify-content: center; padding: 0; color: #999;
+        }
+        .sbtn[data-s="online"].on { background: var(--c-online); border-color: var(--c-online); color: #fff; }
+        .sbtn[data-s="idea"].on   { background: var(--c-idea);   border-color: var(--c-idea);   color: #fff; }
+        .sbtn[data-s="todo"].on   { background: var(--c-todo);   border-color: var(--c-todo);   color: #fff; }
+        .sbtn[data-s="reject"].on { background: var(--c-reject); border-color: var(--c-reject); color: #fff; }
+        .sbtn:hover { border-color: #888; }
+        .sbtn.del { color: #c62828; }
+        .sbtn.del:hover { background: #c62828; color: #fff; border-color: #c62828; }
+
+        /* Ajout */
+        .add-row { display: flex; gap: 8px; margin: 12px 4px 2px; flex-wrap: wrap; }
+        .add-row input {
+            flex: 1 1 200px; padding: 8px 10px; border: 1px solid #c4ccd4; border-radius: 7px;
+            font-family: inherit; font-size: .9rem;
+        }
+        .add-row .btn { flex: 0 0 auto; }
+
+        .hint { font-size: .8rem; color: #777; margin: 6px 4px 0; }
+        .hidden { display: none !important; }
+
+        footer.tech { text-align: center; color: #999; font-size: .8rem; padding: 24px 12px 40px; }
+
+        @media (max-width: 600px) {
+            .item { flex-wrap: wrap; }
+            .it-actions { width: 100%; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <header class="tech">
+        <div class="wrap" style="padding-bottom:0;">
+            <h1>🧭 Évolution du contenu</h1>
+            <p>Page technique de travail — non publiée. Visualiser l'existant, noter des idées, décider quoi implémenter.</p>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <div class="toolbar">
+            <div class="legend" id="legend">
+                <span class="chip" data-k="online"><i class="fas fa-check-circle"></i> En ligne <span class="count" id="cnt-online">0</span></span>
+                <span class="chip" data-k="idea"><i class="fas fa-lightbulb"></i> À étudier <span class="count" id="cnt-idea">0</span></span>
+                <span class="chip" data-k="todo"><i class="fas fa-hammer"></i> À implémenter <span class="count" id="cnt-todo">0</span></span>
+                <span class="chip" data-k="reject"><i class="fas fa-times-circle"></i> Écarté <span class="count" id="cnt-reject">0</span></span>
+            </div>
+            <div class="spacer"></div>
+            <button class="btn ghost" id="btn-export"><i class="fas fa-file-export"></i> Exporter</button>
+            <button class="btn ghost" id="btn-reset"><i class="fas fa-undo"></i> Réinitialiser</button>
+        </div>
+
+        <p class="hint">
+            Cliquez sur 🟢🟠🔵🔴 pour changer le statut d'un élément, cliquez sur la zone grise pour ajouter une note,
+            et utilisez le champ en bas de chaque section pour ajouter une idée. Tout est enregistré automatiquement dans ce navigateur.
+            « Exporter » copie un récapitulatif à me transmettre pour décider de l'implémentation.
+        </p>
+
+        <div id="board"></div>
+    </div>
+
+    <footer class="tech">
+        O'Fil du Doubs — outil interne de réflexion sur le contenu. Aucune donnée n'est envoyée en ligne.
+    </footer>
+
+    <script>
+    // ---- Données initiales : l'existant du site (statut "online") ----
+    const SEED = {
+        activites: {
+            label: "Activités & visites",
+            icon: "fa-hiking",
+            items: [
+                "Lac de Remoray", "Maison de la Réserve", "Fonderie de Cloches Obertino",
+                "Château de Joux", "Fort Saint-Antoine", "Station de Métabief", "Source Bleue",
+                "Luge sur Rails (Métabief)", "Accrobranche à Métabief", "Lac Saint-Point",
+                "Distillerie Guy (Pontarlier)", "Maison Michaud (écomusée)", "Le Saut du Doubs",
+                "Source du Doubs (Mouthe)", "Mont d'Or", "Belvédère des 2 Lacs",
+                "Réserve naturelle (Remoray)", "Le Rucher des Deux Lacs", "Fromagerie du Mont d'Or",
+                "Distillerie Émile Pernot", "Base nautique de Malbuisson", "VTT électrique (Métabief)",
+                "Pêche (Doubs & Lac)", "Spa Les Rives Sauvages", "Chiens de traîneau (Adam's)"
+            ]
+        },
+        commerces: {
+            label: "Commerces & services",
+            icon: "fa-store",
+            items: [
+                "La Fruitière des Lacs", "Boucherie Paillard Frères", "Boulangerie Baverel",
+                "CocciMarket", "Au Cellier du Lac", "Café Fleur", "Tabac Presse Jeux Faure",
+                "Le Bistrot de l'Aberge", "Le Vélo Bar", "Garage du Coude",
+                "Pharmacie des Deux Lacs", "Clinique Vétérinaire des Lacs", "Coiffeurs",
+                "La Poste - Agence Communale", "Beauté et Bien-être", "Médecins et Spécialistes"
+            ]
+        },
+        restaurants: {
+            label: "Restaurants",
+            icon: "fa-utensils",
+            items: [
+                "L'escale (Saint-Point-Lac)", "Bistrot de Laberge (Labergement)", "Royal Pizza (Malbuisson)",
+                "Le Gaulois (Métabief)", "Le Reflet (Montperreux)", "Restaurant à la Ferme (Malbuisson)",
+                "Restaurant du Fromage (Malbuisson)", "La Remise (Les Villedieu)",
+                "La Boissaude (Rochejean)", "Le Lac (Malbuisson)"
+            ]
+        },
+        foodtrucks: {
+            label: "Food trucks",
+            icon: "fa-truck",
+            items: [
+                "Monte d'Oro Pizza", "Max & Biga", "Papy Pizz'", "Le Nomade", "El Pirata",
+                "Kebab", "KRC Kebab", "AL'Barak à Frites", "Pizz Popotte"
+            ]
+        },
+        autres: {
+            label: "Autres idées (nouvelles rubriques)",
+            icon: "fa-plus-circle",
+            items: []
+        }
+    };
+
+    const STATUSES = ["online", "idea", "todo", "reject"];
+    const STATUS_ICON = { online: "fa-check", idea: "fa-lightbulb", todo: "fa-hammer", reject: "fa-times" };
+    const STATUS_TITLE = { online: "En ligne", idea: "Idée à étudier", todo: "Validé — à implémenter", reject: "Écarté" };
+    const STORE_KEY = "ofd_evolution_v1";
+
+    // ---- État ----
+    let state = load();
+
+    function buildSeedState() {
+        const s = { cats: {} };
+        for (const key in SEED) {
+            s.cats[key] = SEED[key].items.map((name, i) => ({
+                id: key + "_" + i + "_" + Date.now().toString(36),
+                name, note: "", status: "online", seeded: true
+            }));
+        }
+        return s;
+    }
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return buildSeedState();
+    }
+    function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+    // ---- Rendu ----
+    const board = document.getElementById("board");
+    let activeFilters = new Set(STATUSES);
+
+    function render() {
+        board.innerHTML = "";
+        const totals = { online: 0, idea: 0, todo: 0, reject: 0 };
+
+        for (const key in SEED) {
+            const cat = SEED[key];
+            const list = state.cats[key] || [];
+            const counts = { online: 0, idea: 0, todo: 0, reject: 0 };
+            list.forEach(it => { counts[it.status]++; totals[it.status]++; });
+
+            const sec = document.createElement("section");
+            sec.className = "cat";
+            sec.innerHTML = `
+                <div class="cat-head">
+                    <i class="fas ${cat.icon}" style="color:var(--primary-color)"></i>
+                    <h2>${cat.label}</h2>
+                    <div class="cat-counts">
+                        <span style="color:var(--c-online)"><b>${counts.online}</b> en ligne</span>
+                        <span style="color:var(--c-idea)"><b>${counts.idea}</b> à étudier</span>
+                        <span style="color:var(--c-todo)"><b>${counts.todo}</b> à faire</span>
+                        <span style="color:var(--c-reject)"><b>${counts.reject}</b> écarté</span>
+                    </div>
+                </div>
+                <ul class="items" data-cat="${key}"></ul>
+                <div class="add-row">
+                    <input type="text" placeholder="Ajouter une idée dans « ${cat.label} »…" data-add="${key}">
+                    <button class="btn" data-addbtn="${key}"><i class="fas fa-plus"></i> Ajouter</button>
+                </div>`;
+            board.appendChild(sec);
+
+            const ul = sec.querySelector(".items");
+            list.forEach(it => ul.appendChild(renderItem(key, it)));
+        }
+
+        document.getElementById("cnt-online").textContent = totals.online;
+        document.getElementById("cnt-idea").textContent = totals.idea;
+        document.getElementById("cnt-todo").textContent = totals.todo;
+        document.getElementById("cnt-reject").textContent = totals.reject;
+
+        applyFilters();
+    }
+
+    function renderItem(catKey, it) {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.dataset.status = it.status;
+        li.dataset.id = it.id;
+        li.dataset.cat = catKey;
+
+        const btns = STATUSES.map(s =>
+            `<button class="sbtn ${it.status === s ? "on" : ""}" data-s="${s}" title="${STATUS_TITLE[s]}">
+                <i class="fas ${STATUS_ICON[s]}"></i>
+            </button>`).join("");
+
+        li.innerHTML = `
+            <div class="it-body">
+                <div class="it-name">${escapeHtml(it.name)}${it.seeded ? '<span class="src">déjà en ligne</span>' : ''}</div>
+                <div class="it-note" contenteditable="true" data-note="${it.id}">${escapeHtml(it.note || "")}</div>
+            </div>
+            <div class="it-actions">
+                ${btns}
+                <button class="sbtn del" title="Supprimer"><i class="fas fa-trash"></i></button>
+            </div>`;
+        return li;
+    }
+
+    function escapeHtml(s) {
+        return (s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+
+    function findItem(catKey, id) {
+        return (state.cats[catKey] || []).find(x => x.id === id);
+    }
+
+    // ---- Interactions ----
+    board.addEventListener("click", (e) => {
+        const sbtn = e.target.closest(".sbtn");
+        if (sbtn) {
+            const li = sbtn.closest(".item");
+            const it = findItem(li.dataset.cat, li.dataset.id);
+            if (!it) return;
+            if (sbtn.classList.contains("del")) {
+                if (confirm("Supprimer « " + it.name + " » ?")) {
+                    state.cats[li.dataset.cat] = state.cats[li.dataset.cat].filter(x => x.id !== it.id);
+                    save(); render();
+                }
+                return;
+            }
+            it.status = sbtn.dataset.s;
+            save(); render();
+            return;
+        }
+        const addBtn = e.target.closest("[data-addbtn]");
+        if (addBtn) { addItem(addBtn.getAttribute("data-addbtn")); return; }
+    });
+
+    board.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && e.target.matches("[data-add]")) {
+            e.preventDefault();
+            addItem(e.target.getAttribute("data-add"));
+        }
+    });
+
+    // Notes : sauvegarde à la perte de focus
+    board.addEventListener("blur", (e) => {
+        if (e.target.matches("[data-note]")) {
+            const li = e.target.closest(".item");
+            const it = findItem(li.dataset.cat, li.dataset.id);
+            if (it) { it.note = e.target.textContent.trim(); save(); }
+        }
+    }, true);
+
+    function addItem(catKey) {
+        const input = document.querySelector(`[data-add="${catKey}"]`);
+        const name = input.value.trim();
+        if (!name) { input.focus(); return; }
+        state.cats[catKey] = state.cats[catKey] || [];
+        state.cats[catKey].push({
+            id: catKey + "_new_" + Date.now().toString(36),
+            name, note: "", status: "idea", seeded: false
+        });
+        input.value = "";
+        save(); render();
+        const newInput = document.querySelector(`[data-add="${catKey}"]`);
+        if (newInput) newInput.focus();
+    }
+
+    // ---- Filtres (légende cliquable) ----
+    document.getElementById("legend").addEventListener("click", (e) => {
+        const chip = e.target.closest(".chip");
+        if (!chip) return;
+        const k = chip.dataset.k;
+        if (activeFilters.has(k)) activeFilters.delete(k); else activeFilters.add(k);
+        if (activeFilters.size === 0) activeFilters = new Set(STATUSES);
+        document.querySelectorAll(".chip").forEach(c =>
+            c.classList.toggle("off", !activeFilters.has(c.dataset.k)));
+        applyFilters();
+    });
+
+    function applyFilters() {
+        document.querySelectorAll(".item").forEach(li =>
+            li.classList.toggle("hidden", !activeFilters.has(li.dataset.status)));
+    }
+
+    // ---- Export ----
+    document.getElementById("btn-export").addEventListener("click", () => {
+        let out = "ÉVOLUTION DU CONTENU — O'Fil du Doubs\n";
+        out += "Date : " + new Date().toLocaleDateString("fr-FR") + "\n";
+        const sym = { online: "[EN LIGNE]", idea: "[A ETUDIER]", todo: "[A IMPLEMENTER]", reject: "[ECARTE]" };
+        for (const key in SEED) {
+            const list = state.cats[key] || [];
+            out += "\n=== " + SEED[key].label.toUpperCase() + " ===\n";
+            ["todo", "idea", "online", "reject"].forEach(st => {
+                list.filter(it => it.status === st).forEach(it => {
+                    out += sym[st] + " " + it.name + (it.note ? "  — " + it.note : "") + "\n";
+                });
+            });
+        }
+        navigator.clipboard.writeText(out).then(
+            () => alert("Récapitulatif copié dans le presse-papier ! Collez-le dans la conversation."),
+            () => { prompt("Copiez ce texte :", out); }
+        );
+    });
+
+    // ---- Réinitialiser ----
+    document.getElementById("btn-reset").addEventListener("click", () => {
+        if (confirm("Tout réinitialiser à partir de l'existant du site ? Vos idées et notes seront perdues.")) {
+            state = buildSeedState();
+            save(); render();
+        }
+    });
+
+    render();
+    </script>
+</body>
+</html>
