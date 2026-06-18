@@ -230,12 +230,73 @@
                 "Kebab", "KRC Kebab", "AL'Barak à Frites", "Pizz Popotte"
             ]
         },
+        evenements: {
+            label: "Événements & marchés",
+            icon: "fa-calendar-alt",
+            items: []
+        },
+        producteurs: {
+            label: "Producteurs & vente directe",
+            icon: "fa-seedling",
+            items: []
+        },
         autres: {
             label: "Autres idées (nouvelles rubriques)",
             icon: "fa-plus-circle",
             items: []
         }
     };
+
+    // ---- Suggestions issues de recherches (ajoutées en "idée à étudier") ----
+    // Fusionnées au chargement sans écraser le travail existant ; une suggestion
+    // supprimée ne réapparaît pas (suivi via state.seenSuggestions).
+    const SUGGESTIONS = [
+        // Activités / visites
+        { cat: "activites", name: "Le Coni'Fer — train à vapeur", note: "Train touristique à vapeur, le plus haut de France. Les Hôpitaux-Neufs (~10 min). Wagon-restaurant Orient-Express." },
+        { cat: "activites", name: "Bateau électro-solaire (lac Saint-Point)", note: "Promenade douce et silencieuse sur le lac, au départ de Malbuisson/Saint-Point (~5-8 min)." },
+        { cat: "activites", name: "Parapente à Métabief", note: "Vol découverte au-dessus du Haut-Doubs depuis Métabief (~10 min)." },
+        { cat: "activites", name: "Parc ludique d'été de Métabief", note: "Tyrolienne, trampoline, luge d'été, chasse au trésor, jeux enfants (~10 min) — complément de l'accrobranche." },
+        { cat: "activites", name: "Base nautique des Grangettes", note: "2e base nautique du lac Saint-Point (voile, paddle, kayak), rive des Grangettes." },
+        { cat: "activites", name: "Plage & baignade surveillée (lac de Remoray)", note: "Base de loisirs familiale, baignade surveillée l'été, aire de jeux — à deux pas du logement." },
+        { cat: "activites", name: "Sentier du Morbier", note: "Balade thématique autour du fromage, départ à la Fruitière des Lacs, paysages agricoles." },
+        { cat: "activites", name: "Malbuisson'Art (parcours d'art)", note: "Parcours d'art contemporain en plein air, ~5 km, l'été à Malbuisson." },
+        { cat: "activites", name: "Ski de fond & raquettes (espace nordique)", note: "Pistes nordiques du Haut-Doubs en hiver (secteur Métabief / Mont d'Or)." },
+
+        // Commerces & services du village (annuaire communal)
+        { cat: "commerces", name: "Couture / retouches", note: "Artisan couturier au village (annuaire communal) — nom à confirmer." },
+        { cat: "commerces", name: "Création de bijoux (artisan)", note: "Artisan bijoutier au village (annuaire communal) — à confirmer." },
+        { cat: "commerces", name: "Photographe", note: "Photographe au village (annuaire communal)." },
+        { cat: "commerces", name: "Moniteur / cours de ski (ESF)", note: "Moniteur de ski au village — utile en hiver." },
+        { cat: "commerces", name: "Garde d'enfants", note: "Service de garde d'enfants au village (annuaire communal)." },
+        { cat: "commerces", name: "Distributeur automatique (DAB)", note: "Le plus proche est à Malbuisson — déjà signalé sur la fiche La Poste. À mettre davantage en avant ?" },
+        { cat: "commerces", name: "Artisans du bâtiment (menuisier, plombier, électricien…)", note: "Présents au village mais peu utiles pour des vacanciers — candidat à écarter." },
+
+        // Restaurants
+        { cat: "restaurants", name: "L'Atelier de Donat (Malbuisson)", note: "~318 avis, jolie vue sur le lac (~5 min)." },
+        { cat: "restaurants", name: "La Flambée (Malbuisson)", note: "« Très bonne table » à Malbuisson (~5 min)." },
+
+        // Événements & marchés
+        { cat: "evenements", name: "Marché de Noël artisanal", note: "Au village, en décembre." },
+        { cat: "evenements", name: "Journée sans voiture autour du lac Saint-Point", note: "Début juin." },
+        { cat: "evenements", name: "Triathlon du lac Saint-Point", note: "Fin juin." },
+        { cat: "evenements", name: "Régates / voile sur le lac", note: "L'été sur le lac Saint-Point." },
+        { cat: "evenements", name: "Vide-grenier / brocante", note: "Fin août, autour du lac." },
+        { cat: "evenements", name: "Salon du champignon", note: "Début octobre." },
+        { cat: "evenements", name: "Vente de plants bio", note: "Au village, en mai." },
+
+        // Producteurs & vente directe
+        { cat: "producteurs", name: "Confitures & conserves bio (ferme de Montrinsant)", note: "Cueillette sauvage, vente directe." },
+        { cat: "producteurs", name: "Savonnier artisanal", note: "Producteur local de savons." },
+        { cat: "producteurs", name: "Champignons bio", note: "Producteur local." },
+        { cat: "producteurs", name: "Élevage d'escargots", note: "Producteur local, vente directe." },
+        { cat: "producteurs", name: "Fromage de chèvre (producteur fermier)", note: "Vente directe à la ferme." },
+        { cat: "producteurs", name: "Miel du Rucher des Deux Lacs", note: "Déjà présenté en activités — pourrait aussi figurer en vente directe." },
+
+        // Nouvelles rubriques possibles
+        { cat: "autres", name: "Itinéraires vélo (GTJ, véloroutes)", note: "Grandes Traversées du Jura à vélo, boucles autour des lacs." },
+        { cat: "autres", name: "Idées par temps de pluie", note: "Sélection d'activités intérieures (musées, spa, distilleries, fromageries…)." },
+        { cat: "autres", name: "Livret d'accueil numérique", note: "Reporté précédemment — à reconsidérer ?" }
+    ];
 
     const STATUSES = ["online", "idea", "todo", "reject"];
     const STATUS_ICON = { online: "fa-check", idea: "fa-lightbulb", todo: "fa-hammer", reject: "fa-times" };
@@ -257,11 +318,34 @@
     }
 
     function load() {
+        let s;
         try {
             const raw = localStorage.getItem(STORE_KEY);
-            if (raw) return JSON.parse(raw);
-        } catch (e) {}
-        return buildSeedState();
+            s = raw ? JSON.parse(raw) : buildSeedState();
+        } catch (e) { s = buildSeedState(); }
+        return mergeSuggestions(s);
+    }
+
+    // Ajoute les suggestions de recherche jamais vues, sans toucher au reste
+    function mergeSuggestions(s) {
+        s.seenSuggestions = s.seenSuggestions || [];
+        let added = false;
+        SUGGESTIONS.forEach(sug => {
+            const key = sug.cat + "|" + sug.name;
+            if (s.seenSuggestions.includes(key)) return;        // déjà traitée (gardée ou supprimée)
+            s.cats[sug.cat] = s.cats[sug.cat] || [];
+            const exists = s.cats[sug.cat].some(it => it.name.toLowerCase() === sug.name.toLowerCase());
+            if (!exists) {
+                s.cats[sug.cat].push({
+                    id: sug.cat + "_sug_" + Math.random().toString(36).slice(2, 8),
+                    name: sug.name, note: sug.note || "", status: "idea", seeded: false, suggested: true
+                });
+            }
+            s.seenSuggestions.push(key);
+            added = true;
+        });
+        if (added) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {} }
+        return s;
     }
     function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
@@ -325,7 +409,7 @@
 
         li.innerHTML = `
             <div class="it-body">
-                <div class="it-name">${escapeHtml(it.name)}${it.seeded ? '<span class="src">déjà en ligne</span>' : ''}</div>
+                <div class="it-name">${escapeHtml(it.name)}${it.seeded ? '<span class="src">déjà en ligne</span>' : (it.suggested ? '<span class="src">suggéré</span>' : '')}</div>
                 <div class="it-note" contenteditable="true" data-note="${it.id}">${escapeHtml(it.note || "")}</div>
             </div>
             <div class="it-actions">
@@ -436,7 +520,7 @@
     // ---- Réinitialiser ----
     document.getElementById("btn-reset").addEventListener("click", () => {
         if (confirm("Tout réinitialiser à partir de l'existant du site ? Vos idées et notes seront perdues.")) {
-            state = buildSeedState();
+            state = mergeSuggestions(buildSeedState());
             save(); render();
         }
     });
