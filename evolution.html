@@ -110,12 +110,16 @@
         .it-name { font-weight: 700; font-size: .95rem; }
         .it-name span.src { font-weight: 400; font-size: .76rem; color: #888; margin-left: 6px; }
         .it-note {
-            font-size: .83rem; color: #555; margin-top: 2px;
-            border: 1px dashed transparent; border-radius: 5px; padding: 1px 4px; min-height: 1.1em;
-            cursor: text;
+            font-size: .83rem; color: #444; margin-top: 5px;
+            border: 1px dashed #cfd6dd; border-radius: 6px; padding: 4px 8px 4px 26px; min-height: 1.6em;
+            cursor: text; background: rgba(255,255,255,.55); position: relative;
         }
-        .it-note:hover, .it-note:focus { border-color: #c4ccd4; background: rgba(255,255,255,.6); outline: none; }
-        .it-note:empty:before { content: 'Ajouter une note…'; color: #aaa; font-style: italic; }
+        .it-note:before {
+            content: "\f4ad"; font-family: "Font Awesome 5 Free"; font-weight: 900;
+            position: absolute; left: 8px; top: 5px; color: #b3bcc4; font-size: .82rem;
+        }
+        .it-note:hover, .it-note:focus { border-color: var(--primary-color); background: #fff; outline: none; }
+        .it-note:empty:after { content: 'Cliquez pour expliquer la décision (ex. fermé, doublon, ouverture été 2026…)'; color: #a6adb4; font-style: italic; }
 
         .it-actions { display: flex; gap: 4px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
         .sbtn {
