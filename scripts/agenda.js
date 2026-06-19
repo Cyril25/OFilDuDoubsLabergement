@@ -67,8 +67,11 @@
         const big = esc(bigDate(e));
         const ov = overrides[e.id] || {};
         const banner = ov.banner || e.img || null;
-        // Galerie : override admin sinon images auto (Tourinsoft)
-        const gallery = ((ov.gallery && ov.gallery.length) ? ov.gallery : (e.gallery || [])).slice(0, 3);
+        const extras = (ov.gallery && ov.gallery.length) ? ov.gallery : (e.gallery || []);
+        // Vignettes = bannière + images en plus, dédupliquées (max 4)
+        const thumbs = [];
+        [banner].concat(extras).forEach(u => { if (u && thumbs.indexOf(u) < 0) thumbs.push(u); });
+        const thumbsList = thumbs.slice(0, 4);
         const gid = 'evt' + String(e.id).replace(/[^a-zA-Z0-9]/g, '');
         const caption = esc(titre + (e.credit && !ov.banner ? ' — © ' + e.credit : ''));
         const editBtn = adminMode ? '<button class="ag-edit" data-id="' + esc(String(e.id)) + '" title="Éditer les images / masquer"><i class="fas fa-image"></i></button>' : '';
@@ -76,16 +79,15 @@
         const cardClass = (ov.hidden && adminMode) ? 'ag-card ag-card--hidden' : 'ag-card';
 
         const media = banner
-            ? '<div class="ag-media" data-date="' + big + '">' +
-                  '<a class="glightbox" data-gallery="' + gid + '" data-title="' + caption + '" href="' + esc(banner) + '">' +
-                  '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)"></a>' +
+            ? '<div class="ag-media" data-date="' + big + '" data-clickable="1">' +
+                  '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)">' +
                   '<span class="ag-datechip">' + big + '</span>' +
                   '<span class="ag-zoom"><i class="fas fa-search-plus"></i></span>' + hiddenBadge + editBtn +
               '</div>'
             : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + hiddenBadge + editBtn + '</div>';
 
-        const galleryHtml = gallery.length
-            ? '<div class="ag-gallery">' + gallery.map(u =>
+        const galleryHtml = thumbsList.length
+            ? '<div class="ag-gallery">' + thumbsList.map(u =>
                   '<a class="glightbox" data-gallery="' + gid + '" data-title="' + caption + '" href="' + esc(u) + '"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'
               ).join('') + '</div>'
             : '';
@@ -289,6 +291,16 @@
 
         const moreBtn = document.getElementById('agenda-more');
         if (moreBtn) moreBtn.addEventListener('click', () => { limit += BATCH; render(); });
+
+        // Clic sur la bannière → ouvre le zoom (via la 1re vignette), sans doublon dans la visionneuse
+        document.addEventListener('click', (ev) => {
+            if (ev.target.closest('.ag-edit')) return;
+            const media = ev.target.closest('.ag-media[data-clickable="1"]');
+            if (!media) return;
+            const card = media.closest('.ag-card');
+            const t = card && card.querySelector('.ag-gallery a.glightbox');
+            if (t) t.click();
+        });
 
         setupAdmin();
     }
