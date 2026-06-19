@@ -85,12 +85,9 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
     if (hp) { url = asArray(hp)[0]; break; }
   }
 
-  // description courte : seulement si pas de site web (sinon le lien suffit), pour alléger le JSON
-  let desc = null;
-  if (!url) {
-    const descObj = asArray(o['hasDescription'])[0];
-    desc = descObj ? (langMap(descObj['dc:description'], 160) || langMap(descObj['shortDescription'], 160)) : null;
-  }
+  // description courte (toutes langues fournies par le flux), pour tous les événements
+  const descObj = asArray(o['hasDescription'])[0];
+  const desc = descObj ? (langMap(descObj['dc:description'], 300) || langMap(descObj['shortDescription'], 300)) : null;
 
   events.push({
     id: o['dc:identifier'] || o['@id'],
