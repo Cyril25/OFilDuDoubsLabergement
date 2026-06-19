@@ -1,0 +1,60 @@
+name: Mise à jour agenda (DATAtourisme)
+
+on:
+  schedule:
+    - cron: '30 4 * * *'      # tous les jours à 04:30 UTC
+  workflow_dispatch:           # déclenchement manuel possible
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agenda
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Télécharger et décompresser le flux DATAtourisme
+        env:
+          DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
+        run: |
+          set -e
+          if [ -z "$DATATOURISME_URL" ]; then
+            echo "::error::Le secret DATATOURISME_URL n'est pas défini."
+            exit 1
+          fi
+          curl -sSL "$DATATOURISME_URL" -o flux.bin
+          # Le flux peut être encore en génération (réponse JSON ~144 octets) : on stoppe proprement.
+          if [ "$(stat -c%s flux.bin)" -lt 10000 ]; then
+            echo "::warning::Flux indisponible ou trop petit (génération en cours ?). Voir le contenu :"
+            cat flux.bin || true
+            exit 1
+          fi
+          gzip -dc flux.bin > flux.zip
+          mkdir -p extracted
+          unzip -q -o flux.zip -d extracted
+
+      - name: Construire data/agenda.json
+        run: node scripts/build-agenda.js extracted data/agenda.json 20
+
+      - name: Commit si l'agenda a changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/agenda.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans l'agenda."
+          else
+            git commit -m "chore(agenda): mise à jour automatique des événements"
+            git push
+          fi

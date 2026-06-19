@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Agenda - O'Fil du Doubs" />
+    <meta property="og:description" content="Les événements à venir autour de Labergement-Sainte-Marie : concerts, marchés, fêtes, expositions et animations." />
+    <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp" />
+    <meta property="og:url" content="https://ofildudoubs.fr/agenda.html" />
+    <meta property="og:type" content="website" />
+    <meta name="description" content="Agenda des événements autour de Labergement-Sainte-Marie : concerts, marchés, fêtes de village, expositions et animations dans un rayon de 20 km. Mise à jour quotidienne.">
+
+    <title>Agenda - O'Fil du Doubs</title>
+
+    <link rel="canonical" href="https://ofildudoubs.fr/agenda.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="scripts/menu-translations.js" defer></script>
+    <script src="scripts/agenda-translations.js" defer></script>
+    <script src="scripts/agenda.js" defer></script>
+    <script src="scripts/applyTranslations.js" defer></script>
+    <script src="scripts/ui.js" defer></script>
+
+    <style>
+        .agenda-meta { text-align: center; color: #888; font-size: .85rem; margin: -6px 0 18px; }
+
+        #agenda-list { display: block; }
+        .ag-month {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            font-size: 1.35rem;
+            margin: 26px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        .ag-month:first-child { margin-top: 0; }
+
+        .ag-card {
+            display: flex;
+            gap: 14px;
+            background: #fff;
+            border: 1px solid #e6e9ec;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.04);
+        }
+        .ag-img { flex: 0 0 120px; }
+        .ag-img img { width: 120px; height: 100px; object-fit: cover; border-radius: 8px; display: block; }
+        .ag-body { flex: 1 1 auto; min-width: 0; }
+        .ag-date {
+            color: var(--primary-color); font-weight: 700; font-size: .85rem;
+            margin: 0 0 4px; text-transform: capitalize;
+        }
+        .ag-date i { margin-right: 5px; }
+        .ag-title { font-size: 1.05rem; margin: 0 0 4px; color: var(--text-color); }
+        .ag-loc { color: #666; font-size: .85rem; margin: 0 0 8px; }
+        .ag-loc i { color: var(--primary-color); }
+        .ag-dist { color: #999; }
+        .ag-desc { font-size: .88rem; color: #555; margin: 0 0 10px; }
+        .ag-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .ag-empty { text-align: center; color: #888; padding: 30px 10px; }
+
+        #agenda-more-wrap { text-align: center; margin: 18px 0 6px; }
+        #agenda-more {
+            background: var(--primary-color); color: #fff; border: none;
+            padding: 11px 22px; border-radius: 8px; font-family: inherit;
+            font-size: .95rem; font-weight: 700; cursor: pointer;
+        }
+        #agenda-more:hover { background: var(--secondary-color); }
+
+        .ag-ot {
+            background: var(--accent-color); border-radius: 10px;
+            padding: 18px; text-align: center; margin: 26px 0 10px;
+        }
+        .ag-ot h2 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin: 0 0 6px; font-size: 1.2rem; }
+        .ag-ot p { margin: 0 0 12px; color: #555; }
+        .ag-source { text-align: center; color: #aaa; font-size: .75rem; margin: 14px 0 0; }
+
+        @media (max-width: 560px) {
+            .ag-img { flex-basis: 92px; }
+            .ag-img img { width: 92px; height: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="logement.html">Le logement</a></li>
+            <li><a href="equipements.html">Confort et Équipements</a></li>
+            <li><a href="dispo.html">Tarifs et disponibilités</a></li>
+            <li><a href="activites.html">Activités</a></li>
+            <li><a href="commerces.html">Commerces</a></li>
+            <li><a href="ou-manger.html">Où manger</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+       <div class="language-dropdown">
+			<button class="dropbtn">
+				<img id="current-flag-icon" src="images/fr.png" alt="Langue">
+				<span class="arrow">▼</span>
+			</button>
+			<div class="dropdown-content">
+				<a href="#" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+				<a href="#" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+				<a href="#" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+				<a href="#" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+				<a href="#" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+				<a href="#" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+				<a href="#" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+			</div>
+		</div>
+    </nav>
+
+    <header class="header2">
+        <h1 id="title">Agenda</h1>
+        <h2 id="subtitle">Les événements à venir autour du logement</h2>
+    </header>
+
+    <main>
+        <p id="introduction" class="intro-text">
+            Concerts, marchés, fêtes de village, expositions, animations nature… Voici les manifestations des prochains jours dans un rayon d'environ 20 km autour de Labergement-Sainte-Marie. Mise à jour automatique chaque jour.
+        </p>
+        <p id="agenda-updated" class="agenda-meta"></p>
+
+        <div id="agenda-list"></div>
+
+        <div id="agenda-more-wrap" style="display:none;">
+            <button id="agenda-more" type="button">Voir plus d'événements</button>
+        </div>
+
+        <div class="ag-ot">
+            <h2 id="ag_ot_title">Tout l'agenda du Haut-Doubs</h2>
+            <p id="ag_ot_text">Pour l'agenda complet et tous les détails, consultez l'office de tourisme.</p>
+            <a class="btn-activity btn-website" href="https://www.destination-haut-doubs.com/agenda.html" target="_blank" rel="noopener">
+                <i class="fas fa-calendar-alt"></i> <span id="ag_ot_link">Agenda de l'Office de Tourisme</span>
+            </a>
+        </div>
+
+        <p id="ag_source" class="ag-source">Source : DATAtourisme (Open Data)</p>
+    </main>
+
+	<footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Nous contacter</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Liens rapides</h3>
+                <a href="index.html" id="footer_link_home">Accueil</a>
+                <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
+                <a href="activites.html" id="footer_link_activities">Activités</a>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a> </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Réserver en ligne</h3>
+                <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+                <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fas fa-hotel"></i> Page Booking
+                </a>
+            </div>
+
+            <div class="footer-col">
+                <img src="images/traveller-review-awards-2026.png" alt="Traveller Review Awards 2026" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+        </div>
+    </footer>
+</body>
+</html>
