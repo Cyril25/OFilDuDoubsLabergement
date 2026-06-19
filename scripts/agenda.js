@@ -24,8 +24,14 @@
         m.innerHTML = '<i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + (m.getAttribute('data-date') || '') + '</span>';
     };
 
-    // Date courte pour le bandeau (ex. "20 JUIN" ou "Aujourd'hui")
+    // Événement "en cours" : commencé, non récurrent, dure plus de 2 jours
+    function isOngoing(e) {
+        const dur = (Date.parse(e.end) - Date.parse(e.start)) / 86400000;
+        return !e.recurring && e.next === today && dur > 2;
+    }
+    // Date courte pour le bandeau (ex. "20 JUIN", "Aujourd'hui", ou "En cours")
     function bigDate(e) {
+        if (isOngoing(e)) return T.ag_now;
         if (e.next === today) return T.ag_today;
         return D(e.next).toLocaleDateString(locale, { day: 'numeric', month: 'short' }).replace('.', '').toUpperCase();
     }
@@ -84,8 +90,7 @@
         for (const e of data.events) {
             const dur = (Date.parse(e.end) - Date.parse(e.start)) / 86400000;
             if (!e.recurring && dur > 210) continue;                       // permanent (filet de sécurité)
-            const isOngoing = !e.recurring && e.next === today && dur > 2;  // commencé, dure encore
-            (isOngoing ? on : up).push(e);
+            (isOngoing(e) ? on : up).push(e);
         }
         up.sort((a, b) => a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist);
         on.sort((a, b) => a.end < b.end ? -1 : a.end > b.end ? 1 : a.dist - b.dist);

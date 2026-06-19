@@ -79,8 +79,8 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   const addr = asArray(loc['schema:address'])[0] || {};
   const city = addr['schema:addressLocality'] || '';
 
-  // image (optionnelle)
-  const rep = asArray(o['hasMainRepresentation'])[0];
+  // image (optionnelle) : représentation principale, sinon secondaire
+  const rep = asArray(o['hasMainRepresentation'])[0] || asArray(o['hasRepresentation'])[0];
   const res = rep && asArray(rep['ebucore:hasRelatedResource'])[0];
   const img = res && asArray(res['ebucore:locator'])[0] || null;
 

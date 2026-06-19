@@ -17,6 +17,7 @@ const dataTranslations = {
         ag_ot_link: "Agenda de l'Office de Tourisme",
         ag_ongoing_title: "En ce moment / toute la saison",
         ag_recurring: "autres dates jusqu'au",
+        ag_now: "En cours",
         ag_source: "Source : DATAtourisme (Open Data)"
     },
     en: {
@@ -35,6 +36,7 @@ const dataTranslations = {
         ag_ot_link: "Tourist Office calendar",
         ag_ongoing_title: "Happening now / all season",
         ag_recurring: "more dates until",
+        ag_now: "Now on",
         ag_source: "Source: DATAtourisme (Open Data)"
     },
     de: {
@@ -53,6 +55,7 @@ const dataTranslations = {
         ag_ot_link: "Kalender des Tourismusbüros",
         ag_ongoing_title: "Aktuell / die ganze Saison",
         ag_recurring: "weitere Termine bis",
+        ag_now: "Läuft gerade",
         ag_source: "Quelle: DATAtourisme (Open Data)"
     },
     nl: {
@@ -71,6 +74,7 @@ const dataTranslations = {
         ag_ot_link: "Agenda van het toeristenbureau",
         ag_ongoing_title: "Nu te beleven / het hele seizoen",
         ag_recurring: "meer data tot",
+        ag_now: "Nu bezig",
         ag_source: "Bron: DATAtourisme (Open Data)"
     },
     es: {
@@ -89,6 +93,7 @@ const dataTranslations = {
         ag_ot_link: "Agenda de la Oficina de Turismo",
         ag_ongoing_title: "Ahora mismo / toda la temporada",
         ag_recurring: "más fechas hasta el",
+        ag_now: "En curso",
         ag_source: "Fuente: DATAtourisme (Open Data)"
     },
     it: {
@@ -107,6 +112,7 @@ const dataTranslations = {
         ag_ot_link: "Agenda dell'Ufficio del Turismo",
         ag_ongoing_title: "In questo momento / per tutta la stagione",
         ag_recurring: "altre date fino al",
+        ag_now: "In corso",
         ag_source: "Fonte: DATAtourisme (Open Data)"
     },
     pt: {
@@ -125,6 +131,7 @@ const dataTranslations = {
         ag_ot_link: "Agenda do Posto de Turismo",
         ag_ongoing_title: "Agora mesmo / durante toda a época",
         ag_recurring: "outras datas até",
+        ag_now: "A decorrer",
         ag_source: "Fonte: DATAtourisme (Open Data)"
     }
 };
