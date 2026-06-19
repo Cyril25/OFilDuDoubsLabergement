@@ -17,8 +17,12 @@ const cachePath = process.argv[3] || 'data/agenda-i18n-cache.json';
 const KEY = process.env.DEEPL_API_KEY || '';
 
 // Langues à compléter (code site -> code DeepL)
-const DEEPL_LANG = { es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
-const TITLE_TARGETS = ['es', 'it', 'nl', 'pt'];
+const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
+// Titres : on complète toutes les langues manquantes (les events DATAtourisme ont déjà de/en/fr ;
+// les compléments Tourinsoft n'ont que fr → de/en/es/it/nl/pt à traduire).
+const TITLE_TARGETS = ['de', 'en', 'es', 'it', 'nl', 'pt'];
+// Descriptions : DATAtourisme fournit déjà de/en/es/fr/it/nl → on ne complète que pt.
+// (Les compléments Tourinsoft gardent leur description en français pour les autres langues.)
 const DESC_TARGETS = ['pt'];
 const SEP = '';
 

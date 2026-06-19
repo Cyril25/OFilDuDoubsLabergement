@@ -105,40 +105,99 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   kept++;
 }
 
-events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
+// === Fusion hybride avec Tourinsoft (même donnée que le widget de l'OT) ===
+// 1) Enrichit nos événements DATAtourisme avec les photos (jointure par id en minuscules).
+// 2) Ajoute les événements présents UNIQUEMENT chez Tourinsoft (non publiés en open data),
+//    avec leur description en français (les titres seront traduits ensuite par DeepL).
+// En cas d'échec réseau, on garde l'agenda DATAtourisme tel quel.
+const photosUrls = (s) => (Array.isArray(s.photos) ? s.photos : []).map(p => p && p.url).filter(Boolean);
+const photoCredit = (s) => { const p = (Array.isArray(s.photos) ? s.photos : [])[0]; return (p && p.credit) || undefined; };
+const stripHtml = (h) => (h || '').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const titleCase = (s) => (s || '').toLowerCase().replace(/(^|[\s\-'])([a-zà-ÿ])/g, (m, p, c) => p + c.toUpperCase());
 
-// Enrichissement des images depuis Tourinsoft (même donnée que le widget OT),
-// jointure par l'identifiant en minuscules. Sans réseau, on continue sans images.
-async function enrichImages() {
-  const URL = 'https://es.tourinsoft.com/tis_v5_bourgogne/fetes_evenements/_mget?_source=photos';
+async function mergeTourinsoft() {
+  const URL = 'https://es.tourinsoft.com/tis_v5_bourgogne/fetes_evenements/_search';
+  const body = {
+    size: 600,
+    _source: ['nom', 'commune', 'position', 'dates', 'photos', 'web', 'descom'],
+    query: { filtered: { filter: { and: [
+      { geo_distance: { distance: RADIUS + 'km', position: { lat: LAT, lon: LON } } },
+      { nested: { path: 'dates', filter: { range: { 'dates.datefin': { gte: today } } } } }
+    ] } } }
+  };
+  let docs;
   try {
-    const ids = events.map(e => String(e.id).toLowerCase());
-    const r = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids }) });
-    if (!r.ok) { console.error('Images Tourinsoft : HTTP ' + r.status + ' — on continue sans.'); return; }
-    const dataR = await r.json();
-    const byId = {};
-    (dataR.docs || []).forEach(d => { if (d.found && d._source && Array.isArray(d._source.photos)) byId[d._id] = d._source.photos; });
-    let n = 0;
-    for (const e of events) {
-      const ph = byId[String(e.id).toLowerCase()];
-      if (!ph || !ph.length) continue;
-      const urls = ph.map(p => p && p.url).filter(Boolean);
-      if (!urls.length) continue;
-      e.img = urls[0];
-      if (urls.length > 1) e.gallery = urls.slice(1, 4);
-      if (ph[0].credit) e.credit = ph[0].credit;
-      n++;
-    }
-    console.error('Images Tourinsoft ajoutées : ' + n + '/' + events.length);
-  } catch (err) {
-    console.error('Images Tourinsoft : échec (' + err.message + ') — on continue sans.');
+    const r = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) { console.error('Tourinsoft : HTTP ' + r.status + ' — agenda DATAtourisme seul.'); return; }
+    const j = await r.json();
+    docs = (j.hits && j.hits.hits) || [];
+  } catch (err) { console.error('Tourinsoft : échec (' + err.message + ') — agenda DATAtourisme seul.'); return; }
+
+  const ourIds = new Set(events.map(e => String(e.id).toLowerCase()));
+  const byId = {};
+  docs.forEach(d => { byId[d._id] = d._source; });
+
+  // 1) Enrichir nos événements avec les photos
+  let enriched = 0;
+  for (const e of events) {
+    const s = byId[String(e.id).toLowerCase()];
+    if (!s) continue;
+    const urls = photosUrls(s);
+    if (!urls.length) continue;
+    e.img = urls[0];
+    if (urls.length > 1) e.gallery = urls.slice(1, 4);
+    const c = photoCredit(s); if (c) e.credit = c;
+    enriched++;
   }
+
+  // 2) Ajouter les événements présents uniquement chez Tourinsoft
+  let added = 0;
+  for (const d of docs) {
+    if (ourIds.has(d._id)) continue;
+    const s = d._source;
+    const nom = s.nom; if (!nom) continue;
+    const geo = s.position;                       // [lon, lat]
+    if (!Array.isArray(geo) || geo.length < 2) continue;
+    const lon = parseFloat(geo[0]), lat = parseFloat(geo[1]);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+    const periods = Array.isArray(s.dates) ? s.dates : [];
+    const starts = periods.map(p => p && p.datedebut).filter(Boolean).sort();
+    const ends = periods.map(p => p && (p.datefin || p.datedebut)).filter(Boolean).sort();
+    if (!starts.length) continue;
+    const lastEnd = ends[ends.length - 1];
+    if (!lastEnd || lastEnd < today) continue;
+    const recurring = new Set(starts).size > 1;
+    const durationDays = (Date.parse(lastEnd) - Date.parse(starts[0])) / 86400000;
+    if (!recurring && durationDays > 210) continue;   // permanent → exclu
+    const next = starts.find(x => x >= today) || (starts[0] <= today ? today : starts[0]);
+    const urls = photosUrls(s);
+    const descTxt = stripHtml(s.descom).slice(0, 300);
+    let web = Array.isArray(s.web) ? s.web.find(Boolean) : s.web;
+    if (web && !/^https?:/i.test(web)) web = 'http://' + web;
+    events.push({
+      id: d._id,
+      title: { fr: nom },
+      city: titleCase(s.commune),
+      dist: Math.round(haversine(lat, lon) * 10) / 10,
+      start: starts[0], end: lastEnd, next,
+      recurring: recurring || undefined,
+      img: urls[0] || undefined,
+      gallery: urls.length > 1 ? urls.slice(1, 4) : undefined,
+      credit: photoCredit(s),
+      url: web || undefined,
+      desc: descTxt ? { fr: descTxt } : undefined,
+      src: 'tis'
+    });
+    added++;
+  }
+  console.error('Tourinsoft : photos sur ' + enriched + ' events, + ' + added + ' événements complétés');
 }
 
 (async function () {
-  await enrichImages();
+  await mergeTourinsoft();
+  events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
   const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, JSON.stringify(payload));
-  console.error(`Objets lus: ${total} | retenus (<=${RADIUS}km & à venir): ${kept} | ${outFile} (${fs.statSync(outFile).size} octets)`);
+  console.error(`DATAtourisme: ${kept} | total après fusion: ${events.length} | ${outFile} (${fs.statSync(outFile).size} octets)`);
 })();
