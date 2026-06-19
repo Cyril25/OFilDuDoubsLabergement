@@ -265,7 +265,7 @@
                 // protège si la route /agenda-images n'est pas encore déployée (fallback = état ménage).
                 if (o && typeof o === 'object' && !Array.isArray(o)) {
                     const clean = {};
-                    for (const k in o) { const v = o[k]; if (v && typeof v === 'object' && (v.banner || v.gallery)) clean[k] = v; }
+                    for (const k in o) { const v = o[k]; if (v && typeof v === 'object' && (v.banner || v.gallery || v.hidden)) clean[k] = v; }
                     overrides = clean;
                 }
             })
