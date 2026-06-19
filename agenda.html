@@ -63,8 +63,8 @@
         .ag-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
 
         /* Visuel carré (affiche montrée en entier), ou dégradé + date si pas d'image */
-        .ag-media { position: relative; aspect-ratio: 1 / 1; flex-shrink: 0; background: #eef1f4; }
-        .ag-media > a.glightbox { display: block; width: 100%; height: 100%; cursor: zoom-in; }
+        .ag-media { position: relative; aspect-ratio: 1 / 1; flex-shrink: 0; background: #eef1f4; overflow: hidden; }
+        .ag-media > a.glightbox { display: block; position: absolute; inset: 0; cursor: zoom-in; }
         .ag-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .ag-zoom {
             position: absolute; bottom: 8px; right: 8px;
