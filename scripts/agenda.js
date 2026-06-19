@@ -251,7 +251,15 @@
         // Images admin (lecture publique) en parallèle de l'agenda
         fetch(IMAGES_URL, { cache: 'no-store' })
             .then(r => r.ok ? r.json() : {})
-            .then(o => { if (o && typeof o === 'object' && !Array.isArray(o)) overrides = o; })
+            .then(o => {
+                // Ne garder que les entrées au bon format {banner|gallery} :
+                // protège si la route /agenda-images n'est pas encore déployée (fallback = état ménage).
+                if (o && typeof o === 'object' && !Array.isArray(o)) {
+                    const clean = {};
+                    for (const k in o) { const v = o[k]; if (v && typeof v === 'object' && (v.banner || v.gallery)) clean[k] = v; }
+                    overrides = clean;
+                }
+            })
             .catch(() => {})
             .finally(() => {
                 fetch('data/agenda.json', { cache: 'no-store' })
