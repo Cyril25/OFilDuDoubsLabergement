@@ -47,11 +47,16 @@ jobs:
       - name: Construire data/agenda.json
         run: node scripts/build-agenda.js extracted data/agenda.json 20
 
+      - name: Compléter les traductions manquantes (DeepL)
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: node scripts/translate-agenda.js data/agenda.json data/agenda-i18n-cache.json
+
       - name: Commit si l'agenda a changé
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/agenda.json
+          git add data/agenda.json data/agenda-i18n-cache.json
           if git diff --cached --quiet; then
             echo "Aucun changement dans l'agenda."
           else
