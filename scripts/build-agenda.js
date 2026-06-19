@@ -69,6 +69,12 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   // prochaine date de début >= aujourd'hui, sinon en cours
   const next = starts.find(s => s >= today) || (starts[0] <= today ? today : starts[0]);
 
+  // Nature de l'événement : récurrent (plusieurs dates distinctes) ? durée totale ?
+  const recurring = new Set(starts).size > 1;
+  const durationDays = (Date.parse(lastEnd) - Date.parse(starts[0])) / 86400000;
+  // Permanent (non récurrent et > ~7 mois) → ce n'est pas un événement, on l'exclut de l'agenda
+  if (!recurring && durationDays > 210) continue;
+
   const title = langMap(o['rdfs:label']); if (!title) continue;
   const addr = asArray(loc['schema:address'])[0] || {};
   const city = addr['schema:addressLocality'] || '';
@@ -93,6 +99,7 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
     id: o['dc:identifier'] || o['@id'],
     title, city, dist: Math.round(dist * 10) / 10,
     start: starts[0], end: lastEnd, next,
+    recurring: recurring || undefined,
     img, url, desc: desc || undefined,
   });
   kept++;

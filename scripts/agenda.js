@@ -73,28 +73,47 @@
             list.innerHTML = '<p class="ag-empty">' + T.ag_empty + '</p>';
             return;
         }
-        const slice = data.events.slice(0, limit);
-        let html = '', currentMonth = '', open = false;
+        // Répartition : "À venir" (ponctuels/récurrents) vs "En ce moment" (en cours, multi-semaines)
+        const up = [], on = [];
+        for (const e of data.events) {
+            const dur = (Date.parse(e.end) - Date.parse(e.start)) / 86400000;
+            if (!e.recurring && dur > 210) continue;                       // permanent (filet de sécurité)
+            const isOngoing = !e.recurring && e.next === today && dur > 2;  // commencé, dure encore
+            (isOngoing ? on : up).push(e);
+        }
+        up.sort((a, b) => a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist);
+        on.sort((a, b) => a.end < b.end ? -1 : a.end > b.end ? 1 : a.dist - b.dist);
+
+        // Section "À venir" : triée par date, groupée par mois, paginée
+        const slice = up.slice(0, limit);
+        let html = '', currentMonth = '', openGrid = false;
         slice.forEach(e => {
             const mk = monthKey(e.next);
             if (mk !== currentMonth) {
-                if (open) html += '</div>';
+                if (openGrid) html += '</div>';
                 currentMonth = mk;
                 html += '<h2 class="ag-month">' + monthLabel(e.next) + '</h2><div class="ag-grid">';
-                open = true;
+                openGrid = true;
             }
             html += card(e);
         });
-        if (open) html += '</div>';
-        list.innerHTML = html;
+        if (openGrid) html += '</div>';
+        list.innerHTML = html || '<p class="ag-empty">' + T.ag_empty + '</p>';
 
         const moreWrap = document.getElementById('agenda-more-wrap');
-        if (limit < data.events.length) {
+        if (limit < up.length) {
             moreWrap.style.display = '';
-            document.getElementById('agenda-more').textContent =
-                T.ag_more + ' (' + (data.events.length - limit) + ')';
+            document.getElementById('agenda-more').textContent = T.ag_more + ' (' + (up.length - limit) + ')';
         } else {
             moreWrap.style.display = 'none';
+        }
+
+        // Section "En ce moment / toute la saison" : événements en cours
+        const onWrap = document.getElementById('agenda-ongoing');
+        const onList = document.getElementById('agenda-ongoing-list');
+        if (onWrap && onList) {
+            if (on.length) { onList.innerHTML = on.map(card).join(''); onWrap.style.display = ''; }
+            else { onWrap.style.display = 'none'; }
         }
     }
 
