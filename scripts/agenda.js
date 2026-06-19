@@ -67,15 +67,17 @@
         const big = esc(bigDate(e));
         const ov = overrides[e.id] || {};
         const banner = ov.banner || e.img || null;
-        const gallery = (ov.gallery || []).slice(0, 3);
+        // Galerie : override admin sinon images auto (Tourinsoft)
+        const gallery = ((ov.gallery && ov.gallery.length) ? ov.gallery : (e.gallery || [])).slice(0, 3);
         const gid = 'evt' + String(e.id).replace(/[^a-zA-Z0-9]/g, '');
+        const caption = esc(titre + (e.credit && !ov.banner ? ' — © ' + e.credit : ''));
         const editBtn = adminMode ? '<button class="ag-edit" data-id="' + esc(String(e.id)) + '" title="Éditer les images / masquer"><i class="fas fa-image"></i></button>' : '';
         const hiddenBadge = (ov.hidden && adminMode) ? '<span class="ag-hidden-badge"><i class="fas fa-eye-slash"></i> Masqué</span>' : '';
         const cardClass = (ov.hidden && adminMode) ? 'ag-card ag-card--hidden' : 'ag-card';
 
         const media = banner
             ? '<div class="ag-media" data-date="' + big + '">' +
-                  '<a class="glightbox" data-gallery="' + gid + '" href="' + esc(banner) + '">' +
+                  '<a class="glightbox" data-gallery="' + gid + '" data-title="' + caption + '" href="' + esc(banner) + '">' +
                   '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)"></a>' +
                   '<span class="ag-datechip">' + big + '</span>' + hiddenBadge + editBtn +
               '</div>'
@@ -83,7 +85,7 @@
 
         const galleryHtml = gallery.length
             ? '<div class="ag-gallery">' + gallery.map(u =>
-                  '<a class="glightbox" data-gallery="' + gid + '" href="' + esc(u) + '"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'
+                  '<a class="glightbox" data-gallery="' + gid + '" data-title="' + caption + '" href="' + esc(u) + '"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'
               ).join('') + '</div>'
             : '';
 

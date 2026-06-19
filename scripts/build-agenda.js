@@ -106,7 +106,39 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
 }
 
 events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
-const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
-fs.mkdirSync(path.dirname(outFile), { recursive: true });
-fs.writeFileSync(outFile, JSON.stringify(payload));
-console.error(`Objets lus: ${total} | retenus (<=${RADIUS}km & à venir): ${kept} | ${outFile} (${fs.statSync(outFile).size} octets)`);
+
+// Enrichissement des images depuis Tourinsoft (même donnée que le widget OT),
+// jointure par l'identifiant en minuscules. Sans réseau, on continue sans images.
+async function enrichImages() {
+  const URL = 'https://es.tourinsoft.com/tis_v5_bourgogne/fetes_evenements/_mget?_source=photos';
+  try {
+    const ids = events.map(e => String(e.id).toLowerCase());
+    const r = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids }) });
+    if (!r.ok) { console.error('Images Tourinsoft : HTTP ' + r.status + ' — on continue sans.'); return; }
+    const dataR = await r.json();
+    const byId = {};
+    (dataR.docs || []).forEach(d => { if (d.found && d._source && Array.isArray(d._source.photos)) byId[d._id] = d._source.photos; });
+    let n = 0;
+    for (const e of events) {
+      const ph = byId[String(e.id).toLowerCase()];
+      if (!ph || !ph.length) continue;
+      const urls = ph.map(p => p && p.url).filter(Boolean);
+      if (!urls.length) continue;
+      e.img = urls[0];
+      if (urls.length > 1) e.gallery = urls.slice(1, 4);
+      if (ph[0].credit) e.credit = ph[0].credit;
+      n++;
+    }
+    console.error('Images Tourinsoft ajoutées : ' + n + '/' + events.length);
+  } catch (err) {
+    console.error('Images Tourinsoft : échec (' + err.message + ') — on continue sans.');
+  }
+}
+
+(async function () {
+  await enrichImages();
+  const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, JSON.stringify(payload));
+  console.error(`Objets lus: ${total} | retenus (<=${RADIUS}km & à venir): ${kept} | ${outFile} (${fs.statSync(outFile).size} octets)`);
+})();
