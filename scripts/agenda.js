@@ -31,9 +31,15 @@
     }
     // Ligne de date détaillée dans le corps de la carte
     function whenLine(e) {
+        const dayFmt = { weekday: 'long', day: 'numeric', month: 'long' };
+        // Récurrent : on montre la PROCHAINE date (pas tout l'intervalle) + mention des autres dates
+        if (e.recurring) {
+            const base = (e.next === today ? T.ag_today + ' · ' : '') + D(e.next).toLocaleDateString(locale, dayFmt);
+            const until = D(e.end).toLocaleDateString(locale, { day: 'numeric', month: 'long' });
+            return base + ' · ' + T.ag_recurring + ' ' + until;
+        }
         if (e.start === e.end) {
-            const base = D(e.next).toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
-            return (e.next === today ? T.ag_today + ' · ' : '') + base;
+            return (e.next === today ? T.ag_today + ' · ' : '') + D(e.next).toLocaleDateString(locale, dayFmt);
         }
         const a = D(e.start).toLocaleDateString(locale, { day: 'numeric', month: 'long' });
         const b = D(e.end).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });

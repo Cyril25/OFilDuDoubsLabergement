@@ -16,6 +16,7 @@ const dataTranslations = {
         ag_ot_text: "Pour l'agenda complet et tous les détails, consultez l'office de tourisme.",
         ag_ot_link: "Agenda de l'Office de Tourisme",
         ag_ongoing_title: "En ce moment / toute la saison",
+        ag_recurring: "autres dates jusqu'au",
         ag_source: "Source : DATAtourisme (Open Data)"
     },
     en: {
@@ -33,6 +34,7 @@ const dataTranslations = {
         ag_ot_text: "For the complete calendar and all details, visit the tourist office.",
         ag_ot_link: "Tourist Office calendar",
         ag_ongoing_title: "Happening now / all season",
+        ag_recurring: "more dates until",
         ag_source: "Source: DATAtourisme (Open Data)"
     },
     de: {
@@ -50,6 +52,7 @@ const dataTranslations = {
         ag_ot_text: "Den vollständigen Kalender und alle Details finden Sie beim Tourismusbüro.",
         ag_ot_link: "Kalender des Tourismusbüros",
         ag_ongoing_title: "Aktuell / die ganze Saison",
+        ag_recurring: "weitere Termine bis",
         ag_source: "Quelle: DATAtourisme (Open Data)"
     },
     nl: {
@@ -67,6 +70,7 @@ const dataTranslations = {
         ag_ot_text: "Voor de volledige agenda en alle details, raadpleeg het toeristenbureau.",
         ag_ot_link: "Agenda van het toeristenbureau",
         ag_ongoing_title: "Nu te beleven / het hele seizoen",
+        ag_recurring: "meer data tot",
         ag_source: "Bron: DATAtourisme (Open Data)"
     },
     es: {
@@ -84,6 +88,7 @@ const dataTranslations = {
         ag_ot_text: "Para la agenda completa y todos los detalles, consulte la oficina de turismo.",
         ag_ot_link: "Agenda de la Oficina de Turismo",
         ag_ongoing_title: "Ahora mismo / toda la temporada",
+        ag_recurring: "más fechas hasta el",
         ag_source: "Fuente: DATAtourisme (Open Data)"
     },
     it: {
@@ -101,6 +106,7 @@ const dataTranslations = {
         ag_ot_text: "Per l'agenda completa e tutti i dettagli, consulta l'ufficio del turismo.",
         ag_ot_link: "Agenda dell'Ufficio del Turismo",
         ag_ongoing_title: "In questo momento / per tutta la stagione",
+        ag_recurring: "altre date fino al",
         ag_source: "Fonte: DATAtourisme (Open Data)"
     },
     pt: {
@@ -118,6 +124,7 @@ const dataTranslations = {
         ag_ot_text: "Para a agenda completa e todos os detalhes, consulte o posto de turismo.",
         ag_ot_link: "Agenda do Posto de Turismo",
         ag_ongoing_title: "Agora mesmo / durante toda a época",
+        ag_recurring: "outras datas até",
         ag_source: "Fonte: DATAtourisme (Open Data)"
     }
 };
