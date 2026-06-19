@@ -23,6 +23,7 @@ const KV_KEY = 'menage_state';
 const KV_KEY_DATES = 'menage_dates';
 const KV_KEY_MESSAGES = 'menage_messages';
 const KV_KEY_EVOLUTION = 'evolution_state';
+const KV_KEY_AGENDA_IMAGES = 'agenda_images';
 const FIREBASE_PROJECT_ID = 'asso-billet-site';
 const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
 
@@ -175,6 +176,37 @@ export default {
                 }
             }
 
+            return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+        }
+
+        // ============ Route /agenda-images (images d'événements ajoutées par l'admin) ============
+        // GET : lecture publique. PUT : écriture protégée par Firebase Auth (comme /dates).
+        if (path === '/agenda-images') {
+            if (request.method === 'GET') {
+                const data = await env.MENAGE_KV.get(KV_KEY_AGENDA_IMAGES);
+                return new Response(data || '{}', {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                });
+            }
+            if (request.method === 'PUT') {
+                try {
+                    const authHeader = request.headers.get('Authorization') || '';
+                    if (!authHeader.startsWith('Bearer ')) {
+                        return jsonResponse({ error: 'Token manquant' }, 401, corsHeaders);
+                    }
+                    await verifyFirebaseToken(authHeader.slice(7));
+                    const body = await request.text();
+                    const parsed = JSON.parse(body);
+                    if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+                        return jsonResponse({ error: 'Objet attendu' }, 400, corsHeaders);
+                    }
+                    await env.MENAGE_KV.put(KV_KEY_AGENDA_IMAGES, body);
+                    return jsonResponse({ ok: true }, 200, corsHeaders);
+                } catch (e) {
+                    const status = e.message.includes('non autorisé') ? 403 : 401;
+                    return jsonResponse({ error: e.message }, status, corsHeaders);
+                }
+            }
             return new Response('Method not allowed', { status: 405, headers: corsHeaders });
         }
 

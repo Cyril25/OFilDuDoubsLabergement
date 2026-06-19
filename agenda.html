@@ -20,6 +20,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
 
     <script src="scripts/menu-translations.js" defer></script>
     <script src="scripts/agenda-translations.js" defer></script>
@@ -91,7 +93,54 @@
         .ag-actions { margin-top: auto; display: flex; gap: 8px; }
         .ag-actions .btn-activity { flex: 1 1 0; justify-content: center; }
 
+        /* Galerie de vignettes (affiches) sous la description */
+        .ag-gallery { display: flex; gap: 6px; margin: 0 0 12px; flex-wrap: wrap; }
+        .ag-gallery a { display: block; }
+        .ag-gallery img {
+            width: 54px; height: 54px; object-fit: cover; border-radius: 6px;
+            border: 1px solid #e0e4e8; cursor: zoom-in; transition: transform .12s;
+        }
+        .ag-gallery img:hover { transform: scale(1.05); }
+
         .ag-empty { text-align: center; color: #888; padding: 30px 10px; }
+
+        /* Administration (édition des images) */
+        #agenda-admin-bar { text-align: right; margin: -8px 0 10px; }
+        #agenda-admin-btn {
+            background: none; border: 1px solid #c4ccd4; color: #888;
+            border-radius: 6px; padding: 5px 12px; font-size: .8rem; cursor: pointer; font-family: inherit;
+        }
+        #agenda-admin-btn:hover { background: #555; color: #fff; border-color: #555; }
+        #agenda-admin-btn.on { border-color: var(--c-online, #2e7d32); color: #2e7d32; }
+        .ag-edit {
+            position: absolute; top: 8px; right: 8px; z-index: 2;
+            background: rgba(0,0,0,.6); color: #fff; border: none; border-radius: 6px;
+            padding: 5px 9px; font-size: .8rem; cursor: pointer;
+        }
+        .ag-edit:hover { background: var(--primary-color); }
+
+        /* Fenêtre d'édition */
+        #ag-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000;
+            display: none; align-items: center; justify-content: center; padding: 16px;
+        }
+        #ag-modal.open { display: flex; }
+        .ag-modal-box {
+            background: #fff; border-radius: 12px; padding: 20px; width: 100%; max-width: 480px;
+            max-height: 90vh; overflow: auto;
+        }
+        .ag-modal-box h3 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin: 0 0 4px; }
+        .ag-modal-box .ag-modal-sub { color: #777; font-size: .85rem; margin: 0 0 14px; }
+        .ag-modal-box label { display: block; font-weight: 700; font-size: .82rem; margin: 10px 0 4px; color: #444; }
+        .ag-modal-box input {
+            width: 100%; padding: 8px 10px; border: 1px solid #c4ccd4; border-radius: 7px;
+            font-family: inherit; font-size: .85rem; box-sizing: border-box;
+        }
+        .ag-modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .ag-modal-actions button { flex: 1; padding: 10px; border-radius: 7px; font-family: inherit; font-weight: 700; cursor: pointer; border: none; }
+        #ag-modal-save { background: var(--primary-color); color: #fff; }
+        #ag-modal-cancel { background: #eee; color: #555; }
+        .ag-modal-hint { font-size: .78rem; color: #999; margin-top: 4px; }
 
         #agenda-more-wrap { text-align: center; margin: 18px 0 6px; }
         #agenda-more {
@@ -157,6 +206,10 @@
         </p>
         <p id="agenda-updated" class="agenda-meta"></p>
 
+        <div id="agenda-admin-bar">
+            <button id="agenda-admin-btn" type="button" title="Administration des images">Admin</button>
+        </div>
+
         <div id="agenda-list"></div>
 
         <div id="agenda-more-wrap" style="display:none;">
@@ -178,6 +231,27 @@
 
         <p id="ag_source" class="ag-source">Source : DATAtourisme (Open Data)</p>
     </main>
+
+    <!-- Fenêtre d'édition des images (admin) -->
+    <div id="ag-modal">
+        <div class="ag-modal-box">
+            <h3 id="ag-modal-title">Images de l'événement</h3>
+            <p class="ag-modal-sub" id="ag-modal-event"></p>
+            <label>Bannière (image du haut)</label>
+            <input type="url" id="ag-modal-banner" placeholder="https://…/affiche.jpg">
+            <label>Affiche 1</label>
+            <input type="url" id="ag-modal-g1" placeholder="https://…/image1.jpg">
+            <label>Affiche 2</label>
+            <input type="url" id="ag-modal-g2" placeholder="https://…/image2.jpg">
+            <label>Affiche 3</label>
+            <input type="url" id="ag-modal-g3" placeholder="https://…/image3.jpg">
+            <p class="ag-modal-hint">Collez des URL d'images (clic droit → « Copier l'adresse de l'image » sur le site source). Laissez vide pour retirer.</p>
+            <div class="ag-modal-actions">
+                <button id="ag-modal-cancel" type="button">Annuler</button>
+                <button id="ag-modal-save" type="button">Enregistrer</button>
+            </div>
+        </div>
+    </div>
 
 	<footer>
         <div class="footer-content">
