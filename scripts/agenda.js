@@ -79,7 +79,8 @@
             ? '<div class="ag-media" data-date="' + big + '">' +
                   '<a class="glightbox" data-gallery="' + gid + '" data-title="' + caption + '" href="' + esc(banner) + '">' +
                   '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)"></a>' +
-                  '<span class="ag-datechip">' + big + '</span>' + hiddenBadge + editBtn +
+                  '<span class="ag-datechip">' + big + '</span>' +
+                  '<span class="ag-zoom"><i class="fas fa-search-plus"></i></span>' + hiddenBadge + editBtn +
               '</div>'
             : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + hiddenBadge + editBtn + '</div>';
 

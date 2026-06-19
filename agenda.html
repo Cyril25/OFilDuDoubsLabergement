@@ -62,9 +62,17 @@
         }
         .ag-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
 
-        /* Bandeau visuel (image, ou dégradé + date si pas d'image) */
-        .ag-media { position: relative; height: 160px; flex-shrink: 0; }
-        .ag-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* Visuel carré (affiche montrée en entier), ou dégradé + date si pas d'image */
+        .ag-media { position: relative; aspect-ratio: 1 / 1; flex-shrink: 0; background: #eef1f4; }
+        .ag-media > a.glightbox { display: block; width: 100%; height: 100%; cursor: zoom-in; }
+        .ag-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .ag-zoom {
+            position: absolute; bottom: 8px; right: 8px;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(0,0,0,.55); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .8rem; pointer-events: none;
+        }
         .ag-datechip {
             position: absolute; left: 10px; bottom: 10px;
             background: rgba(0, 95, 141, .92); color: #fff;
@@ -169,7 +177,8 @@
 
         @media (max-width: 560px) {
             .ag-grid { grid-template-columns: 1fr; gap: 14px; }
-            .ag-media { height: 150px; }
+            /* en 1 colonne, on limite la hauteur du visuel carré pour ne pas trop pousser le contenu */
+            .ag-media { aspect-ratio: auto; height: 300px; }
         }
     </style>
 </head>
