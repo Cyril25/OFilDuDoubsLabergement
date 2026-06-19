@@ -41,30 +41,55 @@
         }
         .ag-month:first-child { margin-top: 0; }
 
+        /* Grille de cartes uniformes */
+        .ag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+            margin-bottom: 10px;
+        }
         .ag-card {
             display: flex;
-            gap: 14px;
+            flex-direction: column;
             background: #fff;
             border: 1px solid #e6e9ec;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 4px rgba(0,0,0,.04);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+            transition: transform .15s, box-shadow .15s;
         }
-        .ag-img { flex: 0 0 120px; }
-        .ag-img img { width: 120px; height: 100px; object-fit: cover; border-radius: 8px; display: block; }
-        .ag-body { flex: 1 1 auto; min-width: 0; }
-        .ag-date {
-            color: var(--primary-color); font-weight: 700; font-size: .85rem;
-            margin: 0 0 4px; text-transform: capitalize;
+        .ag-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+
+        /* Bandeau visuel (image, ou dégradé + date si pas d'image) */
+        .ag-media { position: relative; height: 160px; flex-shrink: 0; }
+        .ag-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ag-datechip {
+            position: absolute; left: 10px; bottom: 10px;
+            background: rgba(0, 95, 141, .92); color: #fff;
+            padding: 5px 11px; border-radius: 6px;
+            font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .02em;
         }
-        .ag-date i { margin-right: 5px; }
-        .ag-title { font-size: 1.05rem; margin: 0 0 4px; color: var(--text-color); }
-        .ag-loc { color: #666; font-size: .85rem; margin: 0 0 8px; }
-        .ag-loc i { color: var(--primary-color); }
+        .ag-media--noimg {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+        }
+        .ag-media--noimg i { font-size: 1.7rem; opacity: .8; }
+        .ag-bigdate { font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+
+        .ag-body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 13px 15px 15px; }
+        .ag-when { color: var(--primary-color); font-weight: 700; font-size: .82rem; margin: 0 0 5px; }
+        .ag-when i { margin-right: 5px; }
+        .ag-title { font-size: 1.08rem; margin: 0 0 7px; color: var(--text-color); line-height: 1.25; }
+        .ag-loc { color: #666; font-size: .83rem; margin: 0 0 9px; }
+        .ag-loc i { color: var(--primary-color); margin-right: 3px; }
         .ag-dist { color: #999; }
-        .ag-desc { font-size: .88rem; color: #555; margin: 0 0 10px; }
-        .ag-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .ag-desc {
+            font-size: .86rem; color: #555; margin: 0 0 14px; line-height: 1.45;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .ag-actions { margin-top: auto; display: flex; gap: 8px; }
+        .ag-actions .btn-activity { flex: 1 1 0; justify-content: center; }
 
         .ag-empty { text-align: center; color: #888; padding: 30px 10px; }
 
@@ -85,8 +110,8 @@
         .ag-source { text-align: center; color: #aaa; font-size: .75rem; margin: 14px 0 0; }
 
         @media (max-width: 560px) {
-            .ag-img { flex-basis: 92px; }
-            .ag-img img { width: 92px; height: 80px; }
+            .ag-grid { grid-template-columns: 1fr; gap: 14px; }
+            .ag-media { height: 150px; }
         }
     </style>
 </head>

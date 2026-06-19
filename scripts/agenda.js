@@ -17,24 +17,36 @@
     const monthLabel = (s) => { const t = D(s).toLocaleDateString(locale, { month: 'long', year: 'numeric' }); return t.charAt(0).toUpperCase() + t.slice(1); };
     const today = new Date().toISOString().slice(0, 10);
 
-    function dateLine(e) {
-        const opt = { day: 'numeric', month: 'long' };
+    // Si une image ne charge pas, on bascule la carte sur le bandeau coloré + date
+    window.__agFallback = function (img) {
+        const m = img.parentNode;
+        m.classList.add('ag-media--noimg');
+        m.innerHTML = '<i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + (m.getAttribute('data-date') || '') + '</span>';
+    };
+
+    // Date courte pour le bandeau (ex. "20 JUIN" ou "Aujourd'hui")
+    function bigDate(e) {
+        if (e.next === today) return T.ag_today;
+        return D(e.next).toLocaleDateString(locale, { day: 'numeric', month: 'short' }).replace('.', '').toUpperCase();
+    }
+    // Ligne de date détaillée dans le corps de la carte
+    function whenLine(e) {
         if (e.start === e.end) {
-            if (e.next === today) return '<i class="far fa-clock"></i> ' + T.ag_today;
-            return '<i class="far fa-calendar"></i> ' + D(e.next).toLocaleDateString(locale, opt);
+            const base = D(e.next).toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+            return (e.next === today ? T.ag_today + ' · ' : '') + base;
         }
-        // plage de dates
-        const a = D(e.start).toLocaleDateString(locale, opt);
+        const a = D(e.start).toLocaleDateString(locale, { day: 'numeric', month: 'long' });
         const b = D(e.end).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
-        return '<i class="far fa-calendar"></i> ' + a + ' → ' + b;
+        return a + ' → ' + b;
     }
 
     function card(e) {
         const titre = esc(pickLang(e.title));
         const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(titre + ' ' + (e.city || ''));
-        const img = e.img
-            ? '<div class="ag-img"><img src="' + esc(e.img) + '" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>'
-            : '';
+        const big = esc(bigDate(e));
+        const media = e.img
+            ? '<div class="ag-media" data-date="' + big + '"><img src="' + esc(e.img) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)"><span class="ag-datechip">' + big + '</span></div>'
+            : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span></div>';
         const descTxt = e.desc ? esc(pickLang(e.desc)) : '';
         const desc = descTxt ? '<p class="ag-desc">' + descTxt + '</p>' : '';
         let actions = '';
@@ -43,9 +55,9 @@
 
         return '' +
             '<article class="ag-card">' +
-                img +
+                media +
                 '<div class="ag-body">' +
-                    '<p class="ag-date">' + dateLine(e) + '</p>' +
+                    '<p class="ag-when"><i class="far fa-calendar-alt"></i> ' + esc(whenLine(e)) + '</p>' +
                     '<h3 class="ag-title">' + titre + '</h3>' +
                     '<p class="ag-loc"><i class="fas fa-map-marker-alt"></i> ' + esc(e.city) +
                         ' <span class="ag-dist">· ' + e.dist + ' ' + T.ag_km + '</span></p>' +
@@ -62,12 +74,18 @@
             return;
         }
         const slice = data.events.slice(0, limit);
-        let html = '', currentMonth = '';
+        let html = '', currentMonth = '', open = false;
         slice.forEach(e => {
             const mk = monthKey(e.next);
-            if (mk !== currentMonth) { currentMonth = mk; html += '<h2 class="ag-month">' + monthLabel(e.next) + '</h2>'; }
+            if (mk !== currentMonth) {
+                if (open) html += '</div>';
+                currentMonth = mk;
+                html += '<h2 class="ag-month">' + monthLabel(e.next) + '</h2><div class="ag-grid">';
+                open = true;
+            }
             html += card(e);
         });
+        if (open) html += '</div>';
         list.innerHTML = html;
 
         const moreWrap = document.getElementById('agenda-more-wrap');
