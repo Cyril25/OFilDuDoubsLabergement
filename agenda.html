@@ -141,6 +141,15 @@
         #ag-modal-save { background: var(--primary-color); color: #fff; }
         #ag-modal-cancel { background: #eee; color: #555; }
         .ag-modal-hint { font-size: .78rem; color: #999; margin-top: 4px; }
+        .ag-modal-check { display: flex; align-items: center; gap: 8px; font-weight: 400 !important; font-size: .85rem; margin-top: 14px; cursor: pointer; }
+        .ag-modal-check input { width: auto; }
+
+        .ag-card--hidden { opacity: .5; }
+        .ag-hidden-badge {
+            position: absolute; top: 8px; left: 8px; z-index: 2;
+            background: var(--c-reject, #c62828); color: #fff;
+            padding: 4px 9px; border-radius: 6px; font-size: .75rem; font-weight: 700;
+        }
 
         #agenda-more-wrap { text-align: center; margin: 18px 0 6px; }
         #agenda-more {
@@ -246,6 +255,7 @@
             <label>Affiche 3</label>
             <input type="url" id="ag-modal-g3" placeholder="https://…/image3.jpg">
             <p class="ag-modal-hint">Collez des URL d'images (clic droit → « Copier l'adresse de l'image » sur le site source). Laissez vide pour retirer.</p>
+            <label class="ag-modal-check"><input type="checkbox" id="ag-modal-hidden"> Masquer cet événement (ne pas l'afficher aux visiteurs)</label>
             <div class="ag-modal-actions">
                 <button id="ag-modal-cancel" type="button">Annuler</button>
                 <button id="ag-modal-save" type="button">Enregistrer</button>

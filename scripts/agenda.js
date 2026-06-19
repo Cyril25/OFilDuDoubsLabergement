@@ -69,15 +69,17 @@
         const banner = ov.banner || e.img || null;
         const gallery = (ov.gallery || []).slice(0, 3);
         const gid = 'evt' + String(e.id).replace(/[^a-zA-Z0-9]/g, '');
-        const editBtn = adminMode ? '<button class="ag-edit" data-id="' + esc(String(e.id)) + '" title="Éditer les images"><i class="fas fa-image"></i></button>' : '';
+        const editBtn = adminMode ? '<button class="ag-edit" data-id="' + esc(String(e.id)) + '" title="Éditer les images / masquer"><i class="fas fa-image"></i></button>' : '';
+        const hiddenBadge = (ov.hidden && adminMode) ? '<span class="ag-hidden-badge"><i class="fas fa-eye-slash"></i> Masqué</span>' : '';
+        const cardClass = (ov.hidden && adminMode) ? 'ag-card ag-card--hidden' : 'ag-card';
 
         const media = banner
             ? '<div class="ag-media" data-date="' + big + '">' +
                   '<a class="glightbox" data-gallery="' + gid + '" href="' + esc(banner) + '">' +
                   '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)"></a>' +
-                  '<span class="ag-datechip">' + big + '</span>' + editBtn +
+                  '<span class="ag-datechip">' + big + '</span>' + hiddenBadge + editBtn +
               '</div>'
-            : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + editBtn + '</div>';
+            : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + hiddenBadge + editBtn + '</div>';
 
         const galleryHtml = gallery.length
             ? '<div class="ag-gallery">' + gallery.map(u =>
@@ -92,7 +94,7 @@
         actions += '<a class="btn-activity btn-maps" href="' + mapsUrl + '" target="_blank" rel="noopener"><i class="fas fa-location-arrow"></i> ' + T.ag_maps + '</a>';
 
         return '' +
-            '<article class="ag-card">' +
+            '<article class="' + cardClass + '">' +
                 media +
                 '<div class="ag-body">' +
                     '<p class="ag-when"><i class="far fa-calendar-alt"></i> ' + esc(whenLine(e)) + '</p>' +
@@ -120,7 +122,9 @@
         const up = [], on = [];
         for (const e of data.events) {
             const dur = (Date.parse(e.end) - Date.parse(e.start)) / 86400000;
-            if (!e.recurring && dur > 210) continue;     // permanent (filet de sécurité)
+            if (!e.recurring && dur > 210) continue;                       // permanent (filet de sécurité)
+            const ov = overrides[e.id] || {};
+            if (ov.hidden && !adminMode) continue;                          // masqué : caché aux visiteurs
             (isOngoing(e) ? on : up).push(e);
         }
         up.sort((a, b) => a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist);
@@ -195,6 +199,7 @@
         document.getElementById('ag-modal-g1').value = g[0] || '';
         document.getElementById('ag-modal-g2').value = g[1] || '';
         document.getElementById('ag-modal-g3').value = g[2] || '';
+        document.getElementById('ag-modal-hidden').checked = !!ov.hidden;
         document.getElementById('ag-modal').classList.add('open');
     }
     function closeModal() { document.getElementById('ag-modal').classList.remove('open'); currentEditId = null; }
@@ -234,8 +239,9 @@
             const v = (id) => document.getElementById(id).value.trim();
             const banner = v('ag-modal-banner');
             const gallery = [v('ag-modal-g1'), v('ag-modal-g2'), v('ag-modal-g3')].filter(Boolean);
-            if (banner || gallery.length) {
-                overrides[currentEditId] = Object.assign({}, banner ? { banner } : {}, gallery.length ? { gallery } : {});
+            const hidden = document.getElementById('ag-modal-hidden').checked;
+            if (banner || gallery.length || hidden) {
+                overrides[currentEditId] = Object.assign({}, banner ? { banner } : {}, gallery.length ? { gallery } : {}, hidden ? { hidden: true } : {});
             } else {
                 delete overrides[currentEditId];
             }
