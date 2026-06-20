@@ -10,7 +10,6 @@
     const trucks = {
         montedoro:  { name: "Monte d'Oro Pizza", phone: "0611727122", desc: "ft_desc_montedoro", website: "https://www.montedoro.fr/" },
         maxbiga:    { name: "Max & Biga",        phone: "0766395466", desc: "ft_desc_maxbiga", facebook: "https://www.facebook.com/p/Maxbiga-61561687439893/" },
-        papypizz:   { name: "Papy Pizz'",        phone: "0786658150", desc: "ft_desc_papypizz", website: "https://papy-pizz-longevilles-mont-dor.eatbu.com/?lang=fr" },
         lenomade:   { name: "Le Nomade",         phone: "0788776994", desc: "ft_desc_lenomade", facebook: "https://www.facebook.com/burgertraiteurpaella/?locale=fr_FR" },
         elpirata:   { name: "El Pirata",         phone: "0750656591", desc: "ft_desc_elpirata", facebook: "https://www.facebook.com/ElPirataFoodTruck/?locale=fr_FR" },
         kebabsa:    { name: "Kebab",             phone: "0622922267", desc: "ft_desc_kebabsa" },
@@ -26,8 +25,7 @@
         // Mardi
         [ { t: 'maxbiga', loc: 'Labergement – Parking Fromagerie' } ],
         // Mercredi
-        [ { t: 'papypizz', loc: 'Fourcatier-Maison-Neuve' },
-          { t: 'lenomade', loc: 'Les Hôpitaux-Neufs' },
+        [ { t: 'lenomade', loc: 'Les Hôpitaux-Neufs' },
           { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Jeudi
         [ { t: 'elpirata', loc: 'La Planée' },
@@ -37,15 +35,12 @@
         // Vendredi
         [ { t: 'krckebab', loc: "Labergement – près d'Obertino" },
           { t: 'obardak', loc: 'Labergement – Parking Fromagerie' },
-          { t: 'papypizz', loc: 'La Planée' },
           { t: 'pizzpopotte', loc: 'Vaux-et-Chantegrue' },
           { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Samedi
-        [ { t: 'papypizz', loc: 'Fourcatier-Maison-Neuve' },
-          { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
+        [ { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Dimanche
-        [ { t: 'papypizz', loc: 'Saint-Antoine' },
-          { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ]
+        [ { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ]
     ];
 
     const dayKeys = ['ft_day_mon', 'ft_day_tue', 'ft_day_wed', 'ft_day_thu', 'ft_day_fri', 'ft_day_sat', 'ft_day_sun'];
@@ -130,8 +125,8 @@
 
     // --- Restaurants ---
     const restaurants = [
-        { id: 'escale',    name: "L'escale",               loc: 'Saint-Point-Lac',          phone: '0381696173', website: 'https://restaurant-l-escale.fr',  dist: '~9,5 km / 10 min' },
         { id: 'bistrot',   name: 'Bistrot de Laberge',     loc: 'Labergement-Sainte-Marie', phone: '0381697931', website: 'https://le-bistrot-de-laberge.com', dist: '0–2 min', walk: true },
+        { id: 'escale',    name: "L'escale",               loc: 'Saint-Point-Lac',          phone: '0381696173', website: 'https://restaurant-l-escale.fr',  dist: '~9,5 km / 10 min' },
         { id: 'royal',     name: 'Royal Pizza',            loc: 'Malbuisson',               phone: '0381697403', website: 'https://royal-pizza.fr',          dist: '~4,5 km / 5 min' },
         { id: 'gaulois',   name: 'Le Gaulois',             loc: 'Métabief',                 phone: '0381892129', website: 'https://destination-haut-doubs.com', dist: '~7,5 km / 8 min' },
         { id: 'reflet',    name: 'Le Reflet',              loc: 'Montperreux',              phone: '0381693021', website: 'https://montagnes-du-jura.fr',    dist: '~11 km / 12 min' },
@@ -140,6 +135,7 @@
         { id: 'remise',    name: 'La Remise',              loc: 'Les Villedieu',            phone: '0381692557', website: null,                              dist: '~7,5 km / 8 min' },
         { id: 'boissaude', name: 'La Boissaude',           loc: 'Rochejean',                phone: '0381499072', website: 'https://la-boissaude.fr',        dist: '~10 km / 15 min' },
         { id: 'lelac',     name: 'Le Lac',                 loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' },
+        { id: 'flambee',   name: 'La Flambée',             loc: 'Malbuisson',               phone: '0602098820', website: null,                            dist: '~4,5 km / 5 min' },
         { id: 'petiteechelle', name: 'La Petite Échelle', loc: "Rochejean (Mont d'Or)",    phone: '0642558887', website: 'https://lapetiteechellejura.site', dist: '~16 km / 30 min' },
         { id: 'maisondescimes', name: 'La Maison des Cimes', loc: 'Malbuisson',            phone: null,         website: null,                            dist: '~4,5 km / 5 min' }
     ];

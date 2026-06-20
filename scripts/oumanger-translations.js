@@ -72,6 +72,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Restaurant gastronomique et bistrot du chef Matthias Marc, cuisine au feu de bois.",
         resto_maisondescimes_hours: "Horaires à venir.",
         resto_maisondescimes_notes: "⚠ Ouverture prévue été 2026 (ancien Atelier de Donat).",
+        resto_flambee_cuisine: "Spécialités de braserade et pierrade, plats maison. Ambiance conviviale.",
+        resto_flambee_hours: "Horaires variables selon la saison — pensez à appeler.",
+        resto_flambee_notes: "Petite adresse appréciée au centre de Malbuisson (place de la Poste).",
 
         footer_contact_title: "Nous contacter",
         footer_links_title: "Liens rapides",
@@ -157,6 +160,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Gourmet restaurant and bistro by chef Matthias Marc, wood-fire cooking.",
         resto_maisondescimes_hours: "Opening hours to come.",
         resto_maisondescimes_notes: "⚠ Opening summer 2026 (former Atelier de Donat).",
+        resto_flambee_cuisine: "Braserade and pierrade specialities, homemade dishes. Friendly atmosphere.",
+        resto_flambee_hours: "Hours vary by season — best to call ahead.",
+        resto_flambee_notes: "A well-liked little spot in the centre of Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Contact us",
         footer_links_title: "Quick Links",
@@ -242,6 +248,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Gourmetrestaurant und Bistro von Küchenchef Matthias Marc, Küche über dem Holzfeuer.",
         resto_maisondescimes_hours: "Öffnungszeiten folgen.",
         resto_maisondescimes_notes: "⚠ Eröffnung Sommer 2026 (ehemals Atelier de Donat).",
+        resto_flambee_cuisine: "Spezialitäten: Braserade und Pierrade, hausgemachte Gerichte. Gemütliche Atmosphäre.",
+        resto_flambee_hours: "Öffnungszeiten je nach Saison — am besten anrufen.",
+        resto_flambee_notes: "Beliebte kleine Adresse im Zentrum von Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Kontaktieren Sie uns",
         footer_links_title: "Schnelllinks",
@@ -327,6 +336,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Gastronomisch restaurant en bistro van chef Matthias Marc, bereiding op houtvuur.",
         resto_maisondescimes_hours: "Openingstijden volgen.",
         resto_maisondescimes_notes: "⚠ Opening zomer 2026 (voormalig Atelier de Donat).",
+        resto_flambee_cuisine: "Specialiteiten braserade en pierrade, huisgemaakte gerechten. Gezellige sfeer.",
+        resto_flambee_hours: "Openingstijden variëren per seizoen — bel even.",
+        resto_flambee_notes: "Geliefd adresje in het centrum van Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Neem contact op",
         footer_links_title: "Snelle links",
@@ -412,6 +424,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Restaurante gastronómico y bistró del chef Matthias Marc, cocina al fuego de leña.",
         resto_maisondescimes_hours: "Horarios por confirmar.",
         resto_maisondescimes_notes: "⚠ Apertura prevista verano 2026 (antiguo Atelier de Donat).",
+        resto_flambee_cuisine: "Especialidades de braserade y pierrade, platos caseros. Ambiente acogedor.",
+        resto_flambee_hours: "Horarios según la temporada — mejor llamar.",
+        resto_flambee_notes: "Pequeño local apreciado en el centro de Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Contáctanos",
         footer_links_title: "Enlaces rápidos",
@@ -497,6 +512,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Ristorante gastronomico e bistrot dello chef Matthias Marc, cucina alla brace di legna.",
         resto_maisondescimes_hours: "Orari in arrivo.",
         resto_maisondescimes_notes: "⚠ Apertura prevista estate 2026 (ex Atelier de Donat).",
+        resto_flambee_cuisine: "Specialità braserade e pierrade, piatti fatti in casa. Atmosfera conviviale.",
+        resto_flambee_hours: "Orari variabili secondo la stagione — meglio telefonare.",
+        resto_flambee_notes: "Piccolo indirizzo apprezzato nel centro di Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Contattaci",
         footer_links_title: "Link rapidi",
@@ -582,6 +600,9 @@ const dataTranslations = {
         resto_maisondescimes_cuisine: "Restaurante gastronómico e bistrô do chef Matthias Marc, cozinha em fogo de lenha.",
         resto_maisondescimes_hours: "Horários a anunciar.",
         resto_maisondescimes_notes: "⚠ Abertura prevista para o verão de 2026 (antigo Atelier de Donat).",
+        resto_flambee_cuisine: "Especialidades de braserade e pierrade, pratos caseiros. Ambiente acolhedor.",
+        resto_flambee_hours: "Horários variáveis conforme a estação — é melhor telefonar.",
+        resto_flambee_notes: "Pequeno espaço apreciado no centro de Malbuisson (Place de la Poste).",
 
         footer_contact_title: "Contacte-nos",
         footer_links_title: "Links rápidos",
