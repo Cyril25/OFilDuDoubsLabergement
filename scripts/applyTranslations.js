@@ -26,6 +26,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // 2bis. SOUS-MENUS DÉROULANTS (accordéon sur mobile, survol géré en CSS sur desktop)
+    document.querySelectorAll("#menu-items .sub-toggle").forEach(function (t) {
+        t.addEventListener("click", function (e) {
+            const burger = document.querySelector(".menu-toggle");
+            const isMobile = burger && getComputedStyle(burger).display !== "none";
+            if (isMobile) {
+                e.preventDefault();
+                this.parentNode.classList.toggle("open");
+            } else if (this.getAttribute("href") === "#") {
+                e.preventDefault();
+            }
+        });
+    });
+
     // 3. GESTION DU MENU DÉROULANT LANGUES
     const langLinks = document.querySelectorAll("a[data-lang]");
     langLinks.forEach(link => {
@@ -57,6 +71,7 @@ function applyTranslations(lang, pageTranslations) {
             'activites.html': 'activites',
             'commerces.html': 'commerces',
             'ou-manger.html': 'oumanger',
+            'agenda.html': 'agenda',
             'contact.html': 'contact'
         };
         document.querySelectorAll("#menu-items li a").forEach(link => {
@@ -65,6 +80,11 @@ function applyTranslations(lang, pageTranslations) {
             if (key && menuTranslation[key]) {
                 link.textContent = menuTranslation[key];
             }
+        });
+        // Libellés de groupe (toggles déroulants sans page propre, ex. « Autour de vous »)
+        document.querySelectorAll("#menu-items [data-mkey]").forEach(el => {
+            const k = el.getAttribute('data-mkey');
+            if (menuTranslation[k]) el.textContent = menuTranslation[k];
         });
     }
 

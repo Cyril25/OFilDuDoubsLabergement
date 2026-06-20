@@ -7,6 +7,8 @@ const menuTranslations = {
         activites: "Activités",
         commerces: "Commerces",
         oumanger: "Où manger",
+        agenda: "Agenda",
+        autour: "Autour de vous",
         contact: "Contact"
     },
     en: {
@@ -17,6 +19,8 @@ const menuTranslations = {
         activites: "Activities",
         commerces: "Shops",
         oumanger: "Where to eat",
+        agenda: "Events",
+        autour: "Nearby",
         contact: "Contact"
     },
     de: {
@@ -27,6 +31,8 @@ const menuTranslations = {
         activites: "Aktivitäten",
         commerces: "Geschäfte",
         oumanger: "Wo essen",
+        agenda: "Termine",
+        autour: "In der Umgebung",
         contact: "Kontakt"
     },
     nl: {
@@ -37,6 +43,8 @@ const menuTranslations = {
         activites: "Activiteiten",
         commerces: "Winkels",
         oumanger: "Waar eten",
+        agenda: "Agenda",
+        autour: "In de buurt",
         contact: "Contact"
     },
     es: {
@@ -47,6 +55,8 @@ const menuTranslations = {
         activites: "Actividades",
         commerces: "Comercios",
         oumanger: "Dónde comer",
+        agenda: "Agenda",
+        autour: "Alrededores",
         contact: "Contacto"
     },
     it: {
@@ -57,6 +67,8 @@ const menuTranslations = {
         activites: "Attività",
         commerces: "Negozi",
         oumanger: "Dove mangiare",
+        agenda: "Agenda",
+        autour: "Nei dintorni",
         contact: "Contatto"
     },
     pt: {
@@ -67,6 +79,8 @@ const menuTranslations = {
         activites: "Atividades",
         commerces: "Comércio",
         oumanger: "Onde comer",
+        agenda: "Agenda",
+        autour: "Nos arredores",
         contact: "Contacto"
     }
 };
