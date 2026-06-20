@@ -141,8 +141,8 @@
         up.sort((a, b) => a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist);
         on.sort((a, b) => a.end < b.end ? -1 : a.end > b.end ? 1 : a.dist - b.dist);
 
-        // Section "À venir"
-        const slice = up.slice(0, limit);
+        // Section "À venir" (tout affiché, sans pagination pour ne rien rater)
+        const slice = up;
         let html = '', currentMonth = '', openGrid = false;
         slice.forEach(e => {
             const mk = monthKey(e.next);
@@ -158,12 +158,7 @@
         list.innerHTML = html || '<p class="ag-empty">' + T.ag_empty + '</p>';
 
         const moreWrap = document.getElementById('agenda-more-wrap');
-        if (limit < up.length) {
-            moreWrap.style.display = '';
-            document.getElementById('agenda-more').textContent = T.ag_more + ' (' + (up.length - limit) + ')';
-        } else {
-            moreWrap.style.display = 'none';
-        }
+        if (moreWrap) moreWrap.style.display = 'none';   // plus de pagination : tout est affiché
 
         // Section "En ce moment / toute la saison"
         const onWrap = document.getElementById('agenda-ongoing');
