@@ -118,6 +118,46 @@
             '</article>';
     }
 
+    // Données structurées Event (SEO) — en français (langue indexée), événements à venir
+    function injectEventSchema() {
+        if (!data || !data.events) return;
+        const items = [];
+        for (const e of data.events) {
+            if (items.length >= 80) break;
+            const ov = overrides[e.id] || {};
+            if (ov.hidden) continue;
+            const name = e.title && (e.title.fr || e.title.en);
+            if (!name || !e.start) continue;
+            const ev = {
+                "@type": "Event",
+                "name": name,
+                "startDate": e.start,
+                "endDate": e.end || e.start,
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                    "@type": "Place",
+                    "name": e.city || "Haut-Doubs",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": e.city || "",
+                        "addressRegion": "Bourgogne-Franche-Comté",
+                        "addressCountry": "FR"
+                    }
+                }
+            };
+            const img = ov.banner || e.img;
+            if (img) ev.image = [img];
+            if (e.desc && (e.desc.fr || e.desc.en)) ev.description = (e.desc.fr || e.desc.en);
+            if (e.url) ev.url = e.url;
+            items.push(ev);
+        }
+        if (!items.length) return;
+        let el = document.getElementById('agenda-jsonld');
+        if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'agenda-jsonld'; document.head.appendChild(el); }
+        el.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": items });
+    }
+
     function refreshLightbox() {
         if (!window.GLightbox) return;
         if (glb) { try { glb.destroy(); } catch (e) {} }
@@ -296,6 +336,7 @@
                                 new Date(json.generated).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
                         }
                         render();
+                        injectEventSchema();
                     })
                     .catch(() => {
                         document.getElementById('agenda-list').innerHTML = '<p class="ag-empty">' + T.ag_empty + '</p>';

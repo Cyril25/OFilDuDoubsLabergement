@@ -172,4 +172,38 @@
     }
 
     if (restoList) restoList.innerHTML = restaurants.map(restoCard).join('');
+
+    // Données structurées (SEO) : liste des restaurants + food trucks
+    (function injectFoodSchema() {
+        const items = [];
+        let pos = 1;
+        const tel = (p) => '+33' + p.substring(1);
+        restaurants.forEach(r => {
+            const it = {
+                "@type": "Restaurant",
+                "name": r.name,
+                "address": { "@type": "PostalAddress", "addressLocality": r.loc, "addressRegion": "Bourgogne-Franche-Comté", "addressCountry": "FR" }
+            };
+            if (r.phone) it.telephone = tel(r.phone);
+            if (r.website) it.url = r.website;
+            const cuisine = T['resto_' + r.id + '_cuisine']; if (cuisine) it.description = cuisine;
+            items.push({ "@type": "ListItem", "position": pos++, "item": it });
+        });
+        Object.keys(trucks).forEach(k => {
+            const tr = trucks[k];
+            const it = { "@type": "FoodEstablishment", "name": tr.name, "servesCuisine": "Street food", "areaServed": "Labergement-Sainte-Marie" };
+            if (tr.phone) it.telephone = tel(tr.phone);
+            if (tr.website) it.url = tr.website; else if (tr.facebook) it.sameAs = tr.facebook;
+            items.push({ "@type": "ListItem", "position": pos++, "item": it });
+        });
+        const graph = {
+            "@context": "https://schema.org", "@type": "ItemList",
+            "name": "Restaurants et food trucks autour de Labergement-Sainte-Marie",
+            "itemListElement": items
+        };
+        const el = document.createElement('script');
+        el.type = 'application/ld+json';
+        el.textContent = JSON.stringify(graph);
+        document.head.appendChild(el);
+    })();
 })();

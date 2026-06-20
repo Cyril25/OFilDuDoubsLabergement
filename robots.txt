@@ -1,4 +1,6 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /menage.html
+Disallow: /evolution.html
 
 Sitemap: https://ofildudoubs.fr/sitemap.xml
