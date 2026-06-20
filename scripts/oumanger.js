@@ -139,7 +139,9 @@
         { id: 'fromage',   name: 'Restaurant du Fromage',  loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' },
         { id: 'remise',    name: 'La Remise',              loc: 'Les Villedieu',            phone: '0381692557', website: null,                              dist: '~7,5 km / 8 min' },
         { id: 'boissaude', name: 'La Boissaude',           loc: 'Rochejean',                phone: '0381499072', website: 'https://la-boissaude.fr',        dist: '~10 km / 15 min' },
-        { id: 'lelac',     name: 'Le Lac',                 loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' }
+        { id: 'lelac',     name: 'Le Lac',                 loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' },
+        { id: 'petiteechelle', name: 'La Petite Échelle', loc: "Rochejean (Mont d'Or)",    phone: '0642558887', website: 'https://lapetiteechellejura.site', dist: '~16 km / 30 min' },
+        { id: 'maisondescimes', name: 'La Maison des Cimes', loc: 'Malbuisson',            phone: null,         website: null,                            dist: '~4,5 km / 5 min' }
     ];
 
     const restoList = document.getElementById('resto-list');
@@ -152,7 +154,8 @@
         const warn = note.trim().charAt(0) === '⚠';
         const distIcon = r.walk ? 'fa-walking' : 'fa-car';
 
-        let actions = '<a class="btn-activity btn-maps" href="' + telHref(r.phone) + '"><i class="fas fa-phone"></i> ' + fmtPhone(r.phone) + '</a>';
+        let actions = '';
+        if (r.phone) actions += '<a class="btn-activity btn-maps" href="' + telHref(r.phone) + '"><i class="fas fa-phone"></i> ' + fmtPhone(r.phone) + '</a>';
         if (r.website) {
             actions += '<a class="btn-activity btn-website" href="' + r.website + '" target="_blank" rel="noopener"><i class="fas fa-globe"></i> ' + (T.resto_website || 'Site web') + '</a>';
         }
