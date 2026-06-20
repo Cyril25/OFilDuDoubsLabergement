@@ -120,12 +120,12 @@
         }
         #agenda-admin-btn:hover { background: #555; color: #fff; border-color: #555; }
         #agenda-admin-btn.on { border-color: var(--c-online, #2e7d32); color: #2e7d32; }
-        .ag-edit {
-            position: absolute; top: 8px; right: 8px; z-index: 2;
+        .ag-admin-btns { position: absolute; top: 8px; right: 8px; z-index: 3; display: flex; gap: 6px; }
+        .ag-edit, .ag-hide {
             background: rgba(0,0,0,.6); color: #fff; border: none; border-radius: 6px;
-            padding: 5px 9px; font-size: .8rem; cursor: pointer;
+            padding: 5px 9px; font-size: .8rem; cursor: pointer; line-height: 1;
         }
-        .ag-edit:hover { background: var(--primary-color); }
+        .ag-edit:hover, .ag-hide:hover { background: var(--primary-color); }
 
         /* Fenêtre d'édition */
         #ag-modal {

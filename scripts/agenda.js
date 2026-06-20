@@ -74,7 +74,13 @@
         const thumbsList = thumbs.slice(0, 4);
         const gid = 'evt' + String(e.id).replace(/[^a-zA-Z0-9]/g, '');
         const caption = esc(titre + (e.credit && !ov.banner ? ' — © ' + e.credit : ''));
-        const editBtn = adminMode ? '<button class="ag-edit" data-id="' + esc(String(e.id)) + '" title="Éditer les images / masquer"><i class="fas fa-image"></i></button>' : '';
+        const eid = esc(String(e.id));
+        const adminCtrls = adminMode
+            ? '<div class="ag-admin-btns">' +
+                  '<button class="ag-hide" data-id="' + eid + '" title="' + (ov.hidden ? 'Réafficher' : 'Masquer') + '"><i class="fas ' + (ov.hidden ? 'fa-eye-slash' : 'fa-eye') + '"></i></button>' +
+                  '<button class="ag-edit" data-id="' + eid + '" title="Éditer les images"><i class="fas fa-image"></i></button>' +
+              '</div>'
+            : '';
         const hiddenBadge = (ov.hidden && adminMode) ? '<span class="ag-hidden-badge"><i class="fas fa-eye-slash"></i> Masqué</span>' : '';
         const cardClass = (ov.hidden && adminMode) ? 'ag-card ag-card--hidden' : 'ag-card';
 
@@ -82,9 +88,9 @@
             ? '<div class="ag-media" data-date="' + big + '" data-clickable="1">' +
                   '<img src="' + esc(banner) + '" alt="" loading="lazy" onerror="window.__agFallback&&window.__agFallback(this)">' +
                   '<span class="ag-datechip">' + big + '</span>' +
-                  '<span class="ag-zoom"><i class="fas fa-search-plus"></i></span>' + hiddenBadge + editBtn +
+                  '<span class="ag-zoom"><i class="fas fa-search-plus"></i></span>' + hiddenBadge + adminCtrls +
               '</div>'
-            : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + hiddenBadge + editBtn + '</div>';
+            : '<div class="ag-media ag-media--noimg"><i class="far fa-calendar-alt"></i><span class="ag-bigdate">' + big + '</span>' + hiddenBadge + adminCtrls + '</div>';
 
         const galleryHtml = thumbsList.length
             ? '<div class="ag-gallery">' + thumbsList.map(u =>
@@ -232,7 +238,19 @@
         // Ouvre l'éditeur au clic sur le bouton image d'une carte
         document.addEventListener('click', (ev) => {
             const b = ev.target.closest('.ag-edit');
-            if (b) { ev.preventDefault(); openEditor(b.getAttribute('data-id')); }
+            if (b) { ev.preventDefault(); openEditor(b.getAttribute('data-id')); return; }
+            // Masquer / réafficher en un clic (bouton œil)
+            const h = ev.target.closest('.ag-hide');
+            if (h) {
+                ev.preventDefault();
+                const id = h.getAttribute('data-id');
+                const ov = overrides[id] || {};
+                if (ov.hidden) delete ov.hidden; else ov.hidden = true;
+                if (ov.hidden || ov.banner || (ov.gallery && ov.gallery.length)) overrides[id] = ov;
+                else delete overrides[id];
+                render();
+                saveOverrides().catch(e => alert('Échec de l\'enregistrement : ' + (e.message || e)));
+            }
         });
 
         const save = document.getElementById('ag-modal-save');
@@ -294,7 +312,7 @@
 
         // Clic sur la bannière → ouvre le zoom (via la 1re vignette), sans doublon dans la visionneuse
         document.addEventListener('click', (ev) => {
-            if (ev.target.closest('.ag-edit')) return;
+            if (ev.target.closest('.ag-admin-btns')) return;
             const media = ev.target.closest('.ag-media[data-clickable="1"]');
             if (!media) return;
             const card = media.closest('.ag-card');
