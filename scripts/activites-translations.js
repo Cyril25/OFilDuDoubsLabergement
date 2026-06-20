@@ -71,6 +71,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Balade en chiens de traîneau",
         chiens_traineau_desc: "Activité hivernale incontournable : baptême en traîneau ou initiation à la conduite. Expérience immersive avec les chiens sur un parcours forestier typique.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Ferme pédagogique associative à 930 m d'altitude : chèvres, vaches montbéliardes, cochons, poules… Fromages de chèvre vendus à la boutique et Comté bio. Une visite idéale en famille.",
 
         et_plus_encore_title: "Et plus encore ...",
         et_plus_encore_description: "Découvrez encore plus d'activités et de lieux à explorer en visitant le site de l'office du tourisme de Malbuisson.",
@@ -164,6 +166,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Dog Sledding",
         chiens_traineau_desc: "Must-do winter activity: sled baptism or driving initiation. Immersive experience with the dogs on a typical forest course.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Associative educational farm at 930 m: goats, Montbéliarde cows, pigs, hens… Goat cheeses sold in the farm shop and organic Comté. A great visit for families.",
 
         et_plus_encore_title: "And more ...",
         et_plus_encore_description: "Discover even more activities and places to explore by visiting the Malbuisson tourist office website.",
@@ -256,6 +260,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Hundeschlittenfahrt",
         chiens_traineau_desc: "Unverzichtbare Winteraktivität: Schlittentaufe oder Einführung in das Fahren. Immersives Erlebnis mit den Hunden auf einer typischen Waldstrecke.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Pädagogischer Vereinsbauernhof auf 930 m: Ziegen, Montbéliarde-Kühe, Schweine, Hühner… Ziegenkäse im Hofladen und Bio-Comté. Ein ideales Ausflugsziel für Familien.",
 
         et_plus_encore_title: "Und mehr ...",
         et_plus_encore_description: "Entdecken Sie noch mehr Aktivitäten und Orte, die Sie erkunden können, indem Sie die Website des Tourismusbüros von Malbuisson besuchen.",
@@ -348,6 +354,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Hondensledetocht",
         chiens_traineau_desc: "Onmisbare winteractiviteit: doop met de slee of initiatie tot het mennen. Meeslepende ervaring met de honden op een typisch bospad.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Educatieve boerderij (vereniging) op 930 m: geiten, Montbéliarde-koeien, varkens, kippen… Geitenkaas in de hoevewinkel en biologische Comté. Een ideaal uitje voor gezinnen.",
 
         et_plus_encore_title: "En meer ...",
         et_plus_encore_description: "Ontdek nog meer activiteiten en plaatsen om te verkennen door de website van het toeristenbureau van Malbuisson te bezoeken.",
@@ -440,6 +448,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Paseo en trineo de perros",
         chiens_traineau_desc: "Actividad invernal imprescindible: bautismo en trineo o iniciación a la conducción. Experiencia inmersiva con los perros en un recorrido forestal típico.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Granja educativa asociativa a 930 m: cabras, vacas montbéliardas, cerdos, gallinas… Quesos de cabra en la tienda de la granja y Comté ecológico. Una visita ideal en familia.",
 
         et_plus_encore_title: "Y más ...",
         et_plus_encore_description: "Descubra aún más actividades y lugares para explorar visitando el sitio web de la oficina de turismo de Malbuisson.",
@@ -532,6 +542,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Giro in slitta trainata da cani",
         chiens_traineau_desc: "Attività invernale imperdibile: battesimo in slitta o iniziazione alla guida. Esperienza immersiva con i cani su un tipico percorso forestale.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Fattoria didattica associativa a 930 m: capre, mucche montbéliarde, maiali, galline… Formaggi di capra in vendita nello spaccio e Comté biologico. Una visita ideale per famiglie.",
 
         et_plus_encore_title: "E altro ancora ...",
         et_plus_encore_description: "Scoprite ancora più attività e luoghi da esplorare visitando il sito web dell'ufficio turistico di Malbuisson.",
@@ -624,6 +636,8 @@ const dataTranslations = {
         
         chiens_traineau_title: "Passeio de trenó puxado por cães",
         chiens_traineau_desc: "Atividade de inverno imperdível: batismo de trenó ou iniciação à condução. Experiência imersiva com os cães num percurso florestal típico.",
+        ferme_batailleuse_title: "Ferme de la Batailleuse",
+        ferme_batailleuse_description: "Quinta pedagógica associativa a 930 m: cabras, vacas montbéliardes, porcos, galinhas… Queijos de cabra na loja da quinta e Comté biológico. Uma visita ideal para famílias.",
 
         et_plus_encore_title: "E mais ...",
         et_plus_encore_description: "Descubra ainda mais atividades e lugares para explorar visitando o site do posto de turismo de Malbuisson.",
