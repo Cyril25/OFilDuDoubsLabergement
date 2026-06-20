@@ -71,7 +71,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Cadre d'alpage authentique sur le Mont d'Or, vue exceptionnelle. Possibilité de dormir en yourte.",
         resto_maisondescimes_cuisine: "Restaurant gastronomique et bistrot du chef Matthias Marc, cuisine au feu de bois.",
         resto_maisondescimes_hours: "Horaires à venir.",
-        resto_maisondescimes_notes: "⚠ Ouverture prévue été 2026 (ancien Atelier de Donat). Hôtel, spa et bains nordiques au bord du lac.",
+        resto_maisondescimes_notes: "⚠ Ouverture prévue été 2026 (ancien Atelier de Donat).",
 
         footer_contact_title: "Nous contacter",
         footer_links_title: "Liens rapides",
@@ -156,7 +156,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Authentic alpine-farm setting on Mont d'Or with stunning views. You can even sleep in a yurt.",
         resto_maisondescimes_cuisine: "Gourmet restaurant and bistro by chef Matthias Marc, wood-fire cooking.",
         resto_maisondescimes_hours: "Opening hours to come.",
-        resto_maisondescimes_notes: "⚠ Opening summer 2026 (former Atelier de Donat). Hotel, spa and Nordic baths by the lake.",
+        resto_maisondescimes_notes: "⚠ Opening summer 2026 (former Atelier de Donat).",
 
         footer_contact_title: "Contact us",
         footer_links_title: "Quick Links",
@@ -241,7 +241,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Authentisches Alp-Ambiente am Mont d'Or mit herrlicher Aussicht. Übernachtung in der Jurte möglich.",
         resto_maisondescimes_cuisine: "Gourmetrestaurant und Bistro von Küchenchef Matthias Marc, Küche über dem Holzfeuer.",
         resto_maisondescimes_hours: "Öffnungszeiten folgen.",
-        resto_maisondescimes_notes: "⚠ Eröffnung Sommer 2026 (ehemals Atelier de Donat). Hotel, Spa und Nordic-Bäder am See.",
+        resto_maisondescimes_notes: "⚠ Eröffnung Sommer 2026 (ehemals Atelier de Donat).",
 
         footer_contact_title: "Kontaktieren Sie uns",
         footer_links_title: "Schnelllinks",
@@ -326,7 +326,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Authentieke alpensfeer op de Mont d'Or met prachtig uitzicht. Overnachten in een yurt mogelijk.",
         resto_maisondescimes_cuisine: "Gastronomisch restaurant en bistro van chef Matthias Marc, bereiding op houtvuur.",
         resto_maisondescimes_hours: "Openingstijden volgen.",
-        resto_maisondescimes_notes: "⚠ Opening zomer 2026 (voormalig Atelier de Donat). Hotel, spa en Scandinavische baden aan het meer.",
+        resto_maisondescimes_notes: "⚠ Opening zomer 2026 (voormalig Atelier de Donat).",
 
         footer_contact_title: "Neem contact op",
         footer_links_title: "Snelle links",
@@ -411,7 +411,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Ambiente auténtico de pastos de montaña en el Mont d'Or con vistas excepcionales. Posibilidad de dormir en yurta.",
         resto_maisondescimes_cuisine: "Restaurante gastronómico y bistró del chef Matthias Marc, cocina al fuego de leña.",
         resto_maisondescimes_hours: "Horarios por confirmar.",
-        resto_maisondescimes_notes: "⚠ Apertura prevista verano 2026 (antiguo Atelier de Donat). Hotel, spa y baños nórdicos junto al lago.",
+        resto_maisondescimes_notes: "⚠ Apertura prevista verano 2026 (antiguo Atelier de Donat).",
 
         footer_contact_title: "Contáctanos",
         footer_links_title: "Enlaces rápidos",
@@ -496,7 +496,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Ambiente autentico d'alpeggio sul Mont d'Or con vista eccezionale. Possibilità di dormire in yurta.",
         resto_maisondescimes_cuisine: "Ristorante gastronomico e bistrot dello chef Matthias Marc, cucina alla brace di legna.",
         resto_maisondescimes_hours: "Orari in arrivo.",
-        resto_maisondescimes_notes: "⚠ Apertura prevista estate 2026 (ex Atelier de Donat). Hotel, spa e bagni nordici in riva al lago.",
+        resto_maisondescimes_notes: "⚠ Apertura prevista estate 2026 (ex Atelier de Donat).",
 
         footer_contact_title: "Contattaci",
         footer_links_title: "Link rapidi",
@@ -581,7 +581,7 @@ const dataTranslations = {
         resto_petiteechelle_notes: "Ambiente autêntico de pastagem no Mont d'Or com vista excecional. Possibilidade de dormir numa iurte.",
         resto_maisondescimes_cuisine: "Restaurante gastronómico e bistrô do chef Matthias Marc, cozinha em fogo de lenha.",
         resto_maisondescimes_hours: "Horários a anunciar.",
-        resto_maisondescimes_notes: "⚠ Abertura prevista para o verão de 2026 (antigo Atelier de Donat). Hotel, spa e banhos nórdicos à beira-lago.",
+        resto_maisondescimes_notes: "⚠ Abertura prevista para o verão de 2026 (antigo Atelier de Donat).",
 
         footer_contact_title: "Contacte-nos",
         footer_links_title: "Links rápidos",
