@@ -1,15 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const lang = localStorage.getItem('language') || 'fr';
+    // Mode "statique" : pages pré-générées par langue (SEO multilingue).
+    // Le texte est déjà dans le HTML → on ne (re)traduit pas en JS, et le
+    // sélecteur de langue est composé de vrais liens (pas de hijack JS).
+    const staticMode = document.documentElement.hasAttribute('data-i18n-static');
+    const lang = staticMode
+        ? (document.documentElement.getAttribute('lang') || 'fr')
+        : (localStorage.getItem('language') || 'fr');
+
+    // En mode statique, on mémorise la langue pour les pages dynamiques (agenda, dispo)
+    if (staticMode) { try { localStorage.setItem('language', lang); } catch (e) {} }
 
     // 0. MISE À JOUR DE L'ANNÉE DU COPYRIGHT
     document.querySelectorAll('.copyright-year').forEach(el => {
         el.textContent = new Date().getFullYear();
     });
 
-    // 1. MISE À JOUR VISUELLE DU DRAPEAU ACTUEL
+    // 1. MISE À JOUR VISUELLE DU DRAPEAU ACTUEL (chemin absolu en mode statique pour fonctionner depuis /xx/)
     const currentFlagIcon = document.getElementById("current-flag-icon");
     if (currentFlagIcon) {
-        currentFlagIcon.src = `images/${lang}.png`;
+        currentFlagIcon.src = (staticMode ? '/images/' : 'images/') + lang + '.png';
         currentFlagIcon.alt = lang;
     }
 
@@ -20,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (menuToggle && menuItemsContainer) {
         const newToggle = menuToggle.cloneNode(true);
         menuToggle.parentNode.replaceChild(newToggle, menuToggle);
-        
+
         newToggle.addEventListener("click", function () {
             menuItemsContainer.classList.toggle("active");
         });
@@ -41,21 +50,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 3. GESTION DU MENU DÉROULANT LANGUES
-    const langLinks = document.querySelectorAll("a[data-lang]");
-    langLinks.forEach(link => {
-        link.addEventListener("click", function (event) {
-            event.preventDefault();
-            const selectedLang = this.getAttribute("data-lang");
-            localStorage.setItem("language", selectedLang);
-            location.reload(); 
+    if (!staticMode) {
+        // Pages dynamiques (agenda, dispo) : bascule par JS + rechargement.
+        document.querySelectorAll("a[data-lang]").forEach(link => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                localStorage.setItem("language", this.getAttribute("data-lang"));
+                location.reload();
+            });
         });
-    });
+    }
+    // En mode statique : liens réels générés au build, on laisse la navigation se faire.
 
-    // 4. APPLIQUER LES TRADUCTIONS
-    if (typeof dataTranslations !== 'undefined') {
-        applyTranslations(lang, dataTranslations[lang]);
-    } else {
-        applyTranslations(lang, null);
+    // 4. APPLIQUER LES TRADUCTIONS (uniquement hors mode statique : sinon le texte est déjà rendu)
+    if (!staticMode) {
+        if (typeof dataTranslations !== 'undefined') {
+            applyTranslations(lang, dataTranslations[lang]);
+        } else {
+            applyTranslations(lang, null);
+        }
     }
 });
 

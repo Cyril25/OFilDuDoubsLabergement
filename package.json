@@ -1,0 +1,12 @@
+{
+  "name": "ofildudoubs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site O'Fil du Doubs - outils de build (i18n, agenda)",
+  "scripts": {
+    "build:i18n": "node scripts/build-i18n.js"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0"
+  }
+}

@@ -1,0 +1,46 @@
+name: Générer les pages multilingues
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'                 # pages FR sources (racine uniquement, pas les /xx/ générées)
+      - 'scripts/**'             # traductions, build-i18n.js, applyTranslations.js
+      - '.github/workflows/i18n.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i18n
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Générer les pages multilingues + sitemap
+        run: node scripts/build-i18n.js
+
+      - name: Commit si changement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add en de nl es it pt sitemap.xml index.html logement.html equipements.html commerces.html activites.html ou-manger.html contact.html mentions.html
+          if git diff --cached --quiet; then
+            echo "Aucun changement multilingue."
+          else
+            git commit -m "chore(i18n): regeneration des pages multilingues"
+            git push
+          fi

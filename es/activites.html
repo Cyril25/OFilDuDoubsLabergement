@@ -1,0 +1,971 @@
+<!DOCTYPE html><html lang="es" data-i18n-static=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="Activités - O'Fil du Doubs">
+    <meta property="og:description" content="Découvrez les activités incontournables autour de Labergement-Sainte-Marie.">
+    <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp">
+    <meta property="og:url" content="https://ofildudoubs.fr/es/activites.html">
+    <meta property="og:type" content="website">
+    <meta name="description" content="Que faire dans le Haut-Doubs ? Lac de Remoray, Métabief, Saut du Doubs, fromageries, randonnées et activités nature autour de Labergement-Sainte-Marie.">
+    
+    <title>Activités autour du lac de Remoray et de Métabief | O'Fil du Doubs</title>
+    
+	<link rel="canonical" href="https://ofildudoubs.fr/es/activites.html">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">	
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Playfair+Display:wght@400;700&amp;display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <script src="/scripts/menu-translations.js" defer=""></script>
+    <script src="/scripts/activites-translations.js" defer=""></script>
+    <script src="/scripts/applyTranslations.js" defer=""></script>
+    <script src="/scripts/ui.js" defer=""></script>
+
+    <style>
+        .map-section {
+            width: 100%;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            z-index: 1;
+        }
+        
+        /* Barre de filtres */
+        #custom-filter-bar {
+            width: 100%;
+            margin: 0 auto 10px auto;
+            background: var(--primary-color);
+            border-radius: 8px;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        
+        #custom-filter-panel {
+            width: 100%;
+            margin: 0 auto 20px auto;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        #custom-filter-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .custom-filter-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .custom-filter-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .custom-filter-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 600px) {
+            #map { height: 250px; }
+            #custom-filter-checkboxes { gap: 10px; }
+            .custom-filter-label { font-size: 0.9em; }
+        }
+
+        /* Badges de tags sur les sections d'activités */
+        .activity-tag-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0 14px 0;
+        }
+        .activity-tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 95, 141, 0.08);
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 95, 141, 0.25);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .activity-tag-badge i { font-size: 0.72rem; }
+    </style>
+
+    <link rel="alternate" hreflang="fr" href="https://ofildudoubs.fr/activites.html">
+    <link rel="alternate" hreflang="en" href="https://ofildudoubs.fr/en/activites.html">
+    <link rel="alternate" hreflang="de" href="https://ofildudoubs.fr/de/activites.html">
+    <link rel="alternate" hreflang="nl" href="https://ofildudoubs.fr/nl/activites.html">
+    <link rel="alternate" hreflang="es" href="https://ofildudoubs.fr/es/activites.html">
+    <link rel="alternate" hreflang="it" href="https://ofildudoubs.fr/it/activites.html">
+    <link rel="alternate" hreflang="pt" href="https://ofildudoubs.fr/pt/activites.html">
+    <link rel="alternate" hreflang="x-default" href="https://ofildudoubs.fr/activites.html">
+</head>
+<body>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="/es/index.html">Inicio</a></li>
+            <li class="has-sub">
+                <a href="/es/logement.html" class="sub-toggle">El alojamiento</a>
+                <ul class="submenu">
+                    <li><a href="/es/logement.html">El alojamiento</a></li>
+                    <li><a href="/es/equipements.html">Confort y Equipamiento</a></li>
+                </ul>
+            </li>
+            <li><a href="/dispo.html">Tarifas y Disponibilidad</a></li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="autour">Alrededores</a>
+                <ul class="submenu">
+                    <li><a href="/es/activites.html">Actividades</a></li>
+                    <li><a href="/es/ou-manger.html">Dónde comer</a></li>
+                    <li><a href="/es/commerces.html">Comercios</a></li>
+                    <li><a href="/agenda.html">Agenda</a></li>
+                </ul>
+            </li>
+            <li><a href="/es/contact.html">Contacto</a></li>
+        </ul>
+        
+        <div class="language-dropdown">
+            <button class="dropbtn">
+                <img id="current-flag-icon" src="/images/fr.png" alt="Langue"> 
+                <span class="arrow">▼</span>
+            </button>
+            <div class="dropdown-content">
+                <a href="/activites.html" data-lang="fr"><img src="/images/fr.png" alt="Français"> Français</a>
+                <a href="/en/activites.html" data-lang="en"><img src="/images/en.png" alt="English"> English</a>
+                <a href="/de/activites.html" data-lang="de"><img src="/images/de.png" alt="Deutsch"> Deutsch</a>
+                <a href="/nl/activites.html" data-lang="nl"><img src="/images/nl.png" alt="Nederlands"> Nederlands</a>
+                <a href="/es/activites.html" data-lang="es"><img src="/images/es.png" alt="Español"> Español</a>
+                <a href="/it/activites.html" data-lang="it"><img src="/images/it.png" alt="Italiano"> Italiano</a>
+                <a href="/pt/activites.html" data-lang="pt"><img src="/images/pt.png" alt="Português"> Português</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header2">
+        <h1 id="title">Actividades</h1>
+        <h2 id="subtitle">Descubra los lugares imprescindibles y actividades cercanas</h2>
+    </header>
+
+    <main>
+        <p id="introduction" class="intro-text">Entre lagos majestuosos, paisajes preservados, artesanía local y aventuras al aire libre, nuestra región tiene mucho que ofrecer. Descubra nuestra selección de 25 actividades imprescindibles alrededor del alojamiento.</p>
+
+        <div id="custom-filter-bar">
+            <span id="custom-filter-label">Filtrer la carte et la liste</span>
+            <span id="custom-filter-selected">Tous</span>
+        </div>
+        
+        <div id="custom-filter-panel" style="display:none;">
+            <div id="custom-filter-checkboxes"></div>
+            <div style="margin-top:10px; display:flex; gap:10px;">
+                <button id="custom-filter-all" class="custom-filter-btn">Tout cocher</button>
+                <button id="custom-filter-none" class="custom-filter-btn">Tout décocher</button>
+            </div>
+        </div>
+
+        <div class="map-section">
+            <div id="map"></div>
+        </div>
+
+        <section class="room" data-tags="randonnée nature baignade">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="lac_remoray_title">Lago de Remoray</h2>
+                    <p id="lac_remoray_description">Reserva natural protegida, ideal para paseos, observación de aves y momentos de tranquilidad junto al agua.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (1 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 3 min</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 13 min</span>
+                        </div>
+                        <a href="https://www.maisondelareserve.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://maps.app.goo.gl/cPB7PDkhW5rS7iLY8" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/lac-remoray.webp" alt="Lac de Remoray" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée nature visite">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="maison_reserve_title">La Maison de la Réserve</h2>
+                    <p id="maison_reserve_description">Un lugar dedicado al descubrimiento de la fauna y flora locales, perfecto para los amantes de la naturaleza. Exposiciones, senderos y actividades educativas le esperan.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 2 min (1 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 4 min</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 14 min</span>
+                        </div>
+                        <a href="https://www.maisondelareserve.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Maison+de+la+Reserve&amp;query_place_id=ChIJkVSIDwGvjUcRMV9EfH3TuGI" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/maison-reserve.webp" alt="Maison de la Réserve" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée artisanat visite">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="fonderie_cloches_title">Fundición de Campanas Obertino</h2>
+                    <p id="fonderie_cloches_description">Descubra el arte de la fabricación de campanas en esta fundición de renombre. Las visitas guiadas permiten explorar esta artesanía tradicional.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (1 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 3 min</span>
+							<span class="t-badge"><i class="fas fa-walking"></i> 10 min</span>
+                        </div>
+                        <a href="https://obertino.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Fonderie+Obertino&amp;query_place_id=ChIJX-gPGLOvjUcRmYOMH5HW23Q" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/fonderie-cloches.webp" alt="Fonderie de cloches Obertino" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée patrimoine visite">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="chateau_joux_title">Castillo de Joux</h2>
+                    <p id="chateau_joux_description">Una fortaleza medieval con una vista panorámica y visitas guiadas que recorren mil años de historia.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 15 min (12 km)</span>
+                        </div>
+                        <a href="https://chateaudejoux.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Chateau+de+Joux&amp;query_place_id=ChIJeUbSwXm7jUcRkPUGzehBd28" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/chateau-joux.webp" alt="Château de Joux" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée terroir visite intérieur">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="fort_saint_antoine_title">Fuerte Saint-Antoine</h2>
+                    <p id="fort_saint_antoine_description">Un lugar único de maduración del queso Comté, visítelo para descubrir los secretos de fabricación de este queso excepcional.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (8 km)</span>
+                        </div>
+                        <a href="https://www.comte-petite.com/visiter-le-fort/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Fort+Saint+Antoine&amp;query_place_id=ChIJY0PuURSwjUcRkudlK3GjO74" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/fort-saint-antoine.webp" alt="Fort Saint-Antoine" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="randonnée nature loisirs sport">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="station_metabief_title">Estación de Métabief</h2>
+                    <p id="station_metabief_description">Actividades de invierno (esquí, raquetas) y de verano (bicicleta de montaña, trineo, senderismo) para los amantes de la naturaleza y las emociones fuertes.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (8 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 35 min (VTT)</span>
+                        </div>
+                        <a href="https://www.destination-haut-doubs.com/metabief.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Station+Metabief&amp;query_place_id=ChIJE7M4Cv-wjUcRJzH9VdpGpMA" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/metabief.jpg" alt="Station de Métabief" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="randonnée nature">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="source_bleue_title">Fuente Azul</h2>
+                    <p id="source_bleue_description">Un agradable paseo corto que conduce a un manantial natural enclavado en la vegetación. Un lugar tranquilo para relajarse y disfrutar de la naturaleza, accesible desde Malbuisson.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 7 min (Parking)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 15 min (Balade)</span>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Source+Bleue&amp;query_place_id=ChIJKT-5hau6jUcRznAlLo00vI8" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/source-bleue.webp" alt="Source Bleue" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="famille nature loisirs">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="luge_rails_title">Trineo sobre raíles</h2>
+                    <p id="luge_rails_description">Una actividad divertida para toda la familia en Métabief. Deslícese por las pendientes con total seguridad sobre raíles, ¡sensaciones garantizadas!</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (8 km)</span>
+                        </div>
+                        <a href="https://www.station-metabief.com/fr/luge-sur-rails-metabief" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Luge+sur+Rails+Metabief&amp;query_place_id=ChIJRSfz2MSxjUcRGNhIrZEtyNQ" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/metabief-luge.webp" alt="Luge sur rails" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="loisirs nature famille sport">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="accrobranche_metabief_title">Arborismo en Métabief</h2>
+                    <p id="accrobranche_metabief_description">Recorridos de aventura en los árboles con diferentes niveles para grandes y pequeños. Emociones garantizadas en el corazón del bosque de Métabief.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (8 km)</span>
+                        </div>
+                        <a href="http://www.metabiefaventures.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Metabief+Aventures&amp;query_place_id=ChIJf16yaa2xjUcRLrqP2UpKQBU" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/metabief-aventure.webp" alt="Accrobranche Métabief" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="randonnée nature baignade panorama">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="lac_saint_point_title">Lago Saint-Point</h2>
+                    <p id="lac_saint_point_description">El tercer lago natural más grande de Francia, ideal para nadar, caminar, andar en bicicleta y actividades acuáticas. Muchos accesos desde Malbuisson, Saint-Point y Labergement.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 5 min (4 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 15 min</span>
+                        </div>
+                        <a href="https://www.destination-haut-doubs.com/malbuisson-les-lacs.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Lac+Saint+Point&amp;query_place_id=ChIJKU_MFk6ljUcRg9t9nERigFs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/lac-saint-point.webp" alt="Lac Saint-Point" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée terroir visite patrimoine intérieur">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="distillerie_guy_title">Destilería Guy</h2>
+                    <p id="distillerie_guy_description">Visite la última destilería artesanal de absenta en Pontarlier. Descubra la historia de esta bebida icónica y pruebe productos típicos del Haut-Doubs.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 22 min (20 km)</span>
+                        </div>
+                        <a href="http://www.distillerieguy.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Distillerie+Guy&amp;query_place_id=ChIJr3kwJ-q8jUcRw_4CK37cNlw" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/distillerie-guy.webp" alt="Distillerie Guy" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="musée patrimoine visite intérieur">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="maison_michaud_title">Maison Michaud</h2>
+                    <p id="maison_michaud_description">Sumérjase en la vida rural de antaño en esta granja del Franco Condado convertida en ecomuseo. Eventos durante todo el año.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 24 min (24 km)</span>
+                        </div>
+                        <a href="http://ecomusee-jura.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Maison+Michaud&amp;query_place_id=ChIJOe60MKpVjEcR0Oj8Lt8DsuM" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/maison-michaud.webp" alt="Maison Michaud" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 1. Le Saut du Doubs -->
+        <section class="room" data-tags="nature randonnée visite">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="saut_doubs_title">El Salto del Doubs</h2>
+                    <p id="saut_doubs_desc">Una espectacular cascada de 27 metros situada en una garganta estrecha. Acceso en barco o por un sendero panorámico. Impresionante en primavera o después de las lluvias.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 1h10 (55 km)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> Balade sur place</span>
+                        </div>
+                        <a href="http://www.sautdudoubs.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Parking+Du+Saut+Du+Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/saut-du-doubs.webp" alt="Saut du Doubs" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 2. Source du Doubs -->
+        <section class="room" data-tags="nature randonnée">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="source_doubs_title">Fuente del Doubs (Mouthe)</h2>
+                    <p id="source_doubs_desc">El nacimiento del río Doubs en una cueva fría y húmeda. Pequeño paseo sencillo alrededor de la fuente. Ambiente muy fotogénico, especialmente en invierno cuando se congela.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 15 min (13 km)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> Balade 30 min</span>
+                        </div>
+                        <a href="https://www.destination-haut-doubs.com/val-de-mouthe.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Station+de+la+Source+du+Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/source-du-doubs.webp" alt="Source du Doubs" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="randonnée nature panorama">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="mont_dor_title">Mont d’Or</h2>
+                    <p id="mont_dor_description">El punto más alto del Doubs. Panorama espectacular de los Alpes desde la cima. Accesible a pie desde Métabief.</p>
+                    
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 21 min (12 km)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> Rando depuis Métabief</span>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Mont+d+Or&amp;query_place_id=ChIJp4nuqHyxjUcRoMDuPnielHM" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/mont-dor.webp" alt="Mont d’Or" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 4. Belvédère des 2 Lacs -->
+        <section class="room" data-tags="panorama nature">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="belvedere_2lacs_title">Mirador de los 2 Lagos</h2>
+                    <p id="belvedere_2lacs_desc">Vista despejada de los lagos de Remoray y Saint-Point desde un promontorio de fácil acceso. Ideal para fotos, picnic rápido o puestas de sol.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 2 min</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 20 min (montée)</span>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Parking+du+Belv%C3%A9d%C3%A8re+des+deux+lacs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/belvedere-2-lacs.webp" alt="Belvédère des deux lacs" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 5. Réserve naturelle du Lac de Remoray -->
+        <section class="room" data-tags="nature randonnée famille">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="reserve_remoray_title">Reserva natural del Lago de Remoray</h2>
+                    <p id="reserve_remoray_desc">Reserva protegida que alberga aves raras, libélulas y orquídeas. Varios senderos suaves permiten explorar este sitio tranquilo y preservado.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (2 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 8 min</span>
+                        </div>
+                        <a href="https://www.maisondelareserve.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Maison+de+la+R%C3%A9serve+Lac+de+Remoray" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/reserve-lac-remoray.webp" alt="Réserve naturelle" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 6. Le Rucher des Deux Lacs -->
+        <section class="room" data-tags="terroir artisanat famille intérieur">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="rucher_title">El Colmenar de los Dos Lagos</h2>
+                    <p id="rucher_desc">Producción local de miel y productos derivados. Posibilidad de charlar sobre apicultura y comprar miel verdadera del Alto Doubs.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 4 min (2.6 km)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 35 min</span>
+                        </div>
+                        <a href="https://www.lerucherdes2lacs.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Le+Rucher+des+2+Lacs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/rucher-des-2-lacs.webp" alt="Rucher des deux lacs" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 7. Fromagerie du Mont d’Or -->
+        <section class="room" data-tags="terroir visite intérieur">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="fromagerie_montdor_title">Quesería del Mont d’Or</h2>
+                    <p id="fromagerie_montdor_desc">Quesería tradicional que produce el Mont d’Or DOP. Según la hora, vista de las cubas o el envasado. Tienda de quesos completa.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (9 km)</span>
+                        </div>
+                        <a href="https://www.fromagerie-mont-dor.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Sancey+Richard+Fromagerie+Du+Mont+d%27Or&amp;query_place_id=ChIJofrpLViwjUcRiNU9G9HeBBk" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/fromagerie-mont-dor.webp" alt="Fromagerie du Mont d'Or" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 8. Distillerie Les Fils d’Émile Pernot -->
+        <section class="room" data-tags="terroir visite patrimoine intérieur">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="distillerie_pernot_title">Destilería Émile Pernot</h2>
+                    <p id="distillerie_pernot_desc">Destilería histórica, conocida por su absenta. Visita guiada muy instructiva, seguida de una degustación de especialidades locales.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 30 min (25 km)</span>
+                        </div>
+                        <a href="https://www.emilepernot.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Distillerie+Les+Fils+d%27Emile+Pernot" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/distillerie-emile-pernot.webp" alt="Distillerie Pernot" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 9. Base nautique de Malbuisson -->
+        <section class="room" data-tags="sport loisirs famille baignade">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="base_nautique_title">Base náutica de Malbuisson</h2>
+                    <p id="base_nautique_desc">Espacio dedicado a actividades acuáticas: paddle, hidropedal, vela, kayak. Alquiler de material en temporada. Ambiente relajado junto al lago.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 6 min (4 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 15 min</span>
+                        </div>
+                        <a href="https://www.malbuisson-les-lacs.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Le+Sunset+Malbuisson+Base+nautique" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/base-nautique-malbuisson.webp" alt="Base nautique" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 10. Location VTT électrique -->
+        <section class="room" data-tags="sport loisirs nature">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="vtt_elec_title">Alquiler BTT eléctrica</h2>
+                    <p id="vtt_elec_desc">Varias empresas de alquiler permiten explorar los senderos del Mont-d’Or en BTT eléctrica. Terreno variado tanto para deportistas como para principiantes.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 10 min (10 km)</span>
+                        </div>
+                        <a href="https://www.tourisme-metabief.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Adr%C3%A9naline+Metabief&amp;query_place_id=ChIJgYbPhP2xjUcRdRoW5W-KtfQ" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/location-vtt-electrique.webp" alt="VTT électrique" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 11. Pêche en Rivière -->
+        <section class="room" data-tags="nature calme loisirs">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="peche_truite_title">Pesca en Río (Trucha)</h2>
+                    <p id="peche_truite_desc">El Doubs ofrece hermosos tramos para la trucha común en el río. Agua clara, sectores tranquilos, ideal para pescadores principiantes o confirmados.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-walking"></i> Accès direct rivière</span>
+                        </div>
+                        <a href="https://www.cartedepeche.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=P%C3%AAche+%C3%A0+la+Truite+dans+le+Haut-Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/peche-lac-saint-point.jpg" alt="Pêche" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 12. Spa Les Rives Sauvages -->
+        <section class="room" data-tags="loisirs détente intérieur">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="spa_rives_title">Spa Les Rives Sauvages</h2>
+                    <p id="spa_rives_desc">Spa premium con piscina panorámica, sauna, hammam y tratamientos. Vista impresionante sobre el lago.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 6 min (4 km)</span>
+                        </div>
+                        <a href="https://www.rives-sauvages.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=H%C3%B4tel+SPA+Les+Rives+Sauvages&amp;query_place_id=ChIJ2254jPCvjUcRrmjRlIzsNy0" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/spa-rives-sauvages.webp" alt="Spa Rives Sauvages" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <!-- 13. Chiens de traîneau -->
+        <section class="room" data-tags="nature famille loisirs">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="chiens_traineau_title">Paseo en trineo de perros</h2>
+                    <p id="chiens_traineau_desc">Actividad invernal imprescindible: bautismo en trineo o iniciación a la conducción. Experiencia inmersiva con los perros en un recorrido forestal típico.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 30 min (25 km)</span>
+                        </div>
+                        <a href="https://equipages-adams.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Les+%C3%89quipages+Adam%27s" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/chiens-de-traineau-adams.jpg" alt="Chiens de traîneau" class="room-image" loading="lazy">
+            </div>
+        </section>
+
+        <section class="room" data-tags="terroir famille visite">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="ferme_batailleuse_title">Ferme de la Batailleuse</h2>
+                    <p id="ferme_batailleuse_description">Granja educativa asociativa a 930 m: cabras, vacas montbéliardas, cerdos, gallinas… Quesos de cabra en la tienda de la granja y Comté ecológico. Una visita ideal en familia.</p>
+
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 8 min (5 km)</span>
+                        </div>
+                        <a href="https://claj-batailleuse.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Sitio oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.74487745865667,6.2827798423272245" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Cómo llegar</span></a>
+                    </div>
+                </div>
+                <img src="/images/ferme-batailleuse.jpg" alt="Ferme de la Batailleuse" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="">
+            <div class="room-content">
+                <div class="room-text" style="width: 100%; text-align: center;">
+                    <h2 id="et_plus_encore_title">Y más ...</h2>
+                    <p id="et_plus_encore_description">Descubra aún más actividades y lugares para explorar visitando el sitio web de la oficina de turismo de Malbuisson.</p>
+                    <a href="https://www.destination-haut-doubs.com/visites-decouvertes.html" target="_blank" style="color: var(--primary-color); font-weight: bold;">Visitez le site de l'office du tourisme</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+	<footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Contáctanos</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="/es/contact.html" id="footer_contact_form">Formulario de contacto</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Enlaces rápidos</h3>
+                <a href="/es/index.html" id="footer_link_home">Inicio</a>
+                <a href="/dispo.html" id="footer_link_rates">Tarifas y Disponibilidad</a>
+                <a href="/es/activites.html" id="footer_link_activities">Actividades</a>
+                <a href="/es/mentions.html" id="footer_link_legal">Aviso legal</a> </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Reservar en Airbnb</h3>
+                <p id="footer_airbnb_text">Lee nuestras reseñas y reserva con seguridad.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+                <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&amp;sid=9ec07d920783404e24ab32215d33bb1c&amp;dist=0&amp;keep_landing=1&amp;sb_price_type=total&amp;type=total&amp;chal_t=1765790180198&amp;force_referer=" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fas fa-hotel"></i> Page Booking
+                </a>
+            </div>
+
+            <div class="footer-col">
+                <img src="/images/traveller-review-awards-2026.png" alt="Traveller Review Awards 2026" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">Todos los derechos reservados</span></p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialisation de la carte
+        var map = L.map('map', { scrollWheelZoom: false }).setView([46.7750, 6.3039], 12);
+
+        // Gestion du zoom molette (seulement avec Ctrl)
+        map.getContainer().addEventListener('wheel', function(e) {
+            if (e.ctrlKey) { map.scrollWheelZoom.enable(); } 
+            else { map.scrollWheelZoom.disable(); }
+        });
+        map.on('mouseout', function() { map.scrollWheelZoom.disable(); });
+
+        // Fond de carte
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CartoDB',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Contours du Doubs
+        fetch('data/doubs.geojson')
+            .then(res => res.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: { color: "#ff7800", weight: 2, opacity: 0.6 }
+                }).addTo(map);
+            });
+
+        // Gestion des Marqueurs
+        var allMarkers = [];
+        function coloredIcon(hueClass) {
+            const iconUrls = {
+                blue: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                red: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                green: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                orange: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png'
+            };
+            return new L.Icon({
+                iconUrl: iconUrls[hueClass],
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+        }
+
+        function addTaggedMarker(lat, lng, label, tags, hueClass, gmapsUrl, sectionId) {
+            var marker = L.marker([lat, lng], { icon: coloredIcon(hueClass), tags: tags });
+            var popupContent = '<b>' + label + '</b>';
+            if (!tags.includes('vous')) {
+                var plainLabel = label.replace(/<[^>]*>/g, '').trim();
+                var mapsUrl = gmapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(plainLabel));
+                popupContent += '<br><a href="' + mapsUrl + '" target="_blank" rel="noopener"'
+                    + ' style="display:inline-block;margin-top:6px;font-size:0.82em;color:#1a73e8;text-decoration:none;">'
+                    + '&#x1F4CD; Ouvrir dans Google Maps</a>';
+                if (sectionId) {
+                    popupContent += '<br><a href="#' + sectionId + '" onclick="map.closePopup()"'
+                        + ' style="display:inline-block;margin-top:4px;font-size:0.82em;color:#2e7d32;text-decoration:none;">'
+                        + '&#x1F4CB; Voir la fiche</a>';
+                }
+            }
+            marker.bindPopup(popupContent);
+            marker.addTo(map);
+            allMarkers.push(marker);
+        }
+
+        // --- AJOUT DES POINTS ---
+        addTaggedMarker(46.768914, 6.280725, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'red');
+
+        // Activités
+        addTaggedMarker(46.770527637007895, 6.269824982803603, "Lac de Remoray", ['nature', 'randonnée', 'baignade'], 'green', 'https://maps.app.goo.gl/cPB7PDkhW5rS7iLY8', 'lac_remoray_title');
+        addTaggedMarker(46.76881524697742, 6.276171127712943, "La Maison de la Réserve", ['nature', 'visite', 'musée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Maison+de+la+Reserve&query_place_id=ChIJkVSIDwGvjUcRMV9EfH3TuGI', 'maison_reserve_title');
+        addTaggedMarker(46.77061883932468, 6.279467100000001, "Fonderie de Cloches Obertino", ['artisanat', 'visite', 'musée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Fonderie+Obertino&query_place_id=ChIJX-gPGLOvjUcRmYOMH5HW23Q', 'fonderie_cloches_title');
+        addTaggedMarker(46.87192615888924, 6.372001800000001, "Château de Joux", ['patrimoine', 'visite', 'musée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Chateau+de+Joux&query_place_id=ChIJeUbSwXm7jUcRkPUGzehBd28', 'chateau_joux_title');
+        addTaggedMarker(46.788646392045784, 6.331945128834878, "Fort Saint-Antoine", ['terroir', 'visite', 'musée', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Fort+Saint+Antoine&query_place_id=ChIJY0PuURSwjUcRkudlK3GjO74', 'fort_saint_antoine_title');
+        addTaggedMarker(46.76845219469759, 6.356981544174395, "Station de Métabief", ['nature', 'randonnée', 'sport', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Station+Metabief&query_place_id=ChIJE7M4Cv-wjUcRJzH9VdpGpMA', 'station_metabief_title');
+        addTaggedMarker(46.81067488289089, 6.32231366923565, "Source Bleue", ['nature', 'randonnée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Source+Bleue&query_place_id=ChIJKT-5hau6jUcRznAlLo00vI8', 'source_bleue_title');
+        addTaggedMarker(46.80259538836122, 6.304919815611472, "Lac Saint-Point", ['nature', 'randonnée', 'panorama', 'baignade'], 'green', 'https://www.google.com/maps/search/?api=1&query=Lac+Saint+Point&query_place_id=ChIJKU_MFk6ljUcRg9t9nERigFs', 'lac_saint_point_title');
+        addTaggedMarker(46.90613515276898, 6.364507557669758, "Distillerie Guy", ['terroir', 'visite', 'musée', 'patrimoine', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Distillerie+Guy&query_place_id=ChIJr3kwJ-q8jUcRw_4CK37cNlw', 'distillerie_guy_title');
+        addTaggedMarker(46.629624574574905, 6.140704284660481, "Maison Michaud", ['patrimoine', 'visite', 'musée', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Maison+Michaud&query_place_id=ChIJOe60MKpVjEcR0Oj8Lt8DsuM', 'maison_michaud_title');
+        addTaggedMarker(46.73503617312605, 6.3517159796611615, "Mont d'Or", ['nature', 'randonnée', 'panorama'], 'green', 'https://www.google.com/maps/search/?api=1&query=Mont+d+Or&query_place_id=ChIJp4nuqHyxjUcRoMDuPnielHM', 'mont_dor_title');
+        addTaggedMarker(46.767099256711525, 6.357687671165121, "Luge sur Rails", ['famille', 'nature', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Luge+sur+Rails+Metabief&query_place_id=ChIJRSfz2MSxjUcRGNhIrZEtyNQ', 'luge_rails_title');
+        addTaggedMarker(46.76320836207209, 6.347980915339516, "Accrobranche Métabief", ['famille', 'nature', 'sport', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Metabief+Aventures&query_place_id=ChIJf16yaa2xjUcRLrqP2UpKQBU', 'accrobranche_metabief_title');
+        addTaggedMarker(47.087679230832705, 6.712041785030429, "Saut du Doubs", ['nature', 'randonnée', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=Parking+Du+Saut+Du+Doubs', 'saut_doubs_title');
+        addTaggedMarker(46.70489822756042, 6.209188888326366, "Source du Doubs", ['nature', 'randonnée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Station+de+la+Source+du+Doubs', 'source_doubs_title');
+        addTaggedMarker(46.75572672582575, 6.253160943595951, "Belvédère des 2 Lacs", ['panorama', 'nature'], 'green', 'https://www.google.com/maps/search/?api=1&query=Parking+du+Belv%C3%A9d%C3%A8re+des+deux+lacs', 'belvedere_2lacs_title');
+        addTaggedMarker(46.76876086794902, 6.274985942166348, "Réserve du Lac de Remoray", ['nature', 'randonnée', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=Maison+de+la+R%C3%A9serve+Lac+de+Remoray', 'reserve_remoray_title');
+        addTaggedMarker(46.788584108182484, 6.274083788751302, "Le Rucher des Deux Lacs", ['terroir', 'artisanat', 'famille', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Le+Rucher+des+2+Lacs', 'rucher_title');
+        addTaggedMarker(46.775981182590385, 6.3548824591672926, "Fromagerie du Mont d'Or", ['terroir', 'visite', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Sancey+Richard+Fromagerie+Du+Mont+d%27Or&query_place_id=ChIJofrpLViwjUcRiNU9G9HeBBk', 'fromagerie_montdor_title');
+        addTaggedMarker(46.872050370627136, 6.378350004513328, "Distillerie Émile Pernot", ['terroir', 'visite', 'patrimoine', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Distillerie+Les+Fils+d%27Emile+Pernot', 'distillerie_pernot_title');
+        addTaggedMarker(46.80231152129973, 6.304965033113403, "Base Nautique Malbuisson", ['sport', 'loisirs', 'baignade', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=Le+Sunset+Malbuisson+Base+nautique', 'base_nautique_title');
+        addTaggedMarker(46.76973292308771, 6.3569430604607104, "Location VTT Électrique", ['sport', 'loisirs', 'nature'], 'green', 'https://www.google.com/maps/search/?api=1&query=Adr%C3%A9naline+Metabief&query_place_id=ChIJgYbPhP2xjUcRdRoW5W-KtfQ', 'vtt_elec_title');
+        addTaggedMarker(46.745565, 6.294245, "Pêche à la truite dans le Haut-Doubs", ['nature', 'calme', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=P%C3%AAche+%C3%A0+la+Truite+dans+le+Haut-Doubs', 'peche_truite_title');
+        addTaggedMarker(46.79989515812192, 6.303733579018695, "Spa Les Rives Sauvages", ['détente', 'loisirs', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=H%C3%B4tel+SPA+Les+Rives+Sauvages&query_place_id=ChIJ2254jPCvjUcRrmjRlIzsNy0', 'spa_rives_title');
+        addTaggedMarker(46.633898279912316, 6.139186351525209, "Chiens de Traîneau (Adam's)", ['nature', 'famille', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Les+%C3%89quipages+Adam%27s', 'chiens_traineau_title');
+        addTaggedMarker(46.74487745865667, 6.2827798423272245, "Ferme de la Batailleuse", ['terroir', 'famille', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.74487745865667,6.2827798423272245', 'ferme_batailleuse_title');
+
+        // --- FILTRES ---
+        var tags = [
+            { tag: "nature", name: "Nature" },
+            { tag: "randonnée", name: "Randonnée" },
+            { tag: "loisirs", name: "Loisirs" },
+            { tag: "visite", name: "Visite" },
+            { tag: "artisanat", name: "Artisanat" },
+            { tag: "patrimoine", name: "Patrimoine" },
+            { tag: "terroir", name: "Terroir" },
+            { tag: "sport", name: "Sport" },
+            { tag: "panorama", name: "Panorama" },
+            { tag: "famille", name: "Famille" },
+            { tag: "baignade", name: "Baignade" },
+            { tag: "musée", name: "Musée" },
+            { tag: "intérieur", name: "Intérieur" }
+        ];
+
+        function updateCustomFilterPanel() {
+            var html = tags.map(t => `
+                <label class="custom-filter-label">
+                    <input type="checkbox" class="custom-filter-checkbox" value="${t.tag}" checked> ${t.name}
+                </label>
+            `).join('');
+            document.getElementById('custom-filter-checkboxes').innerHTML = html;
+        }
+        updateCustomFilterPanel();
+
+        // Gestionnaire d'ouverture du panneau
+        const filterBar = document.getElementById('custom-filter-bar');
+        const filterPanel = document.getElementById('custom-filter-panel');
+        filterBar.onclick = function() {
+            filterPanel.style.display = (filterPanel.style.display === 'none' || filterPanel.style.display === '') ? 'block' : 'none';
+        };
+
+        // Boutons Tout cocher / Tout décocher
+        document.getElementById('custom-filter-all').onclick = function(e) {
+            e.preventDefault();
+            filterPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+            applyCustomFilter();
+        };
+        document.getElementById('custom-filter-none').onclick = function(e) {
+            e.preventDefault();
+            filterPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            applyCustomFilter();
+        };
+
+        filterPanel.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') applyCustomFilter();
+        });
+
+        function getSelectedTags() {
+            return Array.from(filterPanel.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+        }
+
+        // Fonction principale de filtrage
+        function applyCustomFilter() {
+            var selected = getSelectedTags();
+            
+            // 1. Filtrer les marqueurs sur la carte
+            allMarkers.forEach(marker => {
+                var markerTags = marker.options.tags || [];
+                var visible = markerTags.includes('vous') || markerTags.some(t => selected.includes(t));
+                
+                if (visible) { if (!map.hasLayer(marker)) marker.addTo(map); } 
+                else { if (map.hasLayer(marker)) map.removeLayer(marker); }
+            });
+
+            // 2. Filtrer les sections de texte sous la carte
+            document.querySelectorAll('section.room').forEach(section => {
+                var sectionTags = (section.getAttribute('data-tags')||'').split(/\s+/);
+                var visible = sectionTags.includes('vous') || sectionTags.some(t => selected.includes(t));
+                section.style.display = visible ? '' : 'none';
+            });
+
+            // Résumé texte
+            var label = '';
+            if (selected.length === 0) label = 'Aucun';
+            else if (selected.length === tags.length) label = 'Tous';
+            else label = selected.length + ' cochés';
+            document.getElementById('custom-filter-selected').textContent = label;
+        }
+
+        // Initialisation
+        applyCustomFilter();
+
+        // Ouvre le popup "Vous êtes ici" au démarrage
+        setTimeout(function() {
+            var marker = allMarkers.find(m => (m.options.tags||[]).includes('vous'));
+            if (marker) marker.openPopup();
+        }, 500);
+
+        // Génère les badges de tags sur chaque section d'activité
+        (function() {
+            var tagIcons = {
+                nature: 'fa-leaf', randonnée: 'fa-hiking', loisirs: 'fa-star',
+                visite: 'fa-binoculars', artisanat: 'fa-hammer', patrimoine: 'fa-landmark',
+                terroir: 'fa-cheese', sport: 'fa-running', panorama: 'fa-mountain',
+                famille: 'fa-users', baignade: 'fa-swimmer', musée: 'fa-university',
+                photo: 'fa-camera', calme: 'fa-spa', détente: 'fa-hot-tub',
+                intérieur: 'fa-home', autre: 'fa-map-marker-alt'
+            };
+            var tagNames = {};
+            tags.forEach(function(t) { tagNames[t.tag] = t.name; });
+
+            document.querySelectorAll('section.room[data-tags]').forEach(function(section) {
+                var sectionTags = (section.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
+                if (!sectionTags.length) return;
+
+                var container = document.createElement('div');
+                container.className = 'activity-tag-badges';
+
+                sectionTags.forEach(function(tag) {
+                    if (tag === 'vous') return;
+                    var span = document.createElement('span');
+                    span.className = 'activity-tag-badge';
+                    var icon = tagIcons[tag] || 'fa-tag';
+                    var label = tagNames[tag] || (tag.charAt(0).toUpperCase() + tag.slice(1));
+                    span.innerHTML = '<i class="fas ' + icon + '"></i> ' + label;
+                    container.appendChild(span);
+                });
+
+                var h2 = section.querySelector('.room-text h2');
+                if (h2) h2.after(container);
+            });
+        })();
+
+    </script>
+
+</body></html>
