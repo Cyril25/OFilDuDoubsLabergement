@@ -21,6 +21,7 @@ const PAGES = {
   'index': 'index', 'logement': 'logement', 'equipements': 'equipements',
   'commerces': 'commerces', 'activites': 'activites', 'ou-manger': 'oumanger',
   'contact': 'contact', 'mentions': 'mentions',
+  'agenda': 'agenda', 'dispo': 'dispo',          // Phase 2 : pages dynamiques (JS suit <html lang>)
 };
 const STATIC = Object.keys(PAGES);
 const SKIP_KEYS = new Set(['btn_website', 'btn_maps', 'btn_hours', 'info_min']);

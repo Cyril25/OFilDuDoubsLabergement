@@ -1,6 +1,9 @@
 // === Page Agenda : rendu des événements (flux DATAtourisme) + images admin + zoom ===
 (function () {
-    const lang = localStorage.getItem('language') || 'fr';
+    // En mode statique (pages pré-générées /xx/), la langue vient de <html lang> ; sinon localStorage.
+    const lang = (document.documentElement.hasAttribute('data-i18n-static')
+        ? document.documentElement.getAttribute('lang')
+        : localStorage.getItem('language')) || 'fr';
     const T = (typeof dataTranslations !== 'undefined' && dataTranslations[lang])
         ? dataTranslations[lang]
         : (typeof dataTranslations !== 'undefined' ? dataTranslations.fr : {});
@@ -375,7 +378,7 @@
             })
             .catch(() => {})
             .finally(() => {
-                fetch('data/agenda.json', { cache: 'no-store' })
+                fetch('/data/agenda.json', { cache: 'no-store' })
                     .then(r => r.ok ? r.json() : Promise.reject(r.status))
                     .then(json => {
                         data = json;

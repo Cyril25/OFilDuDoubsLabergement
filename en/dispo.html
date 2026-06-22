@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="en" data-i18n-static=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Tarifs et disponibilités - O'Fil du Doubs">
+    <meta property="og:description" content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie.">
+    <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp">
+    <meta property="og:url" content="https://ofildudoubs.fr/en/dispo.html">
+    <meta property="og:type" content="website">
+    <meta name="description" content="Consultez les tarifs et disponibilités de notre logement à Labergement-Sainte-Marie. Réservez dès maintenant pour un séjour inoubliable.">
+
+    <title>Tarifs et disponibilités | O'Fil du Doubs (Haut-Doubs)</title>
+    <meta name="description" content="Tarifs et calendrier de disponibilité de l'appartement O'Fil du Doubs à Labergement-Sainte-Marie. Réservez en direct votre séjour dans le Haut-Doubs.">
+
+    <link rel="canonical" href="https://ofildudoubs.fr/en/dispo.html">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Playfair+Display:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/locales-all.global.min.js"></script>
+
+    <script src="/scripts/menu-translations.js" defer=""></script>
+    <script src="/scripts/dispo-translations.js" defer=""></script>
+    <script src="/scripts/applyTranslations.js" defer=""></script>
+    <script src="/scripts/ui.js" defer=""></script>
+
+    <style>
+        .airbnb-card {
+            display: flex;
+            flex-direction: column;
+            max-width: 450px;
+            margin: 20px auto;
+            text-decoration: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            transition: transform 0.2s ease;
+        }
+
+        .airbnb-card:hover {
+            transform: scale(1.02);
+        }
+
+        .airbnb-img {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .airbnb-info {
+            padding: 1.5em;
+            color: #111;
+            text-align: left;
+        }
+
+        .airbnb-info h3 {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.2em;
+            margin: 0 0 0.5em;
+            color: #333;
+        }
+
+        .airbnb-info p {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95em;
+            margin: 0 0 1.5em;
+            color: #666;
+        }
+
+        /* CORRECTION: On style une classe .btn-airbnb au lieu de la balise button */
+        /* Removed old specific .airbnb-info .btn-airbnb block to promote shared styles */
+
+        @media (max-width: 500px) {
+            .airbnb-card {
+                max-width: 100%;
+            }
+
+            .airbnb-img {
+                height: 180px;
+            }
+        }
+
+        /* Modification: Card is now a div, remove scale effect on whole card if undesired, or keep it */
+        .airbnb-card {
+            /* ... existing styles ... */
+            cursor: default;
+            /* Since it's no longer a link itself */
+        }
+
+        /* Only scale if we want the container to scale, but maybe less aggressively or not at all 
+           if we want users to focus on buttons. Let's keep the slight lift for polish. 
+        */
+
+        .card-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-airbnb,
+        .btn-booking {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            /* Important! was missing for booking */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            flex: 1;
+            min-width: 140px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-airbnb {
+            background-color: #FF5A5F;
+        }
+
+        .btn-airbnb:hover {
+            background-color: #e0484d;
+        }
+
+        .btn-booking {
+            background-color: #003580;
+        }
+
+        .btn-booking:hover {
+            background-color: #00224f;
+        }
+
+        /* Remove the previous media query specific to 500px for card width if it conflicts, 
+           but generally it is fine. 
+        */
+    </style>
+
+    <link rel="alternate" hreflang="fr" href="https://ofildudoubs.fr/dispo.html">
+    <link rel="alternate" hreflang="en" href="https://ofildudoubs.fr/en/dispo.html">
+    <link rel="alternate" hreflang="de" href="https://ofildudoubs.fr/de/dispo.html">
+    <link rel="alternate" hreflang="nl" href="https://ofildudoubs.fr/nl/dispo.html">
+    <link rel="alternate" hreflang="es" href="https://ofildudoubs.fr/es/dispo.html">
+    <link rel="alternate" hreflang="it" href="https://ofildudoubs.fr/it/dispo.html">
+    <link rel="alternate" hreflang="pt" href="https://ofildudoubs.fr/pt/dispo.html">
+    <link rel="alternate" hreflang="x-default" href="https://ofildudoubs.fr/dispo.html">
+</head>
+
+<body>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="/en/index.html">Home</a></li>
+            <li class="has-sub">
+                <a href="/en/logement.html" class="sub-toggle">The accommodation</a>
+                <ul class="submenu">
+                    <li><a href="/en/logement.html">The accommodation</a></li>
+                    <li><a href="/en/equipements.html">Comfort and Equipment</a></li>
+                </ul>
+            </li>
+            <li><a href="/en/dispo.html">Rates and Availability</a></li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="autour">Nearby</a>
+                <ul class="submenu">
+                    <li><a href="/en/activites.html">Activities</a></li>
+                    <li><a href="/en/ou-manger.html">Where to eat</a></li>
+                    <li><a href="/en/commerces.html">Shops</a></li>
+                    <li><a href="/en/agenda.html">Events</a></li>
+                </ul>
+            </li>
+            <li><a href="/en/contact.html">Contact</a></li>
+        </ul>
+        <div class="language-dropdown">
+            <button class="dropbtn">
+                <img id="current-flag-icon" src="/images/fr.png" alt="Langue">
+                <span class="arrow">▼</span>
+            </button>
+            <div class="dropdown-content">
+                <a href="/dispo.html" data-lang="fr"><img src="/images/fr.png" alt="Français"> Français</a>
+                <a href="/en/dispo.html" data-lang="en"><img src="/images/en.png" alt="English"> English</a>
+                <a href="/de/dispo.html" data-lang="de"><img src="/images/de.png" alt="Deutsch"> Deutsch</a>
+                <a href="/nl/dispo.html" data-lang="nl"><img src="/images/nl.png" alt="Nederlands"> Nederlands</a>
+                <a href="/es/dispo.html" data-lang="es"><img src="/images/es.png" alt="Español"> Español</a>
+                <a href="/it/dispo.html" data-lang="it"><img src="/images/it.png" alt="Italiano"> Italiano</a>
+                <a href="/pt/dispo.html" data-lang="pt"><img src="/images/pt.png" alt="Português"> Português</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header2">
+        <h1 id="title">Rates and Availability</h1>
+        <h2 id="subtitle">All the useful information to book your stay</h2>
+    </header>
+
+    <main>
+        <p id="intro_text" class="intro-text">Discover our rates and availability to plan your stay.</p>
+
+        <section>
+            <h2 id="availability_section">Availability</h2>
+
+            <div id="calendar"></div>
+
+            <p id="airbnb_info" style="margin-top: 30px;">To check rates or get more information, you can contact us via the contact form or access up-to-date rates directly on Airbnb via the link below.</p>
+
+            <div class="airbnb-card">
+                <div class="airbnb-img" style="background-image: url('images/banniere/vue-coucher.webp');"></div>
+                <div class="airbnb-info">
+                    <h3 id="airbnb_title">Apartment in Labergement-Sainte-Marie</h3>
+                    <p id="airbnb_details">★ 5.0 · 2 bedrooms · 2 double beds · 1 bathroom</p>
+
+                    <div class="card-buttons">
+                        <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="btn-airbnb">
+                            Voir sur Airbnb
+                        </a>
+
+                        <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&amp;sid=9ec07d920783404e24ab32215d33bb1c&amp;dist=0&amp;keep_landing=1&amp;sb_price_type=total&amp;type=total&amp;chal_t=1765790180198&amp;force_referer=" target="_blank" rel="noopener noreferrer" class="btn-booking">
+                            Voir sur Booking
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="rates-section">
+            <h2 id="rates_section">Nos tarifs</h2>
+            <p id="rates_intro" class="rates-intro">Tarifs indicatifs par nuit, pour 2 à 4 personnes. Nous contacter pour tout devis personnalisé.</p>
+
+            <div class="rates-cards">
+                <div class="rate-card">
+                    <div class="rate-icon"><i class="fas fa-snowflake"></i></div>
+                    <h3 id="rate_low_title">Basse saison</h3>
+                    <p id="rate_low_period" class="rate-period">Mars, novembre…<br>hors vacances scolaires</p>
+                    <div class="rate-price" id="rate_low_price">dès <strong>90€</strong> / nuit</div>
+                </div>
+
+                <div class="rate-card rate-card--featured">
+                    <div class="rate-icon"><i class="fas fa-sun"></i></div>
+                    <h3 id="rate_mid_title">Saison intermédiaire</h3>
+                    <p id="rate_mid_period" class="rate-period">Printemps, automne,<br>week-ends ordinaires</p>
+                    <div class="rate-price" id="rate_mid_price">autour de <strong>100€</strong> / nuit</div>
+                </div>
+
+                <div class="rate-card">
+                    <div class="rate-icon"><i class="fas fa-mountain"></i></div>
+                    <h3 id="rate_high_title">Haute saison</h3>
+                    <p id="rate_high_period" class="rate-period">Été, vacances scolaires,<br>longs week-ends</p>
+                    <div class="rate-price" id="rate_high_price">autour de <strong>120€</strong> / nuit</div>
+                </div>
+            </div>
+
+            <div class="rates-supplements">
+                <p id="rates_supplement_title"><i class="fas fa-info-circle"></i> <strong>Suppléments</strong></p>
+                <ul>
+                    <li id="rates_cleaning"><i class="fas fa-broom"></i> Frais de ménage : <strong>40€</strong> (forfait, par séjour)</li>
+                    <li id="rates_pet"><i class="fas fa-paw"></i> Animaux de compagnie : <strong>40€</strong> (sur demande préalable)</li>
+                </ul>
+            </div>
+
+            <div style="text-align:center; margin-top: 1.5rem;">
+                <a href="/en/contact.html" class="btn-maps" id="rates_cta"><i class="fas fa-envelope"></i> Nous contacter pour un devis</a>
+            </div>
+        </section>
+
+        <section>
+            <h2 id="practical_info_section">Practical Information</h2>
+            <ul class="practical-info-list">
+                <li id="arrival_info">Check-in is between 5 PM and 10 PM, with key handover in person or via a key box depending on our availability.</li>
+                <li id="departure_info">Check-out is before 11 AM.</li>
+                <li id="practical_wifi"><i class="fas fa-wifi"></i> <strong>Wi-Fi</strong> inclus, haut débit</li>
+                <li id="practical_parking"><i class="fas fa-car"></i> <strong>Parking</strong> gratuit devant le logement</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Contact us</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="/en/contact.html" id="footer_contact_form">Contact Form</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_links_title">Quick Links</h3>
+                <a href="/en/index.html" id="footer_link_home">Home</a>
+                <a href="/en/dispo.html" id="footer_link_rates">Rates and Availability</a>
+                <a href="/en/activites.html" id="footer_link_activities">Activities</a>
+                <a href="/en/mentions.html" id="footer_link_legal">Legal Notice</a>
+            </div>
+
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Book on Airbnb</h3>
+                <p id="footer_airbnb_text">Check our reviews and book securely.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fab fa-airbnb"></i> Page Airbnb
+                </a>
+                <a href="https://www.booking.com/hotel/fr/fil-du-doubs-apartment.fr.html?label=gen173nr-10CAsoTUIWZmlsLWR1LWRvdWJzLWFwYXJ0bWVudEgzWARoLIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgC0qP_yQbAAgHSAiQ1N2VjMDVlNi0yM2Y4LTQxYTUtYjQ3Ni04ZWIwMzIyYzFjYmTYAgHgAgE&amp;sid=9ec07d920783404e24ab32215d33bb1c&amp;dist=0&amp;keep_landing=1&amp;sb_price_type=total&amp;type=total&amp;chal_t=1765790180198&amp;force_referer=" target="_blank" rel="noopener noreferrer" class="footer-airbnb">
+                    <i class="fas fa-hotel"></i> Page Booking
+                </a>
+            </div>
+
+            <div class="footer-col">
+                <img src="/images/traveller-review-awards-2026.png" alt="Traveller Review Awards 2026" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">All rights reserved</span></p>
+        </div>
+    </footer>
+
+    <style>
+        /* Dates passées grisées */
+        .fc-day-past {
+            background-color: #f5f5f5 !important;
+            opacity: 0.5;
+        }
+        .fc-day-past .fc-daygrid-day-number {
+            color: #bbb !important;
+        }
+        /* Masquer les événements sur les jours passés */
+        .fc-day-past .fc-event {
+            display: none !important;
+        }
+        /* Jour d'aujourd'hui bien visible */
+        .fc-day-today {
+            background-color: #e6f7ff !important;
+        }
+        .fc-day-today .fc-daygrid-day-number {
+            color: #005f8d !important;
+            font-weight: bold !important;
+        }
+    </style>
+    <script>
+        // Langue : <html lang> en mode statique (pages /xx/), sinon localStorage.
+        var pageLang = (document.documentElement.hasAttribute('data-i18n-static')
+            ? document.documentElement.getAttribute('lang')
+            : localStorage.getItem('language')) || 'fr';
+        var UNAVAIL = { fr: 'Indisponible', en: 'Unavailable', de: 'Nicht verfügbar', nl: 'Niet beschikbaar', es: 'No disponible', it: 'Non disponibile', pt: 'Indisponível' };
+
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: pageLang,
+            height: 'auto',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            eventColor: '#005f8d',
+            events: [],
+            dayCellClassNames: function(arg) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (arg.date < today) return ['fc-day-past'];
+                return [];
+            }
+        });
+        calendar.render();
+
+        fetch('https://menage-state.cyril-samson41.workers.dev/ical')
+            .then(response => response.text())
+            .then(data => {
+                const events = parseICS(data);
+                updateCalendar(events);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du fichier iCal:', error);
+            });
+
+        function parseICS(icsData) {
+            const events = [];
+            const eventPattern = /BEGIN:VEVENT[\s\S]+?END:VEVENT/g;
+            const eventsRaw = icsData.match(eventPattern);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (eventsRaw) {
+                eventsRaw.forEach(event => {
+                    const summaryPattern = /SUMMARY:(.*)/;
+                    const datePatternStart = /DTSTART;VALUE=DATE:(\d{8})/;
+                    const datePatternEnd = /DTEND;VALUE=DATE:(\d{8})/;
+
+                    const summary = event.match(summaryPattern);
+                    const startDate = event.match(datePatternStart);
+                    const endDate = event.match(datePatternEnd);
+
+                    if (summary && startDate && endDate) {
+                        const endDateObj = new Date(formatDate(endDate[1]));
+                        // Ne pas afficher les événements entièrement passés
+                        if (endDateObj < today) return;
+
+                        events.push({
+                            title: UNAVAIL[pageLang] || 'Indisponible',
+                            start: formatDate(startDate[1]),
+                            end: formatDate(endDate[1])
+                        });
+                    }
+                });
+            }
+            return events;
+        }
+
+        function formatDate(dateString) {
+            const year = dateString.substring(0, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        function updateCalendar(events) {
+            calendar.addEventSource(events);
+        }
+    </script>
+
+
+
+</body></html>
