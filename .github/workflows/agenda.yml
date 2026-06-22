@@ -2,7 +2,7 @@ name: Mise à jour agenda (DATAtourisme)
 
 on:
   schedule:
-    - cron: '17 3 * * *'      # tous les jours à 03:17 UTC (05:17 été / 04:17 hiver) - minute non ronde pour limiter le retard GitHub
+    - cron: '23 0 * * *'      # tous les jours à 00:23 UTC (02:23 été / 01:23 hiver) - tôt + minute non ronde pour maximiser la marge avant 7h locale
   workflow_dispatch:           # déclenchement manuel possible
 
 permissions:
