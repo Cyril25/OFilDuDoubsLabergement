@@ -84,6 +84,8 @@
 
     function card(e) {
         const titre = esc(pickLang(e.title));
+        const catObj = CATS.find(c => c.key === (e.cat || 'autre'));
+        const catBadge = catObj ? '<span class="ag-cat" data-cat="' + catObj.key + '">' + catObj.icon + ' ' + esc(catLabel(catObj.key)) + '</span>' : '';
         const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(titre + ' ' + (e.city || ''));
         const big = esc(bigDate(e));
         const ov = overrides[e.id] || {};
@@ -129,6 +131,7 @@
             '<article class="' + cardClass + '">' +
                 media +
                 '<div class="ag-body">' +
+                    catBadge +
                     '<p class="ag-when"><i class="far fa-calendar-alt"></i> ' + esc(whenLine(e)) + '</p>' +
                     '<h3 class="ag-title">' + titre + '</h3>' +
                     '<p class="ag-loc"><i class="fas fa-map-marker-alt"></i> ' + esc(e.city) +
