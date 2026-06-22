@@ -8,8 +8,11 @@
  * 4. Dans Settings → Variables → KV Namespace Bindings :
  *    - Variable name : MENAGE_KV
  *    - Sélectionner (ou créer) un namespace KV (ex: "menage-state-kv")
- * 5. Déployer
- * 6. Mettre à jour l'URL dans menage.html (variable STATE_API_URL)
+ * 5. Dans Settings → Variables and Secrets, ajouter deux secrets (chiffrés) :
+ *    - ICAL_AIRBNB  : URL iCal Airbnb complète (avec le token ?t=...)
+ *    - ICAL_BOOKING : URL iCal Booking complète (avec le token ?t=...)
+ * 6. Déployer
+ * 7. Mettre à jour l'URL dans menage.html (variable STATE_API_URL)
  *
  * Le Worker expose :
  *   GET  /       → Retourne l'état JSON
@@ -27,11 +30,12 @@ const KV_KEY_AGENDA_IMAGES = 'agenda_images';
 const FIREBASE_PROJECT_ID = 'asso-billet-site';
 const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
 
-// Flux iCal à fusionner
-const ICAL_FEEDS = [
-    'https://www.airbnb.fr/calendar/ical/1160174173295911644.ics?t=afb5b1f0949f4c54a5f835b2f90b185a',
-    'https://ical.booking.com/v1/export?t=c119dfb3-9bf3-4f72-ba36-1ceb917c400c',
-];
+// Flux iCal à fusionner — les URLs (qui contiennent des tokens secrets) sont
+// injectées via les secrets du worker : ICAL_AIRBNB et ICAL_BOOKING.
+// (Dashboard → worker → Settings → Variables and Secrets, type « Secret ».)
+function getIcalFeeds(env) {
+    return [env.ICAL_AIRBNB, env.ICAL_BOOKING].filter(Boolean);
+}
 
 // Origines autorisées (à ajuster selon tes domaines)
 const ALLOWED_ORIGINS = [
@@ -237,7 +241,7 @@ export default {
             if (request.method === 'GET') {
                 try {
                     const results = await Promise.all(
-                        ICAL_FEEDS.map(url => fetch(url).then(r => r.text()))
+                        getIcalFeeds(env).map(url => fetch(url).then(r => r.text()))
                     );
                     // Extraire tous les VEVENT de chaque flux
                     const allEvents = results

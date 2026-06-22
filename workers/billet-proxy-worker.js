@@ -3,10 +3,10 @@
  *
  * Route unique :
  *   GET  /billets-touristiques  → Retourne le JSON des billets (auth Firebase requise)
+ *
+ * DÉPLOIEMENT : ajouter dans Settings → Variables and Secrets un secret
+ *   BILLETS_DRIVE_URL = URL de téléchargement direct du JSON (Google Drive).
  */
-
-const GOOGLE_DRIVE_JSON_URL =
-  'https://drive.google.com/uc?export=download&id=1BTGJyOAOj8kFgrpDcBSol6g3v24qkSWr';
 
 async function verifyFirebaseToken(token) {
     const parts = token.split('.');
@@ -46,7 +46,7 @@ async function verifyFirebaseToken(token) {
 }
 
 export default {
-    async fetch(request) {
+    async fetch(request, env) {
         const url = new URL(request.url);
 
         // Preflight CORS
@@ -88,7 +88,7 @@ export default {
                 });
             }
 
-            const response = await fetch(GOOGLE_DRIVE_JSON_URL);
+            const response = await fetch(env.BILLETS_DRIVE_URL);
             return new Response(await response.text(), {
                 status: response.status,
                 headers: {
