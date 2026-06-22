@@ -37,6 +37,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Soins esthétiques et de relaxation, notamment à l’institut L’Instant Relax.",
         medecins_specialistes: "Médecins et Spécialistes",
         medecins_specialistes_desc: "Médecins généralistes sur place, avec présence de spécialistes à proximité (dentiste, ostéopathe, etc.).",
+        btn_hours: "Horaires & avis sur Google",
 
         // Footer
         footer_contact_title: "Nous contacter",
@@ -88,6 +89,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Aesthetic and relaxation treatments, notably at the L’Instant Relax institute.",
         medecins_specialistes: "Doctors and Specialists",
         medecins_specialistes_desc: "General practitioners on-site, with specialists nearby (dentist, osteopath, etc.).",
+        btn_hours: "Opening hours & reviews on Google",
 
         // Footer
         footer_contact_title: "Contact us",
@@ -139,6 +141,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Ästhetische und Entspannungsbehandlungen, insbesondere im Institut L’Instant Relax.",
         medecins_specialistes: "Ärzte und Spezialisten",
         medecins_specialistes_desc: "Allgemeinmediziner vor Ort, mit Spezialisten in der Nähe (Zahnarzt, Osteopath, etc.).",
+        btn_hours: "Öffnungszeiten & Bewertungen auf Google",
 
         // Footer
         footer_contact_title: "Kontaktieren Sie uns",
@@ -190,6 +193,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Schoonheids- en ontspanningsbehandelingen, met name bij instituut L’Instant Relax.",
         medecins_specialistes: "Artsen en Specialisten",
         medecins_specialistes_desc: "Huisartsen ter plaatse, met specialisten in de buurt (tandarts, osteopaat, enz.).",
+        btn_hours: "Openingstijden & reviews op Google",
 
         // Footer
         footer_contact_title: "Neem contact op",
@@ -241,6 +245,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Tratamientos estéticos y de relajación, especialmente en el instituto L’Instant Relax.",
         medecins_specialistes: "Médicos y Especialistas",
         medecins_specialistes_desc: "Médicos generales en el lugar, con especialistas cerca (dentista, osteópata, etc.).",
+        btn_hours: "Horarios y opiniones en Google",
 
         // Footer
         footer_contact_title: "Contáctanos",
@@ -292,6 +297,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Trattamenti estetici e di relax, in particolare presso l'istituto L’Instant Relax.",
         medecins_specialistes: "Medici e Specialisti",
         medecins_specialistes_desc: "Medici di base in loco, con specialisti nelle vicinanze (dentista, osteopata, ecc.).",
+        btn_hours: "Orari e recensioni su Google",
 
         // Footer
         footer_contact_title: "Contattaci",
@@ -343,6 +349,7 @@ const dataTranslations = {
         beaute_bien_etre_desc: "Tratamentos estéticos e de relaxamento, nomeadamente no instituto L’Instant Relax.",
         medecins_specialistes: "Médicos e Especialistas",
         medecins_specialistes_desc: "Médicos de clínica geral no local, com especialistas nas proximidades (dentista, osteopata, etc.).",
+        btn_hours: "Horários e avaliações no Google",
 
         // Footer
         footer_contact_title: "Contacte-nos",

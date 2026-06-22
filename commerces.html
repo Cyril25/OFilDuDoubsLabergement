@@ -25,6 +25,28 @@
     <script src="scripts/commerces-translations.js" defer></script>
     <script src="scripts/applyTranslations.js" defer></script>
     <script src="scripts/ui.js" defer></script>
+
+    <style>
+        .room-contact {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            margin: 14px 0 0;
+        }
+        .room-contact a {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 8px 14px; border-radius: 8px; text-decoration: none;
+            font-size: .9rem; font-weight: 700; transition: all .15s;
+        }
+        .room-phone {
+            background: var(--primary-color); color: #fff;
+        }
+        .room-phone:hover { background: var(--secondary-color); }
+        .room-hours {
+            background: #fff; color: var(--primary-color);
+            border: 1px solid #d7d2c8;
+        }
+        .room-hours:hover { border-color: var(--primary-color); background: #faf8f4; }
+        .room-hours .fa-google { color: #4285F4; }
+    </style>
 </head>
 <body>
 
@@ -83,6 +105,10 @@
                 <div class="room-text">
                     <h2 id="fruitiere_des_lacs">La Fruitière des Lacs</h2>
                     <p id="fruitiere_des_lacs_desc">Fromagerie réputée pour ses fromages locaux : Comté, Morbier, Cancoillotte, Mont d’or... ainsi qu’un large choix de produits régionaux (fermé le dimanche après-midi et en début d’après-midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381381291"><i class="fas fa-phone"></i> 03 81 38 12 91</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=La+Fruitière+des+Lacs+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/fromagerie.jpg" alt="Fruitière des Lacs" class="room-image" loading="lazy">
             </div>
@@ -93,6 +119,10 @@
                 <div class="room-text">
                     <h2 id="boucherie_paillard_freres">Boucherie Paillard Frères</h2>
                     <p id="boucherie_paillard_freres_desc">Boucherie-charcuterie avec produits locaux tels que la fameuse saucisse de Morteau (fermé le jeudi, le dimanche après-midi et sur le temps de midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693144"><i class="fas fa-phone"></i> 03 81 69 31 44</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Boucherie+Paillard+Frères+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/boucherie.jpg" alt="Boucherie Paillard Frères" class="room-image" loading="lazy">
             </div>
@@ -103,6 +133,10 @@
                 <div class="room-text">
                     <h2 id="boulangerie_baverel">Boulangerie Baverel</h2>
                     <p id="boulangerie_baverel_desc">Boulangerie artisanale avec pâtisseries, viennoiseries et pain frais (fermé le mercredi, le dimanche après-midi et sur le temps de midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693576"><i class="fas fa-phone"></i> 03 81 69 35 76</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Boulangerie+Baverel+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/boulangerie.png" alt="Boulangerie Baverel" class="room-image extra-small" loading="lazy">
             </div>
@@ -113,6 +147,10 @@
                 <div class="room-text">
                     <h2 id="coccimarket">CocciMarket</h2>
                     <p id="coccimarket_desc">Épicerie locale avec une large gamme de produits alimentaires et de première nécessité (fermé le dimanche après-midi et sur le temps de midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693108"><i class="fas fa-phone"></i> 03 81 69 31 08</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=CocciMarket+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/coccimarket.webp" alt="CocciMarket" class="room-image" loading="lazy">
             </div>
@@ -123,6 +161,10 @@
                 <div class="room-text">
                     <h2 id="au_cellier_du_lac">Au Cellier du Lac</h2>
                     <p id="au_cellier_du_lac_desc">Caviste avec une belle sélection de vins et spiritueux locaux : Chardonnay, Savagnin, Trousseau, vin jaune, vin de Paille, Crémant du Jura, Pontarlier Anis, Absinthe... (fermé le dimanche, le lundi et sur le temps de midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381399836"><i class="fas fa-phone"></i> 03 81 39 98 36</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Au+Cellier+du+Lac+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/caviste.png" alt="Au Cellier du Lac" class="room-image small" loading="lazy">
             </div>
@@ -133,6 +175,10 @@
                 <div class="room-text">
                     <h2 id="cafe_fleur">Café Fleur</h2>
                     <p id="cafe_fleur_desc">Un charmant salon de thé et fleuriste, idéal pour une pause gourmande (fermé le dimanche après-midi, le lundi et sur le temps de midi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381397026"><i class="fas fa-phone"></i> 03 81 39 70 26</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Café+Fleurs+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/cafe-fleur.jpg" alt="Café Fleur" class="room-image extra-small" loading="lazy">
             </div>
@@ -143,6 +189,9 @@
                 <div class="room-text">
                     <h2 id="tabac_presse_jeux_faure">Tabac Presse Jeux Faure</h2>
                     <p id="tabac_presse_jeux_faure_desc">Pour vos besoins en tabac, presse et jeux de hasard (fermé le dimanche après-midi).</p>
+                    <p class="room-contact">
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Tabac+Presse+Jeux+Faure+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/tabac.jpg" alt="Tabac Presse Jeux Faure" class="room-image extra-small" loading="lazy">
             </div>
@@ -153,6 +202,10 @@
                 <div class="room-text">
                     <h2 id="le_bistrot_de_laberge">Le Bistrot de l'Aberge</h2>
                     <p id="le_bistrot_de_laberge_desc">Restaurant convivial avec une cuisine traditionnelle et locale (fermé le mercredi).</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381697931"><i class="fas fa-phone"></i> 03 81 69 79 31</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Bistrot+de+l'Aberge+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/laberge.png" alt="Le Bistrot de l'Aberge" class="room-image extra-small" loading="lazy">
             </div>
@@ -163,6 +216,9 @@
                 <div class="room-text">
                     <h2 id="le_velo_bar">Le Vélo Bar</h2>
                     <p id="le_velo_bar_desc">Bar avec grande terrasse, parfait pour un verre en extérieur lors des journées ensoleillées.</p>
+                    <p class="room-contact">
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Vélo+Bar+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/velo-bar.jpg" alt="Le Vélo Bar" class="room-image" loading="lazy">
             </div>
@@ -173,6 +229,10 @@
                 <div class="room-text">
                     <h2 id="garage_du_coude">Garage du Coude</h2>
                     <p id="garage_du_coude_desc">Station-service avec services de lavage et location de voitures.</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693119"><i class="fas fa-phone"></i> 03 81 69 31 19</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Garage+du+Coude+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/garage.jpg" alt="Garage du Coude" class="room-image" loading="lazy">
             </div>
@@ -183,6 +243,10 @@
                 <div class="room-text">
                     <h2 id="pharmacie_des_deux_lacs">Pharmacie des Deux Lacs</h2>
                     <p id="pharmacie_des_deux_lacs_desc">Pour tous vos besoins en médicaments et conseils de santé.</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693279"><i class="fas fa-phone"></i> 03 81 69 32 79</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Pharmacie+des+Deux+Lacs+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/pharma.jpg" alt="Pharmacie des Deux Lacs" class="room-image" loading="lazy">
             </div>
@@ -193,6 +257,10 @@
                 <div class="room-text">
                     <h2 id="clinique_veterinaire_des_lacs">Clinique Vétérinaire des Lacs</h2>
                     <p id="clinique_veterinaire_des_lacs_desc">Soins et urgences pour vos animaux de compagnie.</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:+33381693017"><i class="fas fa-phone"></i> 03 81 69 30 17</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Clinique+Vétérinaire+des+Lacs+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/veto.webp" alt="Clinique Vétérinaire des Lacs" class="room-image" loading="lazy">
             </div>
@@ -203,6 +271,9 @@
                 <div class="room-text">
                     <h2 id="coiffeurs">Coiffeurs</h2>
                     <p id="coiffeurs_desc">Imagina’tif, Michel Delgrande, L’Art du Geste : plusieurs salons à votre service.</p>
+                    <p class="room-contact">
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Coiffeur+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/coiffeurs.webp" alt="Coiffeurs" class="room-image small" loading="lazy">
             </div>
@@ -213,6 +284,10 @@
                 <div class="room-text">
                     <h2 id="la_poste_agence_communale">La Poste - Agence Communale</h2>
                     <p id="la_poste_agence_communale_desc">Services postaux et bancaires de base. Le distributeur automatique le plus proche est situé à Malbuisson.</p>
+                    <p class="room-contact">
+                        <a class="room-phone" href="tel:3631"><i class="fas fa-phone"></i> 3631</a>
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=La+Poste+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/poste.jpg" alt="La Poste" class="room-image extra-small" loading="lazy">
             </div>
@@ -232,6 +307,9 @@
                 <div class="room-text">
                     <h2 id="beaute_bien_etre">Beauté et Bien-être</h2>
                     <p id="beaute_bien_etre_desc">Soins esthétiques et de relaxation, notamment à l’institut L’Instant Relax.</p>
+                    <p class="room-contact">
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=L'Instant+Relax+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/beaute.jpg" alt="Beauté et Bien-être" class="room-image extra-small" loading="lazy">
             </div>
@@ -242,6 +320,9 @@
                 <div class="room-text">
                     <h2 id="medecins_specialistes">Médecins et Spécialistes</h2>
                     <p id="medecins_specialistes_desc">Médecins généralistes sur place, avec présence de spécialistes à proximité (dentiste, ostéopathe, etc.).</p>
+                    <p class="room-contact">
+                        <a class="room-hours" href="https://www.google.com/maps/search/?api=1&amp;query=Médecin+Labergement-Sainte-Marie" target="_blank" rel="noopener"><i class="fab fa-google"></i> <span class="lbl-hours">Horaires &amp; avis sur Google</span></a>
+                    </p>
                 </div>
                 <img src="images/medecin.jpg" alt="Médecins" class="room-image extra-small" loading="lazy">
             </div>

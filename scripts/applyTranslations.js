@@ -120,6 +120,13 @@ function applyTranslations(lang, pageTranslations) {
             });
         }
 
+        // 2bis. Boutons "Horaires & avis sur Google" (page commerces)
+        if (pageTranslations.btn_hours) {
+            document.querySelectorAll('.lbl-hours').forEach(el => {
+                el.textContent = pageTranslations.btn_hours;
+            });
+        }
+
         // 3. Badges de transport (Remplacement intelligent du texte "min")
         if (pageTranslations.info_min) {
             document.querySelectorAll('.t-badge').forEach(badge => {
