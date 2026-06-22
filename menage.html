@@ -1835,13 +1835,13 @@
                     if (slotInfoData.nbPersons) {
                         const nbItem = document.createElement('span');
                         nbItem.className = 'info-item';
-                        nbItem.innerHTML = `<i class="fas fa-users"></i> ${slotInfoData.nbPersons} pers.`;
+                        nbItem.innerHTML = `<i class="fas fa-users"></i> ${escapeHtml(slotInfoData.nbPersons)} pers.`;
                         infoDiv.appendChild(nbItem);
                     }
                     if (slotInfoData.comment) {
                         const commentItem = document.createElement('span');
                         commentItem.className = 'info-comment';
-                        commentItem.innerHTML = `<i class="fas fa-comment"></i> ${slotInfoData.comment}`;
+                        commentItem.innerHTML = `<i class="fas fa-comment"></i> ${escapeHtml(slotInfoData.comment)}`;
                         infoDiv.appendChild(commentItem);
                     }
                     listItem.appendChild(infoDiv);
@@ -1901,7 +1901,7 @@
 
                     const doneInfo = document.createElement('span');
                     doneInfo.className = 'done-info';
-                    const byText = doneBy ? ` par ${doneBy}` : '';
+                    const byText = doneBy ? ` par ${escapeHtml(doneBy)}` : '';
                     doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
                     row1.appendChild(doneInfo);
 
@@ -2090,13 +2090,13 @@
                     if (info.nbPersons) {
                         const nbItem = document.createElement('span');
                         nbItem.className = 'info-item';
-                        nbItem.innerHTML = `<i class="fas fa-users"></i> ${info.nbPersons} pers.`;
+                        nbItem.innerHTML = `<i class="fas fa-users"></i> ${escapeHtml(info.nbPersons)} pers.`;
                         infoDiv.appendChild(nbItem);
                     }
                     if (info.comment) {
                         const commentItem = document.createElement('span');
                         commentItem.className = 'info-comment';
-                        commentItem.innerHTML = `<i class="fas fa-comment"></i> ${info.comment}`;
+                        commentItem.innerHTML = `<i class="fas fa-comment"></i> ${escapeHtml(info.comment)}`;
                         infoDiv.appendChild(commentItem);
                     }
                     li.appendChild(infoDiv);
@@ -2112,7 +2112,7 @@
                     const doneDate = entry.updatedAt
                         ? new Date(entry.updatedAt).toLocaleDateString('fr-FR')
                         : new Date(entry.endDate + 'T12:00:00').toLocaleDateString('fr-FR');
-                    const byText = entry.doneBy ? ` par ${entry.doneBy}` : '';
+                    const byText = entry.doneBy ? ` par ${escapeHtml(entry.doneBy)}` : '';
                     doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
                     statusRow.appendChild(doneInfo);
                 } else {

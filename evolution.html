@@ -487,7 +487,7 @@
         li.innerHTML = `
             <div class="it-body">
                 <div class="it-name">${escapeHtml(it.name)}${it.seeded ? '<span class="src">déjà en ligne</span>' : (it.suggested ? '<span class="src">suggéré</span>' : '')}</div>
-                <div class="it-note" contenteditable="true" data-note="${it.id}">${escapeHtml(it.note || "")}</div>
+                <div class="it-note" contenteditable="true" data-note="${escapeHtml(it.id)}">${escapeHtml(it.note || "")}</div>
             </div>
             <div class="it-actions">
                 ${btns}
