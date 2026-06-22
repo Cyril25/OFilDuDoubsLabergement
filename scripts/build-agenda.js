@@ -43,9 +43,42 @@ const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 
 let total = 0, kept = 0;
 const events = [];
-// === DIAGNOSTIC TEMPORAIRE : répartition des types/thèmes (à retirer après analyse) ===
-const typeStats = {}, themeStats = {};
-const bump = (m, k) => { if (k) m[k] = (m[k] || 0) + 1; };
+
+// === Catégorisation ===
+// DATAtourisme : déduite des @type (priorité du plus spécifique au plus générique).
+const CAT_RULES = [
+  ['brocante',  ['GarageSale', 'BricABrac', 'Market', 'FairOrShow', 'SaleEvent']],
+  ['musique',   ['Concert', 'MusicEvent', 'Recital', 'Festival']],
+  ['spectacle', ['TheaterEvent', 'ShowEvent', 'ScreeningEvent', 'Cirque', 'CircusPlace']],
+  ['expo',      ['Exhibition', 'VisualArtsEvent']],
+  ['sport',     ['SportsEvent', 'SportsCompetition', 'SportsDemonstration', 'Rally', 'Game']],
+  ['nature',    ['Rambling', 'WalkingTour', 'Tour', 'Visit']],
+  ['enfants',   ['ChildrensEvent']],
+  ['fete',      ['TraditionalCelebration', 'LocalAnimation']],
+  ['atelier',   ['TrainingWorkshop', 'Conference']],
+];
+const catFromTypes = (types) => {
+  const set = new Set(asArray(types).map(t => String(t).replace(/^schema:/, '')));
+  for (const [cat, keys] of CAT_RULES) if (keys.some(k => set.has(k))) return cat;
+  return 'autre';
+};
+// Tourinsoft : pas de @type → déduite des mots-clés du titre.
+const KW_RULES = [
+  ['brocante',  /vide.?grenier|brocante|puces|déball|march[ée]|foire|salon/i],
+  ['musique',   /concert|musique|chorale|fanfare|festival|jazz|\brock\b|chant|harmonie/i],
+  ['spectacle', /th[ée][âa]tre|spectacle|cirque|cin[ée]ma|projection|\bfilm\b|humour|one.?man|caf[ée].?th[ée][âa]tre/i],
+  ['expo',      /expo|exposition|vernissage/i],
+  ['sport',     /tournoi|comp[ée]tition|\bcourse\b|trail|\brun\b|\bmatch\b|cyclo|\bv[ée]lo\b|natation|p[ée]tanque/i],
+  ['nature',    /rando|balade|sortie nature|visite|d[ée]couverte|sentier|champignon|nature/i],
+  ['enfants',   /enfant|jeune public|famille|conte|\bkids\b/i],
+  ['fete',      /f[êe]te|feu d.artifice|carnaval|\bbal\b|kermesse|repas|\bloto\b|m[ée]choui|guinguette/i],
+  ['atelier',   /atelier|stage|conf[ée]rence|formation|initiation/i],
+];
+const catFromTitle = (t) => {
+  const s = t || '';
+  for (const [cat, re] of KW_RULES) if (re.test(s)) return cat;
+  return 'autre';
+};
 
 for (const f of walk(path.join(extractedDir, 'objects'))) {
   total++;
@@ -98,15 +131,12 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   const descObj = asArray(o['hasDescription'])[0];
   const desc = descObj ? (langMap(descObj['dc:description'], 300) || langMap(descObj['shortDescription'], 300)) : null;
 
-  // DIAGNOSTIC TEMPORAIRE : on note les @type et hasTheme des événements retenus
-  asArray(o['@type']).forEach(t => bump(typeStats, t));
-  asArray(o['hasTheme']).forEach(th => bump(themeStats, th && (th['@id'] || (langMap(th['rdfs:label']) && JSON.stringify(langMap(th['rdfs:label']))))));
-
   events.push({
     id: o['dc:identifier'] || o['@id'],
     title, city, dist: Math.round(dist * 10) / 10,
     start: starts[0], end: lastEnd, next,
     recurring: recurring || undefined,
+    cat: catFromTypes(o['@type']),
     img, url, desc: desc || undefined,
   });
   kept++;
@@ -188,6 +218,7 @@ async function mergeTourinsoft() {
       dist: Math.round(haversine(lat, lon) * 10) / 10,
       start: starts[0], end: lastEnd, next,
       recurring: recurring || undefined,
+      cat: catFromTitle(nom),
       img: urls[0] || undefined,
       gallery: urls.length > 1 ? urls.slice(1, 4) : undefined,
       credit: photoCredit(s),
@@ -202,13 +233,6 @@ async function mergeTourinsoft() {
 
 (async function () {
   await mergeTourinsoft();
-  // === DIAGNOSTIC TEMPORAIRE : affichage des répartitions (à retirer après analyse) ===
-  const dump = (label, m) => {
-    console.error('\n=== ' + label + ' (' + Object.keys(m).length + ' valeurs) ===');
-    Object.entries(m).sort((a, b) => b[1] - a[1]).forEach(([k, n]) => console.error(String(n).padStart(4) + '  ' + k));
-  };
-  dump('@type DATAtourisme', typeStats);
-  dump('hasTheme DATAtourisme', themeStats);
   events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
   const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
   fs.mkdirSync(path.dirname(outFile), { recursive: true });

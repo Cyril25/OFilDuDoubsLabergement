@@ -159,6 +159,35 @@
             padding: 4px 9px; border-radius: 6px; font-size: .75rem; font-weight: 700;
         }
 
+        #agenda-toolbar { margin: 6px 0 22px; }
+        .ag-search-wrap {
+            position: relative; max-width: 460px; margin: 0 auto 14px;
+        }
+        .ag-search-wrap i {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--primary-color); opacity: .6; pointer-events: none;
+        }
+        #agenda-search {
+            width: 100%; box-sizing: border-box;
+            padding: 11px 14px 11px 40px; border: 1px solid #d7d2c8;
+            border-radius: 999px; font-family: inherit; font-size: .95rem; background: #fff;
+        }
+        #agenda-search:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,0,0,.05); }
+        .ag-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .ag-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fff; border: 1px solid #d7d2c8; color: var(--text-color, #333);
+            padding: 7px 13px; border-radius: 999px; font-family: inherit;
+            font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s;
+        }
+        .ag-chip:hover { border-color: var(--primary-color); }
+        .ag-chip.is-active { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+        .ag-chip-n {
+            background: rgba(0,0,0,.08); color: inherit; border-radius: 999px;
+            padding: 1px 7px; font-size: .72rem; font-weight: 700;
+        }
+        .ag-chip.is-active .ag-chip-n { background: rgba(255,255,255,.25); }
+
         #agenda-more-wrap { text-align: center; margin: 18px 0 6px; }
         #agenda-more {
             background: var(--primary-color); color: #fff; border: none;
@@ -235,6 +264,14 @@
 
         <div id="agenda-admin-bar">
             <button id="agenda-admin-btn" type="button" title="Administration des images">Admin</button>
+        </div>
+
+        <div id="agenda-toolbar">
+            <div class="ag-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="search" id="agenda-search" autocomplete="off">
+            </div>
+            <div id="agenda-filters" class="ag-filters"></div>
         </div>
 
         <div id="agenda-list"></div>

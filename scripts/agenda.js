@@ -30,6 +30,27 @@
     const monthLabel = (s) => { const t = D(s).toLocaleDateString(locale, { month: 'long', year: 'numeric' }); return t.charAt(0).toUpperCase() + t.slice(1); };
     const today = new Date().toISOString().slice(0, 10);
 
+    // --- Filtres par catégorie + recherche ---
+    const CATS = [
+        { key: 'brocante', icon: '🛍️' }, { key: 'musique', icon: '🎵' },
+        { key: 'spectacle', icon: '🎭' }, { key: 'expo', icon: '🖼️' },
+        { key: 'nature', icon: '🥾' }, { key: 'sport', icon: '🏅' },
+        { key: 'fete', icon: '🎉' }, { key: 'enfants', icon: '👨‍👩‍👧' },
+        { key: 'atelier', icon: '🛠️' }, { key: 'autre', icon: '📌' },
+    ];
+    const activeCats = new Set();
+    let searchTerm = '';
+    const norm = (s) => (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const catLabel = (k) => (T.cats && T.cats[k]) || k;
+    function matchFilters(e) {
+        if (activeCats.size && !activeCats.has(e.cat || 'autre')) return false;
+        if (searchTerm) {
+            const hay = norm(pickLang(e.title) + ' ' + (e.city || '') + ' ' + (e.desc ? pickLang(e.desc) : ''));
+            if (hay.indexOf(searchTerm) < 0) return false;
+        }
+        return true;
+    }
+
     // Si une image ne charge pas, on bascule la carte sur le bandeau coloré + date
     window.__agFallback = function (img) {
         const m = img.closest('.ag-media'); if (!m) return;
@@ -164,18 +185,42 @@
         glb = window.GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
     }
 
+    function renderFilters(base) {
+        const wrap = document.getElementById('agenda-filters');
+        if (!wrap) return;
+        const counts = {};
+        base.forEach(e => { const c = e.cat || 'autre'; counts[c] = (counts[c] || 0) + 1; });
+        let html = '<button type="button" class="ag-chip' + (activeCats.size ? '' : ' is-active') +
+            '" data-cat="__all">' + (T.ag_all || 'Tout') + ' <span class="ag-chip-n">' + base.length + '</span></button>';
+        CATS.forEach(c => {
+            const n = counts[c.key]; if (!n) return;
+            html += '<button type="button" class="ag-chip' + (activeCats.has(c.key) ? ' is-active' : '') +
+                '" data-cat="' + c.key + '">' + c.icon + ' ' + esc(catLabel(c.key)) +
+                ' <span class="ag-chip-n">' + n + '</span></button>';
+        });
+        wrap.innerHTML = html;
+    }
+
     function render() {
         const list = document.getElementById('agenda-list');
         if (!data || !data.events || !data.events.length) {
             list.innerHTML = '<p class="ag-empty">' + T.ag_empty + '</p>';
             return;
         }
-        const up = [], on = [];
+        // Base = événements visibles (hors permanents et masqués), avant filtres utilisateur
+        const base = [];
         for (const e of data.events) {
             const dur = (Date.parse(e.end) - Date.parse(e.start)) / 86400000;
             if (!e.recurring && dur > 210) continue;                       // permanent (filet de sécurité)
             const ov = overrides[e.id] || {};
             if (ov.hidden && !adminMode) continue;                          // masqué : caché aux visiteurs
+            base.push(e);
+        }
+        renderFilters(base);
+
+        const up = [], on = [];
+        for (const e of base) {
+            if (!matchFilters(e)) continue;                                 // filtres catégorie + recherche
             (isOngoing(e) ? on : up).push(e);
         }
         up.sort((a, b) => a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist);
@@ -195,7 +240,8 @@
             html += card(e);
         });
         if (openGrid) html += '</div>';
-        list.innerHTML = html || '<p class="ag-empty">' + T.ag_empty + '</p>';
+        const emptyMsg = (activeCats.size || searchTerm) ? (T.ag_no_match || T.ag_empty) : T.ag_empty;
+        list.innerHTML = html || '<p class="ag-empty">' + emptyMsg + '</p>';
 
         const moreWrap = document.getElementById('agenda-more-wrap');
         if (moreWrap) moreWrap.style.display = 'none';   // plus de pagination : tout est affiché
@@ -345,6 +391,23 @@
 
         const moreBtn = document.getElementById('agenda-more');
         if (moreBtn) moreBtn.addEventListener('click', () => { limit += BATCH; render(); });
+
+        // Recherche texte
+        const search = document.getElementById('agenda-search');
+        if (search) {
+            if (T.ag_search_ph) search.placeholder = T.ag_search_ph;
+            search.addEventListener('input', () => { searchTerm = norm(search.value.trim()); render(); });
+        }
+        // Filtres par catégorie (puces)
+        const filters = document.getElementById('agenda-filters');
+        if (filters) filters.addEventListener('click', (ev) => {
+            const btn = ev.target.closest('.ag-chip'); if (!btn) return;
+            const cat = btn.getAttribute('data-cat');
+            if (cat === '__all') activeCats.clear();
+            else if (activeCats.has(cat)) activeCats.delete(cat);
+            else activeCats.add(cat);
+            render();
+        });
 
         // Clic sur la bannière → ouvre le zoom (via la 1re vignette), sans doublon dans la visionneuse
         document.addEventListener('click', (ev) => {

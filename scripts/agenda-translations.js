@@ -18,6 +18,10 @@ const dataTranslations = {
         ag_ongoing_title: "En ce moment / toute la saison",
         ag_recurring: "autres dates jusqu'au",
         ag_now: "En cours",
+        ag_all: "Tout",
+        ag_search_ph: "Rechercher un événement, une commune…",
+        ag_no_match: "Aucun événement ne correspond à votre recherche.",
+        cats: { brocante: "Vide-greniers & marchés", musique: "Concerts & musique", spectacle: "Spectacles & cinéma", expo: "Expositions", nature: "Nature & visites", sport: "Sport", fete: "Fêtes & traditions", enfants: "Enfants & famille", atelier: "Ateliers & conférences", autre: "Autre" },
         ag_source: "Source : DATAtourisme (Open Data)"
     },
     en: {
@@ -37,6 +41,10 @@ const dataTranslations = {
         ag_ongoing_title: "Happening now / all season",
         ag_recurring: "more dates until",
         ag_now: "Now on",
+        ag_all: "All",
+        ag_search_ph: "Search an event, a town…",
+        ag_no_match: "No event matches your search.",
+        cats: { brocante: "Flea markets & markets", musique: "Concerts & music", spectacle: "Shows & cinema", expo: "Exhibitions", nature: "Nature & visits", sport: "Sport", fete: "Festivals & traditions", enfants: "Kids & family", atelier: "Workshops & talks", autre: "Other" },
         ag_source: "Source: DATAtourisme (Open Data)"
     },
     de: {
@@ -56,6 +64,10 @@ const dataTranslations = {
         ag_ongoing_title: "Aktuell / die ganze Saison",
         ag_recurring: "weitere Termine bis",
         ag_now: "Läuft gerade",
+        ag_all: "Alle",
+        ag_search_ph: "Veranstaltung, Ort suchen…",
+        ag_no_match: "Keine Veranstaltung entspricht Ihrer Suche.",
+        cats: { brocante: "Flohmärkte & Märkte", musique: "Konzerte & Musik", spectacle: "Shows & Kino", expo: "Ausstellungen", nature: "Natur & Besichtigungen", sport: "Sport", fete: "Feste & Traditionen", enfants: "Kinder & Familie", atelier: "Workshops & Vorträge", autre: "Sonstiges" },
         ag_source: "Quelle: DATAtourisme (Open Data)"
     },
     nl: {
@@ -75,6 +87,10 @@ const dataTranslations = {
         ag_ongoing_title: "Nu te beleven / het hele seizoen",
         ag_recurring: "meer data tot",
         ag_now: "Nu bezig",
+        ag_all: "Alle",
+        ag_search_ph: "Zoek een evenement, een plaats…",
+        ag_no_match: "Geen evenement komt overeen met uw zoekopdracht.",
+        cats: { brocante: "Rommelmarkten & markten", musique: "Concerten & muziek", spectacle: "Voorstellingen & bioscoop", expo: "Tentoonstellingen", nature: "Natuur & bezoeken", sport: "Sport", fete: "Feesten & tradities", enfants: "Kinderen & gezin", atelier: "Workshops & lezingen", autre: "Overig" },
         ag_source: "Bron: DATAtourisme (Open Data)"
     },
     es: {
@@ -94,6 +110,10 @@ const dataTranslations = {
         ag_ongoing_title: "Ahora mismo / toda la temporada",
         ag_recurring: "más fechas hasta el",
         ag_now: "En curso",
+        ag_all: "Todo",
+        ag_search_ph: "Buscar un evento, un municipio…",
+        ag_no_match: "Ningún evento coincide con tu búsqueda.",
+        cats: { brocante: "Mercadillos y mercados", musique: "Conciertos y música", spectacle: "Espectáculos y cine", expo: "Exposiciones", nature: "Naturaleza y visitas", sport: "Deporte", fete: "Fiestas y tradiciones", enfants: "Niños y familia", atelier: "Talleres y conferencias", autre: "Otros" },
         ag_source: "Fuente: DATAtourisme (Open Data)"
     },
     it: {
@@ -113,6 +133,10 @@ const dataTranslations = {
         ag_ongoing_title: "In questo momento / per tutta la stagione",
         ag_recurring: "altre date fino al",
         ag_now: "In corso",
+        ag_all: "Tutto",
+        ag_search_ph: "Cerca un evento, un comune…",
+        ag_no_match: "Nessun evento corrisponde alla tua ricerca.",
+        cats: { brocante: "Mercatini e mercati", musique: "Concerti e musica", spectacle: "Spettacoli e cinema", expo: "Mostre", nature: "Natura e visite", sport: "Sport", fete: "Feste e tradizioni", enfants: "Bambini e famiglia", atelier: "Laboratori e conferenze", autre: "Altro" },
         ag_source: "Fonte: DATAtourisme (Open Data)"
     },
     pt: {
@@ -132,6 +156,10 @@ const dataTranslations = {
         ag_ongoing_title: "Agora mesmo / durante toda a época",
         ag_recurring: "outras datas até",
         ag_now: "A decorrer",
+        ag_all: "Tudo",
+        ag_search_ph: "Procurar um evento, uma localidade…",
+        ag_no_match: "Nenhum evento corresponde à sua pesquisa.",
+        cats: { brocante: "Feiras de velharias & mercados", musique: "Concertos & música", spectacle: "Espetáculos & cinema", expo: "Exposições", nature: "Natureza & visitas", sport: "Desporto", fete: "Festas & tradições", enfants: "Crianças & família", atelier: "Ateliês & conferências", autre: "Outro" },
         ag_source: "Fonte: DATAtourisme (Open Data)"
     }
 };
