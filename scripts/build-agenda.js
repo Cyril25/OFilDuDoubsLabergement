@@ -43,6 +43,9 @@ const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 
 let total = 0, kept = 0;
 const events = [];
+// === DIAGNOSTIC TEMPORAIRE : répartition des types/thèmes (à retirer après analyse) ===
+const typeStats = {}, themeStats = {};
+const bump = (m, k) => { if (k) m[k] = (m[k] || 0) + 1; };
 
 for (const f of walk(path.join(extractedDir, 'objects'))) {
   total++;
@@ -94,6 +97,10 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   // description courte (toutes langues fournies par le flux), pour tous les événements
   const descObj = asArray(o['hasDescription'])[0];
   const desc = descObj ? (langMap(descObj['dc:description'], 300) || langMap(descObj['shortDescription'], 300)) : null;
+
+  // DIAGNOSTIC TEMPORAIRE : on note les @type et hasTheme des événements retenus
+  asArray(o['@type']).forEach(t => bump(typeStats, t));
+  asArray(o['hasTheme']).forEach(th => bump(themeStats, th && (th['@id'] || (langMap(th['rdfs:label']) && JSON.stringify(langMap(th['rdfs:label']))))));
 
   events.push({
     id: o['dc:identifier'] || o['@id'],
@@ -195,6 +202,13 @@ async function mergeTourinsoft() {
 
 (async function () {
   await mergeTourinsoft();
+  // === DIAGNOSTIC TEMPORAIRE : affichage des répartitions (à retirer après analyse) ===
+  const dump = (label, m) => {
+    console.error('\n=== ' + label + ' (' + Object.keys(m).length + ' valeurs) ===');
+    Object.entries(m).sort((a, b) => b[1] - a[1]).forEach(([k, n]) => console.error(String(n).padStart(4) + '  ' + k));
+  };
+  dump('@type DATAtourisme', typeStats);
+  dump('hasTheme DATAtourisme', themeStats);
   events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
   const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
