@@ -31,13 +31,15 @@ jobs:
         run: npm ci
 
       - name: Générer les pages multilingues + sitemap
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
         run: node scripts/build-i18n.js
 
       - name: Commit si changement
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add en de nl es it pt sitemap.xml index.html logement.html equipements.html commerces.html activites.html ou-manger.html contact.html mentions.html
+          git add en de nl es it pt sitemap.xml data/i18n-seo-cache.json index.html logement.html equipements.html commerces.html activites.html ou-manger.html contact.html mentions.html agenda.html dispo.html
           if git diff --cached --quiet; then
             echo "Aucun changement multilingue."
           else

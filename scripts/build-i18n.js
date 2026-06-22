@@ -38,6 +38,32 @@ function loadVar(file, name) {
 }
 const menuTr = loadVar('menu-translations.js', 'menuTranslations');
 
+// --- Traduction SEO (<title> + meta description) via DeepL, avec cache ---
+// Sans DEEPL_API_KEY : on applique seulement le cache existant (titres FR en repli).
+const DEEPL_KEY = process.env.DEEPL_API_KEY || '';
+const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
+const SEO_CACHE_PATH = path.join(ROOT, 'data', 'i18n-seo-cache.json');
+let seoCache = {};
+try { seoCache = JSON.parse(fs.readFileSync(SEO_CACHE_PATH, 'utf8')); } catch (e) {}
+const seoKey = (lang, text) => lang + '' + text;
+const seoT = (lang, frText) => (frText && seoCache[seoKey(lang, frText)]) || frText || '';
+
+async function deeplBatch(lang, items) { // items: [{key,text}]
+  const base = DEEPL_KEY.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com';
+  const body = new URLSearchParams();
+  body.append('source_lang', 'FR');
+  body.append('target_lang', DEEPL_LANG[lang]);
+  for (const it of items) body.append('text', it.text);
+  const resp = await fetch(base + '/v2/translate', {
+    method: 'POST',
+    headers: { 'Authorization': 'DeepL-Auth-Key ' + DEEPL_KEY, 'Content-Type': 'application/x-www-form-urlencoded' },
+    body,
+  });
+  if (!resp.ok) throw new Error('DeepL ' + resp.status + ' : ' + (await resp.text()).slice(0, 200));
+  const json = await resp.json();
+  json.translations.forEach((t, i) => { seoCache[items[i].key] = t.text; });
+}
+
 const urlFor = (p, lang) => {
   if (lang === 'fr') return p === 'index' ? BASE + '/' : `${BASE}/${p}.html`;
   return p === 'index' ? `${BASE}/${lang}/` : `${BASE}/${lang}/${p}.html`;
@@ -102,6 +128,16 @@ function buildLang(page, lang) {
     const h = $(el).html(); if (h && h.includes(' min')) $(el).html(h.replace(' min', ' ' + tr.info_min));
   });
 
+  // <title> + meta description traduits (SEO)
+  const frTitle = ($('title').first().text() || '').trim();
+  if (frTitle) $('title').first().text(seoT(lang, frTitle));
+  const ogt = $('meta[property="og:title"]');
+  if (ogt.length) ogt.attr('content', seoT(lang, (ogt.first().attr('content') || '').trim()));
+  const md = $('meta[name="description"]');
+  if (md.length) md.attr('content', seoT(lang, (md.first().attr('content') || '').trim()));
+  const ogd = $('meta[property="og:description"]');
+  if (ogd.length) ogd.attr('content', seoT(lang, (ogd.first().attr('content') || '').trim()));
+
   // Canonical + og:url + hreflang
   $('link[rel="canonical"]').attr('href', urlFor(page, lang));
   $('meta[property="og:url"]').attr('content', urlFor(page, lang));
@@ -162,10 +198,44 @@ function writeSitemap() {
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), xml);
 }
 
-let n = 0;
-for (const page of STATIC) {
-  patchFr(page);
-  for (const lang of LANGS) { buildLang(page, lang); n++; }
+async function run() {
+  // Pré-passe : recenser les textes SEO FR (title, meta desc, og:title, og:desc) à traduire (hors cache)
+  const missing = new Map();
+  for (const page of STATIC) {
+    const $ = cheerio.load(fs.readFileSync(path.join(ROOT, page + '.html'), 'utf8'), { decodeEntities: false });
+    const texts = [
+      ($('title').first().text() || '').trim(),
+      ($('meta[name="description"]').first().attr('content') || '').trim(),
+      ($('meta[property="og:title"]').first().attr('content') || '').trim(),
+      ($('meta[property="og:description"]').first().attr('content') || '').trim(),
+    ].filter(Boolean);
+    for (const lang of LANGS) for (const txt of texts) {
+      const k = seoKey(lang, txt);
+      if (seoCache[k] === undefined) missing.set(k, { lang, text: txt, key: k });
+    }
+  }
+  console.log(`SEO à traduire (hors cache) : ${missing.size} segment(s).`);
+  if (missing.size && DEEPL_KEY) {
+    const byLang = {};
+    for (const m of missing.values()) (byLang[m.lang] = byLang[m.lang] || []).push(m);
+    for (const lang of Object.keys(byLang)) {
+      const arr = byLang[lang];
+      for (let i = 0; i < arr.length; i += 45) {
+        await deeplBatch(lang, arr.slice(i, i + 45));
+        console.log(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
+      }
+    }
+    fs.writeFileSync(SEO_CACHE_PATH, JSON.stringify(seoCache, null, 0));
+  } else if (missing.size) {
+    console.log('DEEPL_API_KEY absente : title/description laissés en FR pour les manques.');
+  }
+
+  let n = 0;
+  for (const page of STATIC) {
+    patchFr(page);
+    for (const lang of LANGS) { buildLang(page, lang); n++; }
+  }
+  writeSitemap();
+  console.log(`OK : ${STATIC.length} pages FR patchées, ${n} pages traduites générées (${LANGS.join(', ')}), sitemap régénéré.`);
 }
-writeSitemap();
-console.log(`OK : ${STATIC.length} pages FR patchées, ${n} pages traduites générées (${LANGS.join(', ')}), sitemap régénéré.`);
+run().catch(e => { console.error('Erreur build-i18n :', e.message); process.exit(1); });
