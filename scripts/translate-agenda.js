@@ -21,9 +21,9 @@ const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'P
 // Titres : on complète toutes les langues manquantes (les events DATAtourisme ont déjà de/en/fr ;
 // les compléments Tourinsoft n'ont que fr → de/en/es/it/nl/pt à traduire).
 const TITLE_TARGETS = ['de', 'en', 'es', 'it', 'nl', 'pt'];
-// Descriptions : DATAtourisme fournit déjà de/en/es/fr/it/nl → on ne complète que pt.
-// (Les compléments Tourinsoft gardent leur description en français pour les autres langues.)
-const DESC_TARGETS = ['pt'];
+// Descriptions : DATAtourisme fournit de/en/es/it/nl ; les compléments Tourinsoft n'ont que fr.
+// On complète donc toutes les langues manquantes (DeepL + cache) pour la cohérence multilingue.
+const DESC_TARGETS = ['de', 'en', 'es', 'it', 'nl', 'pt'];
 const SEP = '';
 
 const agenda = JSON.parse(fs.readFileSync(agendaPath, 'utf8'));
