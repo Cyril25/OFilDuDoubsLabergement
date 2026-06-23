@@ -62,7 +62,6 @@ const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roun
 const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
 function buildEnrichMap(dir) {
   const map = {};
-  let _g = 0, _p = 0, _samplePdf = '', _sampleLocs = '';
   const objectsDir = path.join(dir, 'objects');
   const root = fs.existsSync(objectsDir) ? objectsDir : dir;
   if (!fs.existsSync(root)) return map;
@@ -86,15 +85,6 @@ function buildEnrichMap(dir) {
         }
       }
     }
-    if (gpx) _g++;
-    if (pdf) { _p++; if (!_samplePdf) _samplePdf = pdf; }
-    if (!_sampleLocs && (asArray(o['hasMainRepresentation']).length || asArray(o['hasRepresentation']).length)) {
-      const ls = [];
-      for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])])
-        for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
-          for (const loc of asArray(res && res['ebucore:locator'])) ls.push(loc);
-      if (ls.length) _sampleLocs = ls.slice(0, 4).join(' , ');
-    }
     const descObj = asArray(o['hasDescription'])[0];
     const descML = (descObj && langMap(descObj['dc:description'], 500)) || langMap(o['rdfs:comment'], 500) || null;
     map[id] = {
@@ -106,7 +96,6 @@ function buildEnrichMap(dir) {
       descML,
     };
   }
-  console.error('ENRICH: gpx=' + _g + ' pdf=' + _p + ' | samplePdf=' + _samplePdf + ' | sampleLocs=' + _sampleLocs);
   return map;
 }
 
@@ -182,7 +171,7 @@ async function fetchTourinsoft() {
   const byMode = {}; deduped.forEach(i => byMode[i.mode] = (byMode[i.mode] || 0) + 1);
   console.error(`Itinéraires : ${deduped.length} (rayon ${RADIUS}km) | enrichis DATAtourisme : ${enriched}`);
   console.error('Par mode : ' + JSON.stringify(byMode));
-  console.error('Photo : ' + deduped.filter(i => i.img).length + ' | difficulté : ' + deduped.filter(i => i.difficulty).length + ' | dénivelé : ' + deduped.filter(i => i.denivele).length + ' | GPX : ' + deduped.filter(i => i.gpx).length + ' | lien : ' + deduped.filter(i => i.url).length);
+  console.error('Photo : ' + deduped.filter(i => i.img).length + ' | difficulté : ' + deduped.filter(i => i.difficulty).length + ' | dénivelé : ' + deduped.filter(i => i.denivele).length + ' | GPX : ' + deduped.filter(i => i.gpx).length + ' | topoguide : ' + deduped.filter(i => i.pdf).length + ' | lien : ' + deduped.filter(i => i.url).length);
   const vis = deduped.filter(i => i.dist <= 30).length;
   console.error('Visibles ≤30km : ' + vis + ' | repliés 30-' + RADIUS + 'km : ' + (deduped.length - vis));
 })().catch(e => { console.error('Erreur build-rando :', e.message); process.exit(1); });
