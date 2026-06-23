@@ -24,6 +24,16 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Quota DeepL (info)
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          if [ -z "$DEEPL_API_KEY" ]; then echo "Pas de clé DEEPL_API_KEY"; exit 0; fi
+          case "$DEEPL_API_KEY" in *:fx) BASE=https://api-free.deepl.com;; *) BASE=https://api.deepl.com;; esac
+          echo "Endpoint utilisé : $BASE"
+          echo -n "Usage clé GitHub : "
+          curl -s -H "Authorization: DeepL-Auth-Key $DEEPL_API_KEY" "$BASE/v2/usage"; echo
+
       - name: Télécharger et décompresser le flux itinéraires
         env:
           DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
