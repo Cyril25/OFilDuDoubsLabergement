@@ -43,21 +43,34 @@ console.error('TOTAL objets dans le flux : ' + total);
 dump('@type', typeStats);
 dump('Propriétés (clés de 1er niveau)', keyStats);
 
-// Dump ciblé des champs utiles sur 3 randonnées (WalkingTour)
-let shown = 0;
+// Géo + volume par rayon autour de Labergement-Sainte-Marie
+const LAT = 46.7689, LON = 6.2807;
+const haversine = (la, lo) => {
+  const R = 6371, r = Math.PI / 180;
+  const dla = (la - LAT) * r, dlo = (lo - LON) * r;
+  const a = Math.sin(dla / 2) ** 2 + Math.cos(LAT * r) * Math.cos(la * r) * Math.sin(dlo / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+};
+const TOUR_TYPES = ['WalkingTour', 'CyclingTour', 'RoadTour'];
+let withGeo = 0, geoSample = null;
+const within = { 15: 0, 20: 0, 30: 0, 40: 0 };
+const byMode = {};
 for (const f of walk(root)) {
-  if (shown >= 3) break;
   let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
-  if (!asArray(o['@type']).includes('WalkingTour')) continue;
-  shown++;
-  const pick = (k) => o[k] !== undefined ? JSON.stringify(o[k]) : '(absent)';
-  console.error('\n===== RANDO ' + shown + ' : ' + JSON.stringify(o['rdfs:label']) + ' =====');
-  console.error('tourDistance         : ' + pick('tourDistance'));
-  console.error('positiveCumulDiff    : ' + pick('positiveCumulDifference'));
-  console.error('hasTourType          : ' + pick('hasTourType'));
-  console.error('hasPracticeCondition : ' + pick('hasPracticeCondition').slice(0, 600));
-  console.error('hasTheme             : ' + pick('hasTheme').slice(0, 400));
-  console.error('isLocatedAt          : ' + pick('isLocatedAt').slice(0, 700));
-  console.error('hasMainRepresentation: ' + pick('hasMainRepresentation').slice(0, 700));
-  console.error('hasContact           : ' + pick('hasContact').slice(0, 500));
+  const types = asArray(o['@type']);
+  if (!TOUR_TYPES.some(t => types.includes(t))) continue;
+  const loc = asArray(o['isLocatedAt'])[0];
+  const geo = loc && loc['schema:geo'];
+  if (!geo) continue;
+  const lat = parseFloat(geo['schema:latitude']), lon = parseFloat(geo['schema:longitude']);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+  withGeo++;
+  if (!geoSample) geoSample = JSON.stringify(geo);
+  const d = haversine(lat, lon);
+  for (const km of [15, 20, 30, 40]) if (d <= km) within[km]++;
+  if (d <= 30) { const tt = types.find(t => TOUR_TYPES.includes(t)); byMode[tt] = (byMode[tt] || 0) + 1; }
 }
+console.error('\n=== Itinéraires (Walking/Cycling/Road) avec géo : ' + withGeo + ' ===');
+console.error('Exemple schema:geo : ' + geoSample);
+console.error('Dans le rayon : 15km=' + within[15] + ' | 20km=' + within[20] + ' | 30km=' + within[30] + ' | 40km=' + within[40]);
+console.error('Répartition (≤30km) par type : ' + JSON.stringify(byMode));
