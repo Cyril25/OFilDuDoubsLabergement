@@ -37,6 +37,8 @@
 
     <style>
         .rd-meta { text-align: center; color: #777; font-size: .85rem; margin: 0 0 14px; }
+        .rd-help { max-width: 720px; margin: 0 auto 18px; background: #f6f8f1; border: 1px solid #e2e6d8; border-radius: 10px; padding: 12px 18px; }
+        .rd-help p { margin: 5px 0; font-size: .86rem; color: #555; line-height: 1.5; }
         #rando-toolbar { margin: 6px 0 22px; }
         .rd-search-wrap { position: relative; max-width: 460px; margin: 0 auto 14px; }
         .rd-search-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary-color); opacity: .6; }
@@ -141,6 +143,10 @@
 
     <main>
         <p id="introduction" class="intro-text">Dozens of routes around Labergement-Sainte-Marie: distance, elevation gain, difficulty, GPX track and trail guide. Nearby routes (≤ 30 km) are shown first; the further ones (up to 80 km), including must-sees like the Hérisson Waterfalls, are at the bottom of the page.</p>
+        <div id="rando-help" class="rd-help">
+            <p id="r_help_gpx">🗺️ GPX track: the route file to open in a hiking app (Visorando, Komoot…) or a GPS to guide you on the trail.</p>
+            <p id="r_help_pdf">📄 Trail guide: the detailed PDF sheet to view or print (map, description, practical info).</p>
+        </div>
         <p id="rando-updated" class="rd-meta"></p>
 
         <div id="rando-admin-bar">
