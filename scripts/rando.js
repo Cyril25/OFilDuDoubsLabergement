@@ -17,9 +17,9 @@
         appId: "1:644448143950:web:f64ccc8f62883507ea111f"
     };
     const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
-    const MODES = ['foot', 'bike', 'road'];
+    const MODES = ['foot', 'bike', 'road', 'horse'];
     const DIFFS = ['easy', 'medium', 'hard', 'very_hard'];
-    const MODE_ICON = { foot: 'fa-hiking', bike: 'fa-bicycle', road: 'fa-road' };
+    const MODE_ICON = { foot: 'fa-hiking', bike: 'fa-bicycle', road: 'fa-road', horse: 'fa-horse' };
 
     let data = null, overrides = {}, adminMode = false, auth = null, fbLoading = null;
     const activeModes = new Set(), activeDiffs = new Set();

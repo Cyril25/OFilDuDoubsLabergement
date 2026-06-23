@@ -18,7 +18,7 @@ const dataTranslations = {
         r_far_btn: "Afficher les itinéraires plus éloignés",
         r_unit_elev: "dénivelé",
         r_source: "Source : DATAtourisme (Open Data)",
-        modes: { foot: "À pied", bike: "Vélo", road: "Sur route" },
+        modes: { foot: "À pied", bike: "Vélo", road: "Sur route", horse: "À cheval" },
         diff: { easy: "Facile", medium: "Moyen", hard: "Difficile", very_hard: "Très difficile" },
         types: { loop: "En boucle", roundtrip: "Aller-retour", roaming: "Itinérance", oneway: "Aller simple" }
     },
@@ -39,7 +39,7 @@ const dataTranslations = {
         r_far_btn: "Show routes further away",
         r_unit_elev: "elevation gain",
         r_source: "Source: DATAtourisme (Open Data)",
-        modes: { foot: "Walking", bike: "Cycling", road: "On road" },
+        modes: { foot: "Walking", bike: "Cycling", road: "On road", horse: "On horseback" },
         diff: { easy: "Easy", medium: "Medium", hard: "Hard", very_hard: "Very hard" },
         types: { loop: "Loop", roundtrip: "Round trip", roaming: "Multi-day", oneway: "One way" }
     },
@@ -60,7 +60,7 @@ const dataTranslations = {
         r_far_btn: "Weiter entfernte Touren anzeigen",
         r_unit_elev: "Höhenmeter",
         r_source: "Quelle: DATAtourisme (Open Data)",
-        modes: { foot: "Zu Fuß", bike: "Fahrrad", road: "Auf der Straße" },
+        modes: { foot: "Zu Fuß", bike: "Fahrrad", road: "Auf der Straße", horse: "Zu Pferd" },
         diff: { easy: "Leicht", medium: "Mittel", hard: "Schwer", very_hard: "Sehr schwer" },
         types: { loop: "Rundweg", roundtrip: "Hin und zurück", roaming: "Mehrtagestour", oneway: "Einfach" }
     },
@@ -81,7 +81,7 @@ const dataTranslations = {
         r_far_btn: "Routes verder weg tonen",
         r_unit_elev: "hoogtemeters",
         r_source: "Bron: DATAtourisme (Open Data)",
-        modes: { foot: "Te voet", bike: "Fiets", road: "Op de weg" },
+        modes: { foot: "Te voet", bike: "Fiets", road: "Op de weg", horse: "Te paard" },
         diff: { easy: "Makkelijk", medium: "Gemiddeld", hard: "Moeilijk", very_hard: "Zeer moeilijk" },
         types: { loop: "Lus", roundtrip: "Heen en terug", roaming: "Meerdaagse", oneway: "Enkele reis" }
     },
@@ -102,7 +102,7 @@ const dataTranslations = {
         r_far_btn: "Mostrar rutas más lejanas",
         r_unit_elev: "desnivel",
         r_source: "Fuente: DATAtourisme (Open Data)",
-        modes: { foot: "A pie", bike: "En bici", road: "En carretera" },
+        modes: { foot: "A pie", bike: "En bici", road: "En carretera", horse: "A caballo" },
         diff: { easy: "Fácil", medium: "Medio", hard: "Difícil", very_hard: "Muy difícil" },
         types: { loop: "Circular", roundtrip: "Ida y vuelta", roaming: "Travesía", oneway: "Solo ida" }
     },
@@ -123,7 +123,7 @@ const dataTranslations = {
         r_far_btn: "Mostra itinerari più lontani",
         r_unit_elev: "dislivello",
         r_source: "Fonte: DATAtourisme (Open Data)",
-        modes: { foot: "A piedi", bike: "In bici", road: "Su strada" },
+        modes: { foot: "A piedi", bike: "In bici", road: "Su strada", horse: "A cavallo" },
         diff: { easy: "Facile", medium: "Medio", hard: "Difficile", very_hard: "Molto difficile" },
         types: { loop: "Ad anello", roundtrip: "Andata e ritorno", roaming: "Più giorni", oneway: "Solo andata" }
     },
@@ -144,7 +144,7 @@ const dataTranslations = {
         r_far_btn: "Mostrar percursos mais distantes",
         r_unit_elev: "desnível",
         r_source: "Fonte: DATAtourisme (Open Data)",
-        modes: { foot: "A pé", bike: "De bicicleta", road: "Na estrada" },
+        modes: { foot: "A pé", bike: "De bicicleta", road: "Na estrada", horse: "A cavalo" },
         diff: { easy: "Fácil", medium: "Médio", hard: "Difícil", very_hard: "Muito difícil" },
         types: { loop: "Circular", roundtrip: "Ida e volta", roaming: "Vários dias", oneway: "Só ida" }
     }

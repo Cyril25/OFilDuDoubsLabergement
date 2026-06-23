@@ -1,21 +1,20 @@
 #!/usr/bin/env node
 /**
- * Génère data/rando.json à partir du flux « Itinéraire touristique » DATAtourisme extrait.
- * Garde les itinéraires (pédestre/vélo/route) dans un rayon autour de Labergement,
- * PLUS une liste curatée d'« incontournables » (inclus même au-delà du rayon).
+ * Génère data/rando.json — itinéraires de randonnée/vélo autour de Labergement.
+ * HYBRIDE :
+ *  - BASE : Tourinsoft/Decibelles BFC, type "randonnees" (riche en vélo + photos + catégories).
+ *  - ENRICHISSEMENT : flux DATAtourisme extrait (difficulté, dénivelé, trace GPX,
+ *    descriptions multilingues), joint par identifiant (Tourinsoft _id == dc:identifier DATAtourisme, en minuscules).
  *
- * Usage : node scripts/build-rando.js <dossier_extrait> <fichier_sortie> [rayon_km]
+ * Usage : node scripts/build-rando.js <dossier_datatourisme_extrait> <fichier_sortie> [rayon_km]
  */
 const fs = require('fs'), path = require('path');
 
-const LAT = 46.7689, LON = 6.2807;                 // Labergement-Sainte-Marie
-const RADIUS = parseFloat(process.argv[4] || '20');
-const extractedDir = process.argv[2];
+const LAT = 46.7689, LON = 6.2807;                       // Labergement-Sainte-Marie
+const RADIUS = parseFloat(process.argv[4] || '80');
+const extractedDir = process.argv[2];                    // DATAtourisme (enrichissement)
 const outFile = process.argv[3];
-
-// Incontournables : inclus quelle que soit la distance (match sur le nom FR).
-// (Vide pour l'instant : tri purement par distance.)
-const MUST_SEE = [];
+const TOURINSOFT_URL = 'https://es.tourinsoft.com/tis_v5_bourgogne/randonnees/_search';
 
 const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 const langMap = (obj, max) => {
@@ -33,6 +32,8 @@ const haversine = (la, lo) => {
   const a = Math.sin(dla / 2) ** 2 + Math.cos(LAT * r) * Math.cos(la * r) * Math.sin(dlo / 2) ** 2;
   return 2 * R * Math.asin(Math.sqrt(a));
 };
+const stripHtml = (h) => (h || '').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const titleCase = (s) => (s || '').toLowerCase().replace(/(^|[\s\-'])([a-zà-ÿ])/g, (m, p, c) => p + c.toUpperCase());
 function* walk(d) {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {
     const p = path.join(d, e.name);
@@ -41,137 +42,133 @@ function* walk(d) {
   }
 }
 
-const MODE = { WalkingTour: 'foot', CyclingTour: 'bike', RoadTour: 'road' };
-const DIFF = {
-  'kb:EasyTour': 'easy', 'kb:MediumDifficultyTour': 'medium',
-  'kb:DifficultTour': 'hard', 'kb:VeryDifficultTour': 'very_hard',
+// Catégorie Tourinsoft (key) -> mode. (ski/moto -> non retenus)
+const CAT_MODE = {
+  ITIVTT: 'bike', ITICYCLO: 'bike', ITIGRAVEL: 'bike',
+  ITIROUTE: 'road',
+  ITIPEDES: 'foot', ITITRAIL: 'foot', ITIRAQUET: 'foot', ITIGEOCA: 'foot',
+  ITIEQUES: 'horse',
 };
+const MODE_PRIORITY = ['bike', 'foot', 'horse', 'road'];
+const modeFromCats = (cats) => {
+  const set = new Set(asArray(cats).map(c => c && CAT_MODE[c.key]).filter(Boolean));
+  for (const m of MODE_PRIORITY) if (set.has(m)) return m;
+  return null;
+};
+
+// ===== Enrichissement DATAtourisme (par identifiant en minuscules) =====
+const DIFF = { 'kb:EasyTour': 'easy', 'kb:MediumDifficultyTour': 'medium', 'kb:DifficultTour': 'hard', 'kb:VeryDifficultTour': 'very_hard' };
 const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roundtrip', 'kb:OneWay': 'oneway' };
 const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
+function buildEnrichMap(dir) {
+  const map = {};
+  const objectsDir = path.join(dir, 'objects');
+  const root = fs.existsSync(objectsDir) ? objectsDir : dir;
+  if (!fs.existsSync(root)) return map;
+  for (const f of walk(root)) {
+    let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
+    const id = (o['dc:identifier'] || '').toString().toLowerCase();
+    if (!id) continue;
+    const pc = asArray(o['hasPracticeCondition'])[0];
+    const diffId = pc && asArray(pc['hasDifficultyLevel'])[0] && asArray(pc['hasDifficultyLevel'])[0]['@id'];
+    const tourTypeIds = asArray(o['hasTourType']).map(t => t && t['@id']);
+    const typeId = TYPE_PRIORITY.find(idd => tourTypeIds.includes(idd));
+    const denivele = parseFloat(o['positiveCumulDifference']);
+    // GPX parmi les représentations
+    let gpx;
+    for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) {
+      for (const res of asArray(rep && rep['ebucore:hasRelatedResource'])) {
+        for (const loc of asArray(res && res['ebucore:locator'])) {
+          if (typeof loc === 'string' && /\.gpx(\?|$)/i.test(loc)) { gpx = loc; break; }
+        }
+      }
+    }
+    const descObj = asArray(o['hasDescription'])[0];
+    const descML = (descObj && langMap(descObj['dc:description'], 500)) || langMap(o['rdfs:comment'], 500) || null;
+    map[id] = {
+      difficulty: DIFF[diffId] || undefined,
+      denivele: Number.isFinite(denivele) ? Math.round(denivele) : undefined,
+      type: TYPE[typeId] || undefined,
+      gpx,
+      descML,
+    };
+  }
+  return map;
+}
 
-const IMG_EXT = /\.(jpe?g|png|webp|gif|avif)(\?|$)/i;
-// Toutes les URLs de représentation, à plat.
-const allLocators = (reps) => {
-  const out = [];
-  for (const rep of reps)
-    for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
-      for (const loc of asArray(res && res['ebucore:locator']))
-        if (typeof loc === 'string') out.push(loc);
-  return out;
-};
+async function fetchTourinsoft() {
+  const body = {
+    size: 3000,
+    _source: ['nom', 'categorie', 'distance', 'duree', 'descom', 'photos', 'position', 'web', 'commune'],
+    query: { filtered: { filter: { geo_distance: { distance: RADIUS + 'km', position: { lat: LAT, lon: LON } } } } },
+  };
+  const r = await fetch(TOURINSOFT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error('Tourinsoft HTTP ' + r.status);
+  const j = await r.json();
+  return (j.hits && j.hits.hits) || [];
+}
 
-const items = [];
-let total = 0, kept = 0;
-const objectsDir = path.join(extractedDir, 'objects');
-const root = fs.existsSync(objectsDir) ? objectsDir : extractedDir;
+(async function () {
+  const enrich = extractedDir && fs.existsSync(extractedDir) ? buildEnrichMap(extractedDir) : {};
+  const docs = await fetchTourinsoft();
 
-for (const f of walk(root)) {
-  let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
-  const types = asArray(o['@type']);
-  const modeType = Object.keys(MODE).find(t => types.includes(t));
-  if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
-  // Vrai itinéraire = porte une distance (tourDistance). Écarte loueurs/prestataires (sans distance).
-  const km = parseFloat(o['tourDistance']);
-  if (!Number.isFinite(km) || km <= 0) continue;
-  total++;
+  const items = [];
+  let enriched = 0;
+  for (const d of docs) {
+    const s = d._source || {};
+    const mode = modeFromCats(s.categorie);
+    if (!mode) continue;                                  // ski / moto / sans catégorie connue
+    const geo = s.position;                               // [lon, lat]
+    if (!Array.isArray(geo) || geo.length < 2) continue;
+    const lon = parseFloat(geo[0]), lat = parseFloat(geo[1]);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+    const name = (s.nom || '').trim(); if (!name) continue;
 
-  const name = (langMap(o['rdfs:label']) || {});
-  const nameFr = name.fr || name.en || Object.values(name)[0] || '';
-  if (!nameFr) continue;
+    const id = String(d._id).toLowerCase();
+    const en = enrich[id] || {};
+    if (enrich[id]) enriched++;
 
-  const loc = asArray(o['isLocatedAt'])[0];
-  const geo = loc && loc['schema:geo'];
-  const lat = geo && parseFloat(geo['schema:latitude']);
-  const lon = geo && parseFloat(geo['schema:longitude']);
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-  const dist = haversine(lat, lon);
+    const km = parseFloat(s.distance);
+    const descTxt = stripHtml(s.descom).slice(0, 500);
+    const photos = Array.isArray(s.photos) ? s.photos.map(p => p && p.url).filter(Boolean) : [];
+    let web = Array.isArray(s.web) ? s.web.find(Boolean) : s.web;
+    if (web && !/^https?:/i.test(web)) web = 'http://' + web;
 
-  const must = MUST_SEE.some(re => re.test(nameFr));
-  if (dist > RADIUS && !must) continue;                 // hors rayon et non incontournable
-
-  // Description multilingue (hasDescription.dc:description, sinon rdfs:comment)
-  const descObj = asArray(o['hasDescription'])[0];
-  const desc = (descObj && langMap(descObj['dc:description'], 500))
-    || langMap(o['rdfs:comment'], 500) || undefined;
-
-  // Difficulté + mode (le mode vient du mode de locomotion, pas du @type qui est souvent "WalkingTour" par défaut)
-  const pc = asArray(o['hasPracticeCondition'])[0];
-  const diffId = pc && asArray(pc['hasDifficultyLevel'])[0] && asArray(pc['hasDifficultyLevel'])[0]['@id'];
-  const difficulty = DIFF[diffId] || undefined;
-  const locId = (pc && asArray(pc['hasLocomotionMode'])[0] && asArray(pc['hasLocomotionMode'])[0]['@id']) || '';
-  const mode = /bike|amb|cycl|vtt|velo/i.test(locId) ? 'bike'
-    : /horse|equestrian|riding/i.test(locId) ? 'horse'
-    : /walk|pedestr|foot/i.test(locId) ? 'foot'
-    : (MODE[modeType] || 'foot');
-  const tourTypeIds = asArray(o['hasTourType']).map(t => t && t['@id']);
-  const typeId = TYPE_PRIORITY.find(id => tourTypeIds.includes(id));
-  const type = TYPE[typeId] || undefined;
-
-  // Dénivelé (optionnel)
-  const denivele = parseFloat(o['positiveCumulDifference']);
-
-  // Ville
-  const addr = loc && asArray(loc['schema:address'])[0];
-  const city = addr && addr['schema:addressLocality'] || '';
-
-  // Représentations : photo (si dispo), trace GPX, topoguide PDF
-  const locs = allLocators([...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]);
-  const img = locs.find(l => IMG_EXT.test(l)) || undefined;
-  const gpx = locs.find(l => /\.gpx(\?|$)/i.test(l)) || undefined;
-  const pdf = locs.find(l => /\.pdf(\?|$)/i.test(l)) || undefined;
-
-  // Lien fiche source (carte / GPX chez l'éditeur)
-  let url = null;
-  for (const c of asArray(o['hasContact'])) {
-    const hp = c && (c['foaf:homepage'] || c['schema:url']);
-    if (hp) { url = asArray(hp)[0]; break; }
+    items.push({
+      id,
+      name,
+      desc: en.descML || (descTxt ? { fr: descTxt } : undefined),
+      mode,
+      type: en.type,
+      difficulty: en.difficulty,
+      km: Number.isFinite(km) && km > 0 ? Math.round(km * 10) / 10 : undefined,
+      denivele: en.denivele,
+      city: titleCase(s.commune),
+      dist: Math.round(haversine(lat, lon) * 10) / 10,
+      img: photos[0] || undefined,
+      gpx: en.gpx,
+      pdf: undefined,
+      url: web || undefined,
+    });
   }
 
-  items.push({
-    id: o['dc:identifier'] || o['@id'],
-    name: nameFr,
-    desc,
-    mode,
-    type,
-    difficulty,
-    km: Number.isFinite(km) ? Math.round(km / 100) / 10 : undefined,   // m -> km, 1 décimale
-    denivele: Number.isFinite(denivele) ? Math.round(denivele) : undefined,
-    city,
-    dist: Math.round(dist * 10) / 10,
-    img,
-    gpx,
-    pdf,
-    url: url || undefined,
-    must: must || undefined,
-  });
-  kept++;
-}
+  // Déduplication (nom normalisé + distance km)
+  const seen = new Set(), deduped = [];
+  for (const it of items) {
+    const k = it.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim() + '|' + (it.km || '?');
+    if (seen.has(k)) continue;
+    seen.add(k); deduped.push(it);
+  }
+  deduped.sort((a, b) => a.dist - b.dist);
 
-// Déduplication : même sentier publié par plusieurs sources (nom normalisé + distance km)
-const seen = new Set();
-const deduped = [];
-for (const it of items) {
-  const k = it.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim() + '|' + (it.km || '?');
-  if (seen.has(k)) { if (it.must) { const ex = deduped.find(d => d._k === k); if (ex) ex.must = true; } continue; }
-  seen.add(k); it._k = k; deduped.push(it);
-}
-deduped.forEach(it => delete it._k);
-items.length = 0; items.push(...deduped);
+  const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: deduped.length, items: deduped };
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, JSON.stringify(payload));
 
-// Tri : incontournables d'abord, puis par distance croissante
-items.sort((a, b) => (!!b.must - !!a.must) || (a.dist - b.dist));
-
-const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: items.length, items };
-fs.mkdirSync(path.dirname(outFile), { recursive: true });
-fs.writeFileSync(outFile, JSON.stringify(payload));
-
-// Mini-diagnostic (logs CI)
-const byMode = {}; items.forEach(i => byMode[i.mode] = (byMode[i.mode] || 0) + 1);
-const byDiff = {}; items.forEach(i => byDiff[i.difficulty || '—'] = (byDiff[i.difficulty || '—'] || 0) + 1);
-console.error(`Itinéraires retenus : ${items.length} (après dédup) / ${total} analysés (rayon ${RADIUS}km + incontournables)`);
-console.error('Photo : ' + items.filter(i => i.img).length + ' | GPX : ' + items.filter(i => i.gpx).length + ' | PDF : ' + items.filter(i => i.pdf).length + ' | lien : ' + items.filter(i => i.url).length + ' | desc : ' + items.filter(i => i.desc).length);
-console.error('Par mode : ' + JSON.stringify(byMode));
-console.error('Par difficulté : ' + JSON.stringify(byDiff));
-const visibles = items.filter(i => i.must || i.dist <= 30).length;
-console.error('Visibles par défaut (≤30km ou incontournable) : ' + visibles + ' | repliés (30-80km) : ' + (items.length - visibles));
-console.error('Incontournables : ' + items.filter(i => i.must).map(i => i.name + ' (' + i.dist + 'km)').join(' | '));
+  const byMode = {}; deduped.forEach(i => byMode[i.mode] = (byMode[i.mode] || 0) + 1);
+  console.error(`Itinéraires : ${deduped.length} (rayon ${RADIUS}km) | enrichis DATAtourisme : ${enriched}`);
+  console.error('Par mode : ' + JSON.stringify(byMode));
+  console.error('Photo : ' + deduped.filter(i => i.img).length + ' | difficulté : ' + deduped.filter(i => i.difficulty).length + ' | dénivelé : ' + deduped.filter(i => i.denivele).length + ' | GPX : ' + deduped.filter(i => i.gpx).length + ' | lien : ' + deduped.filter(i => i.url).length);
+  const vis = deduped.filter(i => i.dist <= 30).length;
+  console.error('Visibles ≤30km : ' + vis + ' | repliés 30-' + RADIUS + 'km : ' + (deduped.length - vis));
+})().catch(e => { console.error('Erreur build-rando :', e.message); process.exit(1); });
