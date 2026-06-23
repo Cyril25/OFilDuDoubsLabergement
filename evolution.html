@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Évolution du contenu — page technique — O'Fil du Doubs</title>
+    <title>Backlog contenu — page technique — O'Fil du Doubs</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,380 +15,302 @@
     <style>
         :root {
             --primary-color: #005f8d;
-            --secondary-color: #004a70;
             --text-color: #333;
             --bg-color: #f4f6f8;
-
-            --c-online: #2e7d32;   --c-online-bg: #e8f5e9;
             --c-idea:   #e69100;   --c-idea-bg:   #fff4e0;
             --c-todo:   #1565c0;   --c-todo-bg:   #e3f0fb;
+            --c-done:   #2e7d32;   --c-done-bg:   #e8f5e9;
             --c-reject: #c62828;   --c-reject-bg: #fdecea;
         }
         * { box-sizing: border-box; }
-        body {
-            font-family: 'Lato', sans-serif;
-            color: var(--text-color);
-            background: var(--bg-color);
-            margin: 0;
-            line-height: 1.5;
-        }
-        header.tech {
-            background: var(--primary-color);
-            color: #fff;
-            padding: 22px 20px 18px;
-        }
-        header.tech h1 {
-            font-family: 'Playfair Display', serif;
-            margin: 0 0 4px;
-            font-size: 1.6rem;
-        }
-        header.tech p { margin: 0; opacity: .9; font-size: .92rem; }
-        .wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        body { font-family: 'Lato', sans-serif; color: var(--text-color); background: var(--bg-color); margin: 0; line-height: 1.5; }
+        header.tech { background: var(--primary-color); color: #fff; padding: 18px 20px 0; }
+        header.tech h1 { font-family: 'Playfair Display', serif; margin: 0 0 4px; font-size: 1.5rem; }
+        header.tech p { margin: 0 0 14px; opacity: .9; font-size: .9rem; }
+        .wrap { max-width: 1300px; margin: 0 auto; padding: 20px; }
 
-        /* Bandeau outils */
+        /* Onglets */
+        .tabs { display: flex; gap: 4px; }
+        .tab {
+            background: rgba(255,255,255,.15); color: #fff; border: none; cursor: pointer;
+            padding: 10px 18px; font-family: inherit; font-size: .95rem; font-weight: 700;
+            border-radius: 10px 10px 0 0; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .tab.active { background: var(--bg-color); color: var(--primary-color); }
+        .tab .badge { background: var(--c-todo); color: #fff; border-radius: 20px; padding: 1px 8px; font-size: .75rem; }
+        .tab.active .badge { background: var(--c-todo); }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Barre d'outils */
         .toolbar {
             display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
             background: #fff; border: 1px solid #e0e4e8; border-radius: 10px;
-            padding: 12px 14px; margin-bottom: 18px;
-            position: sticky; top: 0; z-index: 20;
-            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+            padding: 12px 14px; margin-bottom: 16px;
         }
+        .toolbar label { font-size: .82rem; font-weight: 700; color: #555; }
+        .toolbar select, .toolbar input[type=search] {
+            border: 1px solid #c4ccd4; border-radius: 7px; padding: 6px 10px; font-size: .85rem; font-family: inherit;
+        }
+        .toolbar input[type=search] { min-width: 180px; }
         .toolbar .spacer { flex: 1 1 auto; }
-        .btn {
-            border: 1px solid var(--primary-color); background: #fff; color: var(--primary-color);
-            border-radius: 7px; padding: 7px 12px; font-size: .85rem; cursor: pointer;
-            font-family: inherit; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
-            transition: background .15s, color .15s;
-        }
-        .btn:hover { background: var(--primary-color); color: #fff; }
-        .btn.ghost { border-color: #c4ccd4; color: #555; }
-        .btn.ghost:hover { background: #555; border-color: #555; color: #fff; }
+        .toolbar .chk { font-size: .82rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+        .count-label { font-size: .8rem; color: #777; }
 
-        /* Légende / filtres */
-        .legend { display: flex; flex-wrap: wrap; gap: 8px; }
-        .chip {
-            border-radius: 20px; padding: 5px 12px; font-size: .82rem; font-weight: 700;
-            cursor: pointer; border: 1.5px solid transparent; user-select: none;
-            display: inline-flex; align-items: center; gap: 6px;
+        .btn {
+            border: 1px solid var(--primary-color); background: var(--primary-color); color: #fff;
+            border-radius: 7px; padding: 7px 13px; font-size: .85rem; cursor: pointer;
+            font-family: inherit; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
         }
-        .chip .count { font-weight: 700; opacity: .75; font-size: .78rem; }
-        .chip[data-k="online"] { background: var(--c-online-bg); color: var(--c-online); border-color: var(--c-online); }
+        .btn.ghost { background: #fff; color: var(--primary-color); }
+        .btn.ghost:hover { background: var(--primary-color); color: #fff; }
+        .btn.small { padding: 5px 10px; font-size: .8rem; }
+
+        /* Grille POI (Explorer) */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+        .card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); display: flex; flex-direction: column; position: relative; }
+        .card-img { width: 100%; height: 140px; object-fit: cover; background: #e8ede8; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #aaa; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 10px 12px 12px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .card-cat { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding: 2px 7px; border-radius: 4px; align-self: flex-start; background: #eef2f6; color: #4a5b6b; }
+        .card-name { font-size: .92rem; font-weight: 700; line-height: 1.25; }
+        .card-desc { font-size: .76rem; color: #555; line-height: 1.45; }
+        .card-meta { font-size: .73rem; color: #888; display: flex; gap: 6px; flex-wrap: wrap; }
+        .card-meta .dist { font-weight: 700; color: var(--c-done); }
+        .flags { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; }
+        .flag { font-size: .68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+        .flag.site { background: #6a1b9a; }
+        .flag.in { background: var(--c-todo); }
+        .card .btn { margin-top: auto; }
+
+        /* Backlog (À traiter) */
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { border-radius: 20px; padding: 5px 12px; font-size: .82rem; font-weight: 700; cursor: pointer; border: 1.5px solid transparent; user-select: none; display: inline-flex; align-items: center; gap: 6px; }
         .chip[data-k="idea"]   { background: var(--c-idea-bg);   color: var(--c-idea);   border-color: var(--c-idea); }
         .chip[data-k="todo"]   { background: var(--c-todo-bg);   color: var(--c-todo);   border-color: var(--c-todo); }
+        .chip[data-k="done"]   { background: var(--c-done-bg);   color: var(--c-done);   border-color: var(--c-done); }
         .chip[data-k="reject"] { background: var(--c-reject-bg); color: var(--c-reject); border-color: var(--c-reject); }
         .chip.off { opacity: .35; filter: grayscale(.6); }
 
-        /* Sections */
-        section.cat {
-            background: #fff; border: 1px solid #e0e4e8; border-radius: 12px;
-            margin-bottom: 18px; overflow: hidden;
-        }
-        .cat-head {
-            display: flex; align-items: center; gap: 10px;
-            padding: 14px 16px; background: #fafbfc; border-bottom: 1px solid #eef1f4;
-        }
-        .cat-head h2 {
-            font-family: 'Playfair Display', serif; margin: 0; font-size: 1.2rem; color: var(--primary-color);
-            flex: 1 1 auto;
-        }
-        .cat-head .cat-counts { font-size: .8rem; color: #777; display: flex; gap: 10px; }
-        .cat-head .cat-counts b { font-weight: 700; }
-
-        .items { list-style: none; margin: 0; padding: 8px 12px 14px; }
-        .item {
-            display: flex; align-items: flex-start; gap: 10px;
-            padding: 9px 10px; border-radius: 8px; border-left: 5px solid #ccc;
-            background: #fcfcfd; margin-top: 8px;
-        }
-        .item[data-status="online"] { border-left-color: var(--c-online); background: var(--c-online-bg); }
-        .item[data-status="idea"]   { border-left-color: var(--c-idea);   background: var(--c-idea-bg); }
-        .item[data-status="todo"]   { border-left-color: var(--c-todo);   background: var(--c-todo-bg); }
-        .item[data-status="reject"] { border-left-color: var(--c-reject); background: var(--c-reject-bg); }
-        .item[data-status="reject"] .it-name { text-decoration: line-through; opacity: .7; }
-
-        .it-body { flex: 1 1 auto; min-width: 0; }
-        .it-name { font-weight: 700; font-size: .95rem; }
-        .it-name span.src { font-weight: 400; font-size: .76rem; color: #888; margin-left: 6px; }
-        .it-note {
-            font-size: .83rem; color: #444; margin-top: 5px;
-            border: 1px dashed #cfd6dd; border-radius: 6px; padding: 4px 8px 4px 26px; min-height: 1.6em;
-            cursor: text; background: rgba(255,255,255,.55); position: relative;
-        }
-        .it-note:before {
-            content: "\f4ad"; font-family: "Font Awesome 5 Free"; font-weight: 900;
-            position: absolute; left: 8px; top: 5px; color: #b3bcc4; font-size: .82rem;
-        }
-        .it-note:hover, .it-note:focus { border-color: var(--primary-color); background: #fff; outline: none; }
-        .it-note:empty:after { content: 'Cliquez pour expliquer la décision (ex. fermé, doublon, ouverture été 2026…)'; color: #a6adb4; font-style: italic; }
-
-        .it-actions { display: flex; gap: 4px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
-        .sbtn {
-            width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #d0d6dc;
-            background: #fff; cursor: pointer; font-size: .8rem; display: inline-flex;
-            align-items: center; justify-content: center; padding: 0; color: #999;
-        }
-        .sbtn[data-s="online"].on { background: var(--c-online); border-color: var(--c-online); color: #fff; }
+        .bk-item { background: #fff; border: 1px solid #e0e4e8; border-left: 5px solid #ccc; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; display: flex; gap: 12px; }
+        .bk-item[data-status="idea"]   { border-left-color: var(--c-idea); }
+        .bk-item[data-status="todo"]   { border-left-color: var(--c-todo); }
+        .bk-item[data-status="done"]   { border-left-color: var(--c-done); background: #f7fbf7; }
+        .bk-item[data-status="reject"] { border-left-color: var(--c-reject); }
+        .bk-item[data-status="reject"] .bk-title, .bk-item[data-status="done"] .bk-title { text-decoration: line-through; opacity: .65; }
+        .bk-thumb { width: 84px; height: 84px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #eef2f6; }
+        .bk-main { flex: 1 1 auto; min-width: 0; }
+        .bk-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .bk-title { font-weight: 700; font-size: .98rem; }
+        .bk-page { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #eaf1f6; color: var(--primary-color); }
+        .bk-src { font-size: .72rem; color: #999; }
+        .bk-desc { font-size: .82rem; color: #555; margin-top: 4px; }
+        .bk-instr { font-size: .85rem; color: #222; margin-top: 7px; border: 1px dashed #cfd6dd; border-radius: 6px; padding: 5px 9px 5px 28px; min-height: 1.7em; cursor: text; background: #fafdff; position: relative; }
+        .bk-instr:before { content: "\f0a4"; font-family: "Font Awesome 5 Free"; font-weight: 900; position: absolute; left: 9px; top: 6px; color: #b3bcc4; font-size: .82rem; }
+        .bk-instr:empty:after { content: 'Consigne : que faire avec cet élément ? (ex. « ajouter », « enrichir la fiche existante avec ces infos »…)'; color: #a6adb4; font-style: italic; }
+        .bk-instr:focus { outline: none; border-color: var(--primary-color); background: #fff; }
+        .bk-poi-extra { font-size: .78rem; color: #666; margin-top: 6px; }
+        .bk-poi-extra summary { cursor: pointer; color: var(--primary-color); font-weight: 700; }
+        .bk-poi-extra a { color: var(--primary-color); }
+        .bk-actions { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; align-items: flex-end; }
+        .bk-status-btns { display: flex; gap: 4px; }
+        .sbtn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #d0d6dc; background: #fff; cursor: pointer; font-size: .78rem; display: inline-flex; align-items: center; justify-content: center; color: #999; }
         .sbtn[data-s="idea"].on   { background: var(--c-idea);   border-color: var(--c-idea);   color: #fff; }
         .sbtn[data-s="todo"].on   { background: var(--c-todo);   border-color: var(--c-todo);   color: #fff; }
+        .sbtn[data-s="done"].on   { background: var(--c-done);   border-color: var(--c-done);   color: #fff; }
         .sbtn[data-s="reject"].on { background: var(--c-reject); border-color: var(--c-reject); color: #fff; }
-        .sbtn:hover { border-color: #888; }
-        .sbtn.del { color: #c62828; }
-        .sbtn.del:hover { background: #c62828; color: #fff; border-color: #c62828; }
+        .sbtn.del { color: #c62828; } .sbtn.del:hover { background: #c62828; color: #fff; border-color: #c62828; }
+        .bk-empty { text-align: center; color: #999; padding: 40px; }
 
-        /* Ajout */
-        .add-row { display: flex; gap: 8px; margin: 12px 4px 2px; flex-wrap: wrap; }
-        .add-row input {
-            flex: 1 1 200px; padding: 8px 10px; border: 1px solid #c4ccd4; border-radius: 7px;
-            font-family: inherit; font-size: .9rem;
-        }
-        .add-row .btn { flex: 0 0 auto; }
+        /* Modale */
+        .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+        .modal-bg.open { display: flex; }
+        .modal { background: #fff; border-radius: 12px; max-width: 480px; width: 100%; padding: 20px; max-height: 90vh; overflow: auto; }
+        .modal h3 { margin: 0 0 14px; font-family: 'Playfair Display', serif; color: var(--primary-color); }
+        .modal .field { margin-bottom: 12px; }
+        .modal label { display: block; font-size: .82rem; font-weight: 700; color: #555; margin-bottom: 4px; }
+        .modal input, .modal select, .modal textarea { width: 100%; border: 1px solid #c4ccd4; border-radius: 7px; padding: 8px 10px; font-size: .9rem; font-family: inherit; }
+        .modal textarea { min-height: 80px; resize: vertical; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 
-        .hint { font-size: .8rem; color: #777; margin: 6px 4px 0; }
+        .save-status { font-size: .8rem; font-weight: 700; color: #777; white-space: nowrap; }
         .hidden { display: none !important; }
-
         footer.tech { text-align: center; color: #999; font-size: .8rem; padding: 24px 12px 40px; }
-
-        @media (max-width: 600px) {
-            .item { flex-wrap: wrap; }
-            .it-actions { width: 100%; justify-content: flex-start; }
-        }
+        @media (max-width: 600px) { .bk-item { flex-wrap: wrap; } .bk-actions { flex-direction: row; width: 100%; justify-content: space-between; } }
     </style>
 </head>
 <body>
     <header class="tech">
         <div class="wrap" style="padding-bottom:0;">
-            <h1>🧭 Évolution du contenu</h1>
-            <p>Page technique de travail — non publiée. Visualiser l'existant, noter des idées, décider quoi implémenter.</p>
+            <h1>🧭 Backlog contenu</h1>
+            <p>Outil interne (non publié). Explorer les lieux du secteur, décider quoi ajouter/enrichir sur le site, et me laisser les traiter.</p>
+            <div class="tabs">
+                <button class="tab active" data-tab="explorer"><i class="fas fa-compass"></i> Explorer</button>
+                <button class="tab" data-tab="backlog"><i class="fas fa-list-check"></i> À traiter <span class="badge" id="bk-count">0</span></button>
+            </div>
         </div>
     </header>
 
     <div class="wrap">
-        <div class="toolbar">
-            <div class="legend" id="legend">
-                <span class="chip" data-k="online"><i class="fas fa-check-circle"></i> En ligne <span class="count" id="cnt-online">0</span></span>
-                <span class="chip" data-k="idea"><i class="fas fa-lightbulb"></i> À étudier <span class="count" id="cnt-idea">0</span></span>
-                <span class="chip" data-k="todo"><i class="fas fa-hammer"></i> À implémenter <span class="count" id="cnt-todo">0</span></span>
-                <span class="chip" data-k="reject"><i class="fas fa-times-circle"></i> Écarté <span class="count" id="cnt-reject">0</span></span>
+        <!-- ========== VUE EXPLORER (POI) ========== -->
+        <div class="view active" id="view-explorer">
+            <div class="toolbar">
+                <label>Catégorie</label>
+                <select id="f-cat"><option value="">Toutes</option></select>
+                <label>Distance</label>
+                <select id="f-dist">
+                    <option value="30">30 km</option>
+                    <option value="20">20 km</option>
+                    <option value="15" selected>15 km</option>
+                    <option value="10">10 km</option>
+                    <option value="5">5 km</option>
+                </select>
+                <input type="search" id="f-search" placeholder="Nom, ville…">
+                <label class="chk"><input type="checkbox" id="f-hide-site"> masquer « déjà sur le site »</label>
+                <label class="chk"><input type="checkbox" id="f-hide-heberg" checked> masquer hébergements</label>
+                <div class="spacer"></div>
+                <span class="count-label" id="exp-count"></span>
             </div>
-            <div class="spacer"></div>
-            <span id="save-status" style="font-size:.8rem;font-weight:700;color:#777;white-space:nowrap;"></span>
-            <button class="btn ghost" id="btn-export"><i class="fas fa-file-export"></i> Exporter</button>
-            <button class="btn ghost" id="btn-reset"><i class="fas fa-undo"></i> Réinitialiser</button>
+            <div class="grid" id="exp-grid"></div>
+            <div style="text-align:center;margin-top:18px;">
+                <button class="btn ghost hidden" id="exp-more">Afficher plus…</button>
+            </div>
         </div>
 
-        <p class="hint">
-            Cliquez sur 🟢🟠🔵🔴 pour changer le statut d'un élément, cliquez sur la zone grise pour ajouter une note,
-            et utilisez le champ en bas de chaque section pour ajouter une idée. Tout est enregistré automatiquement en ligne
-            (synchronisé entre vos appareils) — je peux donc relire vos choix directement quand vous me demandez d'implémenter, sans export.
-        </p>
-
-        <div id="board"></div>
+        <!-- ========== VUE BACKLOG (À traiter) ========== -->
+        <div class="view" id="view-backlog">
+            <div class="toolbar">
+                <div class="legend" id="bk-legend">
+                    <span class="chip" data-k="idea"><i class="fas fa-lightbulb"></i> Idée <span class="cnt" id="c-idea">0</span></span>
+                    <span class="chip" data-k="todo"><i class="fas fa-hammer"></i> À traiter <span class="cnt" id="c-todo">0</span></span>
+                    <span class="chip" data-k="done"><i class="fas fa-check"></i> Traité <span class="cnt" id="c-done">0</span></span>
+                    <span class="chip" data-k="reject"><i class="fas fa-times"></i> Écarté <span class="cnt" id="c-reject">0</span></span>
+                </div>
+                <div class="spacer"></div>
+                <span class="save-status" id="save-status"></span>
+                <button class="btn" id="btn-add"><i class="fas fa-plus"></i> Ajouter manuellement</button>
+                <button class="btn ghost small" id="btn-export"><i class="fas fa-file-export"></i> Exporter</button>
+            </div>
+            <div id="bk-list"></div>
+        </div>
     </div>
 
-    <footer class="tech">
-        O'Fil du Doubs — outil interne de réflexion sur le contenu, synchronisé en ligne (Cloudflare KV).
-    </footer>
+    <!-- Modale d'ajout / édition -->
+    <div class="modal-bg" id="modal-bg">
+        <div class="modal">
+            <h3 id="modal-title">Ajouter au backlog</h3>
+            <div class="field" id="modal-title-field">
+                <label>Titre</label>
+                <input type="text" id="m-title" placeholder="Nom de l'élément">
+            </div>
+            <div class="field" id="modal-desc-field">
+                <label>Description / contexte</label>
+                <textarea id="m-desc" placeholder="Infos utiles (facultatif)"></textarea>
+            </div>
+            <div class="field">
+                <label>Page cible</label>
+                <select id="m-page"></select>
+            </div>
+            <div class="field">
+                <label>Statut</label>
+                <select id="m-status"></select>
+            </div>
+            <div class="field">
+                <label>Consigne — que dois-je faire avec cet élément ?</label>
+                <textarea id="m-instr" placeholder="ex. « ajoute ce restaurant » / « existe déjà, enrichis la fiche avec ces infos »"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn ghost" id="m-cancel">Annuler</button>
+                <button class="btn" id="m-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="tech">O'Fil du Doubs — backlog contenu, synchronisé en ligne (Cloudflare KV). POI : Tourinsoft / Decibelles BFC.</footer>
 
     <script>
-    // ---- Données initiales : l'existant du site (statut "online") ----
-    const SEED = {
-        activites: {
-            label: "Activités & visites",
-            icon: "fa-hiking",
-            items: [
-                "Lac de Remoray", "Maison de la Réserve", "Fonderie de Cloches Obertino",
-                "Château de Joux", "Fort Saint-Antoine", "Station de Métabief", "Source Bleue",
-                "Luge sur Rails (Métabief)", "Accrobranche à Métabief", "Lac Saint-Point",
-                "Distillerie Guy (Pontarlier)", "Maison Michaud (écomusée)", "Le Saut du Doubs",
-                "Source du Doubs (Mouthe)", "Mont d'Or", "Belvédère des 2 Lacs",
-                "Réserve naturelle (Remoray)", "Le Rucher des Deux Lacs", "Fromagerie du Mont d'Or",
-                "Distillerie Émile Pernot", "Base nautique de Malbuisson", "VTT électrique (Métabief)",
-                "Pêche (Doubs & Lac)", "Spa Les Rives Sauvages", "Chiens de traîneau (Adam's)"
-            ]
-        },
-        commerces: {
-            label: "Commerces & services",
-            icon: "fa-store",
-            items: [
-                "La Fruitière des Lacs", "Boucherie Paillard Frères", "Boulangerie Baverel",
-                "CocciMarket", "Au Cellier du Lac", "Café Fleur", "Tabac Presse Jeux Faure",
-                "Le Bistrot de l'Aberge", "Le Vélo Bar", "Garage du Coude",
-                "Pharmacie des Deux Lacs", "Clinique Vétérinaire des Lacs", "Coiffeurs",
-                "La Poste - Agence Communale", "Beauté et Bien-être", "Médecins et Spécialistes"
-            ]
-        },
-        restaurants: {
-            label: "Restaurants",
-            icon: "fa-utensils",
-            items: [
-                "L'escale (Saint-Point-Lac)", "Bistrot de Laberge (Labergement)", "Royal Pizza (Malbuisson)",
-                "Le Gaulois (Métabief)", "Le Reflet (Montperreux)", "Restaurant à la Ferme (Malbuisson)",
-                "Restaurant du Fromage (Malbuisson)", "La Remise (Les Villedieu)",
-                "La Boissaude (Rochejean)", "Le Lac (Malbuisson)"
-            ]
-        },
-        foodtrucks: {
-            label: "Food trucks",
-            icon: "fa-truck",
-            items: [
-                "Monte d'Oro Pizza", "Max & Biga", "Papy Pizz'", "Le Nomade", "El Pirata",
-                "Kebab", "KRC Kebab", "AL'Barak à Frites", "Pizz Popotte"
-            ]
-        },
-        evenements: {
-            label: "Événements & marchés",
-            icon: "fa-calendar-alt",
-            items: []
-        },
-        producteurs: {
-            label: "Producteurs & vente directe",
-            icon: "fa-seedling",
-            items: []
-        },
-        autres: {
-            label: "Autres idées (nouvelles rubriques)",
-            icon: "fa-plus-circle",
-            items: []
-        }
+    // ====================== Constantes ======================
+    const API_URL = "https://menage-state.cyril-samson41.workers.dev/evolution";
+    const STORE_KEY = "ofd_backlog_v2";
+    const PAGES = { activites: "Activités", "ou-manger": "Où manger", commerces: "Commerces", autre: "Autre / nouvelle rubrique" };
+    const STATUSES = ["idea", "todo", "done", "reject"];
+    const STATUS_LABEL = { idea: "Idée", todo: "À traiter", done: "Traité", reject: "Écarté" };
+    const STATUS_ICON = { idea: "fa-lightbulb", todo: "fa-hammer", done: "fa-check", reject: "fa-times" };
+    const CAT_ICON = {
+        "Hébergement": "🏠", "Restauration": "🍽️", "Produits du terroir": "🧀",
+        "Activité & Sport": "⛷️", "Site & Visite": "🏛️", "Artisanat": "🛠️",
+        "Commerce & Service": "🛍️", "Service & Organisme": "🏢", "Autre": "📌"
+    };
+    // Catégorie POI → page cible suggérée
+    const CAT_PAGE = {
+        "Restauration": "ou-manger", "Produits du terroir": "ou-manger",
+        "Commerce & Service": "commerces", "Artisanat": "commerces", "Service & Organisme": "commerces",
+        "Activité & Sport": "activites", "Site & Visite": "activites", "Hébergement": "autre"
     };
 
-    // ---- Suggestions issues de recherches (ajoutées en "idée à étudier") ----
-    // Fusionnées au chargement sans écraser le travail existant ; une suggestion
-    // supprimée ne réapparaît pas (suivi via state.seenSuggestions).
-    const SUGGESTIONS = [
-        // Activités / visites
-        { cat: "activites", name: "Le Coni'Fer — train à vapeur", note: "Train touristique à vapeur, le plus haut de France. Les Hôpitaux-Neufs (~10 min). Wagon-restaurant Orient-Express." },
-        { cat: "activites", name: "Bateau électro-solaire (lac Saint-Point)", note: "Promenade douce et silencieuse sur le lac, au départ de Malbuisson/Saint-Point (~5-8 min)." },
-        { cat: "activites", name: "Parapente à Métabief", note: "Vol découverte au-dessus du Haut-Doubs depuis Métabief (~10 min)." },
-        { cat: "activites", name: "Parc ludique d'été de Métabief", note: "Tyrolienne, trampoline, luge d'été, chasse au trésor, jeux enfants (~10 min) — complément de l'accrobranche." },
-        { cat: "activites", name: "Base nautique des Grangettes", note: "2e base nautique du lac Saint-Point (voile, paddle, kayak), rive des Grangettes." },
-        { cat: "activites", name: "Plage & baignade surveillée (lac de Remoray)", note: "Base de loisirs familiale, baignade surveillée l'été, aire de jeux — à deux pas du logement." },
-        { cat: "activites", name: "Sentier du Morbier", note: "Balade thématique autour du fromage, départ à la Fruitière des Lacs, paysages agricoles." },
-        { cat: "activites", name: "Malbuisson'Art (parcours d'art)", note: "Parcours d'art contemporain en plein air, ~5 km, l'été à Malbuisson." },
-        { cat: "activites", name: "Ski de fond & raquettes (espace nordique)", note: "Pistes nordiques du Haut-Doubs en hiver (secteur Métabief / Mont d'Or)." },
-        { cat: "activites", name: "Office de Tourisme du Haut-Doubs (BIT Malbuisson)", note: "Incontournable : infos, brochures, conseils, billetterie. 69 Grande Rue, Malbuisson (~5 min). À mettre aussi en pied de page ?" },
-        { cat: "activites", name: "Ferme de la Batailleuse", note: "Ferme associative pédagogique à Rochejean (~930 m, ~15 min). 45 chèvres + vaches montbéliardes : fromages de chèvre vendus à la boutique de la ferme, comté bio, animaux (cochons, poules, lapins) — visite famille. Réseau Paysans de nature." },
-
-        // Commerces & services du village (annuaire communal)
-        { cat: "commerces", name: "Couture / retouches", note: "Artisan couturier au village (annuaire communal) — nom à confirmer." },
-        { cat: "commerces", name: "Création de bijoux (artisan)", note: "Artisan bijoutier au village (annuaire communal) — à confirmer." },
-        { cat: "commerces", name: "Photographe", note: "Photographe au village (annuaire communal)." },
-        { cat: "commerces", name: "Moniteur / cours de ski (ESF)", note: "Moniteur de ski au village — utile en hiver." },
-        { cat: "commerces", name: "Garde d'enfants", note: "Service de garde d'enfants au village (annuaire communal)." },
-        { cat: "commerces", name: "Distributeur automatique (DAB)", note: "Le plus proche est à Malbuisson — déjà signalé sur la fiche La Poste. À mettre davantage en avant ?" },
-        { cat: "commerces", name: "Artisans du bâtiment (menuisier, plombier, électricien…)", note: "Présents au village mais peu utiles pour des vacanciers — candidat à écarter." },
-
-        // Restaurants
-        { cat: "restaurants", name: "L'Atelier de Donat (Malbuisson)", note: "~318 avis, jolie vue sur le lac (~5 min)." },
-        { cat: "restaurants", name: "La Flambée (Malbuisson)", note: "« Très bonne table » à Malbuisson (~5 min)." },
-        { cat: "restaurants", name: "La Petite Échelle", note: "Auberge d'alpage du XVIIe sur le Mont d'Or (au-dessus de Rochejean, ~25 min + route de montagne). Fondue au vieux Comté, röstis, spécialités montagnardes. Sur réservation. Accès voiture l'été, ski/raquettes l'hiver. Cadre authentique, yourte sur place." },
-        { cat: "restaurants", name: "La Maison des Cimes", note: "Nouveau restaurant — ouverture prévue été 2026 (à détailler à l'ouverture). À ajouter en remplacement de l'Atelier de Donat (fermé)." },
-
-        // Événements & marchés
-        { cat: "evenements", name: "Marché de Noël artisanal", note: "Au village, en décembre." },
-        { cat: "evenements", name: "Journée sans voiture autour du lac Saint-Point", note: "Début juin." },
-        { cat: "evenements", name: "Triathlon du lac Saint-Point", note: "Fin juin." },
-        { cat: "evenements", name: "Régates / voile sur le lac", note: "L'été sur le lac Saint-Point." },
-        { cat: "evenements", name: "Vide-grenier / brocante", note: "Fin août, autour du lac." },
-        { cat: "evenements", name: "Salon du champignon", note: "Début octobre." },
-        { cat: "evenements", name: "Vente de plants bio", note: "Au village, en mai." },
-        { cat: "evenements", name: "Page Agenda auto-alimentée (DATAtourisme)", note: "Agenda toujours à jour SANS saisie manuelle ni dépendance à l'OT : flux open data gratuit DATAtourisme (événements Doubs 25 + Jura 39, alimenté via Apidae), filtré autour de Labergement par le worker. Flux DÉJÀ créé (génération en cours). Remplace les événements saisis à la main ci-dessus." },
-
-        // Producteurs & vente directe
-        { cat: "producteurs", name: "Le Champ des Possibles (Ferme du Montrinsant)", note: "AU VILLAGE : Ferme du Montrinsant, Route de Malpas, 25160 Labergement-Sainte-Marie. Maraîchage bio (légumes de saison) ; confitures/gelées de cueillette sauvage (framboise sauvage, sapin, cramaillotte). Vente sur place (contact SMS)." },
-        { cat: "producteurs", name: "Idéabulle — savons & cosmétiques", note: "Jougne (~8 km). Savons saponifiés à froid & cosmétiques solides, matières premières bio. Artisanal." },
-        { cat: "producteurs", name: "Le Bon Sauvage (Jougne)", note: "Les Fourgs / Jougne (~8 km). Gelées & confitures de cueillette sauvage (framboise sauvage…), vinaigres aromatisés." },
-        { cat: "producteurs", name: "Champignons bio", note: "Le plus proche identifié (Aqua ça Pousse) est à ~31 km — sans doute trop loin. À écarter sauf si tu connais un producteur plus proche." },
-        { cat: "producteurs", name: "Élevage d'escargots", note: "À vérifier : peut-être proposé par Le Champ des Possibles (Montrinsant). Sinon producteur précis à identifier." },
-        { cat: "producteurs", name: "Fromage de chèvre (producteur fermier)", note: "Couvert par la Ferme de la Batailleuse (Rochejean, boutique) — voir la fiche en activités. Doublon possible." },
-        { cat: "producteurs", name: "Miel du Rucher des Deux Lacs", note: "Déjà présenté en activités — pourrait aussi figurer en vente directe." },
-
-        // Nouvelles rubriques possibles
-        { cat: "autres", name: "Itinéraires vélo (GTJ, véloroutes)", note: "Grandes Traversées du Jura à vélo, boucles autour des lacs." },
-        { cat: "autres", name: "Idées par temps de pluie", note: "Sélection d'activités intérieures (musées, spa, distilleries, fromageries…)." },
-        { cat: "autres", name: "Livret d'accueil numérique", note: "Reporté précédemment — à reconsidérer ?" }
-    ];
-
-    const STATUSES = ["online", "idea", "todo", "reject"];
-    const STATUS_ICON = { online: "fa-check", idea: "fa-lightbulb", todo: "fa-hammer", reject: "fa-times" };
-    const STATUS_TITLE = { online: "En ligne", idea: "Idée à étudier", todo: "Validé — à implémenter", reject: "Écarté" };
-    const STORE_KEY = "ofd_evolution_v1";
-    const API_URL = "https://menage-state.cyril-samson41.workers.dev/evolution";
-
-    // ---- État ----
-    let state = null;
+    // ====================== État ======================
+    let state = { schema: 2, items: [] };
+    let poiItems = [];
+    let siteNorm = {};         // normName -> page (existant du site)
+    let remoteReady = false;
     let needsInitialSave = false;
-    let remoteReady = false;   // n'autorise la sauvegarde serveur qu'une fois la route /evolution confirmée
 
-    function buildSeedState() {
-        const s = { cats: {} };
-        for (const key in SEED) {
-            s.cats[key] = SEED[key].items.map((name, i) => ({
-                id: key + "_" + i + "_" + Date.now().toString(36),
-                name, note: "", status: "online", seeded: true
-            }));
-        }
-        return s;
-    }
+    const norm = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/\([^)]*\)/g, " ").replace(/['’`]/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
+    const escapeHtml = (s) => (s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const uid = (p) => p + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
-    // Charge l'état : serveur (source de vérité) → cache local → graine initiale
+    // ====================== Chargement ======================
     async function loadState() {
         try {
             const r = await fetch(API_URL, { cache: "no-store" });
             if (r.ok) {
                 const txt = await r.text();
                 const data = txt ? JSON.parse(txt) : {};
-                if (data && data.cats) {
-                    // Données de cette page : route OK
+                if (data && Array.isArray(data.items)) {        // nouveau schéma
                     remoteReady = true;
-                    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
-                    return mergeSuggestions(data);
+                    return data;
                 }
-                if (!data || Object.keys(data).length === 0) {
-                    // Serveur vide : route /evolution active, première initialisation
+                if (data && data.cats) {                        // ancien schéma evolution → migration
                     remoteReady = true;
                     needsInitialSave = true;
-                } else {
-                    // Réponse non vide mais étrangère (route /evolution pas encore déployée
-                    // → c'est l'état d'une autre clé). On NE sauvegarde PAS pour ne rien écraser.
-                    remoteReady = false;
-                    setStatus("route-missing");
+                    return migrateFromOld(data);
                 }
+                if (!data || Object.keys(data).length === 0) {  // vide : route OK, init
+                    remoteReady = true; needsInitialSave = true;
+                    return { schema: 2, items: [] };
+                }
+                remoteReady = false;                            // réponse étrangère (route pas déployée)
+                setStatus("route-missing");
             }
-        } catch (e) {
-            setStatus("offline");
-        }
-        // Repli : cache local, sinon graine
-        try {
-            const raw = localStorage.getItem(STORE_KEY);
-            if (raw) return mergeSuggestions(JSON.parse(raw));
-        } catch (e) {}
-        needsInitialSave = true;
-        return mergeSuggestions(buildSeedState());
+        } catch (e) { setStatus("offline"); }
+        try { const raw = localStorage.getItem(STORE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+        return { schema: 2, items: [] };
     }
 
-    // Ajoute les suggestions de recherche jamais vues, sans toucher au reste
-    function mergeSuggestions(s) {
-        s.cats = s.cats || {};
-        s.seenSuggestions = s.seenSuggestions || [];
-        SUGGESTIONS.forEach(sug => {
-            const key = sug.cat + "|" + sug.name;
-            if (s.seenSuggestions.includes(key)) return;        // déjà traitée (gardée ou supprimée)
-            s.cats[sug.cat] = s.cats[sug.cat] || [];
-            const exists = s.cats[sug.cat].some(it => it.name.toLowerCase() === sug.name.toLowerCase());
-            if (!exists) {
-                s.cats[sug.cat].push({
-                    id: sug.cat + "_sug_" + Math.random().toString(36).slice(2, 8),
-                    name: sug.name, note: sug.note || "", status: "idea", seeded: false, suggested: true
+    // Migration : ancien evolution (cats: idea/todo) → entrées backlog
+    function migrateFromOld(old) {
+        const CAT_TO_PAGE = {
+            activites: "activites", commerces: "commerces", restaurants: "ou-manger",
+            foodtrucks: "ou-manger", evenements: "autre", producteurs: "commerces", autres: "autre"
+        };
+        const items = [];
+        for (const cat in (old.cats || {})) {
+            (old.cats[cat] || []).forEach(it => {
+                if (it.status !== "idea" && it.status !== "todo") return; // on n'importe que idées + à-faire
+                items.push({
+                    id: uid("mig"), source: "manuel", title: it.name || "(sans nom)", desc: "",
+                    page: CAT_TO_PAGE[cat] || "autre", instruction: it.note || "",
+                    status: it.status === "todo" ? "todo" : "idea", poi: null, poiId: null,
+                    created: Date.now()
                 });
-            }
-            s.seenSuggestions.push(key);
-            needsInitialSave = true;   // un ajout => on synchronisera
-        });
-        return s;
+            });
+        }
+        return { schema: 2, items };
     }
 
-    // ---- Sauvegarde : cache local immédiat + push serveur (anti-rebond) ----
+    // ====================== Sauvegarde ======================
     let saveTimer = null;
     function save() {
         try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -399,216 +321,296 @@
     async function remoteSave() {
         if (!remoteReady) { setStatus("route-missing"); return; }
         try {
-            const r = await fetch(API_URL, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(state)
-            });
+            const r = await fetch(API_URL, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state) });
             setStatus(r.ok ? "saved" : "error");
-        } catch (e) {
-            setStatus("offline");
-        }
+        } catch (e) { setStatus("offline"); }
     }
-
-    // ---- Indicateur d'état de sauvegarde ----
     function setStatus(kind) {
-        const el = document.getElementById("save-status");
-        if (!el) return;
+        const el = document.getElementById("save-status"); if (!el) return;
         const map = {
-            saving:  ['<i class="fas fa-circle-notch fa-spin"></i> Enregistrement…', "#777"],
-            saved:   ['<i class="fas fa-cloud"></i> Enregistré en ligne', "var(--c-online)"],
-            offline: ['<i class="fas fa-exclamation-triangle"></i> Hors ligne — sauvegarde locale', "var(--c-idea)"],
-            "route-missing": ['<i class="fas fa-plug"></i> Worker à redéployer — sauvegarde locale seulement', "var(--c-reject)"],
-            error:   ['<i class="fas fa-exclamation-circle"></i> Erreur de sauvegarde', "var(--c-reject)"]
+            saving: ['<i class="fas fa-circle-notch fa-spin"></i> Enregistrement…', "#777"],
+            saved: ['<i class="fas fa-cloud"></i> Enregistré', "var(--c-done)"],
+            offline: ['<i class="fas fa-exclamation-triangle"></i> Hors ligne (local)', "var(--c-idea)"],
+            "route-missing": ['<i class="fas fa-plug"></i> Worker à redéployer (local)', "var(--c-reject)"],
+            error: ['<i class="fas fa-exclamation-circle"></i> Erreur', "var(--c-reject)"]
         };
-        const m = map[kind] || map.saved;
-        el.innerHTML = m[0];
-        el.style.color = m[1];
+        const m = map[kind] || map.saved; el.innerHTML = m[0]; el.style.color = m[1];
     }
 
-    // ---- Rendu ----
-    const board = document.getElementById("board");
-    let activeFilters = new Set(STATUSES);
+    // ====================== Onglets ======================
+    document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".view").forEach(x => x.classList.remove("active"));
+        t.classList.add("active");
+        document.getElementById("view-" + t.dataset.tab).classList.add("active");
+    }));
 
-    function render() {
-        board.innerHTML = "";
-        const totals = { online: 0, idea: 0, todo: 0, reject: 0 };
+    // ====================== EXPLORER (POI) ======================
+    let expLimit = 60;
+    const inBacklog = (poiId) => state.items.some(it => it.poiId && it.poiId === poiId);
+    const siteHit = (name) => siteNorm[norm(name)] || null;
 
-        for (const key in SEED) {
-            const cat = SEED[key];
-            const list = state.cats[key] || [];
-            const counts = { online: 0, idea: 0, todo: 0, reject: 0 };
-            list.forEach(it => { counts[it.status]++; totals[it.status]++; });
+    function filteredPoi() {
+        const cat = document.getElementById("f-cat").value;
+        const q = document.getElementById("f-search").value.toLowerCase().trim();
+        const maxD = parseFloat(document.getElementById("f-dist").value);
+        const hideSite = document.getElementById("f-hide-site").checked;
+        const hideHeberg = document.getElementById("f-hide-heberg").checked;
+        return poiItems.filter(p => {
+            if (cat && p.category !== cat) return false;
+            if (p.dist > maxD) return false;
+            if (hideHeberg && p.category === "Hébergement") return false;
+            if (hideSite && siteHit(p.name)) return false;
+            if (q && !p.name.toLowerCase().includes(q) && !(p.city || "").toLowerCase().includes(q)) return false;
+            return true;
+        });
+    }
 
-            const sec = document.createElement("section");
-            sec.className = "cat";
-            sec.innerHTML = `
-                <div class="cat-head">
-                    <i class="fas ${cat.icon}" style="color:var(--primary-color)"></i>
-                    <h2>${cat.label}</h2>
-                    <div class="cat-counts">
-                        <span style="color:var(--c-online)"><b>${counts.online}</b> en ligne</span>
-                        <span style="color:var(--c-idea)"><b>${counts.idea}</b> à étudier</span>
-                        <span style="color:var(--c-todo)"><b>${counts.todo}</b> à faire</span>
-                        <span style="color:var(--c-reject)"><b>${counts.reject}</b> écarté</span>
-                    </div>
+    function renderExplorer() {
+        const grid = document.getElementById("exp-grid");
+        const list = filteredPoi();
+        document.getElementById("exp-count").textContent = list.length + " lieu(x)";
+        const shown = list.slice(0, expLimit);
+        grid.innerHTML = shown.map(p => {
+            const icon = CAT_ICON[p.category] || "📌";
+            const photo = p.photo
+                ? `<div class="card-img"><img src="${p.photo}" alt="" loading="lazy" onerror="this.parentElement.textContent='${icon}'"></div>`
+                : `<div class="card-img">${icon}</div>`;
+            const hit = siteHit(p.name);
+            const flags = [];
+            if (hit) flags.push(`<span class="flag site" title="Présent sur la page ${PAGES[hit] || hit}">déjà sur le site</span>`);
+            if (inBacklog(p.id)) flags.push(`<span class="flag in">dans le backlog</span>`);
+            const city = [p.zip, p.city].filter(Boolean).join(" ");
+            return `<div class="card" data-id="${p.id}">
+                ${photo}
+                ${flags.length ? `<div class="flags">${flags.join("")}</div>` : ""}
+                <div class="card-body">
+                    <span class="card-cat">${icon} ${p.category}${p.subtype ? " · " + p.subtype : ""}</span>
+                    <div class="card-name">${escapeHtml(p.name)}</div>
+                    ${p.desc ? `<div class="card-desc">${escapeHtml(p.desc.slice(0, 130))}${p.desc.length > 130 ? "…" : ""}</div>` : ""}
+                    <div class="card-meta"><span class="dist">${p.dist} km</span>${city ? `<span>📍 ${escapeHtml(city)}</span>` : ""}</div>
+                    <button class="btn small add-poi"><i class="fas fa-plus"></i> Ajouter au backlog</button>
                 </div>
-                <ul class="items" data-cat="${key}"></ul>
-                <div class="add-row">
-                    <input type="text" placeholder="Ajouter une idée dans « ${cat.label} »…" data-add="${key}">
-                    <button class="btn" data-addbtn="${key}"><i class="fas fa-plus"></i> Ajouter</button>
-                </div>`;
-            board.appendChild(sec);
-
-            const ul = sec.querySelector(".items");
-            list.forEach(it => ul.appendChild(renderItem(key, it)));
-        }
-
-        document.getElementById("cnt-online").textContent = totals.online;
-        document.getElementById("cnt-idea").textContent = totals.idea;
-        document.getElementById("cnt-todo").textContent = totals.todo;
-        document.getElementById("cnt-reject").textContent = totals.reject;
-
-        applyFilters();
-    }
-
-    function renderItem(catKey, it) {
-        const li = document.createElement("li");
-        li.className = "item";
-        li.dataset.status = it.status;
-        li.dataset.id = it.id;
-        li.dataset.cat = catKey;
-
-        const btns = STATUSES.map(s =>
-            `<button class="sbtn ${it.status === s ? "on" : ""}" data-s="${s}" title="${STATUS_TITLE[s]}">
-                <i class="fas ${STATUS_ICON[s]}"></i>
-            </button>`).join("");
-
-        li.innerHTML = `
-            <div class="it-body">
-                <div class="it-name">${escapeHtml(it.name)}${it.seeded ? '<span class="src">déjà en ligne</span>' : (it.suggested ? '<span class="src">suggéré</span>' : '')}</div>
-                <div class="it-note" contenteditable="true" data-note="${escapeHtml(it.id)}">${escapeHtml(it.note || "")}</div>
-            </div>
-            <div class="it-actions">
-                ${btns}
-                <button class="sbtn del" title="Supprimer"><i class="fas fa-trash"></i></button>
             </div>`;
-        return li;
+        }).join("");
+        document.getElementById("exp-more").classList.toggle("hidden", list.length <= expLimit);
     }
 
-    function escapeHtml(s) {
-        return (s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    document.getElementById("exp-grid").addEventListener("click", e => {
+        const btn = e.target.closest(".add-poi"); if (!btn) return;
+        const id = btn.closest(".card").dataset.id;
+        const poi = poiItems.find(p => p.id === id);
+        if (poi) openModalForPoi(poi);
+    });
+    ["f-cat", "f-dist", "f-search", "f-hide-site", "f-hide-heberg"].forEach(id =>
+        document.getElementById(id).addEventListener("input", () => { expLimit = 60; renderExplorer(); }));
+    document.getElementById("exp-more").addEventListener("click", () => { expLimit += 60; renderExplorer(); });
+
+    // ====================== MODALE ======================
+    let modalMode = null;   // "poi" | "manual" | "edit"
+    let modalPoi = null;
+    let editId = null;
+
+    function fillSelect(sel, obj, val) {
+        sel.innerHTML = Object.keys(obj).map(k => `<option value="${k}">${obj[k]}</option>`).join("");
+        if (val) sel.value = val;
     }
 
-    function findItem(catKey, id) {
-        return (state.cats[catKey] || []).find(x => x.id === id);
+    function openModalForPoi(poi) {
+        modalMode = "poi"; modalPoi = poi; editId = null;
+        document.getElementById("modal-title").textContent = "Ajouter au backlog";
+        document.getElementById("modal-title-field").classList.add("hidden");
+        document.getElementById("modal-desc-field").classList.add("hidden");
+        fillSelect(document.getElementById("m-page"), PAGES, CAT_PAGE[poi.category] || "autre");
+        fillSelect(document.getElementById("m-status"), STATUS_LABEL, "todo");
+        document.getElementById("m-instr").value = "";
+        const dup = siteHit(poi.name);
+        if (dup) document.getElementById("m-instr").value = "Existe déjà sur la page " + (PAGES[dup] || dup) + " — enrichis la fiche avec ces infos.";
+        openModal();
     }
+    function openModalManual() {
+        modalMode = "manual"; modalPoi = null; editId = null;
+        document.getElementById("modal-title").textContent = "Ajouter manuellement";
+        document.getElementById("modal-title-field").classList.remove("hidden");
+        document.getElementById("modal-desc-field").classList.remove("hidden");
+        document.getElementById("m-title").value = "";
+        document.getElementById("m-desc").value = "";
+        fillSelect(document.getElementById("m-page"), PAGES, "activites");
+        fillSelect(document.getElementById("m-status"), STATUS_LABEL, "todo");
+        document.getElementById("m-instr").value = "";
+        openModal();
+    }
+    function openModalEdit(item) {
+        modalMode = "edit"; modalPoi = null; editId = item.id;
+        document.getElementById("modal-title").textContent = "Modifier";
+        document.getElementById("modal-title-field").classList.remove("hidden");
+        document.getElementById("modal-desc-field").classList.remove("hidden");
+        document.getElementById("m-title").value = item.title;
+        document.getElementById("m-desc").value = item.desc || "";
+        fillSelect(document.getElementById("m-page"), PAGES, item.page);
+        fillSelect(document.getElementById("m-status"), STATUS_LABEL, item.status);
+        document.getElementById("m-instr").value = item.instruction || "";
+        openModal();
+    }
+    function openModal() { document.getElementById("modal-bg").classList.add("open"); }
+    function closeModal() { document.getElementById("modal-bg").classList.remove("open"); }
 
-    // ---- Interactions ----
-    board.addEventListener("click", (e) => {
-        const sbtn = e.target.closest(".sbtn");
-        if (sbtn) {
-            const li = sbtn.closest(".item");
-            const it = findItem(li.dataset.cat, li.dataset.id);
-            if (!it) return;
-            if (sbtn.classList.contains("del")) {
-                if (confirm("Supprimer « " + it.name + " » ?")) {
-                    state.cats[li.dataset.cat] = state.cats[li.dataset.cat].filter(x => x.id !== it.id);
-                    save(); render();
-                }
-                return;
+    document.getElementById("m-cancel").addEventListener("click", closeModal);
+    document.getElementById("modal-bg").addEventListener("click", e => { if (e.target.id === "modal-bg") closeModal(); });
+    document.getElementById("btn-add").addEventListener("click", openModalManual);
+
+    document.getElementById("m-save").addEventListener("click", () => {
+        const page = document.getElementById("m-page").value;
+        const status = document.getElementById("m-status").value;
+        const instr = document.getElementById("m-instr").value.trim();
+        if (modalMode === "poi") {
+            const p = modalPoi;
+            state.items.push({
+                id: uid("poi"), source: "poi", title: p.name, desc: p.desc || "",
+                page, instruction: instr, status,
+                poiId: p.id,
+                poi: { name: p.name, category: p.category, subtype: p.subtype, city: p.city, zip: p.zip,
+                       dist: p.dist, phone: p.phone, website: p.website, email: p.email,
+                       photo: p.photo, photos: p.photos, desc: p.desc, lat: p.lat, lon: p.lon },
+                created: Date.now()
+            });
+        } else if (modalMode === "manual") {
+            const title = document.getElementById("m-title").value.trim();
+            if (!title) { document.getElementById("m-title").focus(); return; }
+            state.items.push({
+                id: uid("man"), source: "manuel", title, desc: document.getElementById("m-desc").value.trim(),
+                page, instruction: instr, status, poi: null, poiId: null, created: Date.now()
+            });
+        } else if (modalMode === "edit") {
+            const it = state.items.find(x => x.id === editId);
+            if (it) {
+                it.title = document.getElementById("m-title").value.trim() || it.title;
+                it.desc = document.getElementById("m-desc").value.trim();
+                it.page = page; it.status = status; it.instruction = instr;
             }
-            it.status = sbtn.dataset.s;
-            save(); render();
-            return;
         }
-        const addBtn = e.target.closest("[data-addbtn]");
-        if (addBtn) { addItem(addBtn.getAttribute("data-addbtn")); return; }
+        save(); closeModal(); renderBacklog(); renderExplorer();
     });
 
-    board.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && e.target.matches("[data-add]")) {
-            e.preventDefault();
-            addItem(e.target.getAttribute("data-add"));
+    // ====================== BACKLOG ======================
+    let bkFilters = new Set(STATUSES);
+
+    function renderBacklog() {
+        const list = document.getElementById("bk-list");
+        const counts = { idea: 0, todo: 0, done: 0, reject: 0 };
+        state.items.forEach(it => counts[it.status]++);
+        STATUSES.forEach(s => document.getElementById("c-" + s).textContent = counts[s]);
+        document.getElementById("bk-count").textContent = counts.todo + counts.idea;
+
+        const visible = state.items.filter(it => bkFilters.has(it.status))
+            .sort((a, b) => (a.page).localeCompare(b.page) || STATUSES.indexOf(a.status) - STATUSES.indexOf(b.status));
+
+        if (!visible.length) { list.innerHTML = `<div class="bk-empty">Aucun élément. Ajoute depuis l'onglet « Explorer » ou via « Ajouter manuellement ».</div>`; return; }
+
+        list.innerHTML = visible.map(it => {
+            const sbtns = STATUSES.map(s => `<button class="sbtn ${it.status === s ? "on" : ""}" data-s="${s}" title="${STATUS_LABEL[s]}"><i class="fas ${STATUS_ICON[s]}"></i></button>`).join("");
+            const thumb = (it.poi && it.poi.photo) ? `<img class="bk-thumb" src="${it.poi.photo}" alt="" loading="lazy">` : "";
+            let extra = "";
+            if (it.source === "poi" && it.poi) {
+                const p = it.poi;
+                const contact = [p.phone ? "📞 " + escapeHtml(p.phone) : "", p.website ? `<a href="${p.website}" target="_blank" rel="noopener">site web</a>` : "", p.email ? "✉ " + escapeHtml(p.email) : ""].filter(Boolean).join(" · ");
+                const photosCount = (p.photos && p.photos.length) ? p.photos.length + " photo(s)" : "";
+                extra = `<details class="bk-poi-extra"><summary>Infos POI (${[p.category, p.city, p.dist + " km", photosCount].filter(Boolean).join(" · ")})</summary>
+                    ${p.desc ? `<div style="margin-top:5px;">${escapeHtml(p.desc)}</div>` : ""}
+                    ${contact ? `<div style="margin-top:5px;">${contact}</div>` : ""}
+                    ${p.lat ? `<div style="margin-top:5px;"><a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank" rel="noopener">📍 voir sur la carte</a></div>` : ""}
+                </details>`;
+            }
+            return `<div class="bk-item" data-status="${it.status}" data-id="${it.id}">
+                ${thumb}
+                <div class="bk-main">
+                    <div class="bk-head">
+                        <span class="bk-title">${escapeHtml(it.title)}</span>
+                        <span class="bk-page">${PAGES[it.page] || it.page}</span>
+                        <span class="bk-src">${it.source === "poi" ? "issu du flux POI" : "ajout manuel"}</span>
+                    </div>
+                    ${it.desc ? `<div class="bk-desc">${escapeHtml(it.desc)}</div>` : ""}
+                    <div class="bk-instr" contenteditable="true" data-instr="${it.id}">${escapeHtml(it.instruction || "")}</div>
+                    ${extra}
+                </div>
+                <div class="bk-actions">
+                    <div class="bk-status-btns">${sbtns}</div>
+                    <button class="sbtn edit" title="Modifier"><i class="fas fa-pen"></i></button>
+                    <button class="sbtn del" title="Supprimer"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    document.getElementById("bk-list").addEventListener("click", e => {
+        const item = e.target.closest(".bk-item"); if (!item) return;
+        const it = state.items.find(x => x.id === item.dataset.id); if (!it) return;
+        const sbtn = e.target.closest(".sbtn");
+        if (sbtn && sbtn.dataset.s) { it.status = sbtn.dataset.s; save(); renderBacklog(); return; }
+        if (sbtn && sbtn.classList.contains("edit")) { openModalEdit(it); return; }
+        if (sbtn && sbtn.classList.contains("del")) {
+            if (confirm("Supprimer « " + it.title + " » ?")) {
+                state.items = state.items.filter(x => x.id !== it.id);
+                save(); renderBacklog(); renderExplorer();
+            }
         }
     });
-
-    // Notes : sauvegarde à la perte de focus
-    board.addEventListener("blur", (e) => {
-        if (e.target.matches("[data-note]")) {
-            const li = e.target.closest(".item");
-            const it = findItem(li.dataset.cat, li.dataset.id);
-            if (it) { it.note = e.target.textContent.trim(); save(); }
+    document.getElementById("bk-list").addEventListener("blur", e => {
+        if (e.target.matches("[data-instr]")) {
+            const it = state.items.find(x => x.id === e.target.getAttribute("data-instr"));
+            if (it) { it.instruction = e.target.textContent.trim(); save(); }
         }
     }, true);
 
-    function addItem(catKey) {
-        const input = document.querySelector(`[data-add="${catKey}"]`);
-        const name = input.value.trim();
-        if (!name) { input.focus(); return; }
-        state.cats[catKey] = state.cats[catKey] || [];
-        state.cats[catKey].push({
-            id: catKey + "_new_" + Date.now().toString(36),
-            name, note: "", status: "idea", seeded: false
-        });
-        input.value = "";
-        save(); render();
-        const newInput = document.querySelector(`[data-add="${catKey}"]`);
-        if (newInput) newInput.focus();
-    }
-
-    // ---- Filtres (légende cliquable) ----
-    document.getElementById("legend").addEventListener("click", (e) => {
-        const chip = e.target.closest(".chip");
-        if (!chip) return;
+    document.getElementById("bk-legend").addEventListener("click", e => {
+        const chip = e.target.closest(".chip"); if (!chip) return;
         const k = chip.dataset.k;
-        if (activeFilters.has(k)) activeFilters.delete(k); else activeFilters.add(k);
-        if (activeFilters.size === 0) activeFilters = new Set(STATUSES);
-        document.querySelectorAll(".chip").forEach(c =>
-            c.classList.toggle("off", !activeFilters.has(c.dataset.k)));
-        applyFilters();
+        if (bkFilters.has(k)) bkFilters.delete(k); else bkFilters.add(k);
+        if (bkFilters.size === 0) bkFilters = new Set(STATUSES);
+        document.querySelectorAll("#bk-legend .chip").forEach(c => c.classList.toggle("off", !bkFilters.has(c.dataset.k)));
+        renderBacklog();
     });
 
-    function applyFilters() {
-        document.querySelectorAll(".item").forEach(li =>
-            li.classList.toggle("hidden", !activeFilters.has(li.dataset.status)));
-    }
-
-    // ---- Export ----
+    // ====================== Export ======================
     document.getElementById("btn-export").addEventListener("click", () => {
-        let out = "ÉVOLUTION DU CONTENU — O'Fil du Doubs\n";
-        out += "Date : " + new Date().toLocaleDateString("fr-FR") + "\n";
-        const sym = { online: "[EN LIGNE]", idea: "[A ETUDIER]", todo: "[A IMPLEMENTER]", reject: "[ECARTE]" };
-        for (const key in SEED) {
-            const list = state.cats[key] || [];
-            out += "\n=== " + SEED[key].label.toUpperCase() + " ===\n";
-            ["todo", "idea", "online", "reject"].forEach(st => {
-                list.filter(it => it.status === st).forEach(it => {
-                    out += sym[st] + " " + it.name + (it.note ? "  — " + it.note : "") + "\n";
-                });
+        let out = "BACKLOG CONTENU — O'Fil du Doubs\nDate : " + new Date().toLocaleDateString("fr-FR") + "\n";
+        for (const pg in PAGES) {
+            const items = state.items.filter(it => it.page === pg && it.status !== "reject" && it.status !== "done");
+            if (!items.length) continue;
+            out += "\n=== " + PAGES[pg].toUpperCase() + " ===\n";
+            items.forEach(it => {
+                out += "• [" + STATUS_LABEL[it.status] + "] " + it.title + "\n";
+                if (it.instruction) out += "   → " + it.instruction + "\n";
+                if (it.poi && it.poi.desc) out += "   (POI: " + it.poi.desc.slice(0, 160) + ")\n";
             });
         }
         navigator.clipboard.writeText(out).then(
-            () => alert("Récapitulatif copié dans le presse-papier ! Collez-le dans la conversation."),
-            () => { prompt("Copiez ce texte :", out); }
-        );
+            () => alert("Backlog copié dans le presse-papier !"),
+            () => prompt("Copiez ce texte :", out));
     });
 
-    // ---- Réinitialiser ----
-    document.getElementById("btn-reset").addEventListener("click", () => {
-        if (confirm("Tout réinitialiser à partir de l'existant du site ? Vos idées et notes seront perdues.")) {
-            state = mergeSuggestions(buildSeedState());
-            save(); render();
-        }
-    });
-
-    // ---- Démarrage ----
+    // ====================== Démarrage ======================
     (async function init() {
         setStatus("saving");
+        // Charge en parallèle : POI, index du site, état KV
+        const [poiRes, siteRes] = await Promise.allSettled([
+            fetch("data/poi.json", { cache: "no-store" }).then(r => r.json()),
+            fetch("data/site-index.json", { cache: "no-store" }).then(r => r.json())
+        ]);
+        if (poiRes.status === "fulfilled") poiItems = poiRes.value.items || [];
+        if (siteRes.status === "fulfilled") {
+            const si = siteRes.value;
+            for (const pg in (si.normalized || {})) si.normalized[pg].forEach(n => { if (n) siteNorm[n] = pg; });
+        }
+        // Remplit le filtre catégories
+        const cats = [...new Set(poiItems.map(p => p.category))].sort();
+        const sel = document.getElementById("f-cat");
+        cats.forEach(c => { const o = document.createElement("option"); o.value = c; o.textContent = (CAT_ICON[c] || "") + " " + c; sel.appendChild(o); });
+
         state = await loadState();
-        render();
-        if (needsInitialSave) { save(); }
-        else { setStatus("saved"); }
+        renderExplorer();
+        renderBacklog();
+        if (needsInitialSave) save(); else setStatus("saved");
     })();
     </script>
 </body>
