@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POI – Exploration flux DATAtourisme (30 km)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #222; }
+
+  header {
+    background: #1a3a2a; color: #fff; padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  header h1 { font-size: 1.2rem; font-weight: 700; }
+  header small { opacity: .7; font-size: .8rem; }
+
+  .filters {
+    background: #fff; border-bottom: 1px solid #ddd;
+    padding: .75rem 1.5rem; display: flex; gap: .75rem; flex-wrap: wrap; align-items: center;
+  }
+  .filters label { font-size: .85rem; font-weight: 600; }
+  .filters select, .filters input[type=search] {
+    border: 1px solid #ccc; border-radius: 6px; padding: .35rem .7rem; font-size: .85rem;
+  }
+  .filters input[type=search] { width: 220px; }
+  .count { margin-left: auto; font-size: .8rem; color: #666; }
+
+  .stats-bar {
+    background: #fff; border-bottom: 1px solid #eee;
+    padding: .5rem 1.5rem; display: flex; gap: .5rem; flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: #eef4ee; border: 1px solid #c5ddc5; border-radius: 20px;
+    padding: .2rem .7rem; font-size: .75rem; cursor: pointer; user-select: none;
+    transition: background .15s;
+  }
+  .stat-chip:hover, .stat-chip.active { background: #2d6a3f; color: #fff; border-color: #2d6a3f; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem; padding: 1rem 1.5rem;
+    max-width: 1600px; margin: 0 auto;
+  }
+
+  .card {
+    background: #fff; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    display: flex; flex-direction: column;
+  }
+  .card-img {
+    width: 100%; height: 160px; object-fit: cover; background: #e8ede8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: #aaa;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: .85rem; flex: 1; display: flex; flex-direction: column; gap: .4rem; }
+  .card-cat {
+    font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .15rem .5rem; border-radius: 4px; align-self: flex-start;
+  }
+  .card-name { font-size: .95rem; font-weight: 700; line-height: 1.3; }
+  .card-desc { font-size: .78rem; color: #555; line-height: 1.5; flex: 1; }
+  .card-meta { font-size: .75rem; color: #888; display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+  .card-meta .dist { font-weight: 700; color: #2d6a3f; }
+  .card-links { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .2rem; }
+  .card-links a {
+    font-size: .72rem; background: #f0f4f0; border: 1px solid #ddd; border-radius: 4px;
+    padding: .15rem .45rem; color: #2d6a3f; text-decoration: none;
+  }
+  .card-links a:hover { background: #2d6a3f; color: #fff; }
+
+  /* Couleurs par catégorie */
+  .cat-hébergement { background: #dbeafe; color: #1e40af; }
+  .cat-restauration { background: #fef3c7; color: #92400e; }
+  .cat-sport { background: #dcfce7; color: #166534; }
+  .cat-culturel { background: #ede9fe; color: #5b21b6; }
+  .cat-naturel { background: #d1fae5; color: #065f46; }
+  .cat-rando { background: #fce7f3; color: #9d174d; }
+  .cat-commerce { background: #fee2e2; color: #991b1b; }
+  .cat-événement { background: #ffedd5; color: #c2410c; }
+  .cat-autre { background: #f3f4f6; color: #374151; }
+
+  .no-results { text-align: center; padding: 3rem; color: #888; font-size: 1rem; grid-column: 1/-1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🔍 Exploration POI — flux DATAtourisme</h1>
+    <small>Usage interne · Points d'intérêt dans un rayon de 30 km autour de Labergement-Sainte-Marie</small>
+  </div>
+  <div id="generated" style="margin-left:auto;font-size:.75rem;opacity:.6"></div>
+</header>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="filters">
+  <label for="catFilter">Catégorie :</label>
+  <select id="catFilter">
+    <option value="">Toutes</option>
+  </select>
+  <label for="search">Recherche :</label>
+  <input type="search" id="search" placeholder="Nom, ville…">
+  <label for="distFilter">Distance max :</label>
+  <select id="distFilter">
+    <option value="30">30 km</option>
+    <option value="20">20 km</option>
+    <option value="15">15 km</option>
+    <option value="10">10 km</option>
+    <option value="5">5 km</option>
+  </select>
+  <span class="count" id="countLabel"></span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const CATEGORY_ICONS = {
+  'Hébergement': '🏠',
+  'Restauration': '🍽️',
+  'Sport & Loisir': '⛷️',
+  'Patrimoine culturel': '🏛️',
+  'Patrimoine naturel': '🌿',
+  'Randonnée / Circuit': '🥾',
+  'Commerce & Artisanat': '🛍️',
+  'Événement': '🎉',
+  'Autre': '📌',
+};
+
+const CATEGORY_CLASS = {
+  'Hébergement': 'cat-hébergement',
+  'Restauration': 'cat-restauration',
+  'Sport & Loisir': 'cat-sport',
+  'Patrimoine culturel': 'cat-culturel',
+  'Patrimoine naturel': 'cat-naturel',
+  'Randonnée / Circuit': 'cat-rando',
+  'Commerce & Artisanat': 'cat-commerce',
+  'Événement': 'cat-événement',
+  'Autre': 'cat-autre',
+};
+
+let allItems = [];
+
+function render(items) {
+  const grid = document.getElementById('grid');
+  document.getElementById('countLabel').textContent = `${items.length} résultat(s)`;
+  if (!items.length) {
+    grid.innerHTML = '<p class="no-results">Aucun résultat.</p>';
+    return;
+  }
+  grid.innerHTML = items.map(it => {
+    const icon = CATEGORY_ICONS[it.category] || '📌';
+    const catClass = CATEGORY_CLASS[it.category] || 'cat-autre';
+    const photoHtml = it.photo
+      ? `<div class="card-img"><img src="${it.photo}" alt="" loading="lazy" onerror="this.parentElement.textContent='${icon}'"></div>`
+      : `<div class="card-img">${icon}</div>`;
+    const desc = it.desc ? `<p class="card-desc">${it.desc.slice(0, 180)}${it.desc.length > 180 ? '…' : ''}</p>` : '';
+    const city = [it.zip, it.city].filter(Boolean).join(' ');
+    const links = [];
+    if (it.website) links.push(`<a href="${it.website}" target="_blank">Site web</a>`);
+    if (it.dtUrl) links.push(`<a href="${it.dtUrl}" target="_blank">DATAtourisme</a>`);
+    return `
+      <div class="card">
+        ${photoHtml}
+        <div class="card-body">
+          <span class="card-cat ${catClass}">${icon} ${it.category}</span>
+          <div class="card-name">${it.name}</div>
+          ${desc}
+          <div class="card-meta">
+            <span class="dist">${it.dist} km</span>
+            ${city ? `<span>📍 ${city}</span>` : ''}
+            ${it.phone ? `<span>📞 ${it.phone}</span>` : ''}
+          </div>
+          ${links.length ? `<div class="card-links">${links.join('')}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const cat = document.getElementById('catFilter').value;
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const maxDist = parseFloat(document.getElementById('distFilter').value);
+  const filtered = allItems.filter(it => {
+    if (cat && it.category !== cat) return false;
+    if (it.dist > maxDist) return false;
+    if (q && !it.name.toLowerCase().includes(q) && !(it.city || '').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  render(filtered);
+}
+
+fetch('data/poi.json').then(r => r.json()).then(data => {
+  allItems = data.items;
+
+  document.getElementById('generated').textContent =
+    `Généré le ${new Date(data.generated).toLocaleDateString('fr-FR')} · ${data.count} POI`;
+
+  // Remplir le select catégories
+  const cats = [...new Set(allItems.map(it => it.category))].sort();
+  const sel = document.getElementById('catFilter');
+  cats.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = `${CATEGORY_ICONS[c] || ''} ${c}`;
+    sel.appendChild(o);
+  });
+
+  // Stats bar
+  const stats = {};
+  allItems.forEach(it => stats[it.category] = (stats[it.category] || 0) + 1);
+  const bar = document.getElementById('statsBar');
+  Object.entries(stats).sort((a, b) => b[1] - a[1]).forEach(([cat, n]) => {
+    const chip = document.createElement('span');
+    chip.className = 'stat-chip';
+    chip.textContent = `${CATEGORY_ICONS[cat] || ''} ${cat} (${n})`;
+    chip.addEventListener('click', () => {
+      const sel = document.getElementById('catFilter');
+      if (sel.value === cat) { sel.value = ''; chip.classList.remove('active'); }
+      else {
+        sel.value = cat;
+        document.querySelectorAll('.stat-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      }
+      applyFilters();
+    });
+    bar.appendChild(chip);
+  });
+
+  document.getElementById('catFilter').addEventListener('change', applyFilters);
+  document.getElementById('search').addEventListener('input', applyFilters);
+  document.getElementById('distFilter').addEventListener('change', applyFilters);
+
+  render(allItems);
+});
+</script>
+</body>
+</html>
