@@ -72,8 +72,8 @@ for (const f of walk(root)) {
   if (isCycling) dbg.cyclingRaw++;
   const modeType = Object.keys(MODE).find(t => types.includes(t));
   if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
-  // Exclut loueurs / prestataires / produits (mal typés "Tour" dans le flux)
-  if (types.some(t => ['Rental', 'ActivityProvider', 'Practice', 'Product'].includes(t))) { if (isCycling) dbg.cyclingRental++; continue; }
+  // Exclut uniquement les loueurs / prestataires (mal typés "Tour"). PAS Practice/Product (que portent les vrais itinéraires vélo).
+  if (types.some(t => ['Rental', 'ActivityProvider'].includes(t))) { if (isCycling) dbg.cyclingRental++; continue; }
   const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
   total++;
 
