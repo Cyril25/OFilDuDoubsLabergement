@@ -49,20 +49,17 @@ const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roun
 const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
 
 const IMG_EXT = /\.(jpe?g|png|webp|gif|avif)(\?|$)/i;
-// Première URL d'IMAGE (pas un PDF/topoguide) parmi toutes les représentations.
-const firstImage = (reps) => {
-  for (const rep of reps) {
-    for (const res of asArray(rep && rep['ebucore:hasRelatedResource'])) {
-      for (const loc of asArray(res && res['ebucore:locator'])) {
-        if (typeof loc === 'string' && IMG_EXT.test(loc)) return loc;
-      }
-    }
-  }
-  return null;
+// Toutes les URLs de représentation, à plat.
+const allLocators = (reps) => {
+  const out = [];
+  for (const rep of reps)
+    for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
+      for (const loc of asArray(res && res['ebucore:locator']))
+        if (typeof loc === 'string') out.push(loc);
+  return out;
 };
 
 const items = [];
-const debugLocators = []; // TEMP : inspection des URLs de représentation
 let total = 0, kept = 0;
 const objectsDir = path.join(extractedDir, 'objects');
 const root = fs.existsSync(objectsDir) ? objectsDir : extractedDir;
@@ -102,25 +99,20 @@ for (const f of walk(root)) {
   const typeId = TYPE_PRIORITY.find(id => tourTypeIds.includes(id));
   const type = TYPE[typeId] || undefined;
 
-  // Distance / dénivelé
+  // Distance / dénivelé — on exige une distance (sinon ce n'est pas un vrai itinéraire : loueurs, etc.)
   const km = parseFloat(o['tourDistance']);
+  if (!Number.isFinite(km) || km <= 0) continue;
   const denivele = parseFloat(o['positiveCumulDifference']);
 
   // Ville
   const addr = loc && asArray(loc['schema:address'])[0];
   const city = addr && addr['schema:addressLocality'] || '';
 
-  // Image : 1re vraie image (jpg/png/webp…) parmi les représentations (on ignore les PDF/topoguides)
-  const img = firstImage([...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) || undefined;
-
-  // TEMP : capture de toutes les URLs de représentation (diagnostic photos)
-  if (debugLocators.length < 12) {
-    const locs = [];
-    for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])])
-      for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
-        for (const l of asArray(res && res['ebucore:locator'])) locs.push(l);
-    debugLocators.push({ name: nameFr, n: locs.length, locs: locs.slice(0, 4) });
-  }
+  // Représentations : photo (si dispo), trace GPX, topoguide PDF
+  const locs = allLocators([...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]);
+  const img = locs.find(l => IMG_EXT.test(l)) || undefined;
+  const gpx = locs.find(l => /\.gpx(\?|$)/i.test(l)) || undefined;
+  const pdf = locs.find(l => /\.pdf(\?|$)/i.test(l)) || undefined;
 
   // Lien fiche source (carte / GPX chez l'éditeur)
   let url = null;
@@ -141,6 +133,8 @@ for (const f of walk(root)) {
     city,
     dist: Math.round(dist * 10) / 10,
     img,
+    gpx,
+    pdf,
     url: url || undefined,
     must: must || undefined,
   });
@@ -169,9 +163,9 @@ fs.writeFileSync(outFile, JSON.stringify(payload));
 const byMode = {}; items.forEach(i => byMode[i.mode] = (byMode[i.mode] || 0) + 1);
 const byDiff = {}; items.forEach(i => byDiff[i.difficulty || '—'] = (byDiff[i.difficulty || '—'] || 0) + 1);
 console.error(`Itinéraires retenus : ${items.length} (après dédup) / ${total} analysés (rayon ${RADIUS}km + incontournables)`);
-console.error('Avec image : ' + items.filter(i => i.img).length + ' | avec lien : ' + items.filter(i => i.url).length + ' | avec desc : ' + items.filter(i => i.desc).length);
+console.error('Photo : ' + items.filter(i => i.img).length + ' | GPX : ' + items.filter(i => i.gpx).length + ' | PDF : ' + items.filter(i => i.pdf).length + ' | lien : ' + items.filter(i => i.url).length + ' | desc : ' + items.filter(i => i.desc).length);
 console.error('Par mode : ' + JSON.stringify(byMode));
 console.error('Par difficulté : ' + JSON.stringify(byDiff));
+const visibles = items.filter(i => i.must || i.dist <= 30).length;
+console.error('Visibles par défaut (≤30km ou incontournable) : ' + visibles + ' | repliés (30-80km) : ' + (items.length - visibles));
 console.error('Incontournables : ' + items.filter(i => i.must).map(i => i.name + ' (' + i.dist + 'km)').join(' | '));
-console.error('\n--- DIAGNOSTIC REPRESENTATIONS (12 premieres) ---');
-debugLocators.forEach(d => console.error(`[${d.n}] ${d.name}\n   ${d.locs.join('\n   ')}`));

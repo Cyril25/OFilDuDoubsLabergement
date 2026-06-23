@@ -46,7 +46,7 @@ jobs:
           unzip -q -o flux.zip -d extracted
 
       - name: Construire data/rando.json
-        run: node scripts/build-rando.js extracted data/rando.json 20
+        run: node scripts/build-rando.js extracted data/rando.json 80
 
       - name: Commit si changement
         run: |
