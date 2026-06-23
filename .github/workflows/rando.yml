@@ -46,13 +46,15 @@ jobs:
           unzip -q -o flux.zip -d extracted
 
       - name: Construire data/rando.json
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
         run: node scripts/build-rando.js extracted data/rando.json 80
 
       - name: Commit si changement
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/rando.json
+          git add data/rando.json data/rando-i18n-cache.json
           if git diff --cached --quiet; then
             echo "Aucun changement dans les randonnées."
           else
