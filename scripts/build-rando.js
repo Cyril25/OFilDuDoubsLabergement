@@ -14,7 +14,8 @@ const extractedDir = process.argv[2];
 const outFile = process.argv[3];
 
 // Incontournables : inclus quelle que soit la distance (match sur le nom FR).
-const MUST_SEE = [/h[ée]risson/i, /cascades?\s+des\s+tufs/i];
+// (Vide pour l'instant : tri purement par distance.)
+const MUST_SEE = [];
 
 const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 const langMap = (obj, max) => {
