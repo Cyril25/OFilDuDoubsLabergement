@@ -1,0 +1,61 @@
+name: Mise à jour randonnées (DATAtourisme)
+
+on:
+  schedule:
+    - cron: '47 0 * * *'      # tous les jours à 00:47 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rando
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Télécharger et décompresser le flux itinéraires
+        env:
+          DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
+        run: |
+          set -e
+          if [ -z "$DATATOURISME_URL" ]; then
+            echo "::error::Le secret DATATOURISME_URL n'est pas défini."
+            exit 1
+          fi
+          APPKEY="${DATATOURISME_URL##*/}"
+          RANDO_URL="https://diffuseur.datatourisme.fr/webservice/321695b3b7feb0343a3f00ca8355dd0f/$APPKEY"
+          curl -sSL "$RANDO_URL" -o flux.bin
+          if [ "$(stat -c%s flux.bin)" -lt 10000 ]; then
+            echo "::warning::Flux indisponible ou trop petit (génération en cours ?). Contenu :"
+            cat flux.bin || true
+            exit 1
+          fi
+          gzip -dc flux.bin > flux.zip
+          mkdir -p extracted
+          unzip -q -o flux.zip -d extracted
+
+      - name: Construire data/rando.json
+        run: node scripts/build-rando.js extracted data/rando.json 20
+
+      - name: Commit si changement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/rando.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans les randonnées."
+          else
+            git commit -m "chore(rando): mise à jour automatique des itinéraires"
+            git push
+          fi
