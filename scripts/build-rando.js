@@ -74,12 +74,14 @@ function buildEnrichMap(dir) {
     const tourTypeIds = asArray(o['hasTourType']).map(t => t && t['@id']);
     const typeId = TYPE_PRIORITY.find(idd => tourTypeIds.includes(idd));
     const denivele = parseFloat(o['positiveCumulDifference']);
-    // GPX parmi les représentations
-    let gpx;
+    // GPX + topoguide PDF parmi les représentations
+    let gpx, pdf;
     for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) {
       for (const res of asArray(rep && rep['ebucore:hasRelatedResource'])) {
         for (const loc of asArray(res && res['ebucore:locator'])) {
-          if (typeof loc === 'string' && /\.gpx(\?|$)/i.test(loc)) { gpx = loc; break; }
+          if (typeof loc !== 'string') continue;
+          if (!gpx && /\.gpx(\?|$)/i.test(loc)) gpx = loc;
+          if (!pdf && /\.pdf(\?|$)/i.test(loc)) pdf = loc;
         }
       }
     }
@@ -90,6 +92,7 @@ function buildEnrichMap(dir) {
       denivele: Number.isFinite(denivele) ? Math.round(denivele) : undefined,
       type: TYPE[typeId] || undefined,
       gpx,
+      pdf,
       descML,
     };
   }
@@ -147,7 +150,7 @@ async function fetchTourinsoft() {
       dist: Math.round(haversine(lat, lon) * 10) / 10,
       img: photos[0] || undefined,
       gpx: en.gpx,
-      pdf: undefined,
+      pdf: en.pdf,
       url: web || undefined,
     });
   }

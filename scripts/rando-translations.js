@@ -18,6 +18,8 @@ const dataTranslations = {
         r_far_btn: "Afficher les itinéraires plus éloignés",
         r_unit_elev: "dénivelé",
         r_source: "Source : DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ Trace GPX : le fichier du parcours à ouvrir dans une appli de randonnée (Visorando, Komoot…) ou un GPS, pour se laisser guider sur le terrain.",
+        r_help_pdf: "📄 Topoguide : la fiche détaillée en PDF à consulter ou imprimer (carte, description, infos pratiques).",
         modes: { foot: "À pied", bike: "Vélo", road: "Sur route", horse: "À cheval" },
         diff: { easy: "Facile", medium: "Moyen", hard: "Difficile", very_hard: "Très difficile" },
         types: { loop: "En boucle", roundtrip: "Aller-retour", roaming: "Itinérance", oneway: "Aller simple" }
@@ -39,6 +41,8 @@ const dataTranslations = {
         r_far_btn: "Show routes further away",
         r_unit_elev: "elevation gain",
         r_source: "Source: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ GPX track: the route file to open in a hiking app (Visorando, Komoot…) or a GPS to guide you on the trail.",
+        r_help_pdf: "📄 Trail guide: the detailed PDF sheet to view or print (map, description, practical info).",
         modes: { foot: "Walking", bike: "Cycling", road: "On road", horse: "On horseback" },
         diff: { easy: "Easy", medium: "Medium", hard: "Hard", very_hard: "Very hard" },
         types: { loop: "Loop", roundtrip: "Round trip", roaming: "Multi-day", oneway: "One way" }
@@ -60,6 +64,8 @@ const dataTranslations = {
         r_far_btn: "Weiter entfernte Touren anzeigen",
         r_unit_elev: "Höhenmeter",
         r_source: "Quelle: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ GPX-Track: die Streckendatei zum Öffnen in einer Wander-App (Visorando, Komoot…) oder einem GPS zur Navigation unterwegs.",
+        r_help_pdf: "📄 Tourenführer: das detaillierte PDF zum Ansehen oder Ausdrucken (Karte, Beschreibung, praktische Infos).",
         modes: { foot: "Zu Fuß", bike: "Fahrrad", road: "Auf der Straße", horse: "Zu Pferd" },
         diff: { easy: "Leicht", medium: "Mittel", hard: "Schwer", very_hard: "Sehr schwer" },
         types: { loop: "Rundweg", roundtrip: "Hin und zurück", roaming: "Mehrtagestour", oneway: "Einfach" }
@@ -81,6 +87,8 @@ const dataTranslations = {
         r_far_btn: "Routes verder weg tonen",
         r_unit_elev: "hoogtemeters",
         r_source: "Bron: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ GPX-track: het routebestand om te openen in een wandel-app (Visorando, Komoot…) of een gps om je onderweg te begeleiden.",
+        r_help_pdf: "📄 Routegids: het gedetailleerde PDF-blad om te bekijken of af te drukken (kaart, beschrijving, praktische info).",
         modes: { foot: "Te voet", bike: "Fiets", road: "Op de weg", horse: "Te paard" },
         diff: { easy: "Makkelijk", medium: "Gemiddeld", hard: "Moeilijk", very_hard: "Zeer moeilijk" },
         types: { loop: "Lus", roundtrip: "Heen en terug", roaming: "Meerdaagse", oneway: "Enkele reis" }
@@ -102,6 +110,8 @@ const dataTranslations = {
         r_far_btn: "Mostrar rutas más lejanas",
         r_unit_elev: "desnivel",
         r_source: "Fuente: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ Traza GPX: el archivo del recorrido para abrir en una app de senderismo (Visorando, Komoot…) o un GPS y guiarte sobre el terreno.",
+        r_help_pdf: "📄 Guía: la ficha detallada en PDF para consultar o imprimir (mapa, descripción, información práctica).",
         modes: { foot: "A pie", bike: "En bici", road: "En carretera", horse: "A caballo" },
         diff: { easy: "Fácil", medium: "Medio", hard: "Difícil", very_hard: "Muy difícil" },
         types: { loop: "Circular", roundtrip: "Ida y vuelta", roaming: "Travesía", oneway: "Solo ida" }
@@ -123,6 +133,8 @@ const dataTranslations = {
         r_far_btn: "Mostra itinerari più lontani",
         r_unit_elev: "dislivello",
         r_source: "Fonte: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ Traccia GPX: il file del percorso da aprire in un'app per escursioni (Visorando, Komoot…) o un GPS per orientarti sul posto.",
+        r_help_pdf: "📄 Guida: la scheda dettagliata in PDF da consultare o stampare (mappa, descrizione, info pratiche).",
         modes: { foot: "A piedi", bike: "In bici", road: "Su strada", horse: "A cavallo" },
         diff: { easy: "Facile", medium: "Medio", hard: "Difficile", very_hard: "Molto difficile" },
         types: { loop: "Ad anello", roundtrip: "Andata e ritorno", roaming: "Più giorni", oneway: "Solo andata" }
@@ -144,6 +156,8 @@ const dataTranslations = {
         r_far_btn: "Mostrar percursos mais distantes",
         r_unit_elev: "desnível",
         r_source: "Fonte: DATAtourisme (Open Data)",
+        r_help_gpx: "🗺️ Traço GPX: o ficheiro do percurso para abrir numa app de caminhadas (Visorando, Komoot…) ou um GPS para o guiar no terreno.",
+        r_help_pdf: "📄 Guia: a ficha detalhada em PDF para consultar ou imprimir (mapa, descrição, informações práticas).",
         modes: { foot: "A pé", bike: "De bicicleta", road: "Na estrada", horse: "A cavalo" },
         diff: { easy: "Fácil", medium: "Médio", hard: "Difícil", very_hard: "Muito difícil" },
         types: { loop: "Circular", roundtrip: "Ida e volta", roaming: "Vários dias", oneway: "Só ida" }

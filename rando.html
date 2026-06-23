@@ -39,6 +39,8 @@
 
     <style>
         .rd-meta { text-align: center; color: #777; font-size: .85rem; margin: 0 0 14px; }
+        .rd-help { max-width: 720px; margin: 0 auto 18px; background: #f6f8f1; border: 1px solid #e2e6d8; border-radius: 10px; padding: 12px 18px; }
+        .rd-help p { margin: 5px 0; font-size: .86rem; color: #555; line-height: 1.5; }
         #rando-toolbar { margin: 6px 0 22px; }
         .rd-search-wrap { position: relative; max-width: 460px; margin: 0 auto 14px; }
         .rd-search-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary-color); opacity: .6; }
@@ -134,6 +136,10 @@
 
     <main>
         <p id="introduction" class="intro-text">Des dizaines d'itinéraires autour de Labergement-Sainte-Marie : distance, dénivelé, difficulté, trace GPX et topoguide.</p>
+        <div id="rando-help" class="rd-help">
+            <p id="r_help_gpx">🗺️ Trace GPX : le fichier du parcours à ouvrir dans une appli de randonnée (Visorando, Komoot…) ou un GPS, pour se laisser guider sur le terrain.</p>
+            <p id="r_help_pdf">📄 Topoguide : la fiche détaillée en PDF à consulter ou imprimer (carte, description, infos pratiques).</p>
+        </div>
         <p id="rando-updated" class="rd-meta"></p>
 
         <div id="rando-admin-bar">
