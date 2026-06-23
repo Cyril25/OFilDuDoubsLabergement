@@ -72,9 +72,7 @@ for (const f of walk(root)) {
   if (isCycling) dbg.cyclingRaw++;
   const modeType = Object.keys(MODE).find(t => types.includes(t));
   if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
-  const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
-  // Vrai itinéraire = porte une distance (tourDistance). Écarte loueurs/prestataires (sans distance),
-  // sans pénaliser le vélo (qui partage les types Practice/ActivityProvider mais a bien une distance).
+  // Vrai itinéraire = porte une distance (tourDistance). Écarte loueurs/prestataires (sans distance).
   const km = parseFloat(o['tourDistance']);
   if (!Number.isFinite(km) || km <= 0) { if (isCycling) dbg.cyclingRental++; continue; }
   total++;
@@ -99,10 +97,15 @@ for (const f of walk(root)) {
   const desc = (descObj && langMap(descObj['dc:description'], 500))
     || langMap(o['rdfs:comment'], 500) || undefined;
 
-  // Difficulté + type
+  // Difficulté + mode (le mode vient du mode de locomotion, pas du @type qui est souvent "WalkingTour" par défaut)
   const pc = asArray(o['hasPracticeCondition'])[0];
   const diffId = pc && asArray(pc['hasDifficultyLevel'])[0] && asArray(pc['hasDifficultyLevel'])[0]['@id'];
   const difficulty = DIFF[diffId] || undefined;
+  const locId = (pc && asArray(pc['hasLocomotionMode'])[0] && asArray(pc['hasLocomotionMode'])[0]['@id']) || '';
+  const mode = /bike|amb|cycl|vtt|velo/i.test(locId) ? 'bike'
+    : /horse|equestrian|riding/i.test(locId) ? 'horse'
+    : /walk|pedestr|foot/i.test(locId) ? 'foot'
+    : (MODE[modeType] || 'foot');
   const tourTypeIds = asArray(o['hasTourType']).map(t => t && t['@id']);
   const typeId = TYPE_PRIORITY.find(id => tourTypeIds.includes(id));
   const type = TYPE[typeId] || undefined;
