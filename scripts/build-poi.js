@@ -47,12 +47,14 @@ const categorize = (types) => {
 };
 
 // Extraire la photo principale
+// Structure : hasRepresentation[] → ebucore:hasRelatedResource[] → ebucore:locator[]
 const getPhoto = (obj) => {
-  const medias = asArray(obj['hasRepresentation'] || obj['ebucore:hasRelatedResource']);
-  for (const m of medias) {
-    const url = m['ebucore:locator'] || (m['ebucore:hasRelatedResource'] && asArray(m['ebucore:hasRelatedResource'])[0]?.['ebucore:locator']);
-    if (url && typeof url === 'string' && url.match(/\.(jpg|jpeg|png|webp)/i)) return url;
-    if (Array.isArray(url) && url[0]) return url[0];
+  for (const rep of asArray(obj['hasRepresentation'])) {
+    for (const res of asArray(rep['ebucore:hasRelatedResource'])) {
+      const loc = res['ebucore:locator'];
+      const url = Array.isArray(loc) ? loc[0] : loc;
+      if (url && typeof url === 'string') return url;
+    }
   }
   return null;
 };
