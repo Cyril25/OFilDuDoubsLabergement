@@ -44,5 +44,8 @@ jobs:
             echo "Aucun changement multilingue."
           else
             git commit -m "chore(i18n): regeneration des pages multilingues"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "Push tentative $i rejetée, nouvelle tentative…"; sleep 5
+            done
           fi

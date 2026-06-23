@@ -61,5 +61,8 @@ jobs:
             echo "Aucun changement dans l'agenda."
           else
             git commit -m "chore(agenda): mise à jour automatique des événements"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "Push tentative $i rejetée, nouvelle tentative…"; sleep 5
+            done
           fi

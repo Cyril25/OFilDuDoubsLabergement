@@ -57,5 +57,8 @@ jobs:
             echo "Aucun changement dans les randonnées."
           else
             git commit -m "chore(rando): mise à jour automatique des itinéraires"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "Push tentative $i rejetée, nouvelle tentative…"; sleep 5
+            done
           fi
