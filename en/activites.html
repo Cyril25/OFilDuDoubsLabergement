@@ -841,22 +841,50 @@
         addTaggedMarker(46.633898279912316, 6.139186351525209, "Chiens de Traîneau (Adam's)", ['nature', 'famille', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Les+%C3%89quipages+Adam%27s', 'chiens_traineau_title');
         addTaggedMarker(46.74487745865667, 6.2827798423272245, "Ferme de la Batailleuse", ['terroir', 'famille', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.74487745865667,6.2827798423272245', 'ferme_batailleuse_title');
 
-        // --- FILTRES ---
+        // --- FILTRES (libellés traduits selon la langue de la page <html lang>) ---
+        var ACT_LANG = document.documentElement.getAttribute('lang') || 'fr';
+        // Clés de tags = identifiants internes (data-tags reste en français), valeurs = libellés affichés.
+        var TAG_I18N = {
+            fr: { nature:"Nature", randonnée:"Randonnée", loisirs:"Loisirs", visite:"Visite", artisanat:"Artisanat", patrimoine:"Patrimoine", terroir:"Terroir", sport:"Sport", panorama:"Panorama", famille:"Famille", baignade:"Baignade", musée:"Musée", intérieur:"Intérieur", photo:"Photo", calme:"Calme", détente:"Détente", autre:"Autre" },
+            en: { nature:"Nature", randonnée:"Hiking", loisirs:"Leisure", visite:"Sightseeing", artisanat:"Crafts", patrimoine:"Heritage", terroir:"Local produce", sport:"Sport", panorama:"Panorama", famille:"Family", baignade:"Swimming", musée:"Museum", intérieur:"Indoor", photo:"Photo", calme:"Quiet", détente:"Relaxation", autre:"Other" },
+            de: { nature:"Natur", randonnée:"Wandern", loisirs:"Freizeit", visite:"Besichtigung", artisanat:"Handwerk", patrimoine:"Kulturerbe", terroir:"Regionale Produkte", sport:"Sport", panorama:"Panorama", famille:"Familie", baignade:"Baden", musée:"Museum", intérieur:"Drinnen", photo:"Foto", calme:"Ruhe", détente:"Entspannung", autre:"Andere" },
+            nl: { nature:"Natuur", randonnée:"Wandelen", loisirs:"Vrije tijd", visite:"Bezoek", artisanat:"Ambacht", patrimoine:"Erfgoed", terroir:"Streekproducten", sport:"Sport", panorama:"Panorama", famille:"Familie", baignade:"Zwemmen", musée:"Museum", intérieur:"Binnen", photo:"Foto", calme:"Rust", détente:"Ontspanning", autre:"Andere" },
+            es: { nature:"Naturaleza", randonnée:"Senderismo", loisirs:"Ocio", visite:"Visita", artisanat:"Artesanía", patrimoine:"Patrimonio", terroir:"Productos locales", sport:"Deporte", panorama:"Panorama", famille:"Familia", baignade:"Baño", musée:"Museo", intérieur:"Interior", photo:"Foto", calme:"Tranquilidad", détente:"Relax", autre:"Otro" },
+            it: { nature:"Natura", randonnée:"Escursioni", loisirs:"Tempo libero", visite:"Visita", artisanat:"Artigianato", patrimoine:"Patrimonio", terroir:"Prodotti tipici", sport:"Sport", panorama:"Panorama", famille:"Famiglia", baignade:"Balneazione", musée:"Museo", intérieur:"Al coperto", photo:"Foto", calme:"Tranquillità", détente:"Relax", autre:"Altro" },
+            pt: { nature:"Natureza", randonnée:"Caminhada", loisirs:"Lazer", visite:"Visita", artisanat:"Artesanato", patrimoine:"Património", terroir:"Produtos locais", sport:"Desporto", panorama:"Panorama", famille:"Família", baignade:"Banhos", musée:"Museu", intérieur:"Interior", photo:"Foto", calme:"Tranquilidade", détente:"Relaxamento", autre:"Outro" }
+        };
+        var UI_I18N = {
+            fr: { filterLabel:"Filtrer la carte et la liste", all:"Tout cocher", none:"Tout décocher", sumAll:"Tous", sumNone:"Aucun", sumCount:"{n} cochés" },
+            en: { filterLabel:"Filter the map and list", all:"Select all", none:"Deselect all", sumAll:"All", sumNone:"None", sumCount:"{n} selected" },
+            de: { filterLabel:"Karte und Liste filtern", all:"Alle auswählen", none:"Alle abwählen", sumAll:"Alle", sumNone:"Keine", sumCount:"{n} ausgewählt" },
+            nl: { filterLabel:"Kaart en lijst filteren", all:"Alles aanvinken", none:"Alles uitvinken", sumAll:"Alle", sumNone:"Geen", sumCount:"{n} aangevinkt" },
+            es: { filterLabel:"Filtrar el mapa y la lista", all:"Marcar todo", none:"Desmarcar todo", sumAll:"Todos", sumNone:"Ninguno", sumCount:"{n} marcados" },
+            it: { filterLabel:"Filtra la mappa e l'elenco", all:"Seleziona tutto", none:"Deseleziona tutto", sumAll:"Tutti", sumNone:"Nessuno", sumCount:"{n} selezionati" },
+            pt: { filterLabel:"Filtrar o mapa e a lista", all:"Marcar tudo", none:"Desmarcar tudo", sumAll:"Todos", sumNone:"Nenhum", sumCount:"{n} marcados" }
+        };
+        var _tl = TAG_I18N[ACT_LANG] || TAG_I18N.fr;
+        var _ui = UI_I18N[ACT_LANG] || UI_I18N.fr;
+
         var tags = [
-            { tag: "nature", name: "Nature" },
-            { tag: "randonnée", name: "Randonnée" },
-            { tag: "loisirs", name: "Loisirs" },
-            { tag: "visite", name: "Visite" },
-            { tag: "artisanat", name: "Artisanat" },
-            { tag: "patrimoine", name: "Patrimoine" },
-            { tag: "terroir", name: "Terroir" },
-            { tag: "sport", name: "Sport" },
-            { tag: "panorama", name: "Panorama" },
-            { tag: "famille", name: "Famille" },
-            { tag: "baignade", name: "Baignade" },
-            { tag: "musée", name: "Musée" },
-            { tag: "intérieur", name: "Intérieur" }
+            { tag: "nature", name: _tl.nature },
+            { tag: "randonnée", name: _tl.randonnée },
+            { tag: "loisirs", name: _tl.loisirs },
+            { tag: "visite", name: _tl.visite },
+            { tag: "artisanat", name: _tl.artisanat },
+            { tag: "patrimoine", name: _tl.patrimoine },
+            { tag: "terroir", name: _tl.terroir },
+            { tag: "sport", name: _tl.sport },
+            { tag: "panorama", name: _tl.panorama },
+            { tag: "famille", name: _tl.famille },
+            { tag: "baignade", name: _tl.baignade },
+            { tag: "musée", name: _tl.musée },
+            { tag: "intérieur", name: _tl.intérieur }
         ];
+
+        // Libellés statiques de la barre de filtre (traduits)
+        document.getElementById('custom-filter-label').textContent = _ui.filterLabel;
+        document.getElementById('custom-filter-all').textContent = _ui.all;
+        document.getElementById('custom-filter-none').textContent = _ui.none;
 
         function updateCustomFilterPanel() {
             var html = tags.map(t => `
@@ -917,9 +945,9 @@
 
             // Résumé texte
             var label = '';
-            if (selected.length === 0) label = 'Aucun';
-            else if (selected.length === tags.length) label = 'Tous';
-            else label = selected.length + ' cochés';
+            if (selected.length === 0) label = _ui.sumNone;
+            else if (selected.length === tags.length) label = _ui.sumAll;
+            else label = _ui.sumCount.replace('{n}', selected.length);
             document.getElementById('custom-filter-selected').textContent = label;
         }
 
@@ -957,7 +985,7 @@
                     var span = document.createElement('span');
                     span.className = 'activity-tag-badge';
                     var icon = tagIcons[tag] || 'fa-tag';
-                    var label = tagNames[tag] || (tag.charAt(0).toUpperCase() + tag.slice(1));
+                    var label = tagNames[tag] || _tl[tag] || (tag.charAt(0).toUpperCase() + tag.slice(1));
                     span.innerHTML = '<i class="fas ' + icon + '"></i> ' + label;
                     container.appendChild(span);
                 });
