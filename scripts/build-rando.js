@@ -72,9 +72,11 @@ for (const f of walk(root)) {
   if (isCycling) dbg.cyclingRaw++;
   const modeType = Object.keys(MODE).find(t => types.includes(t));
   if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
-  // Exclut uniquement les loueurs / prestataires (mal typés "Tour"). PAS Practice/Product (que portent les vrais itinéraires vélo).
-  if (types.some(t => ['Rental', 'ActivityProvider'].includes(t))) { if (isCycling) dbg.cyclingRental++; continue; }
   const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
+  // Vrai itinéraire = porte une distance (tourDistance). Écarte loueurs/prestataires (sans distance),
+  // sans pénaliser le vélo (qui partage les types Practice/ActivityProvider mais a bien une distance).
+  const km = parseFloat(o['tourDistance']);
+  if (!Number.isFinite(km) || km <= 0) { if (isCycling) dbg.cyclingRental++; continue; }
   total++;
 
   const name = (langMap(o['rdfs:label']) || {});
@@ -105,8 +107,7 @@ for (const f of walk(root)) {
   const typeId = TYPE_PRIORITY.find(id => tourTypeIds.includes(id));
   const type = TYPE[typeId] || undefined;
 
-  // Distance / dénivelé (optionnels)
-  const km = parseFloat(o['tourDistance']);
+  // Dénivelé (optionnel)
   const denivele = parseFloat(o['positiveCumulDifference']);
 
   // Ville
