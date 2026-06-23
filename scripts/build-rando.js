@@ -69,6 +69,8 @@ for (const f of walk(root)) {
   const types = asArray(o['@type']);
   const modeType = Object.keys(MODE).find(t => types.includes(t));
   if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
+  // Exclut loueurs / prestataires / produits (mal typés "Tour" dans le flux)
+  if (types.some(t => ['Rental', 'ActivityProvider', 'Practice', 'Product'].includes(t))) continue;
   const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
   total++;
 
@@ -99,9 +101,8 @@ for (const f of walk(root)) {
   const typeId = TYPE_PRIORITY.find(id => tourTypeIds.includes(id));
   const type = TYPE[typeId] || undefined;
 
-  // Distance / dénivelé — on exige une distance (sinon ce n'est pas un vrai itinéraire : loueurs, etc.)
+  // Distance / dénivelé (optionnels)
   const km = parseFloat(o['tourDistance']);
-  if (!Number.isFinite(km) || km <= 0) continue;
   const denivele = parseFloat(o['positiveCumulDifference']);
 
   // Ville
