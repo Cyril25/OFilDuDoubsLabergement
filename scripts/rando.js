@@ -19,7 +19,7 @@
     const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
     const MODES = ['foot', 'bike', 'road'];
     const DIFFS = ['easy', 'medium', 'hard', 'very_hard'];
-    const MODE_ICON = { foot: 'fa-person-hiking', bike: 'fa-person-biking', road: 'fa-road' };
+    const MODE_ICON = { foot: 'fa-hiking', bike: 'fa-bicycle', road: 'fa-road' };
 
     let data = null, overrides = {}, adminMode = false, auth = null, fbLoading = null;
     const activeModes = new Set(), activeDiffs = new Set();
@@ -47,7 +47,7 @@
         if (it.mode && T.modes && T.modes[it.mode])
             badges.push('<span class="rd-badge"><i class="fas ' + (MODE_ICON[it.mode] || 'fa-shoe-prints') + '"></i> ' + esc(T.modes[it.mode]) + '</span>');
         if (it.km) badges.push('<span class="rd-badge"><i class="fas fa-ruler-horizontal"></i> ' + esc(String(it.km).replace('.', ',')) + ' km</span>');
-        if (it.denivele) badges.push('<span class="rd-badge"><i class="fas fa-arrow-trend-up"></i> ' + it.denivele + ' m</span>');
+        if (it.denivele) badges.push('<span class="rd-badge" title="' + esc(T.r_unit_elev || '') + '"><i class="fas fa-mountain"></i> +' + it.denivele + ' m</span>');
         if (it.type && T.types && T.types[it.type]) badges.push('<span class="rd-badge">' + esc(T.types[it.type]) + '</span>');
         if (it.difficulty && T.diff && T.diff[it.difficulty])
             badges.push('<span class="rd-badge ' + it.difficulty + '">' + esc(T.diff[it.difficulty]) + '</span>');
@@ -148,12 +148,20 @@
         const btn = document.getElementById('rando-admin-btn');
         if (!btn) return;
         btn.addEventListener('click', async () => {
-            await loadFirebase();
-            if (auth.currentUser) { adminMode = !adminMode; render(); return; }
-            const email = prompt('Email admin :'); if (!email) return;
-            const pwd = prompt('Mot de passe :'); if (!pwd) return;
-            try { await auth.signInWithEmailAndPassword(email, pwd); if (isAdmin(auth.currentUser)) { adminMode = true; render(); } else alert('Compte non autorisé.'); }
-            catch (e) { alert('Échec connexion : ' + (e.message || e)); }
+            try {
+                await loadFirebase();
+                let user = auth.currentUser;
+                if (!isAdmin(user)) {
+                    const res = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+                    user = res.user;
+                    if (!isAdmin(user)) { await auth.signOut(); alert('Accès non autorisé.'); return; }
+                }
+                adminMode = true;
+                btn.classList.add('on');
+                render();
+            } catch (e) {
+                if (e && e.code !== 'auth/popup-closed-by-user') alert('Erreur de connexion : ' + (e.message || e));
+            }
         });
         document.addEventListener('click', async (ev) => {
             if (!adminMode) return;

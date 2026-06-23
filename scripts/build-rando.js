@@ -61,16 +61,19 @@ const allLocators = (reps) => {
 
 const items = [];
 let total = 0, kept = 0;
+const dbg = { cyclingRaw: 0, cyclingRental: 0, cyclingNoGeo: 0, cyclingOutRadius: 0, cyclingKept: 0 };
 const objectsDir = path.join(extractedDir, 'objects');
 const root = fs.existsSync(objectsDir) ? objectsDir : extractedDir;
 
 for (const f of walk(root)) {
   let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
   const types = asArray(o['@type']);
+  const isCycling = types.includes('CyclingTour');
+  if (isCycling) dbg.cyclingRaw++;
   const modeType = Object.keys(MODE).find(t => types.includes(t));
   if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
   // Exclut loueurs / prestataires / produits (mal typés "Tour" dans le flux)
-  if (types.some(t => ['Rental', 'ActivityProvider', 'Practice', 'Product'].includes(t))) continue;
+  if (types.some(t => ['Rental', 'ActivityProvider', 'Practice', 'Product'].includes(t))) { if (isCycling) dbg.cyclingRental++; continue; }
   const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
   total++;
 
@@ -82,11 +85,12 @@ for (const f of walk(root)) {
   const geo = loc && loc['schema:geo'];
   const lat = geo && parseFloat(geo['schema:latitude']);
   const lon = geo && parseFloat(geo['schema:longitude']);
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) { if (isCycling) dbg.cyclingNoGeo++; continue; }
   const dist = haversine(lat, lon);
 
   const must = MUST_SEE.some(re => re.test(nameFr));
-  if (dist > RADIUS && !must) continue;                 // hors rayon et non incontournable
+  if (dist > RADIUS && !must) { if (isCycling) dbg.cyclingOutRadius++; continue; } // hors rayon et non incontournable
+  if (isCycling) dbg.cyclingKept++;
 
   // Description multilingue (hasDescription.dc:description, sinon rdfs:comment)
   const descObj = asArray(o['hasDescription'])[0];
@@ -170,3 +174,4 @@ console.error('Par difficulté : ' + JSON.stringify(byDiff));
 const visibles = items.filter(i => i.must || i.dist <= 30).length;
 console.error('Visibles par défaut (≤30km ou incontournable) : ' + visibles + ' | repliés (30-80km) : ' + (items.length - visibles));
 console.error('Incontournables : ' + items.filter(i => i.must).map(i => i.name + ' (' + i.dist + 'km)').join(' | '));
+console.error('DIAG vélo : ' + JSON.stringify(dbg));
