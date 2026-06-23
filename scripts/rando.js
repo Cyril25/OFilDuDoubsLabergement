@@ -24,6 +24,7 @@
     let data = null, overrides = {}, adminMode = false, auth = null, fbLoading = null;
     const activeModes = new Set(), activeDiffs = new Set();
     let searchTerm = '';
+    let farList = [];                 // itinéraires 30-80 km, rendus à la demande (perf)
 
     const esc = (s) => (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const norm = (s) => (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -102,24 +103,28 @@
         const base = data.items.filter(it => adminMode || !(overrides[it.id] || {}).hidden);
         renderFilters(base);
 
-        const near = [], farItems = [];
+        const near = [];
+        farList = [];
         for (const it of base) {
             if (!matchFilters(it)) continue;
             const ov = overrides[it.id] || {};
             const isNear = ov.shown || it.must || (it.dist != null && it.dist <= 30);
-            (isNear ? near : farItems).push(it);
+            (isNear ? near : farList).push(it);
         }
-        list.innerHTML = near.map(card).join('') ?
-            '<div class="rd-grid">' + near.map(card).join('') + '</div>' :
+        const nearHtml = near.map(card).join('');
+        list.innerHTML = nearHtml ?
+            '<div class="rd-grid">' + nearHtml + '</div>' :
             '<p class="rd-empty">' + ((activeModes.size || activeDiffs.size || searchTerm) ? T.r_no_match : T.r_empty) + '</p>';
 
-        if (farItems.length) {
-            farWrap.style.display = '';
-            far.innerHTML = '<div class="rd-grid">' + farItems.map(card).join('') + '</div>';
-            if (far.classList.contains('open')) { /* reste ouvert */ } else far.classList.remove('open');
+        // Bloc « plus loin » (30-80 km) : rendu à la demande pour rester rapide
+        const isOpen = far.classList.contains('open');
+        if (farList.length) {
+            farWrap.style.display = isOpen ? 'none' : '';
+            far.innerHTML = isOpen ? '<div class="rd-grid">' + farList.map(card).join('') + '</div>' : '';
         } else {
             farWrap.style.display = 'none';
             far.innerHTML = '';
+            far.classList.remove('open');
         }
     }
 
@@ -192,7 +197,11 @@
         const far = document.getElementById('rando-far');
         if (farBtn && far) {
             if (T.r_far_btn) farBtn.textContent = T.r_far_btn;
-            farBtn.addEventListener('click', () => { far.classList.toggle('open'); farBtn.style.display = far.classList.contains('open') ? 'none' : ''; });
+            farBtn.addEventListener('click', () => {
+                far.classList.add('open');
+                far.innerHTML = '<div class="rd-grid">' + farList.map(card).join('') + '</div>';
+                farBtn.style.display = 'none';
+            });
         }
 
         // Overrides (lecture publique) puis données
