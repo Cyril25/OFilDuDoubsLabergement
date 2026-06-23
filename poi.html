@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>POI – Exploration flux DATAtourisme (30 km)</title>
+<title>POI – Exploration Tourinsoft BFC (30 km)</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #222; }
@@ -74,12 +74,12 @@
   /* Couleurs par catégorie */
   .cat-hébergement { background: #dbeafe; color: #1e40af; }
   .cat-restauration { background: #fef3c7; color: #92400e; }
+  .cat-terroir { background: #fef9c3; color: #854d0e; }
   .cat-sport { background: #dcfce7; color: #166534; }
   .cat-culturel { background: #ede9fe; color: #5b21b6; }
-  .cat-naturel { background: #d1fae5; color: #065f46; }
   .cat-rando { background: #fce7f3; color: #9d174d; }
   .cat-commerce { background: #fee2e2; color: #991b1b; }
-  .cat-événement { background: #ffedd5; color: #c2410c; }
+  .cat-organisme { background: #e0e7ff; color: #3730a3; }
   .cat-autre { background: #f3f4f6; color: #374151; }
 
   .no-results { text-align: center; padding: 3rem; color: #888; font-size: 1rem; grid-column: 1/-1; }
@@ -89,7 +89,7 @@
 
 <header>
   <div>
-    <h1>🔍 Exploration POI — flux DATAtourisme</h1>
+    <h1>🔍 Exploration POI — Tourinsoft / Decibelles BFC</h1>
     <small>Usage interne · Points d'intérêt dans un rayon de 30 km autour de Labergement-Sainte-Marie</small>
   </div>
   <div id="generated" style="margin-left:auto;font-size:.75rem;opacity:.6"></div>
@@ -121,24 +121,24 @@
 const CATEGORY_ICONS = {
   'Hébergement': '🏠',
   'Restauration': '🍽️',
-  'Sport & Loisir': '⛷️',
-  'Patrimoine culturel': '🏛️',
-  'Patrimoine naturel': '🌿',
-  'Randonnée / Circuit': '🥾',
-  'Commerce & Artisanat': '🛍️',
-  'Événement': '🎉',
+  'Produits du terroir': '🧀',
+  'Activité & Sport': '⛷️',
+  'Site & Visite': '🏛️',
+  'Artisanat': '🛠️',
+  'Commerce & Service': '🛍️',
+  'Service & Organisme': '🏢',
   'Autre': '📌',
 };
 
 const CATEGORY_CLASS = {
   'Hébergement': 'cat-hébergement',
   'Restauration': 'cat-restauration',
-  'Sport & Loisir': 'cat-sport',
-  'Patrimoine culturel': 'cat-culturel',
-  'Patrimoine naturel': 'cat-naturel',
-  'Randonnée / Circuit': 'cat-rando',
-  'Commerce & Artisanat': 'cat-commerce',
-  'Événement': 'cat-événement',
+  'Produits du terroir': 'cat-terroir',
+  'Activité & Sport': 'cat-sport',
+  'Site & Visite': 'cat-culturel',
+  'Artisanat': 'cat-rando',
+  'Commerce & Service': 'cat-commerce',
+  'Service & Organisme': 'cat-organisme',
   'Autre': 'cat-autre',
 };
 
@@ -159,14 +159,15 @@ function render(items) {
       : `<div class="card-img">${icon}</div>`;
     const desc = it.desc ? `<p class="card-desc">${it.desc.slice(0, 180)}${it.desc.length > 180 ? '…' : ''}</p>` : '';
     const city = [it.zip, it.city].filter(Boolean).join(' ');
+    const catLabel = it.subtype ? `${it.category} · ${it.subtype}` : it.category;
     const links = [];
-    if (it.website) links.push(`<a href="${it.website}" target="_blank">Site web</a>`);
-    if (it.dtUrl) links.push(`<a href="${it.dtUrl}" target="_blank">DATAtourisme</a>`);
+    if (it.website) links.push(`<a href="${it.website}" target="_blank" rel="noopener">Site web</a>`);
+    if (it.email) links.push(`<a href="mailto:${it.email}">Email</a>`);
     return `
       <div class="card">
         ${photoHtml}
         <div class="card-body">
-          <span class="card-cat ${catClass}">${icon} ${it.category}</span>
+          <span class="card-cat ${catClass}">${icon} ${catLabel}</span>
           <div class="card-name">${it.name}</div>
           ${desc}
           <div class="card-meta">

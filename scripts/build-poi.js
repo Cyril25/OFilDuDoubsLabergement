@@ -1,21 +1,27 @@
 #!/usr/bin/env node
 /**
- * Génère data/poi.json — points d'intérêt autour de Labergement (flux DATAtourisme généraliste).
- * Usage : node scripts/build-poi.js <dossier_datatourisme_extrait> <fichier_sortie> [rayon_km]
+ * Génère data/poi.json — points d'intérêt autour de Labergement.
+ * Source : API Elasticsearch Tourinsoft / Decibelles BFC (mêmes données que doubs.travel),
+ * types : hebergement, restaurant_degustation, activites_visites, infos_utiles.
+ * Avantage vs flux DATAtourisme : photos natives + interrogation géo en direct.
+ *
+ * Usage : node scripts/build-poi.js <fichier_sortie> [rayon_km]
  */
-const fs = require('fs'), path = require('path');
+const fs = require('fs');
 
 const LAT = 46.7689, LON = 6.2807; // Labergement-Sainte-Marie
-const RADIUS = parseFloat(process.argv[4] || '30');
-const extractedDir = process.argv[2];
-const outFile = process.argv[3];
+const outFile = process.argv[2];
+const RADIUS = parseFloat(process.argv[3] || '30');
+const ES_BASE = 'https://es.tourinsoft.com/tis_v5_bourgogne';
 
-if (!extractedDir || !outFile) {
-  console.error('Usage: node scripts/build-poi.js <dossier_extrait> <fichier_sortie> [rayon_km]');
+if (!outFile) {
+  console.error('Usage: node scripts/build-poi.js <fichier_sortie> [rayon_km]');
   process.exit(1);
 }
 
 const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
+const stripHtml = (h) => (h || '').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const titleCase = (s) => (s || '').toLowerCase().replace(/(^|[\s\-'])([a-zà-ÿ])/g, (m, p, c) => p + c.toUpperCase());
 
 const haversine = (la, lo) => {
   const R = 6371, r = Math.PI / 180;
@@ -24,127 +30,120 @@ const haversine = (la, lo) => {
   return 2 * R * Math.asin(Math.sqrt(a));
 };
 
-const getLang = (obj, lang = 'fr') => {
-  if (!obj) return null;
-  const v = obj[lang] || obj['fr'] || obj['en'];
-  if (Array.isArray(v)) return v[0] || null;
-  return v || null;
+// Sous-type d'hébergement (code Tourinsoft → libellé)
+const HEB_TYPE = {
+  MEUBL: 'Meublé / Gîte', HOT: 'Hôtel', HPA: 'Camping', VIL: 'Village vacances',
+  AUHLO: 'Auberge', CHOTE: "Chambre d'hôtes", CHA: "Chambre d'hôtes", RES: 'Résidence',
 };
 
-// Catégories simplifiées basées sur les @type DATAtourisme
-const categorize = (types) => {
-  const t = types.join(' ');
-  if (t.includes('Accommodation') || t.includes('Hotel') || t.includes('Camping') || t.includes('Gite') || t.includes('BedAndBreakfast')) return 'Hébergement';
-  if (t.includes('Restaurant') || t.includes('FoodEstablishment') || t.includes('Bakery') || t.includes('FarmhouseInn')) return 'Restauration';
-  if (t.includes('Event') || t.includes('Concert') || t.includes('Festival')) return 'Événement';
-  if (t.includes('Tour') || t.includes('Walk') || t.includes('CyclingTour') || t.includes('SportsTrail')) return 'Randonnée / Circuit';
-  if (t.includes('SportsAndLeisurePlace') || t.includes('ActivityProvider') || t.includes('SkiResort') || t.includes('ClimbingWall') || t.includes('Practice')) return 'Sport & Loisir';
-  if (t.includes('NaturalHeritage') || t.includes('Landform') || t.includes('Bog') || t.includes('Cliff') || t.includes('NaturalCuriosity')) return 'Patrimoine naturel';
-  if (t.includes('CulturalSite') || t.includes('Museum') || t.includes('Monument') || t.includes('ReligiousSite') || t.includes('TechnicalHeritage')) return 'Patrimoine culturel';
-  if (t.includes('Store') || t.includes('Shop') || t.includes('LocalProductsShop') || t.includes('CraftsmanShop')) return 'Commerce & Artisanat';
-  if (t.includes('Marina') || t.includes('Park') || t.includes('Garden')) return 'Nature & Détente';
-  return 'Autre';
+// oi_nom Tourinsoft → catégorie d'affichage
+const OINOM_CAT = {
+  'Restauration': 'Restauration',
+  'Produits du terroir': 'Produits du terroir',
+  'Vin': 'Produits du terroir',
+  'Activités sportives, culturelles et formules itinérantes': 'Activité & Sport',
+  'Sites et lieux de visites': 'Site & Visite',
+  'Artisanat': 'Artisanat',
+  'Commerces et Services': 'Commerce & Service',
+  'Organismes et entreprises': 'Service & Organisme',
+  'Prestations Affaires': 'Service & Organisme',
+  'Programmes pédagogiques': 'Service & Organisme',
+  'Accessibilité - Stationnement - Itinérance': 'Service & Organisme',
 };
 
-// Extraire la photo principale
-// Structure : hasRepresentation[] → ebucore:hasRelatedResource[] → ebucore:locator[]
-const getPhoto = (obj) => {
-  for (const rep of asArray(obj['hasRepresentation'])) {
-    for (const res of asArray(rep['ebucore:hasRelatedResource'])) {
-      const loc = res['ebucore:locator'];
-      const url = Array.isArray(loc) ? loc[0] : loc;
-      if (url && typeof url === 'string') return url;
+// Type de contenu ES → fonction de catégorisation
+function categorize(esType, src) {
+  if (esType === 'hebergement') return 'Hébergement';
+  return OINOM_CAT[src.oi_nom] || 'Autre';
+}
+
+const SOURCE_FIELDS = ['nom', 'descom', 'position', 'commune', 'cp', 'web', 'mail', 'tel', 'telcellulaire', 'photos', 'type', 'oi_nom', 'categorie'];
+
+async function fetchType(esType) {
+  const body = {
+    size: 5000,
+    _source: SOURCE_FIELDS,
+    query: { filtered: { filter: { geo_distance: { distance: RADIUS + 'km', position: { lat: LAT, lon: LON } } } } },
+  };
+  const r = await fetch(`${ES_BASE}/${esType}/_search`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) throw new Error(`${esType} HTTP ${r.status}`);
+  const j = await r.json();
+  return (j.hits && j.hits.hits) || [];
+}
+
+(async function () {
+  const ES_TYPES = ['hebergement', 'restaurant_degustation', 'activites_visites', 'infos_utiles'];
+  const items = [];
+
+  for (const esType of ES_TYPES) {
+    const hits = await fetchType(esType);
+    for (const h of hits) {
+      const s = h._source || {};
+      const geo = s.position; // [lon, lat]
+      if (!Array.isArray(geo) || geo.length < 2) continue;
+      const lon = parseFloat(geo[0]), lat = parseFloat(geo[1]);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+      const name = (s.nom || '').trim();
+      if (!name) continue;
+
+      const dist = haversine(lat, lon);
+      if (dist > RADIUS) continue;
+
+      const photos = Array.isArray(s.photos) ? s.photos.map(p => p && p.url).filter(Boolean) : [];
+      let web = Array.isArray(s.web) ? s.web.find(Boolean) : s.web;
+      if (web && !/^https?:/i.test(web)) web = 'http://' + web;
+      const phone = (s.tel && s.tel.trim()) || (s.telcellulaire && s.telcellulaire.trim()) || null;
+
+      const category = categorize(esType, s);
+      const subtype = esType === 'hebergement' ? (HEB_TYPE[s.type] || null) : null;
+
+      items.push({
+        id: String(h._id).toLowerCase(),
+        name,
+        desc: stripHtml(s.descom).slice(0, 400) || null,
+        category,
+        subtype,
+        esType,
+        dist: Math.round(dist * 10) / 10,
+        lat, lon,
+        city: titleCase(s.commune),
+        zip: s.cp || '',
+        phone,
+        website: web || null,
+        email: (s.mail && s.mail.trim()) || null,
+        photo: photos[0] || null,
+        photos,
+      });
     }
   }
-  return null;
-};
 
-const indexPath = path.join(extractedDir, 'index.json');
-const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+  // Déduplication (nom normalisé + commune)
+  const seen = new Set(), deduped = [];
+  for (const it of items) {
+    const k = it.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim() + '|' + it.city.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k); deduped.push(it);
+  }
 
-const items = [];
-let processed = 0;
+  deduped.sort((a, b) => a.dist - b.dist);
 
-for (const entry of index) {
-  const filePath = path.join(extractedDir, 'objects', entry.file);
-  let obj;
-  try { obj = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (e) { continue; }
+  const payload = {
+    generated: new Date().toISOString(),
+    radiusKm: RADIUS,
+    count: deduped.length,
+    items: deduped,
+  };
+  fs.writeFileSync(outFile, JSON.stringify(payload));
 
-  // Coordonnées
-  const place = asArray(obj['isLocatedAt'])[0];
-  if (!place) continue;
-  const geo = place['schema:geo'];
-  if (!geo) continue;
-  const lat = parseFloat(geo['schema:latitude']);
-  const lon = parseFloat(geo['schema:longitude']);
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-
-  const dist = haversine(lat, lon);
-  if (dist > RADIUS) continue;
-
-  // Nom
-  const name = getLang(obj['rdfs:label']) || entry.label || 'Sans nom';
-
-  // Description courte
-  const desc = getLang(obj['rdfs:comment']);
-
-  // Types
-  const types = asArray(obj['@type']).filter(t => !t.startsWith('schema:') && !t.startsWith('olo:') && t !== 'PlaceOfInterest' && t !== 'PointOfInterest');
-  const category = categorize(asArray(obj['@type']));
-
-  // Adresse
-  const address = asArray(place['schema:address'])[0];
-  const city = address?.['schema:addressLocality'] || '';
-  const zip = address?.['schema:postalCode'] || '';
-
-  // Contact
-  const contact = asArray(obj['hasContact'])[0] || {};
-  const phone = asArray(contact['schema:telephone'])[0] || null;
-  const website = asArray(contact['foaf:homepage'])[0] || null;
-  const email = asArray(contact['schema:email'])[0] || null;
-
-  // Photo
-  const photo = getPhoto(obj);
-
-  // URL DATAtourisme
-  const dtUrl = obj['@id'] || null;
-
-  items.push({
-    id: obj['dc:identifier'] || entry.file,
-    name,
-    desc,
-    category,
-    types,
-    dist: Math.round(dist * 10) / 10,
-    lat,
-    lon,
-    city,
-    zip,
-    phone,
-    website,
-    email,
-    photo,
-    dtUrl,
-  });
-
-  processed++;
-}
-
-items.sort((a, b) => a.dist - b.dist);
-
-const payload = {
-  generated: new Date().toISOString(),
-  radiusKm: RADIUS,
-  count: items.length,
-  items,
-};
-
-fs.writeFileSync(outFile, JSON.stringify(payload));
-console.error(`POI : ${items.length} résultats dans ${RADIUS}km (sur ${index.length} objets traités)`);
-
-// Stats par catégorie
-const stats = {};
-for (const it of items) stats[it.category] = (stats[it.category] || 0) + 1;
-for (const [cat, n] of Object.entries(stats).sort((a, b) => b[1] - a[1])) {
-  console.error(`  ${cat} : ${n}`);
-}
+  const withPhoto = deduped.filter(i => i.photo).length;
+  console.error(`POI : ${deduped.length} résultats dans ${RADIUS}km | avec photo : ${withPhoto} (${Math.round(withPhoto / deduped.length * 100)}%)`);
+  const stats = {};
+  for (const it of deduped) stats[it.category] = (stats[it.category] || 0) + 1;
+  for (const [cat, n] of Object.entries(stats).sort((a, b) => b[1] - a[1])) {
+    console.error(`  ${cat} : ${n}`);
+  }
+})().catch(e => { console.error('Erreur :', e.message); process.exit(1); });
