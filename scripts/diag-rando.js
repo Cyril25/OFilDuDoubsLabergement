@@ -42,7 +42,22 @@ const dump = (label, m) => {
 console.error('TOTAL objets dans le flux : ' + total);
 dump('@type', typeStats);
 dump('Propriétés (clés de 1er niveau)', keyStats);
-samples.forEach((s, i) => {
-  console.error('\n=== EXEMPLE ' + (i + 1) + ' (tronqué à 2500 caractères) ===');
-  console.error(JSON.stringify(s, null, 1).slice(0, 2500));
-});
+
+// Dump ciblé des champs utiles sur 3 randonnées (WalkingTour)
+let shown = 0;
+for (const f of walk(root)) {
+  if (shown >= 3) break;
+  let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
+  if (!asArray(o['@type']).includes('WalkingTour')) continue;
+  shown++;
+  const pick = (k) => o[k] !== undefined ? JSON.stringify(o[k]) : '(absent)';
+  console.error('\n===== RANDO ' + shown + ' : ' + JSON.stringify(o['rdfs:label']) + ' =====');
+  console.error('tourDistance         : ' + pick('tourDistance'));
+  console.error('positiveCumulDiff    : ' + pick('positiveCumulDifference'));
+  console.error('hasTourType          : ' + pick('hasTourType'));
+  console.error('hasPracticeCondition : ' + pick('hasPracticeCondition').slice(0, 600));
+  console.error('hasTheme             : ' + pick('hasTheme').slice(0, 400));
+  console.error('isLocatedAt          : ' + pick('isLocatedAt').slice(0, 700));
+  console.error('hasMainRepresentation: ' + pick('hasMainRepresentation').slice(0, 700));
+  console.error('hasContact           : ' + pick('hasContact').slice(0, 500));
+}
