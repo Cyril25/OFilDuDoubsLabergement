@@ -62,6 +62,7 @@ const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roun
 const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
 function buildEnrichMap(dir) {
   const map = {};
+  let _g = 0, _p = 0, _samplePdf = '', _sampleLocs = '';
   const objectsDir = path.join(dir, 'objects');
   const root = fs.existsSync(objectsDir) ? objectsDir : dir;
   if (!fs.existsSync(root)) return map;
@@ -85,6 +86,15 @@ function buildEnrichMap(dir) {
         }
       }
     }
+    if (gpx) _g++;
+    if (pdf) { _p++; if (!_samplePdf) _samplePdf = pdf; }
+    if (!_sampleLocs && (asArray(o['hasMainRepresentation']).length || asArray(o['hasRepresentation']).length)) {
+      const ls = [];
+      for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])])
+        for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
+          for (const loc of asArray(res && res['ebucore:locator'])) ls.push(loc);
+      if (ls.length) _sampleLocs = ls.slice(0, 4).join(' , ');
+    }
     const descObj = asArray(o['hasDescription'])[0];
     const descML = (descObj && langMap(descObj['dc:description'], 500)) || langMap(o['rdfs:comment'], 500) || null;
     map[id] = {
@@ -96,6 +106,7 @@ function buildEnrichMap(dir) {
       descML,
     };
   }
+  console.error('ENRICH: gpx=' + _g + ' pdf=' + _p + ' | samplePdf=' + _samplePdf + ' | sampleLocs=' + _sampleLocs);
   return map;
 }
 
