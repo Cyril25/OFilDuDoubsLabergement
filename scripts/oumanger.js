@@ -1,7 +1,12 @@
 // === Page "Où manger" : génération du planning des food trucks ===
 // S'exécute après oumanger-translations.js (dataTranslations) et avant applyTranslations.js.
 (function () {
-    const lang = localStorage.getItem('language') || 'fr';
+    // En mode statique (pages pré-générées /xx/), la langue vient de <html lang>.
+    // Sinon (pages dynamiques) on retombe sur le choix mémorisé dans localStorage.
+    const staticMode = document.documentElement.hasAttribute('data-i18n-static');
+    const lang = staticMode
+        ? (document.documentElement.getAttribute('lang') || 'fr')
+        : (localStorage.getItem('language') || 'fr');
     const T = (typeof dataTranslations !== 'undefined' && dataTranslations[lang])
         ? dataTranslations[lang]
         : (typeof dataTranslations !== 'undefined' ? dataTranslations.fr : {});
