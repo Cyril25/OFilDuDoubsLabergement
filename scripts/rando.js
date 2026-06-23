@@ -68,7 +68,9 @@
             : '';
         const hiddenBadge = (ov.hidden && adminMode) ? '<span class="rd-hidden-badge"><i class="fas fa-eye-slash"></i> Masqué</span>' : '';
         const must = it.must ? '<span class="rd-must"><i class="fas fa-star"></i> ' + T.r_must + '</span>' : '';
-        const img = it.img ? '<img class="rd-img" src="' + esc(it.img) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '';
+        // Vignette légère : redimensionnée + WebP via le CDN d'images wsrv.nl (l'original fait ~2500px)
+        const imgSrc = it.img ? 'https://wsrv.nl/?url=' + encodeURIComponent(it.img) + '&w=600&h=360&fit=cover&output=webp&q=72' : '';
+        const img = imgSrc ? '<img class="rd-img" src="' + esc(imgSrc) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '';
 
         return '<article class="rd-card' + (ov.hidden && adminMode ? ' rd-card--hidden' : '') + '">' +
             hiddenBadge + adminCtrls + img +
