@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr" data-i18n-static>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Randonnées & itinéraires - O'Fil du Doubs" />
+    <meta property="og:description" content="Idées de randonnées à pied et à vélo autour de Labergement-Sainte-Marie : distance, dénivelé, difficulté, trace GPX." />
+    <meta property="og:image" content="https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp" />
+    <meta property="og:url" content="https://ofildudoubs.fr/rando.html" />
+    <meta property="og:type" content="website" />
+    <meta name="description" content="Randonnées et itinéraires autour de Labergement-Sainte-Marie (Haut-Doubs) : sentiers à pied et à vélo avec distance, dénivelé, difficulté, trace GPX et topoguide.">
+
+    <title>Randonnées et itinéraires autour de Labergement-Sainte-Marie | O'Fil du Doubs</title>
+
+    <link rel="canonical" href="https://ofildudoubs.fr/rando.html">
+    <!-- i18n:start -->
+    <link rel="alternate" hreflang="fr" href="https://ofildudoubs.fr/rando.html">
+    <link rel="alternate" hreflang="en" href="https://ofildudoubs.fr/en/rando.html">
+    <link rel="alternate" hreflang="de" href="https://ofildudoubs.fr/de/rando.html">
+    <link rel="alternate" hreflang="nl" href="https://ofildudoubs.fr/nl/rando.html">
+    <link rel="alternate" hreflang="es" href="https://ofildudoubs.fr/es/rando.html">
+    <link rel="alternate" hreflang="it" href="https://ofildudoubs.fr/it/rando.html">
+    <link rel="alternate" hreflang="pt" href="https://ofildudoubs.fr/pt/rando.html">
+    <link rel="alternate" hreflang="x-default" href="https://ofildudoubs.fr/rando.html">
+    <!-- i18n:end -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="scripts/menu-translations.js" defer></script>
+    <script src="scripts/rando-translations.js" defer></script>
+    <script src="scripts/rando.js" defer></script>
+    <script src="scripts/applyTranslations.js" defer></script>
+    <script src="scripts/ui.js" defer></script>
+
+    <style>
+        .rd-meta { text-align: center; color: #777; font-size: .85rem; margin: 0 0 14px; }
+        #rando-toolbar { margin: 6px 0 22px; }
+        .rd-search-wrap { position: relative; max-width: 460px; margin: 0 auto 14px; }
+        .rd-search-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary-color); opacity: .6; }
+        #rando-search { width: 100%; box-sizing: border-box; padding: 11px 14px 11px 40px; border: 1px solid #d7d2c8; border-radius: 999px; font-family: inherit; font-size: .95rem; }
+        #rando-search:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,0,0,.05); }
+        .rd-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .rd-chip { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #d7d2c8; color: var(--text-color,#333); padding: 7px 13px; border-radius: 999px; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+        .rd-chip:hover { border-color: var(--primary-color); }
+        .rd-chip.is-active { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+        .rd-chip-n { background: rgba(0,0,0,.08); border-radius: 999px; padding: 1px 7px; font-size: .72rem; font-weight: 700; }
+        .rd-chip.is-active .rd-chip-n { background: rgba(255,255,255,.25); }
+
+        .rd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 18px; }
+        .rd-card { border: 1px solid #e7e2d8; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; box-shadow: 0 4px 14px rgba(0,0,0,.05); position: relative; }
+        .rd-card--hidden { opacity: .5; }
+        .rd-img { width: 100%; height: 160px; object-fit: cover; background: #eef0e8; }
+        .rd-body { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+        .rd-must { align-self: flex-start; background: #b8860b; color: #fff; border-radius: 999px; padding: 2px 10px; font-size: .72rem; font-weight: 700; margin-bottom: 8px; }
+        .rd-title { font-family: 'Playfair Display', serif; color: var(--primary-color); font-size: 1.15rem; margin: 0 0 4px; }
+        .rd-loc { color: #777; font-size: .82rem; margin: 0 0 10px; }
+        .rd-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .rd-badge { display: inline-flex; align-items: center; gap: 5px; background: #f0f2ea; color: #4a4a3a; border-radius: 6px; padding: 3px 9px; font-size: .76rem; font-weight: 600; }
+        .rd-badge.easy { background: #e3f4e1; color: #2e7d32; }
+        .rd-badge.medium { background: #fff3e0; color: #e07a00; }
+        .rd-badge.hard { background: #fde9e7; color: #c62828; }
+        .rd-badge.very_hard { background: #4a1c1c; color: #fff; }
+        .rd-desc { font-size: .88rem; color: #555; line-height: 1.5; margin: 0 0 12px; }
+        .rd-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+        .rd-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px; text-decoration: none; font-size: .82rem; font-weight: 700; border: 1px solid #d7d2c8; color: var(--primary-color); background: #fff; }
+        .rd-btn--main { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .rd-btn:hover { filter: brightness(.96); }
+        .rd-admin-btns { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
+        .rd-admin-btns button { border: none; background: rgba(0,0,0,.6); color: #fff; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; }
+        .rd-hidden-badge { position: absolute; top: 8px; left: 8px; background: var(--c-reject,#c62828); color: #fff; padding: 3px 8px; border-radius: 6px; font-size: .72rem; font-weight: 700; }
+
+        #rando-far-wrap { text-align: center; margin: 30px 0 6px; }
+        #rando-far-btn { background: var(--primary-color); color: #fff; border: none; padding: 12px 22px; border-radius: 8px; font-family: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; }
+        #rando-far-btn:hover { background: var(--secondary-color); }
+        #rando-far { display: none; margin-top: 22px; }
+        #rando-far.open { display: block; }
+        .rd-empty { text-align: center; color: #777; padding: 30px 0; }
+        #rando-admin-bar { text-align: right; margin-bottom: 10px; }
+        #rando-admin-btn { background: transparent; border: 1px solid #d7d2c8; color: #999; border-radius: 6px; padding: 5px 10px; font-size: .8rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-toggle">☰ Menu</div>
+        <ul id="menu-items">
+            <li><a href="index.html">Accueil</a></li>
+            <li class="has-sub">
+                <a href="logement.html" class="sub-toggle">Le logement</a>
+                <ul class="submenu">
+                    <li><a href="logement.html">Le logement</a></li>
+                    <li><a href="equipements.html">Confort et Équipements</a></li>
+                </ul>
+            </li>
+            <li><a href="dispo.html">Tarifs et disponibilités</a></li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="autour">Autour de vous</a>
+                <ul class="submenu">
+                    <li><a href="activites.html">Activités</a></li>
+                    <li><a href="rando.html" data-mkey="randonnees">Randonnées</a></li>
+                    <li><a href="ou-manger.html">Où manger</a></li>
+                    <li><a href="commerces.html">Commerces</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="language-dropdown">
+            <button class="dropbtn">
+                <img id="current-flag-icon" src="images/fr.png" alt="Langue">
+                <span class="arrow">▼</span>
+            </button>
+            <div class="dropdown-content">
+                <a href="/rando.html" data-lang="fr"><img src="images/fr.png" alt="Français"> Français</a>
+                <a href="/en/rando.html" data-lang="en"><img src="images/en.png" alt="English"> English</a>
+                <a href="/de/rando.html" data-lang="de"><img src="images/de.png" alt="Deutsch"> Deutsch</a>
+                <a href="/nl/rando.html" data-lang="nl"><img src="images/nl.png" alt="Nederlands"> Nederlands</a>
+                <a href="/es/rando.html" data-lang="es"><img src="images/es.png" alt="Español"> Español</a>
+                <a href="/it/rando.html" data-lang="it"><img src="images/it.png" alt="Italiano"> Italiano</a>
+                <a href="/pt/rando.html" data-lang="pt"><img src="images/pt.png" alt="Português"> Português</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header2">
+        <h1 id="title">Randonnées & itinéraires</h1>
+        <h2 id="subtitle">Sentiers à pied et à vélo autour du logement</h2>
+    </header>
+
+    <main>
+        <p id="introduction" class="intro-text">Des dizaines d'itinéraires autour de Labergement-Sainte-Marie : distance, dénivelé, difficulté, trace GPX et topoguide.</p>
+        <p id="rando-updated" class="rd-meta"></p>
+
+        <div id="rando-admin-bar">
+            <button id="rando-admin-btn" type="button" title="Administration">Admin</button>
+        </div>
+
+        <div id="rando-toolbar">
+            <div class="rd-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="search" id="rando-search" autocomplete="off">
+            </div>
+            <div id="rando-filters" class="rd-filters"></div>
+        </div>
+
+        <div id="rando-list"></div>
+
+        <div id="rando-far-wrap" style="display:none;">
+            <button id="rando-far-btn" type="button">Afficher les itinéraires plus éloignés</button>
+        </div>
+        <section id="rando-far"></section>
+
+        <p id="rando-source" class="ag-source" style="text-align:center;color:#999;font-size:.8rem;margin-top:26px;">Source : DATAtourisme (Open Data)</p>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 id="footer_contact_title">Nous contacter</h3>
+                <p><i class="fas fa-phone"></i> <a href="tel:+33683016151">+33 6 83 01 61 51</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="contact.html" id="footer_contact_form">Formulaire de contact</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> 2 impasse Cotti<br>25160 Labergement-Sainte-Marie</p>
+            </div>
+            <div class="footer-col">
+                <h3 id="footer_links_title">Liens rapides</h3>
+                <a href="index.html" id="footer_link_home">Accueil</a>
+                <a href="dispo.html" id="footer_link_rates">Tarifs et Disponibilités</a>
+                <a href="activites.html" id="footer_link_activities">Activités</a>
+                <a href="mentions.html" id="footer_link_legal">Mentions Légales</a>
+            </div>
+            <div class="footer-col">
+                <h3 id="footer_follow_title">Réserver en ligne</h3>
+                <p id="footer_airbnb_text">Consultez nos avis et réservez en toute sécurité.</p>
+                <a href="https://www.airbnb.fr/rooms/1160174173295911644" target="_blank" rel="noopener noreferrer" class="footer-airbnb"><i class="fab fa-airbnb"></i> Page Airbnb</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span class="copyright-year">2026</span> O'Fil du Doubs - <span id="footer_rights">Tous droits réservés</span></p>
+        </div>
+    </footer>
+</body>
+</html>

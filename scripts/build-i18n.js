@@ -22,6 +22,7 @@ const PAGES = {
   'commerces': 'commerces', 'activites': 'activites', 'ou-manger': 'oumanger',
   'contact': 'contact', 'mentions': 'mentions',
   'agenda': 'agenda', 'dispo': 'dispo',          // Phase 2 : pages dynamiques (JS suit <html lang>)
+  'rando': 'rando',                              // Randonnées (dynamique, JS suit <html lang>)
 };
 const STATIC = Object.keys(PAGES);
 const SKIP_KEYS = new Set(['btn_website', 'btn_maps', 'btn_hours', 'info_min']);
@@ -181,7 +182,7 @@ function patchFr(page) {
 // Priorités des pages FR (les pages dynamiques dispo/agenda restent FR en Phase 1).
 const FR_PAGES = {
   index: 1.0, logement: 0.8, equipements: 0.7, dispo: 0.9, activites: 0.8,
-  commerces: 0.7, 'ou-manger': 0.8, agenda: 0.8, contact: 0.6, mentions: 0.2,
+  commerces: 0.7, 'ou-manger': 0.8, agenda: 0.8, contact: 0.6, mentions: 0.2, rando: 0.8,
 };
 function writeSitemap() {
   const today = new Date().toISOString().slice(0, 10);
