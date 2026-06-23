@@ -62,6 +62,7 @@ const firstImage = (reps) => {
 };
 
 const items = [];
+const debugLocators = []; // TEMP : inspection des URLs de représentation
 let total = 0, kept = 0;
 const objectsDir = path.join(extractedDir, 'objects');
 const root = fs.existsSync(objectsDir) ? objectsDir : extractedDir;
@@ -111,6 +112,15 @@ for (const f of walk(root)) {
 
   // Image : 1re vraie image (jpg/png/webp…) parmi les représentations (on ignore les PDF/topoguides)
   const img = firstImage([...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) || undefined;
+
+  // TEMP : capture de toutes les URLs de représentation (diagnostic photos)
+  if (debugLocators.length < 12) {
+    const locs = [];
+    for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])])
+      for (const res of asArray(rep && rep['ebucore:hasRelatedResource']))
+        for (const l of asArray(res && res['ebucore:locator'])) locs.push(l);
+    debugLocators.push({ name: nameFr, n: locs.length, locs: locs.slice(0, 4) });
+  }
 
   // Lien fiche source (carte / GPX chez l'éditeur)
   let url = null;
@@ -163,5 +173,5 @@ console.error('Avec image : ' + items.filter(i => i.img).length + ' | avec lien 
 console.error('Par mode : ' + JSON.stringify(byMode));
 console.error('Par difficulté : ' + JSON.stringify(byDiff));
 console.error('Incontournables : ' + items.filter(i => i.must).map(i => i.name + ' (' + i.dist + 'km)').join(' | '));
-console.error('\n--- 3 exemples ---');
-items.slice(0, 3).forEach(i => console.error(JSON.stringify({ ...i, desc: i.desc && Object.keys(i.desc) }, null, 1)));
+console.error('\n--- DIAGNOSTIC REPRESENTATIONS (12 premieres) ---');
+debugLocators.forEach(d => console.error(`[${d.n}] ${d.name}\n   ${d.locs.join('\n   ')}`));
