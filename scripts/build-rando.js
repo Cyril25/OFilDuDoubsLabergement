@@ -48,9 +48,17 @@ const DIFF = {
 const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roundtrip', 'kb:OneWay': 'oneway' };
 const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
 
-const firstLocator = (rep) => {
-  const res = rep && asArray(rep['ebucore:hasRelatedResource'])[0];
-  return res && asArray(res['ebucore:locator'])[0] || null;
+const IMG_EXT = /\.(jpe?g|png|webp|gif|avif)(\?|$)/i;
+// Première URL d'IMAGE (pas un PDF/topoguide) parmi toutes les représentations.
+const firstImage = (reps) => {
+  for (const rep of reps) {
+    for (const res of asArray(rep && rep['ebucore:hasRelatedResource'])) {
+      for (const loc of asArray(res && res['ebucore:locator'])) {
+        if (typeof loc === 'string' && IMG_EXT.test(loc)) return loc;
+      }
+    }
+  }
+  return null;
 };
 
 const items = [];
@@ -61,8 +69,9 @@ const root = fs.existsSync(objectsDir) ? objectsDir : extractedDir;
 for (const f of walk(root)) {
   let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
   const types = asArray(o['@type']);
-  const mode = Object.keys(MODE).find(t => types.includes(t));
-  if (!mode) continue;                                  // pas un itinéraire pédestre/vélo/route
+  const modeType = Object.keys(MODE).find(t => types.includes(t));
+  if (!modeType) continue;                              // pas un itinéraire pédestre/vélo/route
+  const mode = MODE[modeType];                          // 'foot' | 'bike' | 'road'
   total++;
 
   const name = (langMap(o['rdfs:label']) || {});
@@ -100,9 +109,8 @@ for (const f of walk(root)) {
   const addr = loc && asArray(loc['schema:address'])[0];
   const city = addr && addr['schema:addressLocality'] || '';
 
-  // Image (principale, sinon une représentation)
-  const img = firstLocator(asArray(o['hasMainRepresentation'])[0])
-    || firstLocator(asArray(o['hasRepresentation'])[0]) || undefined;
+  // Image : 1re vraie image (jpg/png/webp…) parmi les représentations (on ignore les PDF/topoguides)
+  const img = firstImage([...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) || undefined;
 
   // Lien fiche source (carte / GPX chez l'éditeur)
   let url = null;
@@ -129,6 +137,17 @@ for (const f of walk(root)) {
   kept++;
 }
 
+// Déduplication : même sentier publié par plusieurs sources (nom normalisé + distance km)
+const seen = new Set();
+const deduped = [];
+for (const it of items) {
+  const k = it.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim() + '|' + (it.km || '?');
+  if (seen.has(k)) { if (it.must) { const ex = deduped.find(d => d._k === k); if (ex) ex.must = true; } continue; }
+  seen.add(k); it._k = k; deduped.push(it);
+}
+deduped.forEach(it => delete it._k);
+items.length = 0; items.push(...deduped);
+
 // Tri : incontournables d'abord, puis par distance croissante
 items.sort((a, b) => (!!b.must - !!a.must) || (a.dist - b.dist));
 
@@ -139,7 +158,8 @@ fs.writeFileSync(outFile, JSON.stringify(payload));
 // Mini-diagnostic (logs CI)
 const byMode = {}; items.forEach(i => byMode[i.mode] = (byMode[i.mode] || 0) + 1);
 const byDiff = {}; items.forEach(i => byDiff[i.difficulty || '—'] = (byDiff[i.difficulty || '—'] || 0) + 1);
-console.error(`Itinéraires retenus : ${kept} / ${total} (rayon ${RADIUS}km + incontournables)`);
+console.error(`Itinéraires retenus : ${items.length} (après dédup) / ${total} analysés (rayon ${RADIUS}km + incontournables)`);
+console.error('Avec image : ' + items.filter(i => i.img).length + ' | avec lien : ' + items.filter(i => i.url).length + ' | avec desc : ' + items.filter(i => i.desc).length);
 console.error('Par mode : ' + JSON.stringify(byMode));
 console.error('Par difficulté : ' + JSON.stringify(byDiff));
 console.error('Incontournables : ' + items.filter(i => i.must).map(i => i.name + ' (' + i.dist + 'km)').join(' | '));
