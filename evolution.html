@@ -76,8 +76,15 @@
         .card-cat { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding: 2px 7px; border-radius: 4px; align-self: flex-start; background: #eef2f6; color: #4a5b6b; }
         .card-name { font-size: .92rem; font-weight: 700; line-height: 1.25; }
         .card-desc { font-size: .76rem; color: #555; line-height: 1.45; }
-        .card-meta { font-size: .73rem; color: #888; display: flex; gap: 6px; flex-wrap: wrap; }
+        .card-meta { font-size: .73rem; color: #888; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
         .card-meta .dist { font-weight: 700; color: var(--c-done); }
+        .card-links { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 2px; }
+        .card-links a, .card-links span {
+            font-size: .7rem; background: #eef2f6; border: 1px solid #dce3ea; border-radius: 4px;
+            padding: 2px 7px; color: var(--primary-color); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .card-links a:hover { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .card-links .muted { color: #b0b8c0; background: #f6f8fa; }
         .flags { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; }
         .flag { font-size: .68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
         .flag.site { background: #6a1b9a; }
@@ -381,6 +388,12 @@
             if (hit) flags.push(`<span class="flag site" title="Présent sur la page ${PAGES[hit] || hit}">déjà sur le site</span>`);
             if (inBacklog(p.id)) flags.push(`<span class="flag in">dans le backlog</span>`);
             const city = [p.zip, p.city].filter(Boolean).join(" ");
+            const nPhotos = (p.photos && p.photos.length) ? p.photos.length : (p.photo ? 1 : 0);
+            const links = [];
+            if (p.website) links.push(`<a href="${escapeHtml(p.website)}" target="_blank" rel="noopener" title="${escapeHtml(p.website)}"><i class="fas fa-globe"></i> Site web</a>`);
+            if (p.phone)   links.push(`<a href="tel:${escapeHtml(p.phone)}" title="${escapeHtml(p.phone)}"><i class="fas fa-phone"></i> ${escapeHtml(p.phone)}</a>`);
+            if (p.email)   links.push(`<a href="mailto:${escapeHtml(p.email)}" title="${escapeHtml(p.email)}"><i class="fas fa-envelope"></i> Email</a>`);
+            if (nPhotos)   links.push(`<span class="muted" title="${nPhotos} photo(s) disponible(s)"><i class="fas fa-image"></i> ${nPhotos}</span>`);
             return `<div class="card" data-id="${p.id}">
                 ${photo}
                 ${flags.length ? `<div class="flags">${flags.join("")}</div>` : ""}
@@ -389,6 +402,7 @@
                     <div class="card-name">${escapeHtml(p.name)}</div>
                     ${p.desc ? `<div class="card-desc">${escapeHtml(p.desc.slice(0, 130))}${p.desc.length > 130 ? "…" : ""}</div>` : ""}
                     <div class="card-meta"><span class="dist">${p.dist} km</span>${city ? `<span>📍 ${escapeHtml(city)}</span>` : ""}</div>
+                    ${links.length ? `<div class="card-links">${links.join("")}</div>` : ""}
                     <button class="btn small add-poi"><i class="fas fa-plus"></i> Ajouter au backlog</button>
                 </div>
             </div>`;
