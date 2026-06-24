@@ -90,6 +90,7 @@
         .flag.site { background: #6a1b9a; }
         .flag.in { background: var(--c-todo); }
         .flag.hidden-flag { background: #6b7280; }
+        .btn.site-poi.on { background: #6a1b9a; color: #fff; border-color: #6a1b9a; }
         .card .btn { margin-top: auto; }
 
         /* Backlog (À traiter) */
@@ -368,6 +369,7 @@
     const inBacklog = (poiId) => state.items.some(it => it.poiId === poiId && (it.status === "idea" || it.status === "todo"));
     const siteHit = (name) => siteNorm[norm(name)] || null;
     const isHidden = (id) => (state.hidden || []).includes(id);
+    const forcedSite = (id) => (state.onSite || []).includes(id);   // « déjà sur le site » forcé manuellement
 
     function filteredPoi() {
         const cat = document.getElementById("f-cat").value;
@@ -381,7 +383,7 @@
             if (cat && p.category !== cat) return false;
             if (p.dist > maxD) return false;
             if (hideHeberg && p.category === "Hébergement") return false;
-            if (hideSite && siteHit(p.name)) return false;
+            if (hideSite && (siteHit(p.name) || forcedSite(p.id))) return false;
             if (q && !p.name.toLowerCase().includes(q) && !(p.city || "").toLowerCase().includes(q)) return false;
             return true;
         });
@@ -398,8 +400,10 @@
                 ? `<div class="card-img"><img src="${p.photo}" alt="" loading="lazy" onerror="this.parentElement.textContent='${icon}'"></div>`
                 : `<div class="card-img">${icon}</div>`;
             const hit = siteHit(p.name);
+            const forced = forcedSite(p.id);
             const flags = [];
             if (hit) flags.push(`<span class="flag site" title="Présent sur la page ${PAGES[hit] || hit}">déjà sur le site</span>`);
+            else if (forced) flags.push(`<span class="flag site" title="Marqué manuellement comme déjà sur le site">déjà sur le site</span>`);
             if (inBacklog(p.id)) flags.push(`<span class="flag in">dans le backlog</span>`);
             if (isHidden(p.id)) flags.push(`<span class="flag hidden-flag">masqué</span>`);
             const city = [p.zip, p.city].filter(Boolean).join(" ");
@@ -420,6 +424,7 @@
                     ${links.length ? `<div class="card-links">${links.join("")}</div>` : ""}
                     <div style="display:flex;gap:6px;margin-top:auto;">
                         <button class="btn small add-poi" style="flex:1;"><i class="fas fa-plus"></i> Ajouter au backlog</button>
+                        ${hit ? "" : `<button class="btn small ghost site-poi${forced ? " on" : ""}" title="${forced ? "Retirer « déjà sur le site »" : "Forcer « déjà sur le site »"}"><i class="fas fa-thumbtack"></i></button>`}
                         <button class="btn small ghost hide-poi" title="${isHidden(p.id) ? "Réafficher" : "Masquer (n'existe plus / non pertinent)"}"><i class="fas fa-${isHidden(p.id) ? "eye" : "eye-slash"}"></i></button>
                     </div>
                 </div>
@@ -435,6 +440,13 @@
             state.hidden = state.hidden || [];
             if (isHidden(id)) state.hidden = state.hidden.filter(x => x !== id);
             else state.hidden.push(id);
+            save(); renderExplorer();
+            return;
+        }
+        if (e.target.closest(".site-poi")) {
+            state.onSite = state.onSite || [];
+            if (forcedSite(id)) state.onSite = state.onSite.filter(x => x !== id);
+            else state.onSite.push(id);
             save(); renderExplorer();
             return;
         }
