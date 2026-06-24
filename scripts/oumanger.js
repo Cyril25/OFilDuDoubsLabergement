@@ -179,9 +179,11 @@
         actions += '<a class="btn-activity btn-maps" href="' + mapsUrl(r) + '" target="_blank" rel="noopener"><i class="fas fa-location-arrow"></i> ' + (T.resto_maps || 'Y aller') + '</a>';
 
         const img = restoImg[r.id];
-        // Icône du placeholder : sablier « en attente d'ouverture » pour les établissements à venir
-        const phIco = (r.id === 'maisondescimes') ? 'fa-hourglass-half' : 'fa-utensils';
-        const banner = '<div class="resto-banner' + (r.id === 'maisondescimes' ? ' resto-banner--soon' : '') + '">'
+        // Icône/variante du placeholder selon l'établissement
+        let phIco = 'fa-utensils', phVariant = '';
+        if (r.id === 'maisondescimes') { phIco = 'fa-hourglass-half'; phVariant = ' resto-banner--soon'; }   // en attente d'ouverture
+        else if (r.id === 'flambee')   { phIco = 'fa-fire';           phVariant = ' resto-banner--flame'; }   // « La Flambée »
+        const banner = '<div class="resto-banner' + phVariant + '">'
             + (img ? '<img src="' + img + '" alt="' + r.name + '" loading="lazy" onerror="this.remove()">' : '')
             + '<i class="fas ' + phIco + ' resto-banner-ico"></i></div>';
 
