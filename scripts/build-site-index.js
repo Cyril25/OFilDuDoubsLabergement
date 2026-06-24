@@ -12,15 +12,23 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
 
-// Normalisation pour comparaison tolérante (minuscules, sans accents, sans ponctuation/lieu entre parenthèses)
+// Normalisation tolérante (minuscules, sans accents/ponctuation, retrait d'un mot
+// de catégorie ou article en tête, singulier). DOIT rester identique à celle
+// d'evolution.html pour que le matching « déjà sur le site » fonctionne.
+const LEAD_WORDS = new Set(['hotel', 'restaurant', 'pizzeria', 'snack', 'bar', 'brasserie', 'auberge', 'creperie', 'le', 'la', 'les', 'l']);
 function norm(s) {
-  return (s || '')
+  const t = (s || '')
     .toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')   // accents
     .replace(/\([^)]*\)/g, ' ')                          // (Malbuisson), (Adam's)…
     .replace(/['’`]/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
+  let w = t.split(' ');
+  while (w.length > 1 && LEAD_WORDS.has(w[0])) w.shift();   // retire « Restaurant », « La »…
+  w = w.map(x => x.length > 3 && x.endsWith('s') ? x.slice(0, -1) : x);  // singulier grossier
+  return w.join(' ');
 }
 
 // --- Activités : labels des marqueurs addTaggedMarker(lat, lng, "Label", ...) ---

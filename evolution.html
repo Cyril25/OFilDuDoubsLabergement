@@ -265,8 +265,16 @@
     let remoteReady = false;
     let needsInitialSave = false;
 
-    const norm = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
-        .replace(/\([^)]*\)/g, " ").replace(/['’`]/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
+    // Normalisation tolérante — DOIT rester identique à scripts/build-site-index.js
+    const LEAD_WORDS = new Set(["hotel", "restaurant", "pizzeria", "snack", "bar", "brasserie", "auberge", "creperie", "le", "la", "les", "l"]);
+    const norm = (s) => {
+        const t = (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+            .replace(/\([^)]*\)/g, " ").replace(/['’`]/g, " ").replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+        let w = t.split(" ");
+        while (w.length > 1 && LEAD_WORDS.has(w[0])) w.shift();
+        w = w.map(x => x.length > 3 && x.endsWith("s") ? x.slice(0, -1) : x);
+        return w.join(" ");
+    };
     const escapeHtml = (s) => (s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     const uid = (p) => p + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
