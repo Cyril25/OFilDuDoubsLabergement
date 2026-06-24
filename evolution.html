@@ -89,6 +89,7 @@
         .flag { font-size: .68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
         .flag.site { background: #6a1b9a; }
         .flag.in { background: var(--c-todo); }
+        .flag.hidden-flag { background: #6b7280; }
         .card .btn { margin-top: auto; }
 
         /* Backlog (À traiter) */
@@ -176,6 +177,7 @@
                 <input type="search" id="f-search" placeholder="Nom, ville…">
                 <label class="chk"><input type="checkbox" id="f-hide-site"> masquer « déjà sur le site »</label>
                 <label class="chk"><input type="checkbox" id="f-hide-heberg" checked> masquer hébergements</label>
+                <label class="chk"><input type="checkbox" id="f-show-hidden"> <i class="fas fa-eye-slash"></i> voir les masqués</label>
                 <div class="spacer"></div>
                 <span class="count-label" id="exp-count"></span>
             </div>
@@ -356,6 +358,7 @@
     let expLimit = 60;
     const inBacklog = (poiId) => state.items.some(it => it.poiId && it.poiId === poiId);
     const siteHit = (name) => siteNorm[norm(name)] || null;
+    const isHidden = (id) => (state.hidden || []).includes(id);
 
     function filteredPoi() {
         const cat = document.getElementById("f-cat").value;
@@ -363,7 +366,9 @@
         const maxD = parseFloat(document.getElementById("f-dist").value);
         const hideSite = document.getElementById("f-hide-site").checked;
         const hideHeberg = document.getElementById("f-hide-heberg").checked;
+        const showHidden = document.getElementById("f-show-hidden").checked;
         return poiItems.filter(p => {
+            if (!showHidden && isHidden(p.id)) return false;   // masqués (ex. n'existe plus)
             if (cat && p.category !== cat) return false;
             if (p.dist > maxD) return false;
             if (hideHeberg && p.category === "Hébergement") return false;
@@ -387,6 +392,7 @@
             const flags = [];
             if (hit) flags.push(`<span class="flag site" title="Présent sur la page ${PAGES[hit] || hit}">déjà sur le site</span>`);
             if (inBacklog(p.id)) flags.push(`<span class="flag in">dans le backlog</span>`);
+            if (isHidden(p.id)) flags.push(`<span class="flag hidden-flag">masqué</span>`);
             const city = [p.zip, p.city].filter(Boolean).join(" ");
             const nPhotos = (p.photos && p.photos.length) ? p.photos.length : (p.photo ? 1 : 0);
             const links = [];
@@ -403,7 +409,10 @@
                     ${p.desc ? `<div class="card-desc">${escapeHtml(p.desc.slice(0, 130))}${p.desc.length > 130 ? "…" : ""}</div>` : ""}
                     <div class="card-meta"><span class="dist">${p.dist} km</span>${city ? `<span>📍 ${escapeHtml(city)}</span>` : ""}</div>
                     ${links.length ? `<div class="card-links">${links.join("")}</div>` : ""}
-                    <button class="btn small add-poi"><i class="fas fa-plus"></i> Ajouter au backlog</button>
+                    <div style="display:flex;gap:6px;margin-top:auto;">
+                        <button class="btn small add-poi" style="flex:1;"><i class="fas fa-plus"></i> Ajouter au backlog</button>
+                        <button class="btn small ghost hide-poi" title="${isHidden(p.id) ? "Réafficher" : "Masquer (n'existe plus / non pertinent)"}"><i class="fas fa-${isHidden(p.id) ? "eye" : "eye-slash"}"></i></button>
+                    </div>
                 </div>
             </div>`;
         }).join("");
@@ -411,12 +420,21 @@
     }
 
     document.getElementById("exp-grid").addEventListener("click", e => {
-        const btn = e.target.closest(".add-poi"); if (!btn) return;
-        const id = btn.closest(".card").dataset.id;
-        const poi = poiItems.find(p => p.id === id);
-        if (poi) openModalForPoi(poi);
+        const card = e.target.closest(".card"); if (!card) return;
+        const id = card.dataset.id;
+        if (e.target.closest(".hide-poi")) {
+            state.hidden = state.hidden || [];
+            if (isHidden(id)) state.hidden = state.hidden.filter(x => x !== id);
+            else state.hidden.push(id);
+            save(); renderExplorer();
+            return;
+        }
+        if (e.target.closest(".add-poi")) {
+            const poi = poiItems.find(p => p.id === id);
+            if (poi) openModalForPoi(poi);
+        }
     });
-    ["f-cat", "f-dist", "f-search", "f-hide-site", "f-hide-heberg"].forEach(id =>
+    ["f-cat", "f-dist", "f-search", "f-hide-site", "f-hide-heberg", "f-show-hidden"].forEach(id =>
         document.getElementById(id).addEventListener("input", () => { expLimit = 60; renderExplorer(); }));
     document.getElementById("exp-more").addEventListener("click", () => { expLimit += 60; renderExplorer(); });
 
