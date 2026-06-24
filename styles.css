@@ -1167,6 +1167,7 @@ a.glightbox img.room-image { cursor: zoom-in; }
     display: block;
 }
 .resto-banner-ico { font-size: 2.6rem; color: #fff; opacity: .9; }
+.resto-banner--soon { background: linear-gradient(135deg, #e9d8b0, #cbb07a); }
 .resto-card-head {
     display: flex;
     align-items: baseline;

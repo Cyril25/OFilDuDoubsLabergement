@@ -179,9 +179,11 @@
         actions += '<a class="btn-activity btn-maps" href="' + mapsUrl(r) + '" target="_blank" rel="noopener"><i class="fas fa-location-arrow"></i> ' + (T.resto_maps || 'Y aller') + '</a>';
 
         const img = restoImg[r.id];
-        const banner = '<div class="resto-banner">'
+        // Icône du placeholder : sablier « en attente d'ouverture » pour les établissements à venir
+        const phIco = (r.id === 'maisondescimes') ? 'fa-hourglass-half' : 'fa-utensils';
+        const banner = '<div class="resto-banner' + (r.id === 'maisondescimes' ? ' resto-banner--soon' : '') + '">'
             + (img ? '<img src="' + img + '" alt="' + r.name + '" loading="lazy" onerror="this.remove()">' : '')
-            + '<i class="fas fa-utensils resto-banner-ico"></i></div>';
+            + '<i class="fas ' + phIco + ' resto-banner-ico"></i></div>';
 
         return ''
             + '<div class="resto-card">'
