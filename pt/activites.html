@@ -196,6 +196,19 @@
     <main>
         <p id="introduction" class="intro-text">Entre lagos majestosos, paisagens preservadas, artesanato local e aventuras ao ar livre, a nossa região tem muito para oferecer. Descubra a nossa seleção de 25 atividades imperdíveis à volta do alojamento.</p>
 
+        <!-- Encart Office de Tourisme (info pratique mise en avant) -->
+        <div class="ot-encart" style="background:#eaf4fb;border:1px solid #b8dcf0;border-left:5px solid var(--primary-color);border-radius:10px;padding:16px 18px;margin:0 auto 20px;max-width:1000px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+            <i class="fas fa-info-circle" style="font-size:2rem;color:var(--primary-color);flex-shrink:0;"></i>
+            <div style="flex:1 1 260px;">
+                <h2 id="office_tourisme_title" style="margin:0 0 4px;font-size:1.2rem;">Posto de Turismo do Haut-Doubs</h2>
+                <p id="office_tourisme_description" style="margin:0;font-size:.95rem;">O primeiro passo à chegada: informações, brochuras, conselhos de atividades e bilheteira. Posto em Malbuisson, a ~4 km.</p>
+            </div>
+            <div class="activity-infos" style="margin:0;">
+                <a href="https://www.malbuisson-les-lacs.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                <a href="https://www.google.com/maps/search/?api=1&amp;query=46.8001,6.3059" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+            </div>
+        </div>
+
         <div id="custom-filter-bar">
             <span id="custom-filter-label">Filtrer la carte et la liste</span>
             <span id="custom-filter-selected">Tous</span>
@@ -349,8 +362,8 @@
         <section class="room" data-tags="famille nature loisirs">
             <div class="room-content reverse">
                 <div class="room-text">
-                    <h2 id="luge_rails_title">Trenó sobre carris</h2>
-                    <p id="luge_rails_description">Uma atividade divertida para toda a família em Métabief. Desça as encostas em segurança sobre carris, sensações garantidas!</p>
+                    <h2 id="luge_rails_title">Parque lúdico de Métabief</h2>
+                    <p id="luge_rails_description">No verão, a estação transforma-se num parque de lazer: trenó sobre carris, slide, trampolins e muitos jogos para miúdos e graúdos.</p>
                     
                     <div class="activity-infos">
                         <div class="transport-options">
@@ -680,7 +693,7 @@
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="ferme_batailleuse_title">Ferme de la Batailleuse</h2>
-                    <p id="ferme_batailleuse_description">Quinta pedagógica associativa a 930 m: cabras, vacas montbéliardes, porcos, galinhas… Queijos de cabra na loja da quinta e Comté biológico. Uma visita ideal para famílias.</p>
+                    <p id="ferme_batailleuse_description">Quinta pedagógica associativa a 930 m: cabras, vacas montbéliardes, porcos, galinhas… Queijos de cabra na loja da quinta e Comté biológico. Uma visita ideal para famílias. Membro da rede Paysans de nature.</p>
 
                     <div class="activity-infos">
                         <div class="transport-options">
@@ -691,6 +704,107 @@
                     </div>
                 </div>
                 <img src="/images/ferme-batailleuse.jpg" alt="Ferme de la Batailleuse" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="famille nature visite loisirs">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="coni_fer_title">Le Coni'Fer — comboio a vapor</h2>
+                    <p id="coni_fer_description">Embarque num passeio retro na ferrovia turística mais alta de França, entre florestas e turfeiras (Les Hôpitaux-Neufs, ~10 min).</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 12 min (7 km)</span>
+                        </div>
+                        <a href="https://conifer.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7764,6.37104" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/conifer.jpg" alt="Le Coni'Fer" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="famille nature détente loisirs">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="bateaux_lac_title">Barcos do Lago Saint-Point</h2>
+                    <p id="bateaux_lac_description">Um cruzeiro suave e silencioso em barco elétrico num dos maiores lagos naturais de França, a partir de Saint-Point/Malbuisson.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 8 min (4 km)</span>
+                        </div>
+                        <a href="https://www.lesbateauxdulacsaintpoint.com" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.8032,6.30473" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/croisiere-bateau-du-lac-saint-point-famille--Ben-BECKER--8-.jpg" alt="Bateaux du Lac Saint-Point" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="sport nature panorama loisirs">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="parapente_title">Parapente no Mont d'Or</h2>
+                    <p id="parapente_description">Um voo de descoberta de parapente sobre o Haut-Doubs a partir do Mont d'Or, para admirar lagos e cumes vistos do céu (~10 min).</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 11 min (6 km)</span>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7684,6.35752" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="room" data-tags="sport nature loisirs baignade famille">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="base_grangettes_title">Base náutica de Les Grangettes</h2>
+                    <p id="base_grangettes_description">Vela, paddle, caiaque e gaivotas no lago Saint-Point, margem de Les Grangettes. Aluguer de material na época.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 13 min (7 km)</span>
+                        </div>
+                        <a href="https://www.basenautiquedesgrangettes.fr" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.8262,6.31989" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/336000214-112.jpg" alt="Base nautique des Grangettes" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="sport nature famille">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="ski_nordique_title">Esqui de fundo e raquetes (espaço nórdico)</h2>
+                    <p id="ski_nordique_description">No inverno, percorra o maciço de esqui de fundo ou raquetes nas pistas nórdicas de Métabief e do Mont d'Or.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 11 min (6 km)</span>
+                        </div>
+                        <a href="https://www.tourisme-metabief.com/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7686,6.35643" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/Mont-d-Or--Alpes-hiver--sapins-enneiges-depuis-le-Mont-d-Or--Amanda-MOUCHET.JPG" alt="Espace nordique" class="room-image" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </section>
+
+        <section class="room" data-tags="famille nature randonnée terroir visite">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="sentier_morbier_title">Os Trilhos do Morbier</h2>
+                    <p id="sentier_morbier_description">Um jogo-passeio imersivo sobre o queijo Morbier a partir da Fruitière des Lacs: uma aventura divertida para toda a família (Morbier Explor Games).</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (1,4 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 6 min</span>
+                        </div>
+                        <a href="https://www.fromage-morbier.com/sentiers-du-morbier/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site oficial</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7815,6.28165" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Como chegar</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/Morbier-Explor-Games-min.jpg" alt="Les Sentiers du Morbier" class="room-image" loading="lazy" onerror="this.style.display='none'">
             </div>
         </section>
 
@@ -825,7 +939,7 @@
         addTaggedMarker(46.90613515276898, 6.364507557669758, "Distillerie Guy", ['terroir', 'visite', 'musée', 'patrimoine', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Distillerie+Guy&query_place_id=ChIJr3kwJ-q8jUcRw_4CK37cNlw', 'distillerie_guy_title');
         addTaggedMarker(46.629624574574905, 6.140704284660481, "Maison Michaud", ['patrimoine', 'visite', 'musée', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=Maison+Michaud&query_place_id=ChIJOe60MKpVjEcR0Oj8Lt8DsuM', 'maison_michaud_title');
         addTaggedMarker(46.73503617312605, 6.3517159796611615, "Mont d'Or", ['nature', 'randonnée', 'panorama'], 'green', 'https://www.google.com/maps/search/?api=1&query=Mont+d+Or&query_place_id=ChIJp4nuqHyxjUcRoMDuPnielHM', 'mont_dor_title');
-        addTaggedMarker(46.767099256711525, 6.357687671165121, "Luge sur Rails", ['famille', 'nature', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Luge+sur+Rails+Metabief&query_place_id=ChIJRSfz2MSxjUcRGNhIrZEtyNQ', 'luge_rails_title');
+        addTaggedMarker(46.767099256711525, 6.357687671165121, "Parc ludique de Métabief", ['famille', 'nature', 'loisirs', 'sport'], 'green', 'https://www.google.com/maps/search/?api=1&query=Luge+sur+Rails+Metabief&query_place_id=ChIJRSfz2MSxjUcRGNhIrZEtyNQ', 'luge_rails_title');
         addTaggedMarker(46.76320836207209, 6.347980915339516, "Accrobranche Métabief", ['famille', 'nature', 'sport', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Metabief+Aventures&query_place_id=ChIJf16yaa2xjUcRLrqP2UpKQBU', 'accrobranche_metabief_title');
         addTaggedMarker(47.087679230832705, 6.712041785030429, "Saut du Doubs", ['nature', 'randonnée', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=Parking+Du+Saut+Du+Doubs', 'saut_doubs_title');
         addTaggedMarker(46.70489822756042, 6.209188888326366, "Source du Doubs", ['nature', 'randonnée'], 'green', 'https://www.google.com/maps/search/?api=1&query=Station+de+la+Source+du+Doubs', 'source_doubs_title');
@@ -840,6 +954,13 @@
         addTaggedMarker(46.79989515812192, 6.303733579018695, "Spa Les Rives Sauvages", ['détente', 'loisirs', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=H%C3%B4tel+SPA+Les+Rives+Sauvages&query_place_id=ChIJ2254jPCvjUcRrmjRlIzsNy0', 'spa_rives_title');
         addTaggedMarker(46.633898279912316, 6.139186351525209, "Chiens de Traîneau (Adam's)", ['nature', 'famille', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=Les+%C3%89quipages+Adam%27s', 'chiens_traineau_title');
         addTaggedMarker(46.74487745865667, 6.2827798423272245, "Ferme de la Batailleuse", ['terroir', 'famille', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.74487745865667,6.2827798423272245', 'ferme_batailleuse_title');
+        addTaggedMarker(46.8001, 6.3059, "Office de Tourisme (BIT Malbuisson)", ['visite'], 'blue', 'https://www.google.com/maps/search/?api=1&query=46.8001,6.3059', 'office_tourisme_title');
+        addTaggedMarker(46.7764, 6.37104, "Le Coni'Fer", ['famille', 'nature', 'visite', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7764,6.37104', 'coni_fer_title');
+        addTaggedMarker(46.8032, 6.30473, "Bateaux du Lac Saint-Point", ['famille', 'nature', 'détente', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.8032,6.30473', 'bateaux_lac_title');
+        addTaggedMarker(46.7684, 6.35752, "Parapente au Mont d'Or", ['sport', 'nature', 'panorama', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7684,6.35752', 'parapente_title');
+        addTaggedMarker(46.8262, 6.31989, "Base nautique des Grangettes", ['sport', 'nature', 'loisirs', 'baignade', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.8262,6.31989', 'base_grangettes_title');
+        addTaggedMarker(46.7686, 6.35643, "Espace nordique (ski de fond & raquettes)", ['sport', 'nature', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7686,6.35643', 'ski_nordique_title');
+        addTaggedMarker(46.7815, 6.28165, "Les Sentiers du Morbier", ['famille', 'nature', 'randonnée', 'terroir', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7815,6.28165', 'sentier_morbier_title');
 
         // --- FILTRES (libellés traduits selon la langue de la page <html lang>) ---
         var ACT_LANG = document.documentElement.getAttribute('lang') || 'fr';
