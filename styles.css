@@ -492,6 +492,9 @@ section.transparent-section {
 .room-text { width: 50%; text-align: justify; }
 .room-text h2 { text-align: left; margin-top: 0; }
 
+/* Fiche sans image (ou image cassée) : le texte prend toute la largeur */
+.room-content.no-image .room-text { width: 100%; }
+
 .room-image {
     width: 50%;
     height: auto;
