@@ -153,6 +153,7 @@
         gaulois: BASE_IMG + 'Gaulois.jpg',
         reflet: BASE_IMG + 'Le-Reflet.jpg',
         remise: BASE_IMG + '315001759-11.jpg',
+        ferme: BASE_IMG + 'Restaurant-A-la-Ferme--salle-en-piere-II--Pat.Sch.-.jpg',
         fromage: BASE_IMG + 'resto31.jpg',
         boissaude: BASE_IMG + '314020385-8.jpg',
         petiteechelle: BASE_IMG + 'P1087749-4-.JPG',
