@@ -1,5 +1,9 @@
 const dataTranslations = {
     fr: {
+        baignade_remoray_title: "Baignade au lac de Remoray",
+        baignade_remoray_description: "L'été, profitez de la petite plage de la base de loisirs de Labergement pour vous baigner dans un cadre nature préservé (baignade non surveillée). Le reste des rives, réserve naturelle protégée, reste sauvage. Aire de jeux à deux pas du logement.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (visite)",
+        fruitiere_lacs_description: "Assistez en direct chaque matin (9h–10h30) à la fabrication du Comté, du Morbier et d'autres spécialités AOP. Galerie de visite interactive, film et dégustation : une découverte gourmande et ludique pour toute la famille.",
         office_tourisme_title: "Office de Tourisme du Haut-Doubs",
         office_tourisme_description: "Le premier réflexe à l'arrivée : infos, brochures, conseils de sorties et billetterie. B.I.T. de Malbuisson, à ~4 km.",
         coni_fer_title: "Le Coni'Fer — train à vapeur",
@@ -22,7 +26,7 @@ const dataTranslations = {
         lac_remoray_title: "Lac de Remoray",
         lac_remoray_description: "Réserve naturelle protégée, idéale pour les balades, l’observation des oiseaux et des moments de calme au bord de l’eau.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Un lieu dédié à la découverte de la faune et de la flore locales, parfait pour les amoureux de la nature. Expositions, sentiers de randonnée et activités pédagogiques vous y attendent.",
+        maison_reserve_description: "Étape incontournable à deux pas du logement : 500 m² d'expositions interactives sur la faune et la flore des Montagnes du Jura, salle de projection et sorties nature guidées. Le meilleur endroit pour comprendre la réserve naturelle du lac de Remoray.",
         fonderie_cloches_title: "Fonderie de Cloches Obertino",
         fonderie_cloches_description: "Découvrez l’art de la fabrication des cloches dans cette fonderie renommée. Des visites guidées permettent d’explorer ce savoir-faire traditionnel.",
         chateau_joux_title: "Château de Joux",
@@ -110,6 +114,10 @@ const dataTranslations = {
         footer_rights: "Tous droits réservés"
     },
     en: {
+        baignade_remoray_title: "Swimming at Lake Remoray",
+        baignade_remoray_description: "In summer, enjoy the small beach at the Labergement leisure area for a swim in unspoilt nature (unsupervised bathing). The rest of the shoreline is a protected nature reserve. Playground a stone's throw from the accommodation.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (tour)",
+        fruitiere_lacs_description: "Every morning (9–10:30 am), watch Comté, Morbier and other PDO cheeses being made. Interactive visitor gallery, film and tasting: a fun, tasty discovery for the whole family.",
         office_tourisme_title: "Haut-Doubs Tourist Office",
         office_tourisme_description: "Your first stop on arrival: information, brochures, activity tips and ticketing. Branch office in Malbuisson, ~4 km away.",
         coni_fer_title: "Le Coni'Fer — steam train",
@@ -131,7 +139,7 @@ const dataTranslations = {
         lac_remoray_title: "Lac de Remoray",
         lac_remoray_description: "A protected natural reserve, ideal for walks, bird watching, and peaceful moments by the water.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "A place dedicated to discovering local fauna and flora, perfect for nature lovers. Exhibitions, hiking trails, and educational activities await you.",
+        maison_reserve_description: "A must-see just steps from the accommodation: 500 m² of interactive exhibits on the wildlife and flora of the Jura Mountains, a screening room and guided nature outings. The best place to understand the Lake Remoray nature reserve.",
         fonderie_cloches_title: "Obertino Bell Foundry",
         fonderie_cloches_description: "Discover the art of bell-making in this renowned foundry. Guided tours allow you to explore this traditional craftsmanship.",
         chateau_joux_title: "Château de Joux",
@@ -218,6 +226,10 @@ const dataTranslations = {
         footer_rights: "All rights reserved"
     },
     de: {
+        baignade_remoray_title: "Baden im Lac de Remoray",
+        baignade_remoray_description: "Im Sommer lädt der kleine Strand des Freizeitgeländes von Labergement zum Baden in unberührter Natur ein (unbewachtes Baden). Das übrige Ufer ist ein geschütztes Naturreservat. Spielplatz nur wenige Schritte von der Unterkunft.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (Besichtigung)",
+        fruitiere_lacs_description: "Jeden Morgen (9–10:30 Uhr) können Sie der Herstellung von Comté, Morbier und weiteren AOP-Spezialitäten live zusehen. Interaktive Besuchergalerie, Film und Verkostung: eine genussvolle, spielerische Entdeckung für die ganze Familie.",
         office_tourisme_title: "Tourismusbüro Haut-Doubs",
         office_tourisme_description: "Die erste Anlaufstelle bei der Ankunft: Infos, Broschüren, Ausflugstipps und Ticketverkauf. Zweigstelle in Malbuisson, ~4 km.",
         coni_fer_title: "Le Coni'Fer — Dampfeisenbahn",
@@ -239,7 +251,7 @@ const dataTranslations = {
         lac_remoray_title: "Lac de Remoray",
         lac_remoray_description: "Ein geschütztes Naturreservat, ideal für Spaziergänge, Vogelbeobachtungen und ruhige Momente am Wasser.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Ein Ort, der der Entdeckung der lokalen Fauna und Flora gewidmet ist, perfekt für Naturliebhaber. Ausstellungen, Wanderwege und pädagogische Aktivitäten erwarten Sie.",
+        maison_reserve_description: "Ein Muss nur wenige Schritte von der Unterkunft: 500 m² interaktive Ausstellungen über Tier- und Pflanzenwelt des Juragebirges, ein Vorführraum und geführte Naturausflüge. Der beste Ort, um das Naturreservat des Lac de Remoray zu verstehen.",
         fonderie_cloches_title: "Glockengießerei Obertino",
         fonderie_cloches_description: "Entdecken Sie die Kunst der Glockenherstellung in dieser renommierten Gießerei. Führungen ermöglichen es, dieses traditionelle Handwerk zu erkunden.",
         chateau_joux_title: "Château de Joux",
@@ -326,6 +338,10 @@ const dataTranslations = {
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        baignade_remoray_title: "Zwemmen in het Lac de Remoray",
+        baignade_remoray_description: "In de zomer kun je zwemmen op het kleine strand van het recreatiegebied van Labergement, in een ongerepte natuur (zwemmen zonder toezicht). De rest van de oever is een beschermd natuurreservaat. Speeltuin op een steenworp van de accommodatie.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (bezoek)",
+        fruitiere_lacs_description: "Elke ochtend (9–10.30 uur) kun je live de productie van Comté, Morbier en andere AOP-specialiteiten bekijken. Interactieve bezoekersgalerij, film en proeverij: een lekkere, speelse ontdekking voor het hele gezin.",
         office_tourisme_title: "VVV-kantoor Haut-Doubs",
         office_tourisme_description: "Het eerste adres bij aankomst: info, brochures, uittips en ticketverkoop. Kantoor in Malbuisson, ~4 km.",
         coni_fer_title: "Le Coni'Fer — stoomtrein",
@@ -347,7 +363,7 @@ const dataTranslations = {
         lac_remoray_title: "Meer van Remoray",
         lac_remoray_description: "Een beschermd natuurreservaat, ideaal voor wandelingen, vogels kijken en rustige momenten aan het water.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Een plek gewijd aan de ontdekking van de lokale flora en fauna, perfect voor natuurliefhebbers. Tentoonstellingen, wandelpaden en educatieve activiteiten wachten op u.",
+        maison_reserve_description: "Een aanrader op een steenworp van de accommodatie: 500 m² interactieve tentoonstellingen over de fauna en flora van het Juragebergte, een projectiezaal en begeleide natuuruitstapjes. De beste plek om het natuurreservaat van het Lac de Remoray te begrijpen.",
         fonderie_cloches_title: "Klokkengieterij Obertino",
         fonderie_cloches_description: "Ontdek de kunst van het klokkengieten in deze gerenommeerde gieterij. Rondleidingen stellen u in staat dit traditionele vakmanschap te verkennen.",
         chateau_joux_title: "Kasteel van Joux",
@@ -434,6 +450,10 @@ const dataTranslations = {
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        baignade_remoray_title: "Baño en el lago de Remoray",
+        baignade_remoray_description: "En verano, disfruta de la pequeña playa de la base de ocio de Labergement para bañarte en un entorno natural preservado (baño no vigilado). El resto de la orilla es una reserva natural protegida. Zona de juegos a dos pasos del alojamiento.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (visita)",
+        fruitiere_lacs_description: "Cada mañana (9:00–10:30) asiste en directo a la elaboración del Comté, el Morbier y otras especialidades DOP. Galería de visita interactiva, película y degustación: un descubrimiento goloso y divertido para toda la familia.",
         office_tourisme_title: "Oficina de Turismo del Haut-Doubs",
         office_tourisme_description: "Lo primero al llegar: información, folletos, consejos de actividades y venta de entradas. Oficina en Malbuisson, a ~4 km.",
         coni_fer_title: "Le Coni'Fer — tren de vapor",
@@ -455,7 +475,7 @@ const dataTranslations = {
         lac_remoray_title: "Lago de Remoray",
         lac_remoray_description: "Reserva natural protegida, ideal para paseos, observación de aves y momentos de tranquilidad junto al agua.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Un lugar dedicado al descubrimiento de la fauna y flora locales, perfecto para los amantes de la naturaleza. Exposiciones, senderos y actividades educativas le esperan.",
+        maison_reserve_description: "Una visita imprescindible a dos pasos del alojamiento: 500 m² de exposiciones interactivas sobre la fauna y la flora de las Montañas del Jura, sala de proyección y salidas guiadas a la naturaleza. El mejor lugar para entender la reserva natural del lago de Remoray.",
         fonderie_cloches_title: "Fundición de Campanas Obertino",
         fonderie_cloches_description: "Descubra el arte de la fabricación de campanas en esta fundición de renombre. Las visitas guiadas permiten explorar esta artesanía tradicional.",
         chateau_joux_title: "Castillo de Joux",
@@ -542,6 +562,10 @@ const dataTranslations = {
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        baignade_remoray_title: "Balneazione al lago di Remoray",
+        baignade_remoray_description: "In estate, approfitta della piccola spiaggia della base ricreativa di Labergement per fare il bagno in un ambiente naturale preservato (balneazione non sorvegliata). Il resto delle rive è una riserva naturale protetta. Area giochi a due passi dall'alloggio.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (visita)",
+        fruitiere_lacs_description: "Ogni mattina (9:00–10:30) assistete dal vivo alla produzione di Comté, Morbier e altre specialità DOP. Galleria di visita interattiva, film e degustazione: una scoperta golosa e divertente per tutta la famiglia.",
         office_tourisme_title: "Ufficio del Turismo dell'Haut-Doubs",
         office_tourisme_description: "Il primo punto di riferimento all'arrivo: informazioni, brochure, consigli sulle attività e biglietteria. Ufficio a Malbuisson, ~4 km.",
         coni_fer_title: "Le Coni'Fer — treno a vapore",
@@ -563,7 +587,7 @@ const dataTranslations = {
         lac_remoray_title: "Lago di Remoray",
         lac_remoray_description: "Riserva naturale protetta, ideale per passeggiate, birdwatching e momenti di tranquillità in riva all'acqua.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Un luogo dedicato alla scoperta della fauna e della flora locali, perfetto per gli amanti della natura. Mostre, sentieri escursionistici e attività didattiche vi aspettano.",
+        maison_reserve_description: "Una tappa imperdibile a due passi dall'alloggio: 500 m² di esposizioni interattive sulla fauna e la flora delle Montagne del Giura, sala di proiezione e uscite guidate nella natura. Il posto migliore per capire la riserva naturale del lago di Remoray.",
         fonderie_cloches_title: "Fonderia di Campane Obertino",
         fonderie_cloches_description: "Scoprite l'arte della fabbricazione delle campane in questa rinomata fonderia. Le visite guidate permettono di esplorare questo artigianato tradizionale.",
         chateau_joux_title: "Castello di Joux",
@@ -650,6 +674,10 @@ const dataTranslations = {
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        baignade_remoray_title: "Banhos no lago de Remoray",
+        baignade_remoray_description: "No verão, aproveite a pequena praia da base de lazer de Labergement para um banho num cenário natural preservado (banho não vigiado). O resto da margem é uma reserva natural protegida. Parque infantil a dois passos do alojamento.",
+        fruitiere_lacs_title: "La Fruitière des Lacs (visita)",
+        fruitiere_lacs_description: "Todas as manhãs (9h–10h30), assista ao fabrico do Comté, do Morbier e de outras especialidades DOP. Galeria de visita interativa, filme e degustação: uma descoberta gulosa e divertida para toda a família.",
         office_tourisme_title: "Posto de Turismo do Haut-Doubs",
         office_tourisme_description: "O primeiro passo à chegada: informações, brochuras, conselhos de atividades e bilheteira. Posto em Malbuisson, a ~4 km.",
         coni_fer_title: "Le Coni'Fer — comboio a vapor",
@@ -671,7 +699,7 @@ const dataTranslations = {
         lac_remoray_title: "Lago de Remoray",
         lac_remoray_description: "Reserva natural protegida, ideal para passeios, observação de aves e momentos de tranquilidade à beira da água.",
         maison_reserve_title: "La Maison de la Réserve",
-        maison_reserve_description: "Um lugar dedicado à descoberta da fauna e flora locais, perfeito para os amantes da natureza. Exposições, trilhos e atividades educativas esperam por si.",
+        maison_reserve_description: "Uma etapa incontornável a dois passos do alojamento: 500 m² de exposições interativas sobre a fauna e a flora das Montanhas do Jura, sala de projeção e saídas guiadas na natureza. O melhor sítio para compreender a reserva natural do lago de Remoray.",
         fonderie_cloches_title: "Fundição de Sinos Obertino",
         fonderie_cloches_description: "Descubra a arte do fabrico de sinos nesta fundição de renome. As visitas guiadas permitem explorar este artesanato tradicional.",
         chateau_joux_title: "Castelo de Joux",

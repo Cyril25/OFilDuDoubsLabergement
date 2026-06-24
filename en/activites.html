@@ -250,7 +250,7 @@
             <div class="room-content reverse">
                 <div class="room-text">
                     <h2 id="maison_reserve_title">La Maison de la Réserve</h2>
-                    <p id="maison_reserve_description">A place dedicated to discovering local fauna and flora, perfect for nature lovers. Exhibitions, hiking trails, and educational activities await you.</p>
+                    <p id="maison_reserve_description">A must-see just steps from the accommodation: 500 m² of interactive exhibits on the wildlife and flora of the Jura Mountains, a screening room and guided nature outings. The best place to understand the Lake Remoray nature reserve.</p>
                     
                     <div class="activity-infos">
                         <div class="transport-options">
@@ -808,6 +808,42 @@
             </div>
         </section>
 
+        <section class="room" data-tags="baignade nature famille loisirs">
+            <div class="room-content">
+                <div class="room-text">
+                    <h2 id="baignade_remoray_title">Swimming at Lake Remoray</h2>
+                    <p id="baignade_remoray_description">In summer, enjoy the small beach at the Labergement leisure area for a swim in unspoilt nature (unsupervised bathing). The rest of the shoreline is a protected nature reserve. Playground a stone's throw from the accommodation.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (1 km)</span>
+                            <span class="t-badge"><i class="fas fa-walking"></i> 12 min</span>
+                        </div>
+                        <a href="https://www.montagnes-du-jura.fr/lacs-cascades-et-sources-dans-les-montagnes-du-jura/les-lacs-du-jura-innombrables-et-varies/lac-remoray/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Official website</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7665,6.2725" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Get directions</span></a>
+                    </div>
+                </div>
+                <img src="/images/lac-remoray.webp" alt="Lac de Remoray" class="room-image" loading="lazy" onerror="this.style.display='none';this.closest('.room-content').classList.add('no-image')">
+            </div>
+        </section>
+
+        <section class="room" data-tags="terroir visite famille intérieur">
+            <div class="room-content reverse">
+                <div class="room-text">
+                    <h2 id="fruitiere_lacs_title">La Fruitière des Lacs (tour)</h2>
+                    <p id="fruitiere_lacs_description">Every morning (9–10:30 am), watch Comté, Morbier and other PDO cheeses being made. Interactive visitor gallery, film and tasting: a fun, tasty discovery for the whole family.</p>
+                    <div class="activity-infos">
+                        <div class="transport-options">
+                            <span class="t-badge"><i class="fas fa-car"></i> 3 min (1 km)</span>
+                            <span class="t-badge"><i class="fas fa-bicycle"></i> 5 min</span>
+                        </div>
+                        <a href="https://www.lafruitieredeslacs-comte-morbier.com" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Official website</span></a>
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=46.7781,6.28326" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Get directions</span></a>
+                    </div>
+                </div>
+                <img src="https://decibelles-data.media.tourinsoft.eu/upload/314027378-652-3.JPG" alt="La Fruitière des Lacs" class="room-image" loading="lazy" onerror="this.style.display='none';this.closest('.room-content').classList.add('no-image')">
+            </div>
+        </section>
+
         <section class="room" data-tags="">
             <div class="room-content">
                 <div class="room-text" style="width: 100%; text-align: center;">
@@ -961,6 +997,8 @@
         addTaggedMarker(46.8262, 6.31989, "Base nautique des Grangettes", ['sport', 'nature', 'loisirs', 'baignade', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.8262,6.31989', 'base_grangettes_title');
         addTaggedMarker(46.7686, 6.35643, "Espace nordique (ski de fond & raquettes)", ['sport', 'nature', 'famille'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7686,6.35643', 'ski_nordique_title');
         addTaggedMarker(46.7815, 6.28165, "Les Sentiers du Morbier", ['famille', 'nature', 'randonnée', 'terroir', 'visite'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7815,6.28165', 'sentier_morbier_title');
+        addTaggedMarker(46.7665, 6.2725, "Baignade au lac de Remoray", ['baignade', 'nature', 'famille', 'loisirs'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7665,6.2725', 'baignade_remoray_title');
+        addTaggedMarker(46.7781, 6.28326, "La Fruitière des Lacs", ['terroir', 'visite', 'famille', 'intérieur'], 'green', 'https://www.google.com/maps/search/?api=1&query=46.7781,6.28326', 'fruitiere_lacs_title');
 
         // --- FILTRES (libellés traduits selon la langue de la page <html lang>) ---
         var ACT_LANG = document.documentElement.getAttribute('lang') || 'fr';
