@@ -356,7 +356,8 @@
 
     // ====================== EXPLORER (POI) ======================
     let expLimit = 60;
-    const inBacklog = (poiId) => state.items.some(it => it.poiId && it.poiId === poiId);
+    // « dans le backlog » = présent ET encore actionnable (idée / à traiter), pas done/écarté
+    const inBacklog = (poiId) => state.items.some(it => it.poiId === poiId && (it.status === "idea" || it.status === "todo"));
     const siteHit = (name) => siteNorm[norm(name)] || null;
     const isHidden = (id) => (state.hidden || []).includes(id);
 
