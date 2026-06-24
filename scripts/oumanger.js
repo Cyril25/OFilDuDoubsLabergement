@@ -145,6 +145,20 @@
         { id: 'maisondescimes', name: 'La Maison des Cimes', loc: 'Malbuisson',            phone: null,         website: null,                            dist: '~4,5 km / 5 min' }
     ];
 
+    // Bannières (photos Tourinsoft/Decibelles). Restos sans photo fiable → placeholder décoratif.
+    const BASE_IMG = 'https://decibelles-data.media.tourinsoft.eu/upload/';
+    const restoImg = {
+        bistrot: BASE_IMG + '314025513-11.jpg',
+        escale: BASE_IMG + '336000474-11.jpg',
+        gaulois: BASE_IMG + 'Gaulois.jpg',
+        reflet: BASE_IMG + 'Le-Reflet.jpg',
+        remise: BASE_IMG + '315001759-11.jpg',
+        fromage: BASE_IMG + 'resto31.jpg',
+        boissaude: BASE_IMG + '314020385-8.jpg',
+        petiteechelle: BASE_IMG + 'P1087749-4-.JPG',
+        lelac: BASE_IMG + 'H--tel-Le-Lac-en-hiver-3-78dae172b47341d187e26065cf2b7a1d.JPG'
+    };
+
     const restoList = document.getElementById('resto-list');
     const mapsUrl = (r) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ' ' + r.loc);
 
@@ -162,8 +176,14 @@
         }
         actions += '<a class="btn-activity btn-maps" href="' + mapsUrl(r) + '" target="_blank" rel="noopener"><i class="fas fa-location-arrow"></i> ' + (T.resto_maps || 'Y aller') + '</a>';
 
+        const img = restoImg[r.id];
+        const banner = '<div class="resto-banner">'
+            + (img ? '<img src="' + img + '" alt="' + r.name + '" loading="lazy" onerror="this.remove()">' : '')
+            + '<i class="fas fa-utensils resto-banner-ico"></i></div>';
+
         return ''
             + '<div class="resto-card">'
+            +   banner
             +   '<div class="resto-card-head"><h3 class="resto-name">' + r.name + '</h3>'
             +     '<span class="resto-locality"><i class="fas fa-map-marker-alt"></i> ' + r.loc + '</span></div>'
             +   '<p class="resto-cuisine">' + cuisine + '</p>'
