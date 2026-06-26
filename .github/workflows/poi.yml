@@ -1,0 +1,43 @@
+name: Mise à jour POI (Tourinsoft / Decibelles BFC)
+
+on:
+  schedule:
+    - cron: '35 0 * * *'      # tous les jours à 00:35 UTC (entre agenda 00:23 et rando 00:47)
+  workflow_dispatch:           # déclenchement manuel possible
+
+permissions:
+  contents: write
+
+concurrency:
+  group: poi
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Construire data/poi.json
+        run: node scripts/build-poi.js data/poi.json 30
+
+      - name: Commit si les POI ont changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/poi.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans les POI."
+          else
+            git commit -m "chore(poi): mise à jour automatique des points d'intérêt"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "Push tentative $i rejetée, nouvelle tentative…"; sleep 5
+            done
+          fi
