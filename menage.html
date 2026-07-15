@@ -1479,9 +1479,12 @@
                 // Persister lastPastCheckout dans le KV pour survivre à la suppression
                 // des événements passés par Airbnb
                 if (lastPastCheckout) {
-                    // On a trouvé un checkout dans le iCal → le sauvegarder
+                    // On a trouvé un checkout dans le iCal → le sauvegarder,
+                    // sauf si le KV (alimenté aussi par le worker) est plus récent
                     const st = getState();
-                    if (st._lastCheckout !== lastPastCheckout) {
+                    if (st._lastCheckout && st._lastCheckout > lastPastCheckout) {
+                        lastPastCheckout = st._lastCheckout;
+                    } else if (st._lastCheckout !== lastPastCheckout) {
                         st._lastCheckout = lastPastCheckout;
                         saveStateToServer(st);
                     }

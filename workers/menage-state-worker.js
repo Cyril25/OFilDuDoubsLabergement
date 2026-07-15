@@ -20,6 +20,7 @@
  *   GET  /dates  → Retourne les dates manuelles/exclues (public)
  *   PUT  /dates  → Sauvegarde les dates (auth Firebase requise)
  *   GET  /ical   → Retourne les flux iCal Airbnb + Booking fusionnés
+ *                  (et mémorise le dernier départ dans l'état, voir updateCheckoutsFromFeed)
  */
 
 const KV_KEY = 'menage_state';
@@ -96,6 +97,50 @@ async function verifyFirebaseToken(idToken) {
     return payload;
 }
 
+// Mémorise les départs vus dans les flux iCal, dans l'état ménage (KV) :
+//   - state._futureCheckouts : dates de fin (DTEND) encore à venir, remplacées
+//     à chaque lecture (une résa annulée disparaît donc de la liste) ;
+//   - state._lastCheckout    : dernier départ passé, au format 'YYYY-MM-DDT11:00:00'.
+// Airbnb purge les séjours terminés de son flux parfois dès le matin du départ,
+// avant toute visite de la page : en notant les départs à l'avance puis en les
+// promouvant une fois passés, le worker garde un _lastCheckout fiable même si
+// personne n'ouvre la page au bon moment.
+async function updateCheckoutsFromFeed(env, allEvents) {
+    const todayParis = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
+
+    const feedCheckouts = new Set();
+    for (const event of allEvents) {
+        const m = event.match(/DTEND;VALUE=DATE:(\d{8})/);
+        if (!m) continue;
+        const d = m[1];
+        feedCheckouts.add(`${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`);
+    }
+
+    const raw = await env.MENAGE_KV.get(KV_KEY);
+    const state = raw ? JSON.parse(raw) : {};
+    const knownFuture = Array.isArray(state._futureCheckouts) ? state._futureCheckouts : [];
+
+    // Candidats "départ passé" : DTEND passés encore dans le flux + départs
+    // notés à l'avance qui sont devenus passés (même si purgés du flux depuis)
+    const pastCandidates = [...feedCheckouts, ...knownFuture].filter(d => d <= todayParis);
+    const newFuture = [...feedCheckouts].filter(d => d > todayParis).sort();
+
+    let changed = false;
+    if (pastCandidates.length > 0) {
+        const lastCheckout = pastCandidates.sort().pop() + 'T11:00:00';
+        if (!state._lastCheckout || lastCheckout > state._lastCheckout) {
+            state._lastCheckout = lastCheckout;
+            changed = true;
+        }
+    }
+    if (JSON.stringify(newFuture) !== JSON.stringify(knownFuture)) {
+        state._futureCheckouts = newFuture;
+        changed = true;
+    }
+
+    if (changed) await env.MENAGE_KV.put(KV_KEY, JSON.stringify(state));
+}
+
 function jsonResponse(body, status, corsHeaders) {
     return new Response(JSON.stringify(body), {
         status,
@@ -104,7 +149,7 @@ function jsonResponse(body, status, corsHeaders) {
 }
 
 export default {
-    async fetch(request, env) {
+    async fetch(request, env, ctx) {
         const corsHeaders = getCorsHeaders(request);
         const url = new URL(request.url);
         const path = url.pathname;
@@ -278,6 +323,8 @@ export default {
                     // Extraire tous les VEVENT de chaque flux
                     const allEvents = results
                         .flatMap(ics => ics.match(/BEGIN:VEVENT[\s\S]+?END:VEVENT/g) || []);
+                    // Mémoriser les départs sans retarder la réponse
+                    ctx.waitUntil(updateCheckoutsFromFeed(env, allEvents).catch(() => {}));
                     // Reconstruire un iCal unique
                     const merged = [
                         'BEGIN:VCALENDAR',
