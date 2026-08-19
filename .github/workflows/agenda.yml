@@ -33,13 +33,24 @@ jobs:
             echo "::error::Le secret DATATOURISME_URL n'est pas défini."
             exit 1
           fi
-          curl -sSL "$DATATOURISME_URL" -o flux.bin
-          # Le flux peut être encore en génération (réponse JSON ~144 octets) : on stoppe proprement.
-          if [ "$(stat -c%s flux.bin)" -lt 10000 ]; then
-            echo "::warning::Flux indisponible ou trop petit (génération en cours ?). Voir le contenu :"
-            cat flux.bin || true
-            exit 1
-          fi
+          # Le flux peut être en cours de régénération côté DATAtourisme (réponse JSON de
+          # quelques centaines d'octets) : on réessaie avant d'abandonner.
+          for i in 1 2 3 4 5; do
+            code=$(curl -sSL -o flux.bin -w '%{http_code}' "$DATATOURISME_URL" || echo 000)
+            size=$(stat -c%s flux.bin 2>/dev/null || echo 0)
+            if [ "$code" = "200" ] && [ "$size" -ge 10000 ]; then break; fi
+            echo "Tentative $i : HTTP $code, $size octets. Réponse :"
+            head -c 500 flux.bin || true; echo
+            if [ "$code" = "401" ] || [ "$code" = "403" ]; then
+              echo "::error::DATAtourisme refuse la clé d'application (HTTP $code) — flux ou application désactivé. Régénérer l'URL sur diffuseur.datatourisme.fr puis mettre à jour le secret DATATOURISME_URL."
+              exit 1
+            fi
+            if [ "$i" = 5 ]; then
+              echo "::error::Flux DATAtourisme toujours indisponible après 5 tentatives (HTTP $code, $size octets)."
+              exit 1
+            fi
+            sleep 60
+          done
           gzip -dc flux.bin > flux.zip
           mkdir -p extracted
           unzip -q -o flux.zip -d extracted
