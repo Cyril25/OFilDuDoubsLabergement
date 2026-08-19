@@ -138,6 +138,15 @@ async function fetchTourinsoft() {
 
 (async function () {
   const enrich = extractedDir && fs.existsSync(extractedDir) ? buildEnrichMap(extractedDir) : {};
+  // Tourinsoft fournit la liste des itinéraires, mais traces GPX, topoguides, difficulté et
+  // dénivelé viennent tous du flux DATAtourisme. Sans lui, la reconstruction produirait un
+  // rando.json appauvri qui écraserait le bon : mieux vaut ne rien écrire du tout.
+  const MIN_ENRICH = parseInt(process.env.RANDO_MIN_ENRICH || '100', 10);
+  if (Object.keys(enrich).length < MIN_ENRICH) {
+    console.error('::error::Enrichissement DATAtourisme quasi absent (' + Object.keys(enrich).length +
+      ' objets, seuil ' + MIN_ENRICH + ') : sans GPX ni topoguides, ' + outFile + " n'est pas réécrit.");
+    process.exit(1);
+  }
   const docs = await fetchTourinsoft();
 
   const items = [];
