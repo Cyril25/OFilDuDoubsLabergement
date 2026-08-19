@@ -1,0 +1,3 @@
+# Les scripts shell tournent sur les runners Linux : jamais de CRLF, sinon bash
+# echoue sur chaque ligne avec l'erreur "$'\r': command not found".
+*.sh text eol=lf
