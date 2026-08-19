@@ -24,7 +24,29 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Télécharger et décompresser le flux DATAtourisme
+      # Source principale depuis le 19/08/2026 : l'export régional publié sur data.gouv.fr.
+      # Il vient de la même base que le flux du diffuseur, mais ne dépend ni d'une clé
+      # d'application ni d'une sélection à maintenir — le flux, lui, s'est vidé sans préavis.
+      - name: Télécharger l'export DATAtourisme (data.gouv.fr)
+        run: |
+          set -e
+          # URL stable de la ressource datatourisme-reg-bfc.csv : elle redirige vers le
+          # fichier du jour, dont le chemin contient un horodatage qui change chaque nuit.
+          curl -sSL --retry 5 --retry-delay 30 --retry-all-errors             "https://www.data.gouv.fr/fr/datasets/r/d92f0184-e9cb-4bc9-81b0-b43fbcf2a0d2" -o bfc.csv
+          size=$(stat -c%s bfc.csv 2>/dev/null || echo 0)
+          echo "Export BFC : $size octets"
+          if [ "$size" -lt 1000000 ]; then
+            echo "::warning::Export data.gouv anormalement petit ($size octets) — on poursuit sans lui."
+            head -c 300 bfc.csv; echo
+            rm -f bfc.csv
+          fi
+
+      # Complément : le flux apporte les libellés multilingues natifs et l'identifiant SIT,
+      # qui permet la jointure exacte avec les photos Tourinsoft. Son indisponibilité ne
+      # doit plus bloquer la mise à jour de l'agenda, d'où le continue-on-error.
+      - name: Télécharger et décompresser le flux du diffuseur
+        id: flux
+        continue-on-error: true
         env:
           DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
         run: |
@@ -35,8 +57,8 @@ jobs:
           fi
           bash scripts/fetch-flux-datatourisme.sh "$DATATOURISME_URL" extracted
 
-      - name: Publier le flux brut si l'étape a échoué
-        if: failure()
+      - name: Publier le flux brut si le téléchargement a échoué
+        if: steps.flux.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: flux-brut-agenda
@@ -44,8 +66,12 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Signaler un flux diffuseur indisponible
+        if: steps.flux.outcome == 'failure'
+        run: echo "::warning::Flux du diffuseur indisponible — agenda construit depuis le seul export data.gouv.fr (descriptions limitées à ce que fournit Tourinsoft)."
+
       - name: Construire data/agenda.json
-        run: node scripts/build-agenda.js extracted data/agenda.json 20
+        run: node scripts/build-agenda.js extracted data/agenda.json 20 bfc.csv
 
       - name: Compléter les traductions manquantes (DeepL)
         env:

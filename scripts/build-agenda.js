@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
- * Génère data/agenda.json à partir d'un dossier d'objets DATAtourisme extraits.
- * Usage : node scripts/build-agenda.js <dossier_extrait> <fichier_sortie> [rayon_km]
+ * Génère data/agenda.json à partir de trois sources complémentaires :
+ *   1. l'export régional DATAtourisme de data.gouv.fr (source principale) ;
+ *   2. le flux du diffuseur, quand il est exploitable (libellés multilingues + id SIT) ;
+ *   3. Tourinsoft (photos, et événements non publiés en open data).
+ * Usage : node scripts/build-agenda.js <dossier_extrait> <fichier_sortie> [rayon_km] [export.csv]
  *
  * Le téléchargement + décompression (gzip→zip) est fait en amont par le workflow :
  *   curl -sSL "$DATATOURISME_URL" -o flux.bin
@@ -9,11 +12,16 @@
  *   node scripts/build-agenda.js extracted data/agenda.json
  */
 const fs = require('fs'), path = require('path');
+const { eventsFromCsv, normName } = require('./lib/datatourisme-csv.js');
 
 const LAT = 46.7689, LON = 6.2807;            // Labergement-Sainte-Marie
 const RADIUS = parseFloat(process.argv[4] || '20');
 const extractedDir = process.argv[2];
 const outFile = process.argv[3];
+const csvFile = process.argv[5];              // export data.gouv.fr, source principale
+// Filet de sécurité : une source qui se vide silencieusement (cf. le flux du diffuseur le
+// 19/08/2026) ne doit pas écraser un agenda correct par un fichier quasi vide.
+const MIN_EVENTS = parseInt(process.env.AGENDA_MIN_EVENTS || '20', 10);
 const today = new Date().toISOString().slice(0, 10);
 
 function* walk(d) {
@@ -42,7 +50,8 @@ const langMap = (obj, max) => {
 const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 
 let total = 0, kept = 0;
-const events = [];
+const events = [];        // agenda final
+const fluxEvents = [];    // flux du diffuseur, quand il répond
 
 // === Catégorisation ===
 // DATAtourisme : déduite des @type (priorité du plus spécifique au plus générique).
@@ -80,7 +89,11 @@ const catFromTitle = (t) => {
   return 'autre';
 };
 
-for (const f of walk(path.join(extractedDir, 'objects'))) {
+const objectsDir = extractedDir ? path.join(extractedDir, 'objects') : null;
+const fluxOk = Boolean(objectsDir && fs.existsSync(objectsDir));
+if (!fluxOk) console.error('Flux du diffuseur absent — agenda construit sans lui.');
+
+for (const f of (fluxOk ? walk(objectsDir) : [])) {
   total++;
   let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
 
@@ -131,7 +144,7 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
   const descObj = asArray(o['hasDescription'])[0];
   const desc = descObj ? (langMap(descObj['dc:description'], 300) || langMap(descObj['shortDescription'], 300)) : null;
 
-  events.push({
+  fluxEvents.push({
     id: o['dc:identifier'] || o['@id'],
     title, city, dist: Math.round(dist * 10) / 10,
     start: starts[0], end: lastEnd, next,
@@ -140,6 +153,38 @@ for (const f of walk(path.join(extractedDir, 'objects'))) {
     img, url, desc: desc || undefined,
   });
   kept++;
+}
+
+// === Source principale : export data.gouv.fr ===
+// Le flux du diffuseur peut se vider sans prévenir (panne du 19/08/2026, qui a touché
+// tous ses abonnés) ; cet export vient de la même base, sans clé d'application ni
+// sélection à maintenir. Il n'a en revanche ni photo, ni multilingue, ni identifiant SIT.
+let csvScanned = 0, csvKept = 0;
+if (csvFile) {
+  try {
+    const r = eventsFromCsv(fs.readFileSync(csvFile, 'utf8'), { radius: RADIUS, today, haversine, catFromTypes });
+    csvScanned = r.scanned; csvKept = r.events.length;
+    events.push(...r.events);
+  } catch (err) {
+    console.error("Export data.gouv illisible (" + err.message + ") — on continue sans.");
+  }
+}
+
+// === Complément par le flux du diffuseur ===
+// Quand il fonctionne il apporte les libellés multilingues et surtout l'identifiant SIT,
+// qui rend possible la jointure exacte avec les photos Tourinsoft.
+const parNom = new Map(events.map(e => [normName(e.title.fr), e]));
+let fusionnes = 0, ajoutes = 0;
+for (const fe of fluxEvents) {
+  const cle = normName(fe.title.fr);
+  const e = parNom.get(cle);
+  if (!e) { events.push(fe); parNom.set(cle, fe); ajoutes++; continue; }
+  e.id = fe.id;                                              // id SIT → photos Tourinsoft
+  if (fe.title && Object.keys(fe.title).length > 1) e.title = fe.title;
+  if (fe.desc && Object.keys(fe.desc).length > 1) e.desc = fe.desc;
+  if (!e.url && fe.url) e.url = fe.url;
+  if (!e.img && fe.img) e.img = fe.img;
+  fusionnes++;
 }
 
 // === Fusion hybride avec Tourinsoft (même donnée que le widget de l'OT) ===
@@ -171,14 +216,28 @@ async function mergeTourinsoft() {
   } catch (err) { console.error('Tourinsoft : échec (' + err.message + ') — agenda DATAtourisme seul.'); return; }
 
   const ourIds = new Set(events.map(e => String(e.id).toLowerCase()));
-  const byId = {};
-  docs.forEach(d => { byId[d._id] = d._source; });
+  const ourNames = new Set(events.map(e => normName(e.title.fr)));
+  const byId = {}, parNomTis = {};
+  docs.forEach(d => {
+    byId[d._id] = d._source;
+    const n = normName(d._source && d._source.nom);
+    if (n && !parNomTis[n]) parNomTis[n] = d._source;
+  });
 
-  // 1) Enrichir nos événements avec les photos
+  // 1) Enrichir nos événements avec les photos. Jointure par identifiant SIT quand on
+  //    l'a (événements venus du flux), sinon par nom : l'export data.gouv ne porte que
+  //    l'UUID DATAtourisme, qui n'a pas d'équivalent côté Tourinsoft.
   let enriched = 0;
   for (const e of events) {
-    const s = byId[String(e.id).toLowerCase()];
+    const s = byId[String(e.id).toLowerCase()] || parNomTis[normName(e.title.fr)];
     if (!s) continue;
+    // L'export data.gouv ne décrit pas les événements (3 descriptions sur 5374) : quand
+    // le flux est en panne, Tourinsoft est notre seule source pour ce champ.
+    if (!e.desc) { const d = stripHtml(s.descom).slice(0, 300); if (d) e.desc = { fr: d }; }
+    if (!e.url) {
+      let w = Array.isArray(s.web) ? s.web.find(Boolean) : s.web;
+      if (w) e.url = /^https?:/i.test(w) ? w : 'http://' + w;
+    }
     const urls = photosUrls(s);
     if (!urls.length) continue;
     e.img = urls[0];
@@ -191,6 +250,7 @@ async function mergeTourinsoft() {
   let added = 0;
   for (const d of docs) {
     if (ourIds.has(d._id)) continue;
+    if (ourNames.has(normName(d._source && d._source.nom))) continue;   // déjà là via data.gouv
     const s = d._source;
     const nom = s.nom; if (!nom) continue;
     const geo = s.position;                       // [lon, lat]
@@ -233,9 +293,13 @@ async function mergeTourinsoft() {
 
 (async function () {
   await mergeTourinsoft();
+  if (events.length < MIN_EVENTS) {
+    console.error('::error::Seulement ' + events.length + ' événements retenus (seuil ' + MIN_EVENTS + ') : les sources sont probablement en panne. ' + outFile + " n'est pas réécrit.");
+    process.exit(1);
+  }
   events.sort((a, b) => (a.next < b.next ? -1 : a.next > b.next ? 1 : a.dist - b.dist));
   const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, JSON.stringify(payload));
-  console.error(`DATAtourisme: ${kept} | total après fusion: ${events.length} | ${outFile} (${fs.statSync(outFile).size} octets)`);
+  console.error(`data.gouv: ${csvKept}/${csvScanned} | flux diffuseur: ${kept} (${fusionnes} fusionnés, ${ajoutes} ajoutés) | total: ${events.length} | ${outFile} (${fs.statSync(outFile).size} octets)`);
 })();
