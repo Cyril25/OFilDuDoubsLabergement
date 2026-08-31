@@ -16,29 +16,18 @@ const extractedDir = process.argv[2];                    // DATAtourisme (enrich
 const outFile = process.argv[3];
 const TOURINSOFT_URL = 'https://es.tourinsoft.com/tis_v5_bourgogne/randonnees/_search';
 
-// --- Traduction DeepL des descriptions manquantes (frugal : seulement les itinéraires ≤30 km) ---
-const DEEPL_KEY = process.env.DEEPL_API_KEY || '';
-const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
+// --- Traduction des descriptions manquantes (frugal : seulement les itinéraires ≤30 km) ---
+const { translate, providerName } = require('./lib/translate.js');
+const TRADUCTEUR = providerName();       // 'azure', 'deepl', ou null si aucune clé
 const TARGET_LANGS = ['en', 'de', 'nl', 'es', 'it', 'pt'];
 const NEAR_KM = 30;                                      // on ne traduit que les itinéraires proches (visibles par défaut)
 const cachePath = path.join(path.dirname(outFile), 'rando-i18n-cache.json');
 let cache = {};
 try { cache = JSON.parse(fs.readFileSync(cachePath, 'utf8')); } catch (e) {}
 const ckey = (lang, t) => lang + '' + t;
-async function deeplBatch(lang, batch) {                 // batch: [{key, text}]
-  const base = DEEPL_KEY.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com';
-  const body = new URLSearchParams();
-  body.append('source_lang', 'FR');
-  body.append('target_lang', DEEPL_LANG[lang]);
-  for (const it of batch) body.append('text', it.text);
-  const resp = await fetch(base + '/v2/translate', {
-    method: 'POST',
-    headers: { 'Authorization': 'DeepL-Auth-Key ' + DEEPL_KEY, 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  if (!resp.ok) throw new Error('DeepL ' + resp.status + ' : ' + (await resp.text()).slice(0, 140));
-  const j = await resp.json();
-  j.translations.forEach((t, i) => { cache[batch[i].key] = t.text; });
+async function traduireLot(lang, batch) {                // batch: [{key, text}]
+  const out = await translate(batch.map(it => it.text), lang);
+  out.forEach((texte, i) => { cache[batch[i].key] = texte; });
 }
 
 const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
@@ -210,20 +199,20 @@ async function fetchTourinsoft() {
       missing.set(k, { lang, key: k, text: fr });
     }
   }
-  console.error('Descriptions à traduire (≤' + NEAR_KM + 'km, hors cache) : ' + missing.size + (DEEPL_KEY ? '' : ' — DEEPL_API_KEY absente, on applique seulement le cache'));
-  if (missing.size && DEEPL_KEY) {
+  console.error('Descriptions à traduire (≤' + NEAR_KM + 'km, hors cache) : ' + missing.size + (TRADUCTEUR ? '' : ' — aucune clé de traduction, on applique seulement le cache'));
+  if (missing.size && TRADUCTEUR) {
     const byLang = {};
     for (const m of missing.values()) (byLang[m.lang] = byLang[m.lang] || []).push(m);
     try {
       for (const lang of Object.keys(byLang)) {
         const arr = byLang[lang];
         for (let i = 0; i < arr.length; i += 40) {
-          await deeplBatch(lang, arr.slice(i, i + 40));
+          await traduireLot(lang, arr.slice(i, i + 40));
           console.error('  ' + lang + ' : ' + Math.min(i + 40, arr.length) + '/' + arr.length);
         }
       }
     } catch (e) {
-      console.error('DeepL interrompu (quota atteint ?) : ' + e.message + ' — cache partiel appliqué, build poursuivi.');
+      console.error('::warning::Traduction interrompue (' + e.message + ') — cache partiel appliqué, build poursuivi.');
     }
     fs.writeFileSync(cachePath, JSON.stringify(cache, null, 0));
   }

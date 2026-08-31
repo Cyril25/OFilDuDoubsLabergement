@@ -92,9 +92,11 @@ jobs:
             echo "Réponse usage DeepL : $U"
           fi
 
-      - name: Compléter les traductions manquantes (DeepL)
+      - name: Compléter les traductions manquantes
         env:
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          AZURE_TRANSLATOR_KEY: ${{ secrets.AZURE_TRANSLATOR_KEY }}
+          AZURE_TRANSLATOR_REGION: ${{ secrets.AZURE_TRANSLATOR_REGION }}
         run: node scripts/translate-agenda.js data/agenda.json data/agenda-i18n-cache.json
 
       - name: Commit si l'agenda a changé

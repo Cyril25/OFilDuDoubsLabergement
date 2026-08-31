@@ -66,6 +66,8 @@ jobs:
       - name: Construire data/rando.json
         env:
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          AZURE_TRANSLATOR_KEY: ${{ secrets.AZURE_TRANSLATOR_KEY }}
+          AZURE_TRANSLATOR_REGION: ${{ secrets.AZURE_TRANSLATOR_REGION }}
         run: node scripts/build-rando.js extracted data/rando.json 80
 
       - name: Commit si changement

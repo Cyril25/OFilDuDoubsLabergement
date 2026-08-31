@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
- * Complète les traductions manquantes de data/agenda.json via l'API DeepL.
+ * Complète les traductions manquantes de data/agenda.json.
  * - Titres : le flux fournit de/en/fr → on complète es, it, nl, pt.
  * - Descriptions : le flux fournit de/en/es/fr/it/nl → on complète pt.
+ *   (les événements venus du seul export data.gouv arrivent en français : tout est à traduire)
  *
- * Un cache (data/agenda-i18n-cache.json) évite de retraduire deux fois le même texte.
- * Sans la variable d'environnement DEEPL_API_KEY, le script applique uniquement le
- * cache existant et n'échoue pas (la page reste fonctionnelle, juste avec des manques).
+ * Le fournisseur est choisi par scripts/lib/translate.js (Azure, sinon DeepL). Un cache
+ * (data/agenda-i18n-cache.json) évite de retraduire deux fois le même texte — c'est lui
+ * qui porte l'essentiel de la valeur, d'où son versionnement dans le dépôt.
+ * Sans clé, ou si le fournisseur refuse, le script applique le cache existant et sort en
+ * succès : la publication de l'agenda ne doit jamais dépendre de la traduction.
  *
  * Usage : node scripts/translate-agenda.js data/agenda.json data/agenda-i18n-cache.json
  */
@@ -14,10 +17,10 @@ const fs = require('fs');
 
 const agendaPath = process.argv[2] || 'data/agenda.json';
 const cachePath = process.argv[3] || 'data/agenda-i18n-cache.json';
-const KEY = process.env.DEEPL_API_KEY || '';
+const { translate, providerName } = require('./lib/translate.js');
+const TRADUCTEUR = providerName();   // 'azure', 'deepl', ou null si aucune clé
 
 // Langues à compléter (code site -> code DeepL)
-const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
 // Titres : on complète toutes les langues manquantes (les events DATAtourisme ont déjà de/en/fr ;
 // les compléments Tourinsoft n'ont que fr → de/en/es/it/nl/pt à traduire).
 const TITLE_TARGETS = ['de', 'en', 'es', 'it', 'nl', 'pt'];
@@ -53,25 +56,13 @@ for (const e of agenda.events) {
 
 console.error(`À traduire (hors cache) : ${missing.size} segment(s).`);
 
-async function deeplBatch(lang, items) {
-    // items: [{key, text}]
-    const base = KEY.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com';
-    const body = new URLSearchParams();
-    body.append('source_lang', 'FR');
-    body.append('target_lang', DEEPL_LANG[lang]);
-    for (const it of items) body.append('text', it.text);
-    const resp = await fetch(base + '/v2/translate', {
-        method: 'POST',
-        headers: { 'Authorization': 'DeepL-Auth-Key ' + KEY, 'Content-Type': 'application/x-www-form-urlencoded' },
-        body,
-    });
-    if (!resp.ok) throw new Error('DeepL ' + resp.status + ' : ' + (await resp.text()).slice(0, 200));
-    const json = await resp.json();
-    json.translations.forEach((t, i) => { cache[items[i].key] = t.text; });
+async function traduireLot(lang, items) {                // items: [{key, text}]
+    const out = await translate(items.map(it => it.text), lang);
+    out.forEach((texte, i) => { cache[items[i].key] = texte; });
 }
 
 async function run() {
-    if (missing.size && KEY) {
+    if (missing.size && TRADUCTEUR) {
         // Regroupe par langue cible, puis lots de 45 textes
         const byLang = {};
         for (const [key, { lang, text }] of missing) (byLang[lang] = byLang[lang] || []).push({ key, text });
@@ -82,16 +73,16 @@ async function run() {
             for (const lang of Object.keys(byLang)) {
                 const arr = byLang[lang];
                 for (let i = 0; i < arr.length; i += 45) {
-                    await deeplBatch(lang, arr.slice(i, i + 45));
+                    await traduireLot(lang, arr.slice(i, i + 45));
                     console.error(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
                 }
             }
         } catch (e) {
-            console.error('::warning::DeepL interrompu (' + e.message + ') — cache partiel appliqué, manques laissés en français.');
+            console.error('::warning::Traduction interrompue (' + e.message + ') — cache partiel appliqué, manques laissés en français.');
         }
         fs.writeFileSync(cachePath, JSON.stringify(cache, null, 0));
-    } else if (missing.size && !KEY) {
-        console.error('DEEPL_API_KEY absente : on applique seulement le cache existant (manques laissés en français).');
+    } else if (missing.size && !TRADUCTEUR) {
+        console.error('::warning::Aucune clé de traduction configurée : seul le cache existant est appliqué, les manques restent en français.');
     }
 
     // 2. Applique le cache aux événements
@@ -111,4 +102,4 @@ async function run() {
     console.error(`Traductions appliquées : ${filled} champ(s). Cache : ${Object.keys(cache).length} entrées. -> ${agendaPath}`);
 }
 
-run().catch(e => { console.error('Erreur DeepL :', e.message); process.exit(1); });
+run().catch(e => { console.error('Erreur de traduction :', e.message); process.exit(1); });
