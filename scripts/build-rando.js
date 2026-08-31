@@ -201,6 +201,7 @@ async function fetchTourinsoft() {
   }
   console.error('Descriptions à traduire (≤' + NEAR_KM + 'km, hors cache) : ' + missing.size + (TRADUCTEUR ? '' : ' — aucune clé de traduction, on applique seulement le cache'));
   if (missing.size && TRADUCTEUR) {
+    console.error('::notice::Traduction via ' + TRADUCTEUR + ' : ' + missing.size + ' segment(s) à traiter.');
     const byLang = {};
     for (const m of missing.values()) (byLang[m.lang] = byLang[m.lang] || []).push(m);
     try {

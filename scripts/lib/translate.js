@@ -14,6 +14,14 @@
  *
  * L'appelant garde la main sur les erreurs : on lève, il décide (les deux crons
  * poursuivent la publication avec le cache partiel plutôt que d'échouer).
+ *
+ * CHANGER DE FOURNISSEUR — aucune modification de code n'est nécessaire :
+ *   - repasser à DeepL : supprimer le secret AZURE_TRANSLATOR_KEY du dépôt ;
+ *   - changer de compte Azure : remplacer AZURE_TRANSLATOR_KEY et AZURE_TRANSLATOR_REGION ;
+ *   - ajouter un fournisseur (Cloudflare Workers AI a été chiffré et tient dans le
+ *     palier gratuit) : une fonction xxxTranslate() ici, plus une ligne dans
+ *     providerName(). Les deux crons en héritent sans être touchés.
+ * Chaque run annonce le fournisseur retenu en ::notice::, visible dans les annotations.
  */
 
 // Azure distingue pt (Brésil) et pt-pt (Portugal) ; DeepL utilise ses propres codes.

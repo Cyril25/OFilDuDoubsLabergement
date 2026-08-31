@@ -66,6 +66,7 @@ async function run() {
         // Regroupe par langue cible, puis lots de 45 textes
         const byLang = {};
         for (const [key, { lang, text }] of missing) (byLang[lang] = byLang[lang] || []).push({ key, text });
+        console.error('::notice::Traduction via ' + TRADUCTEUR + ' : ' + missing.size + ' segment(s) à traiter.');
         // Une panne DeepL (quota épuisé, clé refusée, réseau) ne doit pas empêcher la
         // publication de l'agenda : on garde ce qui a été traduit, le reste sort en
         // français. Même parti pris que build-rando.js, qui lui survivait déjà.
