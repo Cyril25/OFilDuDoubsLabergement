@@ -73,6 +73,25 @@ jobs:
       - name: Construire data/agenda.json
         run: node scripts/build-agenda.js extracted data/agenda.json 20 bfc.csv
 
+      # Le quota DeepL est la panne la plus probable de l'étape suivante : on le publie en
+      # notice, lisible dans les annotations du run sans avoir à ouvrir les logs.
+      - name: Quota DeepL (info)
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          if [ -z "$DEEPL_API_KEY" ]; then echo "Pas de clé DEEPL_API_KEY"; exit 0; fi
+          case "$DEEPL_API_KEY" in *:fx) BASE=https://api-free.deepl.com;; *) BASE=https://api.deepl.com;; esac
+          U=$(curl -s -H "Authorization: DeepL-Auth-Key $DEEPL_API_KEY" "$BASE/v2/usage")
+          cnt=$(echo "$U" | sed -n 's/.*"character_count":\([0-9]*\).*/\1/p')
+          lim=$(echo "$U" | sed -n 's/.*"character_limit":\([0-9]*\).*/\1/p')
+          if [ -n "$cnt" ] && [ -n "$lim" ] && [ "$lim" -gt 0 ]; then
+            pct=$(( cnt * 100 / lim ))
+            echo "::notice::Quota DeepL : $cnt / $lim caractères ($pct %)"
+            if [ "$pct" -ge 90 ]; then echo "::warning::Quota DeepL à $pct % ($cnt/$lim) — pense à changer la clé DEEPL_API_KEY."; fi
+          else
+            echo "Réponse usage DeepL : $U"
+          fi
+
       - name: Compléter les traductions manquantes (DeepL)
         env:
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}

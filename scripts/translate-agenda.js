@@ -75,12 +75,19 @@ async function run() {
         // Regroupe par langue cible, puis lots de 45 textes
         const byLang = {};
         for (const [key, { lang, text }] of missing) (byLang[lang] = byLang[lang] || []).push({ key, text });
-        for (const lang of Object.keys(byLang)) {
-            const arr = byLang[lang];
-            for (let i = 0; i < arr.length; i += 45) {
-                await deeplBatch(lang, arr.slice(i, i + 45));
-                console.error(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
+        // Une panne DeepL (quota épuisé, clé refusée, réseau) ne doit pas empêcher la
+        // publication de l'agenda : on garde ce qui a été traduit, le reste sort en
+        // français. Même parti pris que build-rando.js, qui lui survivait déjà.
+        try {
+            for (const lang of Object.keys(byLang)) {
+                const arr = byLang[lang];
+                for (let i = 0; i < arr.length; i += 45) {
+                    await deeplBatch(lang, arr.slice(i, i + 45));
+                    console.error(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
+                }
             }
+        } catch (e) {
+            console.error('::warning::DeepL interrompu (' + e.message + ') — cache partiel appliqué, manques laissés en français.');
         }
         fs.writeFileSync(cachePath, JSON.stringify(cache, null, 0));
     } else if (missing.size && !KEY) {
