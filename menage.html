@@ -1244,14 +1244,25 @@
             return state[key] || {};
         }
 
-        async function saveSlotInfo(slot, nbPersons, comment, lang) {
+        // ⚠ `voyageurs` et `comment` ne s'adressent PAS au meme public.
+        // Le commentaire est une consigne pour les personnes qui font le
+        // menage (« mettre le livret en allemand en premier ») et
+        // s'affiche pour tout le monde. `voyageurs` est le prenom des
+        // occupants : il ne sert qu'aux notifications Telegram du groupe
+        // gite, et n'apparait que dans la vue admin.
+        //
+        // Ne pas les confondre : melanger les deux ferait passer un
+        // prenom dans les consignes de menage, et une consigne de menage
+        // dans un message d'accueil.
+        async function saveSlotInfo(slot, nbPersons, comment, lang, voyageurs) {
             const state = getState();
             const key = getSlotInfoKey(slot);
             const existing = state[key] || {};
             state[key] = {
                 nbPersons: nbPersons || null,
                 comment: comment || '',
-                lang: lang || existing.lang || 'fr'
+                lang: lang || existing.lang || 'fr',
+                voyageurs: voyageurs || ''
             };
             await saveStateToServer(state);
         }
@@ -1869,6 +1880,15 @@
                     nbInput.value = slotInfoData.nbPersons || '';
                     infoAdmin.appendChild(nbInput);
 
+                    // Reserve a la vue admin : ce prenom part dans les
+                    // notifications Telegram du groupe gite, il n'a rien
+                    // a faire dans la liste des personnes du menage.
+                    const voyageursInput = document.createElement('input');
+                    voyageursInput.type = 'text';
+                    voyageursInput.placeholder = 'Prenom des voyageurs';
+                    voyageursInput.value = slotInfoData.voyageurs || '';
+                    infoAdmin.appendChild(voyageursInput);
+
                     const commentInput = document.createElement('input');
                     commentInput.type = 'text';
                     commentInput.placeholder = 'Commentaire (optionnel)';
@@ -1881,7 +1901,9 @@
                     btnSave.addEventListener('click', async function() {
                         btnSave.disabled = true;
                         btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await saveSlotInfo(slot, parseInt(nbInput.value) || null, commentInput.value.trim(), langSelect.value);
+                        await saveSlotInfo(slot, parseInt(nbInput.value) || null,
+                            commentInput.value.trim(), langSelect.value,
+                            voyageursInput.value.trim());
                         updateCleaningSlotsList(currentCleaningSlots);
                     });
                     infoAdmin.appendChild(btnSave);
