@@ -5,6 +5,10 @@ const dataTranslations = {
         host_title: "Hébergement",
         prop_title: "Propriété intellectuelle",
         prop_text: "L’ensemble de ce site relève de la législation française et internationale sur le droit d’auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.",
+        data_title: "Données personnelles et cookies",
+        data_audience: "Avec votre accord, nous mesurons la fréquentation de ce site à l’aide de <strong>Microsoft Clarity</strong>, afin de comprendre comment il est utilisé et de l’améliorer. Cet outil dépose deux cookies (<code>_clck</code> et <code>_clsk</code>) et enregistre votre navigation : pages vues, défilement, clics. Le contenu que vous saisissez est masqué. Ces données sont traitées par Microsoft, y compris en dehors de l’Union européenne. Aucune mesure n’a lieu tant que vous n’avez pas accepté, et vous pouvez revenir sur votre choix à tout moment par le lien « Gérer mes cookies », en bas de chaque page.",
+        data_external: "Ce site fait par ailleurs appel à des ressources hébergées par des tiers, nécessaires à son affichage : les polices Google Fonts, des bibliothèques distribuées par cdnjs et jsDelivr, et les fonds de carte OpenStreetMap. Leur chargement transmet votre adresse IP à ces fournisseurs.",
+        data_rights: "Aucun compte n’est créé sur ce site et aucune donnée n’est revendue. Un espace privé, réservé à la gestion du logement, utilise une authentification Google : les cookies qu’elle nécessite sont indispensables à son fonctionnement et ne servent pas à la mesure d’audience. Vous disposez d’un droit d’accès, de rectification, d’effacement et d’opposition sur vos données : écrivez à l’adresse indiquée en tête de cette page. Vous pouvez également introduire une réclamation auprès de la CNIL.",
 
         // Footer
         footer_contact_title: "Nous contacter",
@@ -24,6 +28,10 @@ const dataTranslations = {
         host_title: "Hosting",
         prop_title: "Intellectual Property",
         prop_text: "The entire site is subject to French and international legislation on copyright and intellectual property. All reproduction rights are reserved, including for downloadable documents and iconographic and photographic representations.",
+        data_title: "Personal data and cookies",
+        data_audience: "With your consent, we measure how this site is used with <strong>Microsoft Clarity</strong>, in order to understand and improve it. This tool sets two cookies (<code>_clck</code> and <code>_clsk</code>) and records your browsing: pages viewed, scrolling, clicks. Anything you type is masked. This data is processed by Microsoft, including outside the European Union. No measurement takes place until you have accepted, and you may change your mind at any time through the “Manage cookies” link at the bottom of every page.",
+        data_external: "This site also relies on resources hosted by third parties, needed to display it: Google Fonts, libraries served by cdnjs and jsDelivr, and OpenStreetMap map tiles. Loading them sends your IP address to those providers.",
+        data_rights: "No account is created on this site and no data is sold. A private area, used to manage the property, relies on Google authentication: the cookies it requires are strictly necessary to its operation and are not used for audience measurement. You have the right to access, correct, erase and object to the processing of your data: write to the address given at the top of this page. You may also lodge a complaint with the French data protection authority (CNIL).",
 
         // Footer
         footer_contact_title: "Contact us",
@@ -43,6 +51,10 @@ const dataTranslations = {
         host_title: "Hosting",
         prop_title: "Geistiges Eigentum",
         prop_text: "Die gesamte Website unterliegt der französischen und internationalen Gesetzgebung zum Urheberrecht und geistigen Eigentum. Alle Vervielfältigungsrechte sind vorbehalten, einschließlich für herunterladbare Dokumente sowie ikonografische und fotografische Darstellungen.",
+        data_title: "Personenbezogene Daten und Cookies",
+        data_audience: "Mit Ihrer Zustimmung messen wir die Nutzung dieser Website mit <strong>Microsoft Clarity</strong>, um sie zu verstehen und zu verbessern. Dieses Werkzeug setzt zwei Cookies (<code>_clck</code> und <code>_clsk</code>) und zeichnet Ihr Surfverhalten auf: aufgerufene Seiten, Scrollen, Klicks. Was Sie eingeben, wird maskiert. Diese Daten werden von Microsoft verarbeitet, auch außerhalb der Europäischen Union. Es findet keine Messung statt, solange Sie nicht zugestimmt haben, und Sie können Ihre Wahl jederzeit über den Link „Cookies verwalten“ am Seitenende ändern.",
+        data_external: "Diese Website nutzt außerdem Ressourcen von Dritten, die für die Darstellung erforderlich sind: Google Fonts, über cdnjs und jsDelivr bereitgestellte Bibliotheken sowie Kartenkacheln von OpenStreetMap. Beim Laden wird Ihre IP-Adresse an diese Anbieter übermittelt.",
+        data_rights: "Auf dieser Website wird kein Konto angelegt und es werden keine Daten verkauft. Ein privater Bereich für die Verwaltung der Unterkunft nutzt eine Google-Anmeldung: Die dafür erforderlichen Cookies sind für den Betrieb unbedingt notwendig und dienen nicht der Reichweitenmessung. Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch: Schreiben Sie an die oben auf dieser Seite angegebene Adresse. Sie können sich außerdem bei der französischen Datenschutzbehörde (CNIL) beschweren.",
 
         // Footer
         footer_contact_title: "Kontaktieren Sie uns",
@@ -62,6 +74,10 @@ const dataTranslations = {
         host_title: "Hosting",
         prop_title: "Intellectueel eigendom",
         prop_text: "Deze gehele site valt onder de Franse en internationale wetgeving inzake auteursrecht en intellectueel eigendom. Alle reproductierechten zijn voorbehouden, ook voor downloadbare documenten en iconografische en fotografische voorstellingen.",
+        data_title: "Persoonsgegevens en cookies",
+        data_audience: "Met uw toestemming meten wij het gebruik van deze site met <strong>Microsoft Clarity</strong>, om hem te begrijpen en te verbeteren. Dit hulpmiddel plaatst twee cookies (<code>_clck</code> en <code>_clsk</code>) en legt uw surfgedrag vast: bekeken pagina’s, scrollen, klikken. Wat u typt wordt afgeschermd. Deze gegevens worden verwerkt door Microsoft, ook buiten de Europese Unie. Er wordt niets gemeten zolang u niet hebt ingestemd, en u kunt uw keuze altijd wijzigen via de link “Cookies beheren” onderaan elke pagina.",
+        data_external: "Deze site maakt daarnaast gebruik van bronnen van derden die nodig zijn voor de weergave: Google Fonts, bibliotheken van cdnjs en jsDelivr, en kaartlagen van OpenStreetMap. Bij het laden wordt uw IP-adres aan die aanbieders doorgegeven.",
+        data_rights: "Op deze site wordt geen account aangemaakt en worden geen gegevens verkocht. Een besloten gedeelte voor het beheer van de accommodatie gebruikt Google-authenticatie: de daarvoor benodigde cookies zijn strikt noodzakelijk en worden niet gebruikt voor bezoekersmeting. U hebt recht op inzage, correctie, verwijdering en bezwaar: schrijf naar het adres bovenaan deze pagina. U kunt ook een klacht indienen bij de Franse toezichthouder (CNIL).",
 
         // Footer
         footer_contact_title: "Neem contact op",
@@ -81,6 +97,10 @@ const dataTranslations = {
         host_title: "Alojamiento",
         prop_title: "Propiedad intelectual",
         prop_text: "Todo este sitio está sujeto a la legislación francesa e internacional sobre derechos de autor y propiedad intelectual. Todos los derechos de reproducción están reservados, incluidos los documentos descargables y las representaciones iconográficas y fotográficas.",
+        data_title: "Datos personales y cookies",
+        data_audience: "Con su consentimiento, medimos el uso de este sitio con <strong>Microsoft Clarity</strong>, para comprenderlo y mejorarlo. Esta herramienta instala dos cookies (<code>_clck</code> y <code>_clsk</code>) y registra su navegación: páginas vistas, desplazamiento, clics. Lo que usted escribe queda oculto. Estos datos son tratados por Microsoft, incluso fuera de la Unión Europea. No se realiza ninguna medición mientras no haya aceptado, y puede cambiar de opinión en cualquier momento mediante el enlace «Gestionar cookies» al pie de cada página.",
+        data_external: "Este sitio utiliza además recursos alojados por terceros, necesarios para mostrarlo: las tipografías de Google Fonts, bibliotecas distribuidas por cdnjs y jsDelivr, y los mapas de OpenStreetMap. Su carga transmite su dirección IP a esos proveedores.",
+        data_rights: "En este sitio no se crea ninguna cuenta ni se vende ningún dato. Un espacio privado, reservado a la gestión del alojamiento, utiliza autenticación de Google: las cookies que necesita son imprescindibles para su funcionamiento y no sirven para medir la audiencia. Usted tiene derecho de acceso, rectificación, supresión y oposición: escriba a la dirección indicada al principio de esta página. También puede presentar una reclamación ante la autoridad francesa de protección de datos (CNIL).",
 
         // Footer
         footer_contact_title: "Contáctanos",
@@ -100,6 +120,10 @@ const dataTranslations = {
         host_title: "Hosting",
         prop_title: "Proprietà intellettuale",
         prop_text: "L'intero sito è soggetto alla legislazione francese e internazionale sul diritto d'autore e la proprietà intellettuale. Tutti i diritti di riproduzione sono riservati, anche per i documenti scaricabili e le rappresentazioni iconografiche e fotografiche.",
+        data_title: "Dati personali e cookie",
+        data_audience: "Con il suo consenso, misuriamo l’utilizzo di questo sito con <strong>Microsoft Clarity</strong>, per comprenderlo e migliorarlo. Questo strumento installa due cookie (<code>_clck</code> e <code>_clsk</code>) e registra la sua navigazione: pagine viste, scorrimento, clic. Ciò che digita viene mascherato. Questi dati sono trattati da Microsoft, anche al di fuori dell’Unione europea. Nessuna misurazione ha luogo finché non ha accettato, e può tornare sulla sua scelta in qualsiasi momento tramite il link «Gestisci i cookie», in fondo a ogni pagina.",
+        data_external: "Questo sito utilizza inoltre risorse ospitate da terzi, necessarie alla visualizzazione: i caratteri Google Fonts, librerie distribuite da cdnjs e jsDelivr e le mappe OpenStreetMap. Il loro caricamento trasmette il suo indirizzo IP a tali fornitori.",
+        data_rights: "Su questo sito non viene creato alcun account e nessun dato viene venduto. Uno spazio privato, riservato alla gestione dell’alloggio, utilizza l’autenticazione Google: i cookie necessari sono indispensabili al suo funzionamento e non servono a misurare l’audience. Lei ha diritto di accesso, rettifica, cancellazione e opposizione: scriva all’indirizzo indicato all’inizio di questa pagina. Può inoltre presentare reclamo all’autorità francese per la protezione dei dati (CNIL).",
 
         // Footer
         footer_contact_title: "Contattaci",
@@ -119,6 +143,10 @@ const dataTranslations = {
         host_title: "Alojamento",
         prop_title: "Propriedade intelectual",
         prop_text: "Todo este site está sujeito à legislação francesa e internacional sobre direitos de autor e propriedade intelectual. Todos os direitos de reprodução são reservados, incluindo documentos para download e representações iconográficas e fotográficas.",
+        data_title: "Dados pessoais e cookies",
+        data_audience: "Com o seu consentimento, medimos a utilização deste site com o <strong>Microsoft Clarity</strong>, para o compreender e melhorar. Esta ferramenta instala dois cookies (<code>_clck</code> e <code>_clsk</code>) e regista a sua navegação: páginas vistas, deslocamento, cliques. O que escreve é ocultado. Estes dados são tratados pela Microsoft, incluindo fora da União Europeia. Não é feita qualquer medição enquanto não tiver aceite, e pode alterar a sua escolha a qualquer momento através da ligação «Gerir cookies», no fundo de cada página.",
+        data_external: "Este site recorre ainda a recursos alojados por terceiros, necessários à sua apresentação: os tipos de letra Google Fonts, bibliotecas distribuídas pela cdnjs e jsDelivr, e os mapas OpenStreetMap. O seu carregamento transmite o seu endereço IP a esses fornecedores.",
+        data_rights: "Neste site não é criada qualquer conta e nenhum dado é vendido. Um espaço privado, reservado à gestão do alojamento, utiliza autenticação Google: os cookies necessários são indispensáveis ao seu funcionamento e não servem para medir a audiência. Tem direito de acesso, retificação, apagamento e oposição: escreva para o endereço indicado no início desta página. Pode também apresentar reclamação junto da autoridade francesa de proteção de dados (CNIL).",
 
         // Footer
         footer_contact_title: "Contacte-nos",

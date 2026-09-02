@@ -955,13 +955,18 @@ a.glightbox img.room-image { cursor: zoom-in; }
 }
 #rgpd-banner p { margin: 0; flex: 1; line-height: 1.5; }
 #rgpd-banner a { color: #7dd3fc; text-decoration: underline; }
-#rgpd-accept {
+#rgpd-actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+/* Les deux boutons sont volontairement identiques : refuser doit etre aussi
+   simple qu'accepter (recommandation CNIL). Ne pas mettre en avant l'un des deux. */
+#rgpd-accept, #rgpd-decline {
     background: #fff; color: #222; border: none;
     padding: 0.55rem 1.4rem; border-radius: 6px;
     cursor: pointer; font-weight: 700; white-space: nowrap; font-size: 0.88rem;
+    font-family: var(--font-body);
     transition: background 0.2s;
 }
-#rgpd-accept:hover { background: #e0f2fe; }
+#rgpd-accept:hover, #rgpd-decline:hover { background: #e0f2fe; }
+#rgpd-accept:focus-visible, #rgpd-decline:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 2px; }
 
 /* === WHATSAPP BUTTON === */
 #whatsapp-btn {
@@ -978,6 +983,7 @@ a.glightbox img.room-image { cursor: zoom-in; }
 
 @media (max-width: 768px) {
     #rgpd-banner { flex-direction: column; text-align: center; padding: 1rem; }
+    #rgpd-actions { width: 100%; justify-content: center; }
     #whatsapp-btn { bottom: 1rem; right: 1rem; width: 50px; height: 50px; font-size: 1.6rem; }
 }
 
