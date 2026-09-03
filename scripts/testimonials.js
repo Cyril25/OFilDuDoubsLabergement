@@ -11,13 +11,13 @@
     'use strict';
 
     var I18N = {
-        fr: { prev: "Témoignages précédents", next: "Témoignages suivants", page: "Témoignages, page", group: "Témoignages de voyageurs", dots: "Pages de témoignages" },
-        en: { prev: "Previous reviews", next: "Next reviews", page: "Reviews, page", group: "Guest reviews", dots: "Review pages" },
-        de: { prev: "Vorherige Bewertungen", next: "Nächste Bewertungen", page: "Bewertungen, Seite", group: "Gästebewertungen", dots: "Bewertungsseiten" },
-        nl: { prev: "Vorige beoordelingen", next: "Volgende beoordelingen", page: "Beoordelingen, pagina", group: "Beoordelingen van gasten", dots: "Beoordelingspagina's" },
-        es: { prev: "Opiniones anteriores", next: "Opiniones siguientes", page: "Opiniones, página", group: "Opiniones de los viajeros", dots: "Páginas de opiniones" },
-        it: { prev: "Recensioni precedenti", next: "Recensioni successive", page: "Recensioni, pagina", group: "Recensioni dei viaggiatori", dots: "Pagine di recensioni" },
-        pt: { prev: "Avaliações anteriores", next: "Avaliações seguintes", page: "Avaliações, página", group: "Avaliações dos viajantes", dots: "Páginas de avaliações" }
+        fr: { prev: "Témoignage précédent", next: "Témoignage suivant", page: "Aller au témoignage", group: "Témoignages de voyageurs", dots: "Navigation des témoignages" },
+        en: { prev: "Previous review", next: "Next review", page: "Go to review", group: "Guest reviews", dots: "Review navigation" },
+        de: { prev: "Vorherige Bewertung", next: "Nächste Bewertung", page: "Zur Bewertung", group: "Gästebewertungen", dots: "Navigation der Bewertungen" },
+        nl: { prev: "Vorige beoordeling", next: "Volgende beoordeling", page: "Ga naar beoordeling", group: "Beoordelingen van gasten", dots: "Navigatie van beoordelingen" },
+        es: { prev: "Opinión anterior", next: "Opinión siguiente", page: "Ir a la opinión", group: "Opiniones de los viajeros", dots: "Navegación de opiniones" },
+        it: { prev: "Recensione precedente", next: "Recensione successiva", page: "Vai alla recensione", group: "Recensioni dei viaggiatori", dots: "Navigazione delle recensioni" },
+        pt: { prev: "Avaliação anterior", next: "Avaliação seguinte", page: "Ir para a avaliação", group: "Avaliações dos viajantes", dots: "Navegação das avaliações" }
     };
 
     function init() {
@@ -60,8 +60,14 @@
             if (step <= 0) return 1;
             return Math.max(1, Math.round((viewWidth() + gap()) / step));
         }
-        function pageCount() {
-            return Math.ceil(cards.length / perView());
+        // Le carrousel glisse d'une seule carte à la fois : les positions
+        // possibles vont de la première carte jusqu'à celle qui amène la
+        // dernière au bord droit. Neuf avis vus trois par trois : sept arrêts.
+        function maxIndex() {
+            return Math.max(0, cards.length - perView());
+        }
+        function stopCount() {
+            return maxIndex() + 1;
         }
         // offsetLeft se mesure depuis le bord de la piste (position: relative en CSS),
         // marge intérieure comprise : c'est exactement la valeur de scrollLeft sur
@@ -72,19 +78,18 @@
         }
         // Carte la plus proche de la position courante : robuste même après un
         // glissement libre au doigt, où on peut s'arrêter n'importe où.
-        function currentPage() {
+        function currentIndex() {
             var x = track.scrollLeft, best = 0, bestD = Infinity;
             for (var i = 0; i < cards.length; i++) {
                 var d = Math.abs(offsetOf(i) - x);
                 if (d < bestD) { bestD = d; best = i; }
             }
-            return Math.floor(best / perView());
+            return Math.min(best, maxIndex());
         }
 
-        function goTo(page) {
-            var n = pageCount();
-            var p = ((page % n) + n) % n;                       // boucle dans les deux sens
-            var i = Math.min(p * perView(), cards.length - 1);
+        function goTo(index) {
+            var n = stopCount();
+            var i = ((index % n) + n) % n;                      // boucle dans les deux sens
             var left = offsetOf(i);
             var behavior = reduced.matches ? 'auto' : 'smooth';
             if (track.scrollTo) track.scrollTo({ left: left, behavior: behavior });
@@ -94,14 +99,14 @@
         // --- Pastilles ---
         function syncDots() {
             if (!dotsBox) return;
-            var p = currentPage();
+            var p = currentIndex();
             for (var i = 0; i < dotsBox.children.length; i++) {
                 if (i === p) dotsBox.children[i].setAttribute('aria-current', 'true');
                 else dotsBox.children[i].removeAttribute('aria-current');
             }
         }
         function buildDots() {
-            var n = pageCount();
+            var n = stopCount();
             var single = n < 2;                                 // tout tient déjà à l'écran
             if (prevBtn) prevBtn.hidden = single;
             if (nextBtn) nextBtn.hidden = single;
@@ -130,10 +135,10 @@
         function held() { return hovering || dragging || focused; }
 
         function start() {
-            if (timer || reduced.matches || pageCount() < 2) return;
+            if (timer || reduced.matches || stopCount() < 2) return;
             timer = setInterval(function () {
                 if (held() || !onScreen || document.hidden) return;
-                goTo(currentPage() + 1);
+                goTo(currentIndex() + 1);
             }, DELAY);
         }
         function stop() { if (timer) { clearInterval(timer); timer = null; } }
@@ -148,8 +153,8 @@
         window.addEventListener('pointerup', function () { dragging = false; release(); });
         window.addEventListener('pointercancel', function () { dragging = false; release(); });
 
-        if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentPage() - 1); restart(); });
-        if (nextBtn) nextBtn.addEventListener('click', function () { goTo(currentPage() + 1); restart(); });
+        if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentIndex() - 1); restart(); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { goTo(currentIndex() + 1); restart(); });
 
         var scrollRaf = null;
         track.addEventListener('scroll', function () {
