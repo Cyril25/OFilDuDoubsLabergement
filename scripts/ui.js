@@ -23,37 +23,37 @@
     var I18N = {
         fr: {
             title: "Consentement aux cookies",
-            text: "Nous souhaitons mesurer la fréquentation de ce site pour l'améliorer : cela dépose des cookies et enregistre votre navigation. Rien n'est enregistré sans votre accord.",
-            accept: "Accepter", decline: "Refuser", more: "En savoir plus", manage: "Gérer mes cookies"
+            text: "Ce site utilise des cookies pour mesurer sa fréquentation et améliorer votre visite.",
+            accept: "J'accepte", decline: "Je refuse", more: "En savoir plus", manage: "Gérer mes cookies"
         },
         en: {
             title: "Cookie consent",
-            text: "We would like to measure how this site is used, so we can improve it: this sets cookies and records your browsing. Nothing is recorded without your consent.",
+            text: "This site uses cookies to measure its audience and improve your visit.",
             accept: "Accept", decline: "Decline", more: "Learn more", manage: "Manage cookies"
         },
         de: {
             title: "Cookie-Einwilligung",
-            text: "Wir möchten die Nutzung dieser Website messen, um sie zu verbessern: Dabei werden Cookies gesetzt und Ihr Surfverhalten aufgezeichnet. Ohne Ihre Zustimmung wird nichts aufgezeichnet.",
+            text: "Diese Website verwendet Cookies, um ihre Reichweite zu messen und Ihren Besuch zu verbessern.",
             accept: "Akzeptieren", decline: "Ablehnen", more: "Mehr erfahren", manage: "Cookies verwalten"
         },
         nl: {
             title: "Cookietoestemming",
-            text: "We willen het gebruik van deze site meten om hem te verbeteren: daarbij worden cookies geplaatst en wordt uw surfgedrag vastgelegd. Zonder uw toestemming wordt er niets vastgelegd.",
+            text: "Deze site gebruikt cookies om het bezoek te meten en uw ervaring te verbeteren.",
             accept: "Accepteren", decline: "Weigeren", more: "Meer informatie", manage: "Cookies beheren"
         },
         es: {
             title: "Consentimiento de cookies",
-            text: "Queremos medir el uso de este sitio para mejorarlo: esto instala cookies y registra su navegación. No se registra nada sin su consentimiento.",
+            text: "Este sitio utiliza cookies para medir su audiencia y mejorar su visita.",
             accept: "Aceptar", decline: "Rechazar", more: "Saber más", manage: "Gestionar cookies"
         },
         it: {
             title: "Consenso ai cookie",
-            text: "Desideriamo misurare l'utilizzo di questo sito per migliorarlo: questo installa cookie e registra la sua navigazione. Nulla viene registrato senza il suo consenso.",
+            text: "Questo sito utilizza cookie per misurare l'audience e migliorare la sua visita.",
             accept: "Accetta", decline: "Rifiuta", more: "Maggiori informazioni", manage: "Gestisci i cookie"
         },
         pt: {
             title: "Consentimento de cookies",
-            text: "Gostaríamos de medir a utilização deste site para o melhorar: isto instala cookies e regista a sua navegação. Nada é registado sem o seu consentimento.",
+            text: "Este site utiliza cookies para medir a audiência e melhorar a sua visita.",
             accept: "Aceitar", decline: "Recusar", more: "Saber mais", manage: "Gerir cookies"
         }
     };
