@@ -78,22 +78,46 @@
         return v;
     }
 
+    // Le relais ci-dessous n'est PAS décoratif. Dès sa première ligne, le tag de
+    // Clarity appelle window.clarity(...) et lit window.clarity.q — il ne les crée
+    // pas. Sans ce relais, la toute première instruction jette une TypeError et
+    // rien ne démarre : dashboard vide, sans le moindre message d'erreur visible.
     function loadClarity() {
         if (!CLARITY_ID || window.clarity) return;
+        window.clarity = function () {
+            (window.clarity.q = window.clarity.q || []).push(arguments);
+        };
         var s = document.createElement('script');
         s.async = true;
         s.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
         document.head.appendChild(s);
+
+        // Consent Mode : actif d'office pour les visiteurs de l'EEE, du Royaume-Uni
+        // et de Suisse depuis le 31/10/2025. Sans ce signal, Clarity tourne en mode
+        // « sans consentement », ne pose aucun cookie et ne relie pas les pages
+        // entre elles. On ne l'envoie que sur un « Accepter » explicite.
+        //
+        // ad_Storage reste refusé : le bandeau demande la mesure d'audience, pas
+        // la publicité. Accorder ad_Storage déclencherait la synchronisation de
+        // l'identifiant publicitaire Microsoft (c.clarity.ms/c.gif), que personne
+        // n'a acceptée ici.
+        window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
     }
 
     // Refus : on efface les cookies de mesure. Si le traceur tournait déjà dans
     // cette visite (changement d'avis en cours de route), seul un rechargement
     // garantit qu'il s'arrête vraiment.
     function forgetClarity() {
+        // Si le traceur tournait déjà (changement d'avis en cours de visite), on le
+        // prévient : Clarity supprime alors ses cookies et clôt la session.
+        if (window.clarity) {
+            try { window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' }); } catch (e) {}
+        }
         var names = ['_clck', '_clsk'];
         for (var i = 0; i < names.length; i++) {
             document.cookie = names[i] + '=; Max-Age=0; path=/';
         }
+        // Puis on recharge : c'est le seul moyen sûr que plus rien ne tourne.
         if (window.clarity) { try { location.reload(); } catch (e) {} }
     }
 
