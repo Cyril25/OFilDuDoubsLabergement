@@ -40,6 +40,7 @@
     <script src="scripts/index-translations.js" defer></script>
     <script src="scripts/applyTranslations.js" defer></script>
     <script src="scripts/ui.js" defer></script>
+    <script src="scripts/testimonials.js" defer></script>
 
 	<script type="application/ld+json">
     {
@@ -77,11 +78,53 @@
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "5.0",
-        "reviewCount": "35",
+        "reviewCount": "34",
         "bestRating": "5",
         "worstRating": "1"
       },
       "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Wissem" },
+          "datePublished": "2026-08",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Excellent logement, hôte réactif et chaleureux, n’est pas loin de la frontière suisse en véhicule, cadre calme et agréable, honnêtement je vous le recommande fortement."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Emilie" },
+          "datePublished": "2026-08",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "L’appartement était parfait à tout point de vue : très propre, parfaitement entretenu et agréable à vivre. Notre hôte s’est montré disponible, à l’écoute et très réactif. Nous avons beaucoup apprécié la jolie vue ainsi que le quartier, particulièrement calme. Nous recommandons cette adresse sans hésitation et y reviendrons avec grand plaisir !"
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Murielle" },
+          "datePublished": "2026-06",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "L’appartement est très spacieux et confortable. Au-delà de mes attentes. Rien n’a été oublié à mon sens. La terrasse est très grande. La vue est tellement reposante. Le village et sa région proche juste magnifiques. Je rêve d’y retourner passer des vacances un peu plus longues."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Nicolas" },
+          "datePublished": "2026-06",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Séjour parfait dans un logement propre et spacieux avec un balcon immense pour profiter du soleil. Hôtes sympathiques et réactifs."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Christelle" },
+          "datePublished": "2026-01",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Nous avons passé une excellente semaine. L’appartement est très agréable, spacieux, lumineux, avec une grande baie vitrée donnant sur un grand balcon d’où la vue est magnifique. Alisson et Cyril sont très réactifs pour répondre à la moindre question. Tout est parfait !"
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Jean-Christophe" },
+          "datePublished": "2025-12",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Cyril est venu personnellement nous accueillir et nous a fait visiter l’appartement. Ce dernier était impeccable et correspondait parfaitement à la description. L’appartement est spacieux et l’endroit est calme et reposant. Nous avons apprécié également la vue. Nous reviendrons sans hésitation."
+        },
         {
           "@type": "Review",
           "author": { "@type": "Person", "name": "Dominique" },
@@ -191,47 +234,136 @@
 		<section>
             <h2 id="reviews_title">Ce que nos voyageurs disent</h2>
             
-            <div class="testimonials-grid">
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div>
-                            <div class="testimonial-author">Dominique</div>
-                            <div class="testimonial-date">Octobre 2025</div>
+            <div class="testimonials-carousel" data-testimonials data-autoplay="6000">
+                <button type="button" class="carousel-arrow carousel-prev" aria-label="Témoignages précédents">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                </button>
+
+                <div class="testimonials-track" tabindex="0" role="group" aria-label="Témoignages de voyageurs">
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Wissem</div>
+                                <div class="testimonial-date" id="review_date_wissem">Août 2026</div>
+                            </div>
                         </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_wissem" class="testimonial-text">
+                            Excellent logement, hôte réactif et chaleureux, n’est pas loin de la frontière suisse en véhicule, cadre calme et agréable, honnêtement je vous le recommande fortement.
+                        </p>
                     </div>
-                    <div class="stars">★★★★★</div>
-                    <p id="review_dominique" class="testimonial-text">
-                        "L’appartement est très agréable : lumineux, fonctionnel, bien situé et parfaitement isolé. La literie est excellente, la vue sur le Doubs est apaisante. Alisson et Cyril sont très sympathiques."
-                    </p>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Emilie</div>
+                                <div class="testimonial-date" id="review_date_emilie">Août 2026</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_emilie" class="testimonial-text">
+                            L’appartement était parfait à tout point de vue : très propre, parfaitement entretenu et agréable à vivre. Notre hôte s’est montré disponible, à l’écoute et très réactif. Nous avons beaucoup apprécié la jolie vue ainsi que le quartier, particulièrement calme. Nous recommandons cette adresse sans hésitation et y reviendrons avec grand plaisir !
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Murielle</div>
+                                <div class="testimonial-date" id="review_date_murielle">Juin 2026</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_murielle" class="testimonial-text">
+                            L’appartement est très spacieux et confortable. Au-delà de mes attentes. Rien n’a été oublié à mon sens. La terrasse est très grande. La vue est tellement reposante. Le village et sa région proche juste magnifiques. Je rêve d’y retourner passer des vacances un peu plus longues.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Nicolas</div>
+                                <div class="testimonial-date" id="review_date_nicolas">Juin 2026</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_nicolas" class="testimonial-text">
+                            Séjour parfait dans un logement propre et spacieux avec un balcon immense pour profiter du soleil. Hôtes sympathiques et réactifs.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Christelle</div>
+                                <div class="testimonial-date" id="review_date_christelle">Janvier 2026</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_christelle" class="testimonial-text">
+                            Nous avons passé une excellente semaine. L’appartement est très agréable, spacieux, lumineux, avec une grande baie vitrée donnant sur un grand balcon d’où la vue est magnifique. Alisson et Cyril sont très réactifs pour répondre à la moindre question. Tout est parfait !
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Jean-Christophe</div>
+                                <div class="testimonial-date" id="review_date_jeanchristophe">Décembre 2025</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_jeanchristophe" class="testimonial-text">
+                            Cyril est venu personnellement nous accueillir et nous a fait visiter l’appartement. Ce dernier était impeccable et correspondait parfaitement à la description. L’appartement est spacieux et l’endroit est calme et reposant. Nous avons apprécié également la vue. Nous reviendrons sans hésitation.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Dominique</div>
+                                <div class="testimonial-date" id="review_date_dominique">Octobre 2025</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_dominique" class="testimonial-text">
+                            L’appartement est très agréable : lumineux, fonctionnel, bien situé et parfaitement isolé. La literie est excellente, la vue sur le Doubs est apaisante. Alisson et Cyril sont très sympathiques.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Aurore</div>
+                                <div class="testimonial-date" id="review_date_aurore">Mai 2025</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_aurore" class="testimonial-text">
+                            Le logement est une véritable pépite : très spacieux, décoré avec goût et parfaitement équipé. Situé dans un environnement calme. Alisson et Cyril ont été des hôtes exemplaires.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div>
+                                <div class="testimonial-author">Amelie</div>
+                                <div class="testimonial-date" id="review_date_amelie">Janvier 2025</div>
+                            </div>
+                        </div>
+                        <div class="stars" aria-label="5/5">★★★★★</div>
+                        <p id="review_amelie" class="testimonial-text">
+                            Le logement était parfait : tant la propreté, que la qualité des équipements. Tout a été bien pensé pour que l’on soit bien. On s’y sent comme à la maison. Je recommande vivement.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div>
-                            <div class="testimonial-author">Aurore</div>
-                            <div class="testimonial-date">Mai 2025</div>
-                        </div>
-                    </div>
-                    <div class="stars">★★★★★</div>
-                    <p id="review_aurore" class="testimonial-text">
-                        "Le logement est une véritable pépite : très spacieux, décoré avec goût et parfaitement équipé. Situé dans un environnement calme. Alisson et Cyril ont été des hôtes exemplaires."
-                    </p>
-                </div>
+                <button type="button" class="carousel-arrow carousel-next" aria-label="Témoignages suivants">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div>
-                            <div class="testimonial-author">Amelie</div>
-                            <div class="testimonial-date">Janvier 2025</div>
-                        </div>
-                    </div>
-                    <div class="stars">★★★★★</div>
-                    <p id="review_amelie" class="testimonial-text">
-                        "Le logement était parfait : tant la propreté, que la qualité des équipements. Tout a été bien pensé pour que l’on soit bien. On s'y sent comme à la maison. Je recommande vivement."
-                    </p>
-                </div>
-
+                <div class="carousel-dots" aria-label="Pages de témoignages"></div>
             </div>
 
             <div class="airbnb-link-wrapper">

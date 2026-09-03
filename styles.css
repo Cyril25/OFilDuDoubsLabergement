@@ -615,12 +615,130 @@ section.transparent-section {
 /* =========================================
    TÉMOIGNAGES
    ========================================= */
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+/* Carrousel : on s'appuie sur le défilement natif + scroll-snap plutôt que sur
+   des transformations JS. Le glissement au doigt, la molette horizontale, le
+   clavier et la lecture d'écran fonctionnent alors sans une ligne de code, et
+   les cartes restent lisibles même si le JS ne se charge pas. */
+.testimonials-carousel {
+    position: relative;
     margin-top: 30px;
-    margin-bottom: 60px; 
+    margin-bottom: 40px;
+}
+
+.testimonials-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 60px) / 3);   /* 3 cartes + 2 gouttières */
+    gap: 30px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;                        /* Firefox */
+    -ms-overflow-style: none;
+    /* Marge intérieure : le guillemet décoratif et l'ombre des cartes débordent
+       de leur boîte, et overflow-x:auto rognerait tout ce qui dépasse. */
+    padding: 15px 5px 25px;
+    position: relative;
+}
+
+.testimonials-track::-webkit-scrollbar { display: none; }
+.testimonials-track:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
+
+.testimonials-track .testimonial-card { scroll-snap-align: start; }
+
+/* Les cartes prennent la hauteur de la plus longue : on centre le texte des avis
+   courts dans l'espace disponible plutôt que de le laisser flotter en haut. */
+.testimonials-track .testimonial-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Flèches --- */
+.carousel-arrow {
+    position: absolute;
+    /* 50 % du bloc tomberait trop bas : il englobe la rangée de pastilles. */
+    top: calc(50% - 16px);
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--primary-color);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.carousel-arrow:hover {
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 5px 16px rgba(0,0,0,0.18);
+    color: var(--secondary-color);
+}
+
+/* display:flex ci-dessus l'emporte sur le [hidden] du navigateur : il faut le redire. */
+.carousel-arrow[hidden] { display: none; }
+
+.carousel-prev { left: -18px; }
+.carousel-next { right: -18px; }
+
+/* --- Pastilles de pagination --- */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.carousel-dots button {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-dots button::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #d3d3d3;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.carousel-dots button[aria-current="true"]::before {
+    background: var(--primary-color);
+    transform: scale(1.4);
+}
+
+@media (max-width: 1024px) {
+    .testimonials-track { grid-auto-columns: calc((100% - 30px) / 2); }   /* 2 cartes */
+}
+
+@media (max-width: 768px) {
+    /* Une carte pleine, plus un aperçu de la suivante qui signale qu'on peut faire glisser. */
+    .testimonials-track { grid-auto-columns: 86%; gap: 20px; }
+    .carousel-arrow { display: none; }
+    .testimonials-carousel { margin-bottom: 30px; }
+}
+
+/* Personne n'a demandé d'animation : on coupe le défilement animé (le défilement
+   automatique, lui, est désactivé côté JS). */
+@media (prefers-reduced-motion: reduce) {
+    .testimonials-track { scroll-behavior: auto; }
 }
 
 .testimonial-card {
@@ -695,10 +813,6 @@ section.transparent-section {
 }
 
 .btn-airbnb-review:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 90, 95, 0.3); color: white; }
-
-@media (max-width: 768px) {
-    .testimonials-grid { grid-template-columns: 1fr; margin-bottom: 40px; }
-}
 
 /* =========================================
    FOOTER MODERNE
