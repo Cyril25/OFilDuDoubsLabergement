@@ -48,7 +48,7 @@
     <link rel="alternate" hreflang="pt" href="https://ofildudoubs.fr/pt/ou-manger.html">
     <link rel="alternate" hreflang="x-default" href="https://ofildudoubs.fr/ou-manger.html">
 </head>
-<body>
+<body class="page-oumanger">
 
     <nav>
         <div class="menu-toggle">☰ Menu</div>
@@ -98,6 +98,15 @@
 
     <main>
         <p id="introduction" class="intro-text">Vontade de se deliciar sem cozinhar? Consulte o horário dos food trucks que se instalam todos os dias em Labergement-Sainte-Marie e nas aldeias vizinhas, bem como a nossa seleção de restaurantes nos arredores.</p>
+
+        <!-- Les food trucks présents aujourd'hui, en tête de page (rempli par oumanger.js) -->
+        <div id="ft-tonight" class="ft-tonight" hidden=""></div>
+
+        <!-- Accès direct aux deux sections : ce sont des ancres, rien n'est masqué -->
+        <nav class="eat-jump" aria-label="Sections de la page">
+            <a class="eat-jump-btn" href="#restaurants-section"><i class="fas fa-utensils"></i> <span id="jump_restaurants">Restaurantes</span></a>
+            <a class="eat-jump-btn" href="#foodtrucks-section"><i class="fas fa-truck"></i> <span id="jump_foodtrucks">Food trucks</span></a>
+        </nav>
 
         <section id="restaurants-section">
             <h2 id="restaurants_title">Restaurantes</h2>

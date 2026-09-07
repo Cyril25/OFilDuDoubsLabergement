@@ -1287,8 +1287,10 @@ a.glightbox img.room-image { cursor: zoom-in; }
     display: block;
 }
 .resto-banner-ico { font-size: 2.6rem; color: #fff; opacity: .9; }
-.resto-banner--soon { background: linear-gradient(135deg, #e9d8b0, #cbb07a); }
 .resto-banner--flame { background: linear-gradient(135deg, #4a0f12, #7a1a1a); }
+/* Table gastronomique, cuisine au feu de bois : vert profond et or. */
+.resto-banner--gastro { background: linear-gradient(135deg, #16281c, #3f3115); }
+.resto-banner--gastro .resto-banner-ico { color: #e0b64a; opacity: 1; }
 .resto-banner--flame .resto-banner-ico { color: #ff9d3c; opacity: 1; }
 .resto-card-head {
     display: flex;
@@ -1308,6 +1310,12 @@ a.glightbox img.room-image { cursor: zoom-in; }
 .resto-locality i { color: var(--primary-color); margin-right: 3px; }
 .resto-cuisine { color: #555; font-size: 0.92rem; margin: 0; }
 .resto-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.resto-price {
+    background-color: #fff4d6;
+    border-color: #e0b84a;
+    color: #7a5b00;
+    letter-spacing: 0.06em;
+}
 .resto-hours { font-size: 0.85rem; color: #444; display: inline-flex; align-items: flex-start; gap: 6px; }
 .resto-hours i { color: var(--primary-color); margin-top: 3px; }
 .resto-note {
@@ -1329,3 +1337,120 @@ a.glightbox img.room-image { cursor: zoom-in; }
 }
 .resto-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .resto-actions .btn-activity { font-size: 0.82rem; padding: 7px 12px; }
+
+/* =========================================
+   OÙ MANGER : BANDEAU DU JOUR + ACCÈS DIRECT
+   ========================================= */
+
+/* position:sticky est inerte sous un parent qui défile, et body porte
+   overflow-x:hidden — ce qui fait justement de lui un conteneur de défilement.
+   `clip` rogne à l'identique sans créer ce conteneur ; sous @supports pour que
+   les navigateurs qui l'ignorent gardent exactement le comportement actuel. */
+@supports (overflow-x: clip) {
+    body.page-oumanger { overflow-x: clip; }
+}
+
+/* Le menu fixe (60px) et la barre de puces recouvrent le haut de l'écran. */
+#restaurants-section,
+#foodtrucks-section { scroll-margin-top: 130px; }
+
+/* Les food trucks changent tous les jours : c'est l'information périssable de
+   la page, donc elle passe en tête. Les restaurants, eux, ne bougent pas. */
+.ft-tonight {
+    text-align: left;
+    background: linear-gradient(135deg, #eef6fb, #e3eef6);
+    border: 1px solid #cfe2ee;
+    border-left: 5px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 1.2rem;
+}
+.ft-tonight-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--font-title);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+.ft-tonight-head i { font-size: 1.05rem; }
+.ft-tonight-day {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6b7b85;
+}
+.ft-tonight-list { display: flex; flex-wrap: wrap; gap: 12px; }
+.ft-tonight-item {
+    flex: 1 1 260px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #d9e6ef;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.ft-tonight-who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.ft-tonight-name { font-weight: 700; color: var(--text-color); }
+.ft-tonight-loc {
+    flex-basis: 100%;
+    font-size: 0.85rem;
+    color: #666;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+.ft-tonight-loc i { color: var(--primary-color); margin-top: 3px; }
+.ft-tonight-call { flex-shrink: 0; font-size: 0.82rem; padding: 8px 12px; white-space: nowrap; }
+.ft-tonight-empty { color: #666; font-size: 0.92rem; margin: 0; }
+.ft-tonight-more {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--primary-color);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.ft-tonight-more:hover { text-decoration: underline; }
+
+/* Puces d'accès direct : ce sont des ancres, pas des onglets — un clic pour
+   sauter d'une section à l'autre, mais rien n'est jamais masqué. */
+.eat-jump {
+    position: sticky;
+    top: 60px;                      /* hauteur du menu fixe */
+    z-index: 900;                   /* le menu (1000) reste au-dessus */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0;
+    margin-bottom: 1rem;
+    background: var(--bg-color);
+    box-shadow: 0 8px 12px -10px rgba(0, 0, 0, 0.25);
+}
+.eat-jump-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    color: #444;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.eat-jump-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+.eat-jump-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+
+@media (max-width: 600px) {
+    .ft-tonight { padding: 14px 16px; }
+    .ft-tonight-call { width: 100%; justify-content: center; }
+    .eat-jump-btn { padding: 8px 14px; font-size: 0.85rem; }
+}

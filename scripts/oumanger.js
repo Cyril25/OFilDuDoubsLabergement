@@ -123,6 +123,58 @@
     }
     renderDay(todayIdx);
 
+    // --- Bandeau du jour : qui est là aujourd'hui, sans avoir à descendre ---
+    // Les food trucks tournent d'un jour à l'autre : c'est l'information périssable
+    // de la page, donc elle est en tête. Les restaurants, eux, ne bougent pas.
+    const tonight = document.getElementById('ft-tonight');
+    if (tonight) {
+        const today = schedule[todayIdx] || [];
+        const items = today.map(entry => {
+            const tr = trucks[entry.t];
+            if (!tr) return '';
+            const isLab = /^Labergement/i.test(entry.loc);
+            return ''
+                + '<div class="ft-tonight-item">'
+                +   '<div class="ft-tonight-who">'
+                +     '<span class="ft-tonight-name">' + tr.name + '</span>'
+                +     (isLab ? '<span class="ft-badge-village"><i class="fas fa-walking"></i> ' + (T.ft_at_village || 'Au village') + '</span>' : '')
+                +     '<span class="ft-tonight-loc"><i class="fas fa-map-marker-alt"></i> ' + entry.loc + '</span>'
+                +   '</div>'
+                +   '<a class="btn-activity btn-maps ft-tonight-call" href="' + telHref(tr.phone) + '"><i class="fas fa-phone"></i> ' + fmtPhone(tr.phone) + '</a>'
+                + '</div>';
+        }).join('');
+
+        tonight.innerHTML = ''
+            + '<div class="ft-tonight-head">'
+            +   '<i class="fas fa-truck"></i> ' + (T.ft_tonight_title || 'Les food trucks du jour')
+            +   '<span class="ft-tonight-day">' + dayName(todayIdx) + '</span>'
+            + '</div>'
+            + (items
+                ? '<div class="ft-tonight-list">' + items + '</div>'
+                : '<p class="ft-tonight-empty">' + (T.ft_tonight_none || "Aucun food truck prévu aujourd'hui.") + '</p>')
+            + '<a class="ft-tonight-more" href="#foodtrucks-section">'
+            +   (T.ft_directory_title || 'Tous nos food trucks') + ' <i class="fas fa-arrow-down"></i>'
+            + '</a>';
+        tonight.hidden = false;
+    }
+
+    // --- Puces d'accès direct : surlignage de la section où l'on se trouve ---
+    const jumpBtns = Array.from(document.querySelectorAll('.eat-jump-btn'));
+    if (jumpBtns.length) {
+        const targets = jumpBtns.map(a => document.querySelector(a.getAttribute('href')));
+        const spy = () => {
+            // Ligne de mire sous le menu fixe (60px) et la barre de puces.
+            const line = window.scrollY + 140;
+            let current = 0;
+            targets.forEach((el, i) => {
+                if (el && el.getBoundingClientRect().top + window.scrollY <= line) current = i;
+            });
+            jumpBtns.forEach((a, i) => a.classList.toggle('active', i === current));
+        };
+        window.addEventListener('scroll', spy, { passive: true });
+        spy();
+    }
+
     directory.innerHTML = Object.keys(trucks)
         .sort((a, b) => trucks[a].name.localeCompare(trucks[b].name, 'fr'))
         .map(directoryCard)
@@ -142,7 +194,7 @@
         { id: 'lelac',     name: 'Le Lac',                 loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' },
         { id: 'flambee',   name: 'La Flambée',             loc: 'Malbuisson',               phone: '0602098820', website: null,                            dist: '~4,5 km / 5 min' },
         { id: 'petiteechelle', name: 'La Petite Échelle', loc: "Rochejean (Mont d'Or)",    phone: '0642558887', website: 'https://lapetiteechellejura.site', dist: '~16 km / 30 min' },
-        { id: 'maisondescimes', name: 'La Maison des Cimes', loc: 'Malbuisson',            phone: null,         website: null,                            dist: '~4,5 km / 5 min' }
+        { id: 'tabledescimes', name: 'La Table des Cimes', loc: 'Malbuisson',             phone: '0381894242', website: 'https://www.lamaisondescimes.com', dist: '~4,5 km / 5 min', price: '€€€€' }
     ];
 
     // Bannières (photos Tourinsoft/Decibelles). Restos sans photo fiable → placeholder décoratif.
@@ -182,7 +234,7 @@
         const img = restoImg[r.id];
         // Icône/variante du placeholder selon l'établissement
         let phIco = 'fa-utensils', phVariant = '';
-        if (r.id === 'maisondescimes') { phIco = 'fa-hourglass-half'; phVariant = ' resto-banner--soon'; }   // en attente d'ouverture
+        if (r.id === 'tabledescimes')  { phIco = 'fa-fire';           phVariant = ' resto-banner--gastro'; } // gastronomique, tout au feu de bois
         else if (r.id === 'flambee')   { phIco = 'fa-fire';           phVariant = ' resto-banner--flame'; }   // « La Flambée »
         const banner = '<div class="resto-banner' + phVariant + '">'
             + (img ? '<img src="' + img + '" alt="' + r.name + '" loading="lazy" onerror="this.remove()">' : '')
@@ -196,6 +248,7 @@
             +   '<p class="resto-cuisine">' + cuisine + '</p>'
             +   '<div class="resto-meta">'
             +     '<span class="t-badge"><i class="fas ' + distIcon + '"></i> ' + r.dist + '</span>'
+            +     (r.price ? '<span class="t-badge resto-price" title="' + (T.resto_price_high || 'Prix élevés') + '">' + r.price + '</span>' : '')
             +     '<span class="resto-hours"><i class="far fa-clock"></i> ' + hours + '</span>'
             +   '</div>'
             +   (note ? '<p class="resto-note' + (warn ? ' resto-note--warning' : '') + '">' + note + '</p>' : '')
@@ -217,6 +270,7 @@
                 "address": { "@type": "PostalAddress", "addressLocality": r.loc, "addressRegion": "Bourgogne-Franche-Comté", "addressCountry": "FR" }
             };
             if (r.phone) it.telephone = tel(r.phone);
+            if (r.price) it.priceRange = r.price;
             if (r.website) it.url = r.website;
             const cuisine = T['resto_' + r.id + '_cuisine']; if (cuisine) it.description = cuisine;
             items.push({ "@type": "ListItem", "position": pos++, "item": it });
