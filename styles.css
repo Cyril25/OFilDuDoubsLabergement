@@ -1288,6 +1288,7 @@ a.glightbox img.room-image { cursor: zoom-in; }
 }
 .resto-banner-ico { font-size: 2.6rem; color: #fff; opacity: .9; }
 .resto-banner--flame { background: linear-gradient(135deg, #4a0f12, #7a1a1a); }
+.resto-banner--soon { background: linear-gradient(135deg, #e9d8b0, #cbb07a); }
 /* Table gastronomique, cuisine au feu de bois : vert profond et or. */
 .resto-banner--gastro { background: linear-gradient(135deg, #16281c, #3f3115); }
 .resto-banner--gastro .resto-banner-ico { color: #e0b64a; opacity: 1; }

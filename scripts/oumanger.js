@@ -194,7 +194,8 @@
         { id: 'lelac',     name: 'Le Lac',                 loc: 'Malbuisson',               phone: '0381693480', website: 'https://complexe-le-lac.fr',      dist: '~4,5 km / 5 min' },
         { id: 'flambee',   name: 'La Flambée',             loc: 'Malbuisson',               phone: '0602098820', website: null,                            dist: '~4,5 km / 5 min' },
         { id: 'petiteechelle', name: 'La Petite Échelle', loc: "Rochejean (Mont d'Or)",    phone: '0642558887', website: 'https://lapetiteechellejura.site', dist: '~16 km / 30 min' },
-        { id: 'tabledescimes', name: 'La Table des Cimes', loc: 'Malbuisson',             phone: '0381894242', website: 'https://www.lamaisondescimes.com', dist: '~4,5 km / 5 min', price: '€€€€' }
+        { id: 'tabledescimes', name: 'La Table des Cimes', loc: 'Malbuisson',             phone: '0381894242', website: 'https://www.lamaisondescimes.com', dist: '~4,5 km / 5 min', price: '€€€€' },
+        { id: 'bistrotbucherons', name: 'Le Bistrot des Bûcherons', loc: 'Malbuisson',      phone: '0381894242', website: 'https://www.lamaisondescimes.com', dist: '~4,5 km / 5 min' }
     ];
 
     // Bannières (photos Tourinsoft/Decibelles). Restos sans photo fiable → placeholder décoratif.
@@ -207,6 +208,7 @@
         remise: BASE_IMG + '315001759-11.jpg',
         ferme: BASE_IMG + 'Restaurant-A-la-Ferme--salle-en-piere-II--Pat.Sch.-.jpg',
         royal: '/images/royal-pizza.jpg',
+        tabledescimes: '/images/table-des-cimes.jpg',
         flambee: '/images/la-flambee.webp',
         fromage: BASE_IMG + 'resto31.jpg',
         boissaude: BASE_IMG + '314020385-8.jpg',
@@ -235,6 +237,7 @@
         // Icône/variante du placeholder selon l'établissement
         let phIco = 'fa-utensils', phVariant = '';
         if (r.id === 'tabledescimes')  { phIco = 'fa-fire';           phVariant = ' resto-banner--gastro'; } // gastronomique, tout au feu de bois
+        else if (r.id === 'bistrotbucherons') { phIco = 'fa-hourglass-half'; phVariant = ' resto-banner--soon'; } // en attente d'ouverture
         else if (r.id === 'flambee')   { phIco = 'fa-fire';           phVariant = ' resto-banner--flame'; }   // « La Flambée »
         const banner = '<div class="resto-banner' + phVariant + '">'
             + (img ? '<img src="' + img + '" alt="' + r.name + '" loading="lazy" onerror="this.remove()">' : '')
