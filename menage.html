@@ -1134,13 +1134,14 @@
 
     <script>
         // =============================================
-        // PERSISTANCE (Cloudflare Worker KV uniquement)
+        // PERSISTANCE (Cloudflare Worker : D1 pour les ménages, KV pour le reste)
         // =============================================
 
         // URL du Worker Cloudflare pour l'état partagé.
         const STATE_API_URL = 'https://menage-state.cyril-samson41.workers.dev/';
         const DATES_API_URL = STATE_API_URL + 'dates';
         const MESSAGES_API_URL = STATE_API_URL + 'messages';
+        const MENAGES_API_URL = STATE_API_URL + 'menages';
 
         // Firebase Auth
         firebase.initializeApp({
@@ -1153,95 +1154,118 @@
         });
         const auth = firebase.auth();
 
-        // Cache mémoire de l'état (évite les lectures répétées)
-        let cachedState = null;
+        // ⚠ UN MÉNAGE EST RANGÉ SOUS LA DATE D'ARRIVÉE QU'IL PRÉPARE.
+        // Jusqu'au 14/09/2026, il l'était sous `slot_<début>_<fin>`. Le début
+        // est calculé (dernier départ connu) et a bougé plusieurs fois pour des
+        // raisons extérieures (purge Airbnb, blocage du jour même) : la clé
+        // changeait et la validation « sautait ». L'arrivée ne bouge pas.
+        //
+        // Et la page n'envoie plus jamais « tout l'état » : chaque clic est une
+        // action précise (fait, paiement, infos) que le serveur applique sur la
+        // ligne concernée. Un onglet resté ouvert trois jours ne peut plus
+        // effacer ce que quelqu'un d'autre a saisi entre-temps.
 
-        // Charge l'état depuis le serveur distant
-        async function loadStateFromServer() {
-            const response = await fetch(STATE_API_URL);
-            if (!response.ok) throw new Error('Impossible de charger l\'état depuis le serveur');
-            const state = await response.json();
-            cachedState = state;
-            return state;
+        // Ménages connus du serveur, par date d'arrivée (AAAA-MM-JJ)
+        let menagesParArrivee = {};
+        // Dernier départ mémorisé par le worker ('AAAA-MM-JJT11:00:00')
+        let dernierDepartServeur = null;
+
+        async function loadMenagesFromServer() {
+            const response = await fetch(MENAGES_API_URL, { cache: 'no-store' });
+            if (!response.ok) throw new Error('Impossible de charger les ménages depuis le serveur');
+            const data = await response.json();
+            menagesParArrivee = {};
+            for (const menage of data.menages || []) menagesParArrivee[menage.arrivee] = menage;
+            dernierDepartServeur = data.dernierDepart || null;
         }
 
-        // Sauvegarde l'état sur le serveur distant
-        async function saveStateToServer(state) {
-            cachedState = state;
-            await fetch(STATE_API_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(state),
+        // Envoie une action au serveur puis recharge la liste complète, pour
+        // afficher aussi ce que les autres ont saisi entre-temps.
+        // Une erreur est levée (et affichée) : un clic qui n'a pas été
+        // enregistré ne doit jamais avoir l'air de l'être.
+        async function menageApi(method, chemin, body, options) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (options && options.admin) {
+                const user = auth.currentUser;
+                if (!user) throw new Error('Non connecté');
+                headers['Authorization'] = 'Bearer ' + await user.getIdToken();
+            }
+            const response = await fetch(MENAGES_API_URL + chemin, {
+                method,
+                headers,
+                body: body ? JSON.stringify(body) : undefined
             });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(data.error || ('Erreur serveur (' + response.status + ')'));
+            await loadMenagesFromServer();
+            return data;
         }
 
-        // Accès synchrone à l'état en cache (pour le rendu)
-        function getState() {
-            return cachedState || {};
+        // Exécute une action ; en cas d'échec, prévient et réaffiche l'état réel
+        async function actionMenage(action) {
+            try {
+                await action();
+            } catch (e) {
+                alert('Non enregistré : ' + e.message);
+                await loadMenagesFromServer().catch(() => {});
+            }
         }
 
-        // Génère un identifiant unique pour un créneau basé sur ses dates.
-        // Si le iCal change (nouvelle résa insérée), les fingerprints changent
-        // => les anciens statuts "fait" ne s'appliquent plus => diff automatique.
-        function slotFingerprint(slot) {
-            const startDate = new Date(slot.start).toISOString().split('T')[0];
-            const endDate = new Date(slot.end).toISOString().split('T')[0];
-            return `slot_${startDate}_${endDate}`;
+        function isoDate(dateLike) {
+            return new Date(dateLike).toISOString().split('T')[0];
+        }
+
+        // Date d'arrivée préparée par un créneau (= sa fin) : l'identifiant du ménage
+        function slotArrivee(slot) {
+            return isoDate(slot.end);
+        }
+
+        function getMenage(arrivee) {
+            return menagesParArrivee[arrivee] || null;
         }
 
         // Liste des prestataires
         const CLEANERS = ['Fanny & Lolita', 'Fanny', 'Lolita', 'Nathalie', 'Autre'];
 
-        async function toggleSlotStatus(fingerprint, slot, doneBy) {
-            const state = getState();
-            const current = state[fingerprint];
-            const isDone = current && current.status === 'done';
-
-            const newEntry = {
-                status: isDone ? 'todo' : 'done',
-                updatedAt: new Date().toISOString(),
-                doneBy: isDone ? '' : (doneBy || ''),
-                startDate: new Date(slot.start).toISOString().split('T')[0],
-                endDate: new Date(slot.end).toISOString().split('T')[0]
-            };
-            // Conserver paidAt si on revalide, supprimer si on annule
-            if (!isDone && current && current.paidAt) {
-                newEntry.paidAt = current.paidAt;
+        async function toggleSlotStatus(arrivee, slot, doneBy) {
+            const menage = getMenage(arrivee);
+            if (menage && menage.fait_le) {
+                await menageApi('DELETE', `/${arrivee}/fait`);
+            } else {
+                await menageApi('POST', `/${arrivee}/fait`, { par: doneBy || '', debut: isoDate(slot.start) });
             }
-            state[fingerprint] = newEntry;
-
-            await saveStateToServer(state);
-            return state[fingerprint].status;
         }
 
-        function getSlotStatus(fingerprint) {
-            const state = getState();
-            return (state[fingerprint] && state[fingerprint].status) || 'todo';
+        function getSlotStatus(arrivee) {
+            const menage = getMenage(arrivee);
+            return menage && menage.fait_le ? 'done' : 'todo';
         }
 
-        function getSlotDoneDate(fingerprint) {
-            const state = getState();
-            if (state[fingerprint] && state[fingerprint].status === 'done' && state[fingerprint].updatedAt) {
-                return new Date(state[fingerprint].updatedAt).toLocaleDateString('fr-FR');
-            }
-            return null;
+        function getSlotDoneDate(arrivee) {
+            const menage = getMenage(arrivee);
+            return menage && menage.fait_le ? new Date(menage.fait_le).toLocaleDateString('fr-FR') : null;
         }
 
-        function getSlotDoneBy(fingerprint) {
-            const state = getState();
-            return (state[fingerprint] && state[fingerprint].doneBy) || '';
+        function getSlotDoneBy(arrivee) {
+            const menage = getMenage(arrivee);
+            return (menage && menage.fait_par) || '';
         }
 
-        // Info créneau (nb personnes + commentaire), clé = date de fin du slot
-        function getSlotInfoKey(slot) {
-            const endDate = new Date(slot.end).toISOString().split('T')[0];
-            return `info_${endDate}`;
+        // Info créneau (nb personnes + commentaire), clé = date d'arrivée.
+        // Même forme qu'avant la refonte, pour ne rien changer au rendu.
+        function getMenageInfo(arrivee) {
+            const menage = getMenage(arrivee);
+            if (!menage) return {};
+            const info = {};
+            if (menage.nb_personnes) info.nbPersons = menage.nb_personnes;
+            if (menage.consigne) info.comment = menage.consigne;
+            if (menage.langue) info.lang = menage.langue;
+            if (menage.voyageurs) info.voyageurs = menage.voyageurs;
+            return info;
         }
 
         function getSlotInfo(slot) {
-            const state = getState();
-            const key = getSlotInfoKey(slot);
-            return state[key] || {};
+            return getMenageInfo(slotArrivee(slot));
         }
 
         // ⚠ `voyageurs` et `comment` ne s'adressent PAS au meme public.
@@ -1255,16 +1279,12 @@
         // prenom dans les consignes de menage, et une consigne de menage
         // dans un message d'accueil.
         async function saveSlotInfo(slot, nbPersons, comment, lang, voyageurs) {
-            const state = getState();
-            const key = getSlotInfoKey(slot);
-            const existing = state[key] || {};
-            state[key] = {
-                nbPersons: nbPersons || null,
-                comment: comment || '',
-                lang: lang || existing.lang || 'fr',
+            await menageApi('PUT', `/${slotArrivee(slot)}/infos`, {
+                nbPersonnes: nbPersons || null,
+                consigne: comment || '',
+                langue: lang || 'fr',
                 voyageurs: voyageurs || ''
-            };
-            await saveStateToServer(state);
+            }, { admin: true });
         }
 
         const LANG_OPTIONS = [
@@ -1349,7 +1369,7 @@
         // Chargement parallèle : état distant + flux iCal + dates admin
         async function init() {
             const [_, icalResponse, datesData] = await Promise.all([
-                loadStateFromServer(),
+                loadMenagesFromServer(),
                 fetch('https://menage-state.cyril-samson41.workers.dev/ical'),
                 loadDatesFromServer()
             ]);
@@ -1365,53 +1385,44 @@
             currentIcalEvents = events;
             currentCleaningSlots = calculateCleaningSlots(events);
 
-            // Enregistre les fingerprints actuels pour la détection de changements
-            await markCurrentSlots(currentCleaningSlots);
-
             updateCalendar(currentCleaningSlots);
             updateCleaningSlotsList(currentCleaningSlots);
             updatePastSlotsList();
+
+            // Déclare les créneaux calculés, pour que l'historique garde aussi
+            // ceux qui n'ont jamais été validés. Le serveur n'écrit que la date
+            // de début et ne touche jamais à une saisie.
+            await markCurrentSlots(currentCleaningSlots);
         }
 
-        init().catch(error => console.error('Erreur initialisation:', error));
+        init().catch(error => {
+            console.error('Erreur initialisation:', error);
+            const summary = document.getElementById('status-summary');
+            if (summary) summary.textContent = 'Erreur de chargement : recharger la page.';
+        });
 
-        // Enregistre les créneaux actuels et nettoie les slots obsolètes
+        // Un onglet laissé ouvert (téléphone en veille, onglet oublié) affiche
+        // un état et une date du jour périmés. Au retour sur la page après une
+        // longue absence ou un changement de jour, on recharge tout.
+        const pageChargeeLe = Date.now();
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible') return;
+            if (getLocalISODate() !== todayISO || Date.now() - pageChargeeLe > 30 * 60 * 1000) {
+                location.reload();
+            }
+        });
+
+        // Enregistre les créneaux actuels (lignes manquantes, début à jour)
         async function markCurrentSlots(slots) {
-            const state = getState();
-            let changed = false;
-
-            // 1. Ajouter les nouveaux slots
-            const currentFingerprints = new Set();
-            for (const slot of slots) {
-                const fp = slotFingerprint(slot);
-                currentFingerprints.add(fp);
-                if (!state[fp]) {
-                    state[fp] = {
-                        status: 'todo',
-                        updatedAt: new Date().toISOString(),
-                        startDate: new Date(slot.start).toISOString().split('T')[0],
-                        endDate: new Date(slot.end).toISOString().split('T')[0]
-                    };
-                    changed = true;
-                }
+            if (!slots.length) return;
+            try {
+                await menageApi('POST', '/synchro', {
+                    creneaux: slots.map(slot => ({ arrivee: slotArrivee(slot), debut: isoDate(slot.start) }))
+                });
+                updatePastSlotsList();
+            } catch (e) {
+                console.warn('Synchro des créneaux impossible :', e.message);
             }
-
-            // 2. Supprimer les slots qui ne correspondent à aucun créneau actuel
-            //    (sauf les slots "done" passés, conservés pour l'historique)
-            for (const key of Object.keys(state)) {
-                if (!key.startsWith('slot_')) continue;
-                if (currentFingerprints.has(key)) continue;
-
-                // Garder tout slot dont la date de début est passée ou aujourd'hui
-                // (une fois démarré, on ne supprime jamais — même si le iCal change entre-temps)
-                const slotData = state[key];
-                if (slotData.startDate && slotData.startDate <= todayISO) continue;
-
-                delete state[key];
-                changed = true;
-            }
-
-            if (changed) await saveStateToServer(state);
         }
 
         // =============================================
@@ -1444,20 +1455,14 @@
 
                         if (start > sixMonthsLater) return;
 
-                        // Bloc "Not available" d'1 jour = dernier jour d'occupation
-                        // DTEND (exclusif) = jour du checkout → on l'utilise comme date de départ
-                        // Seulement si le checkout est dans le passé ou aujourd'hui
-                        // (un bloc futur peut être un blocage Airbnb, pas un vrai turnover)
+                        // ⚠ Un bloc "Not available" d'1 jour n'est NI un séjour NI un départ.
+                        // Quand le logement est vide, Airbnb exporte la journée en cours
+                        // ainsi (J → J+1) ; Booking exporte aussi des `CLOSED - Not available`
+                        // d'un jour. Les compter comme départs a fait avancer le début des
+                        // créneaux d'un jour chaque jour (septembre 2026). Même règle que le
+                        // worker (updateCheckoutsFromFeed) et le notifieur Telegram.
                         const durationDays = (end - start) / (1000 * 60 * 60 * 24);
                         if (durationDays <= 1 && summary.includes('Not available')) {
-                            const checkoutISO = formatDate(endDate[1]) + 'T11:00:00';
-                            const checkoutDate = new Date(checkoutISO);
-                            // Ignorer les blocs futurs (blocages Airbnb, pas de vrais turnovers)
-                            if (checkoutDate <= today) {
-                                if (!lastPastCheckout || checkoutISO > lastPastCheckout) {
-                                    lastPastCheckout = checkoutISO;
-                                }
-                            }
                             return;
                         }
 
@@ -1487,24 +1492,11 @@
                 });
                 events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-                // Persister lastPastCheckout dans le KV pour survivre à la suppression
-                // des événements passés par Airbnb
-                if (lastPastCheckout) {
-                    // On a trouvé un checkout dans le iCal → le sauvegarder,
-                    // sauf si le KV (alimenté aussi par le worker) est plus récent
-                    const st = getState();
-                    if (st._lastCheckout && st._lastCheckout > lastPastCheckout) {
-                        lastPastCheckout = st._lastCheckout;
-                    } else if (st._lastCheckout !== lastPastCheckout) {
-                        st._lastCheckout = lastPastCheckout;
-                        saveStateToServer(st);
-                    }
-                } else {
-                    // Airbnb a supprimé les événements passés → récupérer depuis le KV
-                    const st = getState();
-                    if (st._lastCheckout) {
-                        lastPastCheckout = st._lastCheckout;
-                    }
+                // Airbnb purge les séjours terminés de son flux : le worker mémorise
+                // les départs à chaque lecture du flux (dernierDepart). On prend le
+                // plus récent des deux. La page n'écrit plus rien ici.
+                if (dernierDepartServeur && (!lastPastCheckout || dernierDepartServeur > lastPastCheckout)) {
+                    lastPastCheckout = dernierDepartServeur;
                 }
 
                 if (events.length > 0) {
@@ -1623,15 +1615,14 @@
         // Layout : 2 lignes claires
         //   Ligne 1 (toujours) : statut readonly (Payé le X · 50€ · commentaire)
         //   Ligne 2 (admin)    : date | montant | commentaire | bouton(s)
-        // - key  : clé KV du slot (ex: "slot_<fingerprint>")
+        // - arrivee : date d'arrivée du ménage (AAAA-MM-JJ)
         // - opts.onRefresh : callback de refresh à exécuter après une action
-        function renderPaymentBlock(key, opts) {
+        function renderPaymentBlock(arrivee, opts) {
             const onRefresh = (opts && opts.onRefresh) || function() {};
-            const state = getState();
-            const entry = state[key] || {};
-            const paidAt = entry.paidAt || null;
-            const paidAmount = entry.paidAmount || null;
-            const paidComment = entry.paidComment || '';
+            const entry = getMenage(arrivee) || {};
+            const paidAt = entry.paye_le || null;
+            const paidAmount = entry.montant || null;
+            const paidComment = entry.commentaire_paiement || '';
             const adminMode = isAdmin(auth.currentUser);
 
             const block = document.createElement('div');
@@ -1658,8 +1649,8 @@
                 const detail = document.createElement('span');
                 detail.className = 'payment-detail';
                 const parts = [];
-                if (paidAmount) parts.push(`<span class="payment-amount-value">${paidAmount}€</span>`);
-                if (paidComment) parts.push(`<span class="payment-comment-value">${paidComment}</span>`);
+                if (paidAmount) parts.push(`<span class="payment-amount-value">${escapeHtml(paidAmount)}€</span>`);
+                if (paidComment) parts.push(`<span class="payment-comment-value">${escapeHtml(paidComment)}</span>`);
                 detail.innerHTML = parts.join(' · ');
                 infoWrap.appendChild(detail);
             }
@@ -1697,21 +1688,16 @@
                 const btnGroup = document.createElement('div');
                 btnGroup.className = 'payment-buttons';
 
-                const savePayment = async function(btn, markPaid) {
+                const savePayment = async function(btn) {
+                    if (!dateInput.value) return alert('Date de paiement manquante.');
                     btn.disabled = true;
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    const st = getState();
-                    if (!st[key]) st[key] = {};
-                    if (markPaid) {
-                        st[key].paidAt = new Date(dateInput.value + 'T12:00:00').toISOString();
-                    }
                     const amt = parseFloat(amountInput.value);
-                    if (!isNaN(amt) && amt > 0) st[key].paidAmount = amt;
-                    else delete st[key].paidAmount;
-                    const cmt = commentInput.value.trim();
-                    if (cmt) st[key].paidComment = cmt;
-                    else delete st[key].paidComment;
-                    await saveStateToServer(st);
+                    await actionMenage(() => menageApi('PUT', `/${arrivee}/paiement`, {
+                        le: new Date(dateInput.value + 'T12:00:00').toISOString(),
+                        montant: !isNaN(amt) && amt > 0 ? amt : null,
+                        commentaire: commentInput.value.trim()
+                    }, { admin: true }));
                     onRefresh();
                 };
 
@@ -1719,28 +1705,23 @@
                     const btnPay = document.createElement('button');
                     btnPay.className = 'btn-pay';
                     btnPay.innerHTML = '<i class="fas fa-euro-sign"></i> Payé';
-                    btnPay.addEventListener('click', function() { savePayment(btnPay, true); });
+                    btnPay.addEventListener('click', function() { savePayment(btnPay); });
                     btnGroup.appendChild(btnPay);
                 } else {
                     const btnEdit = document.createElement('button');
                     btnEdit.className = 'btn-pay';
                     btnEdit.innerHTML = '<i class="fas fa-edit"></i> Modifier';
-                    btnEdit.addEventListener('click', function() { savePayment(btnEdit, true); });
+                    btnEdit.addEventListener('click', function() { savePayment(btnEdit); });
                     btnGroup.appendChild(btnEdit);
 
                     const btnUnpay = document.createElement('button');
                     btnUnpay.className = 'btn-unpay';
                     btnUnpay.innerHTML = '<i class="fas fa-times"></i> Annuler';
                     btnUnpay.addEventListener('click', async function() {
+                        if (!confirm('Annuler ce paiement ?')) return;
                         btnUnpay.disabled = true;
                         btnUnpay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        const st = getState();
-                        if (st[key]) {
-                            delete st[key].paidAt;
-                            delete st[key].paidAmount;
-                            delete st[key].paidComment;
-                            await saveStateToServer(st);
-                        }
+                        await actionMenage(() => menageApi('DELETE', `/${arrivee}/paiement`, null, { admin: true }));
                         onRefresh();
                     });
                     btnGroup.appendChild(btnUnpay);
@@ -1763,8 +1744,8 @@
                 const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
                 const isWeekendSlot = slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString();
 
-                const fp = slotFingerprint(slot);
-                const status = getSlotStatus(fp);
+                const arrivee = slotArrivee(slot);
+                const status = getSlotStatus(arrivee);
                 const isDone = status === 'done';
 
                 let className;
@@ -1798,8 +1779,8 @@
             let doneCount = 0;
 
             cleaningSlots.forEach((slot, idx) => {
-                const fp = slotFingerprint(slot);
-                const status = getSlotStatus(fp);
+                const arrivee = slotArrivee(slot);
+                const status = getSlotStatus(arrivee);
                 const isDone = status === 'done';
                 if (isDone) doneCount++;
                 else todoCount++;
@@ -1901,9 +1882,9 @@
                     btnSave.addEventListener('click', async function() {
                         btnSave.disabled = true;
                         btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await saveSlotInfo(slot, parseInt(nbInput.value) || null,
+                        await actionMenage(() => saveSlotInfo(slot, parseInt(nbInput.value) || null,
                             commentInput.value.trim(), langSelect.value,
-                            voyageursInput.value.trim());
+                            voyageursInput.value.trim()));
                         updateCleaningSlotsList(currentCleaningSlots);
                     });
                     infoAdmin.appendChild(btnSave);
@@ -1914,8 +1895,8 @@
                 const slotStarted = slotStart <= now;
 
                 if (isDone) {
-                    const doneDate = getSlotDoneDate(fp);
-                    const doneBy = getSlotDoneBy(fp);
+                    const doneDate = getSlotDoneDate(arrivee);
+                    const doneBy = getSlotDoneBy(arrivee);
 
                     const wrapper = document.createElement('div');
                     wrapper.className = 'slot-done-wrapper';
@@ -1934,9 +1915,10 @@
                     btnUndo.className = 'btn-status is-done';
                     btnUndo.innerHTML = '<i class="fas fa-undo"></i> Annuler ménage';
                     btnUndo.addEventListener('click', async function() {
+                        if (!confirm('Annuler la validation de ce ménage ?')) return;
                         btnUndo.disabled = true;
                         btnUndo.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await toggleSlotStatus(fp, slot, '');
+                        await actionMenage(() => toggleSlotStatus(arrivee, slot, ''));
                         updateCleaningSlotsList(currentCleaningSlots);
                         updateCalendar(currentCleaningSlots);
                         updatePastSlotsList();
@@ -1945,7 +1927,7 @@
                     wrapper.appendChild(row1);
 
                     // === Ligne 2 : statut paiement + actions admin (factorisé) ===
-                    wrapper.appendChild(renderPaymentBlock(fp, {
+                    wrapper.appendChild(renderPaymentBlock(arrivee, {
                         onRefresh: function() {
                             updateCleaningSlotsList(currentCleaningSlots);
                             updatePastSlotsList();
@@ -1971,7 +1953,7 @@
                     btn.addEventListener('click', async function() {
                         btn.disabled = true;
                         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        await toggleSlotStatus(fp, slot, select.value);
+                        await actionMenage(() => toggleSlotStatus(arrivee, slot, select.value));
                         updateCleaningSlotsList(currentCleaningSlots);
                         updateCalendar(currentCleaningSlots);
                         updatePastSlotsList();
@@ -2060,17 +2042,14 @@
             if (!listElement) return;
             listElement.innerHTML = '';
 
-            const state = getState();
-            const now = new Date();
-            const todayStr = getLocalISODate(now);
+            const todayStr = getLocalISODate(new Date());
 
-            // Un créneau est "passé" si sa date de fin est avant aujourd'hui
-            const pastEntries = Object.entries(state)
-                .filter(([key, entry]) => {
-                    if (!key.startsWith('slot_')) return false;
-                    return entry.endDate && entry.endDate < todayStr;
-                })
-                .sort((a, b) => b[1].endDate.localeCompare(a[1].endDate));
+            // Un ménage est "passé" si son arrivée est avant aujourd'hui. Une ligne
+            // qui ne porte que des infos (nb de personnes…) sans créneau connu ni
+            // validation n'est pas un créneau : elle n'apparaît pas ici.
+            const pastEntries = Object.values(menagesParArrivee)
+                .filter(m => m.arrivee < todayStr && (m.debut || m.fait_le || m.paye_le))
+                .sort((a, b) => b.arrivee.localeCompare(a.arrivee));
 
             if (pastEntries.length === 0) {
                 const li = document.createElement('li');
@@ -2082,14 +2061,15 @@
 
             const adminMode = isAdmin(auth.currentUser);
 
-            for (const [key, entry] of pastEntries) {
-                const isDoneEntry = entry.status === 'done';
+            for (const entry of pastEntries) {
+                const arrivee = entry.arrivee;
+                const isDoneEntry = !!entry.fait_le;
                 const li = document.createElement('li');
                 li.classList.add(isDoneEntry ? 'done' : 'missed');
 
                 // === Ligne 1 : texte du créneau ===
-                const start = new Date(entry.startDate + 'T12:00:00');
-                const end = new Date(entry.endDate + 'T12:00:00');
+                const start = new Date((entry.debut || arrivee) + 'T12:00:00');
+                const end = new Date(arrivee + 'T12:00:00');
                 const textSpan = document.createElement('span');
                 textSpan.className = 'slot-text';
                 if (start.toDateString() === end.toDateString()) {
@@ -2100,8 +2080,7 @@
                 li.appendChild(textSpan);
 
                 // === Info : langue + nb personnes + commentaire ===
-                const infoKey = `info_${entry.endDate}`;
-                const info = state[infoKey] || {};
+                const info = getMenageInfo(arrivee);
                 const entryLang = LANG_OPTIONS.find(l => l.code === (info.lang || 'fr')) || LANG_OPTIONS[0];
                 if (info.nbPersons || info.comment || info.lang) {
                     const infoDiv = document.createElement('div');
@@ -2134,10 +2113,8 @@
                 if (isDoneEntry) {
                     const doneInfo = document.createElement('span');
                     doneInfo.className = 'done-info';
-                    const doneDate = entry.updatedAt
-                        ? new Date(entry.updatedAt).toLocaleDateString('fr-FR')
-                        : new Date(entry.endDate + 'T12:00:00').toLocaleDateString('fr-FR');
-                    const byText = entry.doneBy ? ` par ${escapeHtml(entry.doneBy)}` : '';
+                    const doneDate = new Date(entry.fait_le).toLocaleDateString('fr-FR');
+                    const byText = entry.fait_par ? ` par ${escapeHtml(entry.fait_par)}` : '';
                     doneInfo.innerHTML = `<i class="fas fa-check-circle"></i> Fait le ${doneDate}${byText}`;
                     statusRow.appendChild(doneInfo);
                 } else {
@@ -2159,25 +2136,24 @@
 
                         const dateValidate = document.createElement('input');
                         dateValidate.type = 'date';
-                        dateValidate.value = entry.endDate;
+                        dateValidate.value = arrivee;
                         actions.appendChild(dateValidate);
 
                         const btnValidate = document.createElement('button');
                         btnValidate.className = 'btn-status todo';
                         btnValidate.innerHTML = '<i class="fas fa-broom"></i> Valider';
                         btnValidate.addEventListener('click', async () => {
+                            if (!dateValidate.value) return alert('Date manquante.');
                             btnValidate.disabled = true;
                             btnValidate.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                            const st = getState();
-                            if (st[key]) {
-                                st[key].status = 'done';
-                                st[key].doneBy = selectBy.value || '';
-                                st[key].updatedAt = new Date(dateValidate.value + 'T12:00:00').toISOString();
-                                await saveStateToServer(st);
-                                updatePastSlotsList();
-                                updateCleaningSlotsList(currentCleaningSlots);
-                                updateCalendar(currentCleaningSlots);
-                            }
+                            await actionMenage(() => menageApi('POST', `/${arrivee}/fait`, {
+                                par: selectBy.value || '',
+                                debut: entry.debut,
+                                le: new Date(dateValidate.value + 'T12:00:00').toISOString()
+                            }, { admin: true }));
+                            updatePastSlotsList();
+                            updateCleaningSlotsList(currentCleaningSlots);
+                            updateCalendar(currentCleaningSlots);
                         });
                         actions.appendChild(btnValidate);
                         statusRow.appendChild(actions);
@@ -2187,7 +2163,7 @@
 
                 // === Ligne paiement (seulement si le créneau est marqué fait) ===
                 if (isDoneEntry) {
-                    li.appendChild(renderPaymentBlock(key, {
+                    li.appendChild(renderPaymentBlock(arrivee, {
                         onRefresh: function() { updatePastSlotsList(); }
                     }));
                 }

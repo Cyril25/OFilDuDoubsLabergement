@@ -18,3 +18,9 @@ enabled = true
 [[kv_namespaces]]
 binding = "MENAGE_KV"
 id = "bbfcd72b152942738e263fdd122320c3"
+
+# Ménages : une ligne par arrivée (schéma : menage-schema.sql)
+[[d1_databases]]
+binding = "DB"
+database_name = "menage"
+database_id = "6e863f2c-8523-415f-a013-9fc66be9e094"
