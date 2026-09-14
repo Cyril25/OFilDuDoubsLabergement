@@ -105,15 +105,40 @@ async function verifyFirebaseToken(idToken) {
 // avant toute visite de la page : en notant les départs à l'avance puis en les
 // promouvant une fois passés, le worker garde un _lastCheckout fiable même si
 // personne n'ouvre la page au bon moment.
+//
+// ⚠ UN BLOCAGE « Not available » D'UN JOUR N'EST PAS UN DÉPART.
+// Quand le logement est vide, Airbnb exporte la journée en cours comme un
+// blocage d'un jour (J → J+1). Pris pour un départ, son DTEND devenait le
+// lendemain un _lastCheckout, qui avançait ainsi d'un jour chaque jour
+// jusqu'à la prochaine arrivée : le créneau ménage changeait de clé et ses
+// validations « sautaient » (11, 12, 13 septembre 2026). Même règle que
+// parseICS dans menage.html et que le notifieur Telegram. Booking exporte
+// aussi des `CLOSED - Not available` d'un jour, écartés par la même règle.
+//
+// L'horizon de 6 mois (celui de la page) écarte les bornes glissantes des
+// plateformes, qui réécrivaient l'état chaque jour sans rien apporter.
+const HORIZON_DEPARTS_JOURS = 183;
+
+function isOneDayBlock(event, start, end) {
+    const summary = (event.match(/SUMMARY:(.*)/) || [])[1] || '';
+    return summary.includes('Not available') && (Date.parse(end) - Date.parse(start)) <= 86400000;
+}
+
 async function updateCheckoutsFromFeed(env, allEvents) {
     const todayParis = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
+    const horizon = new Date(Date.parse(todayParis) + HORIZON_DEPARTS_JOURS * 86400000).toISOString().slice(0, 10);
+    const iso = d => `${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`;
 
     const feedCheckouts = new Set();
     for (const event of allEvents) {
+        const s = event.match(/DTSTART;VALUE=DATE:(\d{8})/);
         const m = event.match(/DTEND;VALUE=DATE:(\d{8})/);
-        if (!m) continue;
-        const d = m[1];
-        feedCheckouts.add(`${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`);
+        if (!s || !m) continue;
+        const start = iso(s[1]);
+        const end = iso(m[1]);
+        if (isOneDayBlock(event, start, end)) continue;
+        if (end > horizon) continue;
+        feedCheckouts.add(end);
     }
 
     const raw = await env.MENAGE_KV.get(KV_KEY);

@@ -1,0 +1,20 @@
+# Worker `menage-state` (état ménage, dates, messages, iCal fusionné…).
+#
+# Déploiement (VPN du travail : le certificat d'inspection doit être fourni à Node) :
+#   $env:NODE_EXTRA_CA_CERTS = "C:\Users\csamson\.claude\secrets\ne-ca-bundle.pem"
+#   npx wrangler deploy -c workers/wrangler.menage-state.toml
+#
+# Les secrets ICAL_AIRBNB et ICAL_BOOKING vivent dans Cloudflare, pas ici :
+# `wrangler deploy` les conserve. Le notifieur Telegram (dépôt Admin) appelle ce
+# worker par liaison de service sous le nom `menage-state` — ne pas le renommer.
+name = "menage-state"
+main = "menage-state-worker.js"
+compatibility_date = "2026-03-13"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[kv_namespaces]]
+binding = "MENAGE_KV"
+id = "bbfcd72b152942738e263fdd122320c3"
