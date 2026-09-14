@@ -26,8 +26,10 @@ const PAGES = {
 };
 const STATIC = Object.keys(PAGES);
 const SKIP_KEYS = new Set(['btn_website', 'btn_maps', 'btn_hours', 'info_min']);
+// Clé = dernier segment du lien. L'accueil est lié par "/" ou "/xx/" (segment vide) : c'est
+// l'URL canonique ; un lien vers index.html créait un doublon aux yeux de Google.
 const hrefKeyMap = {
-  'index.html': 'accueil', 'logement.html': 'logement', 'equipements.html': 'equipements',
+  '': 'accueil', 'index.html': 'accueil', 'logement.html': 'logement', 'equipements.html': 'equipements',
   'dispo.html': 'dispo', 'activites.html': 'activites', 'commerces.html': 'commerces',
   'ou-manger.html': 'oumanger', 'agenda.html': 'agenda', 'contact.html': 'contact',
 };
@@ -73,11 +75,13 @@ const pathFor = (p, lang) => urlFor(p, lang).replace(BASE, '');
 
 function rewriteUrl(val, lang) {
   if (!val) return val;
+  if (val === '/' || /^\/#/.test(val)) return `/${lang}/` + val.slice(1);    // accueil FR -> accueil de la langue
   if (/^(https?:|mailto:|tel:|data:|#|\/\/|\/)/i.test(val)) return val;     // absolu / spécial
   if (/^(images\/|scripts\/)/.test(val) || val === 'styles.css') return '/' + val; // assets -> racine
   const m = val.match(/^([a-z0-9-]+)\.html(#.*)?$/i);                        // lien interne
   if (m) {
     const pg = m[1], frag = m[2] || '';
+    if (pg === 'index') return `/${lang}/${frag}`;
     return STATIC.includes(pg) ? `/${lang}/${pg}.html${frag}` : `/${pg}.html${frag}`;
   }
   return val;
@@ -179,24 +183,46 @@ function patchFr(page) {
 }
 
 // ---------- Sitemap (FR + versions traduites des pages statiques) ----------
-// Priorités des pages FR (les pages dynamiques dispo/agenda restent FR en Phase 1).
 const FR_PAGES = {
   index: 1.0, logement: 0.8, equipements: 0.7, dispo: 0.9, activites: 0.8,
   commerces: 0.7, 'ou-manger': 0.8, agenda: 0.8, contact: 0.6, mentions: 0.2, rando: 0.8,
 };
+const fileFor = (p, lang) => path.join(ROOT, ...(lang === 'fr' ? [] : [lang]), p + '.html');
+
+// ⚠ LASTMOD = DATE DU DERNIER CHANGEMENT RÉEL DE LA PAGE, pas la date du build.
+// Jusqu'au 14/09/2026, chaque run datait les 77 URL du jour : Google finit par ignorer un
+// lastmod toujours faux, et ne sait plus quelles pages repasser. On mémorise l'empreinte de
+// chaque page générée (data/sitemap-lastmod.json, hors des chemins qui déclenchent le
+// workflow) et la date ne change que si l'empreinte change.
+const LASTMOD_PATH = path.join(ROOT, 'data', 'sitemap-lastmod.json');
+
 function writeSitemap() {
   const today = new Date().toISOString().slice(0, 10);
+  let lastmods = {};
+  try { lastmods = JSON.parse(fs.readFileSync(LASTMOD_PATH, 'utf8')); } catch (e) {}
+  const next = {};
   const urls = [];
-  const add = (loc, prio, daily) => urls.push(
-    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>` +
-    (daily ? '\n    <changefreq>daily</changefreq>' : '') +
-    `\n    <priority>${prio.toFixed(1)}</priority>\n  </url>`);
-  for (const [p, prio] of Object.entries(FR_PAGES)) add(urlFor(p, 'fr'), prio, p === 'agenda');
-  for (const p of STATIC) for (const L of LANGS) add(urlFor(p, L), FR_PAGES[p] || 0.6, false);
+  const add = (p, lang, prio, daily) => {
+    const html = fs.readFileSync(fileFor(p, lang), 'utf8');
+    // Une page en noindex n'a rien à faire dans le sitemap (Search Console le signale).
+    if (/<meta\s+name="robots"\s+content="[^"]*noindex/i.test(html)) return;
+    const loc = urlFor(p, lang);
+    const hash = require('crypto').createHash('sha1').update(html.replace(/\r\n/g, '\n')).digest('hex');
+    const prev = lastmods[loc];
+    next[loc] = prev && prev.hash === hash ? prev : { hash, date: today };
+    urls.push(
+      `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${next[loc].date}</lastmod>` +
+      (daily ? '\n    <changefreq>daily</changefreq>' : '') +
+      `\n    <priority>${prio.toFixed(1)}</priority>\n  </url>`);
+  };
+  for (const [p, prio] of Object.entries(FR_PAGES)) add(p, 'fr', prio, p === 'agenda');
+  for (const p of STATIC) for (const L of LANGS) add(p, L, FR_PAGES[p] || 0.6, false);
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.join('\n') + '\n</urlset>\n';
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), xml);
+  fs.writeFileSync(LASTMOD_PATH, JSON.stringify(next, null, 1) + '\n');
+  return urls.length;
 }
 
 async function run() {
@@ -236,7 +262,7 @@ async function run() {
     patchFr(page);
     for (const lang of LANGS) { buildLang(page, lang); n++; }
   }
-  writeSitemap();
-  console.log(`OK : ${STATIC.length} pages FR patchées, ${n} pages traduites générées (${LANGS.join(', ')}), sitemap régénéré.`);
+  const nUrls = writeSitemap();
+  console.log(`OK : ${STATIC.length} pages FR patchées, ${n} pages traduites générées (${LANGS.join(', ')}), sitemap régénéré (${nUrls} URL).`);
 }
 run().catch(e => { console.error('Erreur build-i18n :', e.message); process.exit(1); });

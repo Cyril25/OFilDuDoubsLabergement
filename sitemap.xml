@@ -47,11 +47,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ofildudoubs.fr/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
     <loc>https://ofildudoubs.fr/rando.html</loc>
     <lastmod>2026-09-14</lastmod>
     <priority>0.8</priority>
@@ -265,36 +260,6 @@
     <loc>https://ofildudoubs.fr/pt/contact.html</loc>
     <lastmod>2026-09-14</lastmod>
     <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/en/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/de/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/nl/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/es/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/it/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://ofildudoubs.fr/pt/mentions.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://ofildudoubs.fr/en/agenda.html</loc>

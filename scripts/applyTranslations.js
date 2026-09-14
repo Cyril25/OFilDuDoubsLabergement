@@ -77,6 +77,7 @@ function applyTranslations(lang, pageTranslations) {
     if (typeof menuTranslations !== 'undefined' && menuTranslations[lang]) {
         const menuTranslation = menuTranslations[lang];
         const hrefKeyMap = {
+            '': 'accueil',            // lien "/" ou "/xx/" (URL canonique de l'accueil)
             'index.html': 'accueil',
             'logement.html': 'logement',
             'equipements.html': 'equipements',
