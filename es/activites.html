@@ -916,8 +916,8 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Contours du Doubs
-        fetch('data/doubs.geojson')
+        // Contours du Doubs (chemin absolu : la page est aussi servie depuis /en/, /de/…)
+        fetch('/data/doubs.geojson')
             .then(res => res.json())
             .then(data => {
                 L.geoJSON(data, {
