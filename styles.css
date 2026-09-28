@@ -202,7 +202,7 @@ nav ul li.has-sub .submenu li a:hover { background: rgba(255,255,255,0.1); text-
    3. HEADER & HERO
    ========================================= */
 header.header-principal {
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+    background: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), 
                 url('images/banniere/vue-balcon-2-1920.webp') no-repeat center center;
     background-size: cover;
     background-attachment: fixed;
@@ -219,7 +219,7 @@ header.header-principal {
 
 /* Header 2 (Pages internes) - Version Flexible */
 header.header2 {
-    background: url('images/banniere/vue-balcon-2-1920.webp') no-repeat center center;
+    background: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/vue-balcon-2-1920.webp') no-repeat center center;
     background-size: cover;
     color: white;
     
@@ -314,10 +314,10 @@ section h2 {
         height: 60vh;
         background-attachment: scroll;
         /* Bannière allégée sur mobile (préchargée dans index.html, même media query) */
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('images/banniere/vue-balcon-2-1600.webp');
+        background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/vue-balcon-2-1600.webp');
     }
     header.header2 {
-        background-image: url('images/banniere/vue-balcon-2-1000.webp');
+        background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/vue-balcon-2-1000.webp');
     }
     
     /* Header 2 (Pages) Mobile - CORRECTION TAILLE */
@@ -1553,18 +1553,18 @@ header .header-sub {
 
 /* Bannières des pages de saison (voile sombre : titre lisible sur la neige et le ciel) */
 header.header2.header-hiver {
-    background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url('images/banniere/hiver-metabief-1920.webp');
-    background-position: center 40%;
+    background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/hiver-metabief-1920.webp');
+    background-position: center 22%; /* ciel et crêtes dans le cadre */
     min-height: 300px;
 }
 header.header2.header-ete {
-    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-saint-point-1600.webp');
+    background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/ete-saint-point-1600.webp');
     background-position: center 55%;
     min-height: 300px;
 }
 @media (max-width: 768px) {
-    header.header2.header-hiver { background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url('images/banniere/hiver-metabief-1000.webp'); min-height: 200px; }
-    header.header2.header-ete { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-saint-point-1000.webp'); min-height: 200px; }
+    header.header2.header-hiver { background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/hiver-metabief-1000.webp'); min-height: 200px; }
+    header.header2.header-ete { background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/ete-saint-point-1000.webp'); min-height: 200px; }
 }
 /* Bande de photos sous l'introduction */
 .season-gallery {
@@ -1605,4 +1605,10 @@ header.header2.header-ete {
     .stay-img img { width: 90px; height: 64px; }
     .stay-text { flex: 1 1 60%; }
     .stay-actions { flex: 1 1 100%; flex-direction: row; justify-content: space-between; }
+}
+
+/* Bannières sans voile (choix de Cyril, 28/09) : photo à ses vraies couleurs, lisibilité
+   assurée par une ombre douce derrière le texte (radial-gradient) et une ombre sur les lettres. */
+header h1, header h2, header h3, header p, header .h1-kw {
+    text-shadow: 0 2px 6px rgba(0,0,0,0.75), 0 0 22px rgba(0,0,0,0.45);
 }
