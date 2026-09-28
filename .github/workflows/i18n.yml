@@ -33,6 +33,8 @@ jobs:
       - name: Générer les pages multilingues + sitemap
         env:
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          AZURE_TRANSLATOR_KEY: ${{ secrets.AZURE_TRANSLATOR_KEY }}
+          AZURE_TRANSLATOR_REGION: ${{ secrets.AZURE_TRANSLATOR_REGION }}
         run: node scripts/build-i18n.js
 
       - name: Commit si changement

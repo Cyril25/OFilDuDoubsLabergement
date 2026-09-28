@@ -41,31 +41,17 @@ function loadVar(file, name) {
 }
 const menuTr = loadVar('menu-translations.js', 'menuTranslations');
 
-// --- Traduction SEO (<title> + meta description) via DeepL, avec cache ---
-// Sans DEEPL_API_KEY : on applique seulement le cache existant (titres FR en repli).
-const DEEPL_KEY = process.env.DEEPL_API_KEY || '';
-const DEEPL_LANG = { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' };
+// --- Traduction SEO (<title> + meta description), avec cache ---
+// Même fournisseur que l'agenda (scripts/lib/translate.js : Azure, sinon DeepL). Le cache
+// porte aussi des traductions écrites à la main (titres ciblés par langue) : elles priment.
+// Sans clé, ou si le fournisseur refuse, on garde le cache et le FR en repli : la
+// génération des pages ne doit jamais dépendre de la traduction.
+const { translate, providerName } = require('./lib/translate.js');
 const SEO_CACHE_PATH = path.join(ROOT, 'data', 'i18n-seo-cache.json');
 let seoCache = {};
 try { seoCache = JSON.parse(fs.readFileSync(SEO_CACHE_PATH, 'utf8')); } catch (e) {}
-const seoKey = (lang, text) => lang + '' + text;
+const seoKey = (lang, text) => lang + '\u0001' + text;
 const seoT = (lang, frText) => (frText && seoCache[seoKey(lang, frText)]) || frText || '';
-
-async function deeplBatch(lang, items) { // items: [{key,text}]
-  const base = DEEPL_KEY.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com';
-  const body = new URLSearchParams();
-  body.append('source_lang', 'FR');
-  body.append('target_lang', DEEPL_LANG[lang]);
-  for (const it of items) body.append('text', it.text);
-  const resp = await fetch(base + '/v2/translate', {
-    method: 'POST',
-    headers: { 'Authorization': 'DeepL-Auth-Key ' + DEEPL_KEY, 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  if (!resp.ok) throw new Error('DeepL ' + resp.status + ' : ' + (await resp.text()).slice(0, 200));
-  const json = await resp.json();
-  json.translations.forEach((t, i) => { seoCache[items[i].key] = t.text; });
-}
 
 const urlFor = (p, lang) => {
   if (lang === 'fr') return p === 'index' ? BASE + '/' : `${BASE}/${p}.html`;
@@ -252,19 +238,27 @@ async function run() {
     }
   }
   console.log(`SEO à traduire (hors cache) : ${missing.size} segment(s).`);
-  if (missing.size && DEEPL_KEY) {
+  const fournisseur = providerName();
+  if (missing.size && fournisseur) {
+    console.log('::notice::Traduction SEO via ' + fournisseur + ' : ' + missing.size + ' segment(s).');
     const byLang = {};
     for (const m of missing.values()) (byLang[m.lang] = byLang[m.lang] || []).push(m);
-    for (const lang of Object.keys(byLang)) {
-      const arr = byLang[lang];
-      for (let i = 0; i < arr.length; i += 45) {
-        await deeplBatch(lang, arr.slice(i, i + 45));
-        console.log(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
+    try {
+      for (const lang of Object.keys(byLang)) {
+        const arr = byLang[lang];
+        for (let i = 0; i < arr.length; i += 45) {
+          const lot = arr.slice(i, i + 45);
+          const out = await translate(lot.map(m => m.text), lang);
+          out.forEach((t, j) => { seoCache[lot[j].key] = t; });
+          console.log(`  ${lang}: ${Math.min(i + 45, arr.length)}/${arr.length}`);
+        }
       }
+    } catch (e) {
+      console.log('::warning::Traduction SEO interrompue (' + e.message + ') — manques laissés en FR.');
     }
     fs.writeFileSync(SEO_CACHE_PATH, JSON.stringify(seoCache, null, 0));
   } else if (missing.size) {
-    console.log('DEEPL_API_KEY absente : title/description laissés en FR pour les manques.');
+    console.log('::warning::Aucune clé de traduction : title/description laissés en FR pour les manques.');
   }
 
   let n = 0;
