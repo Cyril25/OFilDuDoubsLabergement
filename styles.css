@@ -220,6 +220,7 @@ header.header-principal {
 /* Header 2 (Pages internes) - Version Flexible */
 header.header2 {
     background: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/vue-balcon-2-1920.webp') no-repeat center center;
+    background-position: center center, center 35%; /* brouillard, sapins et ciel plutôt que les fleurs du premier plan */
     background-size: cover;
     color: white;
     
@@ -318,6 +319,8 @@ section h2 {
     }
     header.header2 {
         background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/vue-balcon-2-1000.webp');
+        background-size: cover, auto 165%; /* mobile : léger zoom pour pouvoir remonter le cadrage */
+        background-position: center center, 62% 25%; /* brouillard et sapins plutôt que les fleurs du premier plan */
     }
     
     /* Header 2 (Pages) Mobile - CORRECTION TAILLE */
