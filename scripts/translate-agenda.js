@@ -35,6 +35,9 @@ try { cache = JSON.parse(fs.readFileSync(cachePath, 'utf8')); } catch (e) {}
 
 const src = (obj) => obj && (obj.fr || obj.en || Object.values(obj)[0]) || '';
 const cacheKey = (lang, text) => lang + SEP + text;
+// Le flux recopie souvent le français dans de/en (rdfs:label) : une « traduction »
+// identique au texte français n'en est pas une, on la traite comme absente.
+const fourni = (obj, lang) => !!obj[lang] && !(obj.fr && obj[lang] === obj.fr);
 
 // 1. Recense les traductions manquantes (texte source + langue cible) non présentes en cache
 const missing = new Map(); // key -> { lang, text }
@@ -43,7 +46,7 @@ function need(obj, targets) {
     const s = src(obj);
     if (!s) return;
     for (const lang of targets) {
-        if (obj[lang]) continue;                 // déjà fourni par le flux
+        if (fourni(obj, lang)) continue;         // déjà fourni par le flux
         const k = cacheKey(lang, s);
         if (cache[k] !== undefined) continue;     // déjà en cache
         missing.set(k, { lang, text: s });
@@ -92,7 +95,7 @@ async function run() {
         if (!obj) return;
         const s = src(obj);
         for (const lang of targets) {
-            if (obj[lang]) continue;
+            if (fourni(obj, lang)) continue;
             const v = cache[cacheKey(lang, s)];
             if (v !== undefined) { obj[lang] = v; filled++; }
         }
