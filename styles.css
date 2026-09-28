@@ -1589,4 +1589,4 @@ header.header2.header-ete {
 .aghome-km { white-space: nowrap; }
 .aghome-title { font-size: 1.02rem; line-height: 1.35; }
 .aghome-place { font-size: 0.88rem; color: #666; margin-top: auto; }
-@media (max-width: 768px) { .aghome-grid { grid-template-columns: 1fr; gap: 10px; } .aghome-card { padding: 12px 14px; gap: 5px; } }
+@media (max-width: 768px) { .aghome-grid { grid-template-columns: 1fr; gap: 10px; } .aghome-card { padding: 12px 14px; gap: 5px; } .aghome-card:nth-child(n+4) { display: none; } }
