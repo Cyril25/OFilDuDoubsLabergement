@@ -52,6 +52,21 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ofildudoubs.fr/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ofildudoubs.fr/en/</loc>
     <lastmod>2026-09-28</lastmod>
     <priority>1.0</priority>
@@ -350,5 +365,95 @@
     <loc>https://ofildudoubs.fr/pt/rando.html</loc>
     <lastmod>2026-09-28</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/en/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/de/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/nl/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/es/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/it/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/pt/situation.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/en/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/de/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/nl/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/es/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/it/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/pt/ete.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/en/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/de/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/nl/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/es/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/it/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ofildudoubs.fr/pt/hiver.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <priority>0.7</priority>
   </url>
 </urlset>

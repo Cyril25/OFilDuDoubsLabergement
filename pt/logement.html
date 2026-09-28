@@ -59,6 +59,7 @@
                 <ul class="submenu">
                     <li><a href="/pt/logement.html">O alojamento</a></li>
                     <li><a href="/pt/equipements.html">Conforto e Equipamento</a></li>
+                    <li><a href="/pt/situation.html">Localização e acesso</a></li>
                 </ul>
             </li>
             <li><a href="/pt/dispo.html">Tarifas e Disponibilidade</a></li>
@@ -67,6 +68,8 @@
                 <ul class="submenu">
                     <li><a href="/pt/activites.html">Atividades</a></li>
                     <li><a href="/pt/rando.html" data-mkey="randonnees">Caminhadas</a></li>
+                    <li><a href="/pt/ete.html">Verão junto aos lagos</a></li>
+                    <li><a href="/pt/hiver.html">Inverno na montanha</a></li>
                     <li><a href="/pt/ou-manger.html">Onde comer</a></li>
                     <li><a href="/pt/commerces.html">Comércio</a></li>
                     <li><a href="/pt/agenda.html">Agenda</a></li>
@@ -97,7 +100,7 @@
     </header>
 
     <main>
-        <p id="introduction" class="intro-text">Descubra o nosso alojamento de charme, concebido para lhe oferecer uma estadia inesquecível em Labergement-Sainte-Marie. Cada divisão foi pensada para aliar conforto, modernidade e convívio, de forma a responder a todas as suas necessidades. O alojamento pode receber até 4 pessoas, ideal para estadias em família ou entre amigos.</p>
+        <p id="introduction" class="intro-text">No centro da aldeia de Labergement-Sainte-Marie, o nosso apartamento de 70 m², classificado com 4 estrelas como alojamento turístico, acolhe até 4 pessoas no primeiro andar de uma residência tranquila. Divisões luminosas, uma grande varanda com vista desafogada para o Doubs e sem vizinhos em frente, dois quartos com cama de casal: tudo foi pensado para descansar depois de um dia no lago de Saint-Point, na Maison de la Réserve ou nas pistas de Métabief.</p>
 
         <section class="room">
             <div class="room-content">
@@ -106,11 +109,11 @@
                     <p id="salon_description">Um espaço luminoso e acolhedor, perfeito para se reunir em família ou entre amigos. Dispõe de uma televisão de grande ecrã para as suas noites de cinema, uma mesa de centro, uma mesa de jantar para 4 pessoas e uma seleção de jogos de tabuleiro para momentos de partilha e descontração. Um espaço interior acolhedor, ideal para recarregar energias após um dia de atividades.</p>
                 </div>
                 <div class="room-images">
-                    <a href="/images/salon.webp" class="glightbox" data-gallery="logement" data-title="Le salon">
-                        <img src="/images/salon.webp" alt="Salon lumineux" class="room-image" loading="lazy">
+                    <a href="/images/salon.webp" class="glightbox" data-gallery="logement" data-title="A sala" id="lnk_salon">
+                        <img src="/images/salon.webp" alt="Sala luminosa com televisão e sofá" class="room-image" id="img_salon" loading="lazy">
                     </a>
-                    <a href="/images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="La salle à manger">
-                        <img src="/images/salle-a-manger.webp" alt="Salle à manger" class="room-image" loading="lazy">
+                    <a href="/images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="A sala de jantar" id="lnk_salle_a_manger">
+                        <img src="/images/salle-a-manger.webp" alt="Sala de jantar com mesa para 4 pessoas" class="room-image" id="img_salle_a_manger" loading="lazy">
                     </a>
                 </div>
             </div>
@@ -122,8 +125,8 @@
                     <h2 id="cuisine_title">A cozinha</h2>
                     <p id="cuisine_description">Uma cozinha moderna e totalmente equipada, ideal para cozinhar com toda a liberdade durante a sua estadia. Inclui forno, micro-ondas, máquina de lavar louça, placa de fogão, frigorífico com congelador, máquina de café de filtro e máquina Nespresso, torradeira, bem como toda a louça e utensílios necessários. Para maior conforto, dispõe também de um aparelho Seb EasyFry, uma máquina de raclette e um aparelho de fondue — perfeito para refeições de convívio após um dia cheio.</p>
                 </div>
-                <a href="/images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="La cuisine">
-                    <img src="/images/cuisine.webp" alt="Cuisine moderne" class="room-image" loading="lazy">
+                <a href="/images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="A cozinha" id="lnk_cuisine">
+                    <img src="/images/cuisine.webp" alt="Cozinha moderna totalmente equipada" class="room-image" id="img_cuisine" loading="lazy">
                 </a>
             </div>
         </section>
@@ -134,8 +137,8 @@
                     <h2 id="chambre_principale_title">O quarto principal</h2>
                     <p id="chambre_principale_description">Um quarto espaçoso com uma cama de casal confortável, decoração elegante e tudo o que é necessário para uma estadia agradável. Dispõe de um grande guarda-roupa, uma cómoda para facilitar a arrumação e uma televisão. Mesas de cabeceira com candeeiros estão dispostas de cada lado da cama para maior conforto. Este quarto beneficia também de acesso direto à varanda para desfrutar do exterior.</p>
                 </div>
-                <a href="/images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="La chambre principale">
-                    <img src="/images/chambre-principale.webp" alt="Chambre principale" class="room-image" loading="lazy">
+                <a href="/images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="O quarto principal" id="lnk_chambre_principale">
+                    <img src="/images/chambre-principale.webp" alt="Quarto principal com cama de casal e acesso à varanda" class="room-image" id="img_chambre_principale" loading="lazy">
                 </a>
             </div>
         </section>
@@ -146,8 +149,8 @@
                     <h2 id="chambre_secondaire_title">O quarto secundário</h2>
                     <p id="chambre_secondaire_description">Um quarto acolhedor, equipado com uma cama de casal, um guarda-roupa e mesas de cabeceira com candeeiros para dois. Ideal para noites repousantes, num ambiente calmo e acolhedor. Este quarto beneficia também de acesso direto à varanda para desfrutar do exterior.</p>
                 </div>
-                <a href="/images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="La chambre secondaire">
-                    <img src="/images/chambre-secondaire.webp" alt="Chambre secondaire" class="room-image" loading="lazy">
+                <a href="/images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="O segundo quarto" id="lnk_chambre_secondaire">
+                    <img src="/images/chambre-secondaire.webp" alt="Segundo quarto com cama de casal" class="room-image" id="img_chambre_secondaire" loading="lazy">
                 </a>
             </div>
         </section>
@@ -158,8 +161,8 @@
                     <h2 id="salle_de_bain_title">A casa de banho</h2>
                     <p id="salle_de_bain_description">Uma casa de banho moderna equipada com banheira para um momento de relaxamento. A iluminação, regulável em intensidade e cor, cria um ambiente calmante. Encontrará toalhas macias, produtos de higiene como champô e gel de banho, bem como um secador de cabelo e uma máquina de lavar roupa para maior comodidade.</p>
                 </div>
-                <a href="/images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="La salle de bain">
-                    <img src="/images/salle-de-bain.webp" alt="Salle de bain" class="room-image" loading="lazy">
+                <a href="/images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="A casa de banho" id="lnk_salle_de_bain">
+                    <img src="/images/salle-de-bain.webp" alt="Casa de banho com banheira" class="room-image" id="img_salle_de_bain" loading="lazy">
                 </a>
             </div>
         </section>
@@ -171,11 +174,11 @@
               <p id="balcon_description">O exterior oferece um espaço agradável com uma sala de estar confortável, perfeito para um aperitivo ao ar livre enquanto desfruta de uma vista excecional. Uma mesa e cadeiras estão disponíveis para refeições para 4 pessoas, e um grelhador elétrico está à sua disposição para deliciosos churrascos. Um local ideal para relaxar e aproveitar os dias de sol.</p>
             </div>
             <div class="room-images">
-              <a href="/images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en été">
-                  <img src="/images/balcon-ete.webp" alt="Balcon été" class="room-image" loading="lazy">
+              <a href="/images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="A varanda no verão" id="lnk_balcon_ete">
+                  <img src="/images/balcon-ete.webp" alt="Varanda no verão com vista para o Doubs e o vale" class="room-image" id="img_balcon_ete" loading="lazy">
               </a>
-              <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en hiver">
-                  <img src="/images/balcon-hiver.webp" alt="Balcon hiver" class="room-image" loading="lazy">
+              <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="A varanda no inverno" id="lnk_balcon_hiver">
+                  <img src="/images/balcon-hiver.webp" alt="Varanda no inverno, vista para o vale com neve" class="room-image" id="img_balcon_hiver" loading="lazy">
               </a>
             </div>
           </div>

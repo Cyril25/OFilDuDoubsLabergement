@@ -59,6 +59,7 @@
                 <ul class="submenu">
                     <li><a href="/nl/logement.html">De accommodatie</a></li>
                     <li><a href="/nl/equipements.html">Comfort en Uitrusting</a></li>
+                    <li><a href="/nl/situation.html">Ligging &amp; bereikbaarheid</a></li>
                 </ul>
             </li>
             <li><a href="/nl/dispo.html">Tarieven en Beschikbaarheid</a></li>
@@ -67,6 +68,8 @@
                 <ul class="submenu">
                     <li><a href="/nl/activites.html">Activiteiten</a></li>
                     <li><a href="/nl/rando.html" data-mkey="randonnees">Wandelingen</a></li>
+                    <li><a href="/nl/ete.html">Zomer aan de meren</a></li>
+                    <li><a href="/nl/hiver.html">Winter in de bergen</a></li>
                     <li><a href="/nl/ou-manger.html">Waar eten</a></li>
                     <li><a href="/nl/commerces.html">Winkels</a></li>
                     <li><a href="/nl/agenda.html">Agenda</a></li>
@@ -97,7 +100,7 @@
     </header>
 
     <main>
-        <p id="introduction" class="intro-text">Ontdek onze charmante accommodatie, ontworpen om u een onvergetelijk verblijf te bieden in Labergement-Sainte-Marie. Elke kamer is zorgvuldig ingericht om comfort, moderniteit en gezelligheid te combineren en aan al uw behoeften te voldoen. De accommodatie is geschikt voor maximaal 4 personen, ideaal voor verblijven met familie of vrienden.</p>
+        <p id="introduction" class="intro-text">In het hart van het dorp Labergement-Sainte-Marie ontvangt ons appartement van 70 m², officieel geklasseerd als 4-sterren vakantiewoning, tot 4 personen op de eerste verdieping van een rustig gebouw. Lichte kamers, een groot balkon met vrij uitzicht op de Doubs zonder inkijk, twee slaapkamers met tweepersoonsbed: alles is gemaakt om tot rust te komen na een dag aan het meer van Saint-Point, in de Maison de la Réserve of op de pistes van Métabief.</p>
 
         <section class="room">
             <div class="room-content">
@@ -106,11 +109,11 @@
                     <p id="salon_description">Een lichte en gastvrije ruimte, perfect om samen te komen met familie of vrienden. Het beschikt over een groot scherm tv voor filmavonden, een kleine salontafel, een eettafel voor 4 personen en een selectie bordspellen voor momenten van delen en ontspanning. Een gezellige binnenruimte, ideaal om te ontspannen na een dag vol activiteiten.</p>
                 </div>
                 <div class="room-images">
-                    <a href="/images/salon.webp" class="glightbox" data-gallery="logement" data-title="Le salon">
-                        <img src="/images/salon.webp" alt="Salon lumineux" class="room-image" loading="lazy">
+                    <a href="/images/salon.webp" class="glightbox" data-gallery="logement" data-title="De woonkamer" id="lnk_salon">
+                        <img src="/images/salon.webp" alt="Lichte woonkamer met tv en bank" class="room-image" id="img_salon" loading="lazy">
                     </a>
-                    <a href="/images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="La salle à manger">
-                        <img src="/images/salle-a-manger.webp" alt="Salle à manger" class="room-image" loading="lazy">
+                    <a href="/images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="De eethoek" id="lnk_salle_a_manger">
+                        <img src="/images/salle-a-manger.webp" alt="Eethoek met tafel voor 4 personen" class="room-image" id="img_salle_a_manger" loading="lazy">
                     </a>
                 </div>
             </div>
@@ -122,8 +125,8 @@
                     <h2 id="cuisine_title">De keuken</h2>
                     <p id="cuisine_description">Een moderne en volledig uitgeruste keuken, ideaal om vrij te koken tijdens uw verblijf. Het omvat een oven, een magnetron, een vaatwasser, een kookplaat, een koelkast met vriesvak, een filterkoffiezetapparaat en een Nespresso-machine, een broodrooster en al het benodigde servies en keukengerei. Voor extra comfort heeft u ook de beschikking over een Seb EasyFry-apparaat, een raclettestel en een fondueset — perfect voor gezellige maaltijden na een drukke dag.</p>
                 </div>
-                <a href="/images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="La cuisine">
-                    <img src="/images/cuisine.webp" alt="Cuisine moderne" class="room-image" loading="lazy">
+                <a href="/images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="De keuken" id="lnk_cuisine">
+                    <img src="/images/cuisine.webp" alt="Moderne, volledig uitgeruste keuken" class="room-image" id="img_cuisine" loading="lazy">
                 </a>
             </div>
         </section>
@@ -134,8 +137,8 @@
                     <h2 id="chambre_principale_title">De hoofdslaapkamer</h2>
                     <p id="chambre_principale_description">Een ruime slaapkamer met een comfortabel tweepersoonsbed, elegante inrichting en alles wat u nodig heeft voor een aangenaam verblijf. Het beschikt over een grote kledingkast, een ladekast voor eenvoudige opslag en een tv. Nachtkastjes met lampen staan aan weerszijden van het bed voor extra comfort. Deze kamer heeft ook directe toegang tot het balkon om van het buitenleven te genieten.</p>
                 </div>
-                <a href="/images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="La chambre principale">
-                    <img src="/images/chambre-principale.webp" alt="Chambre principale" class="room-image" loading="lazy">
+                <a href="/images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="De grote slaapkamer" id="lnk_chambre_principale">
+                    <img src="/images/chambre-principale.webp" alt="Grote slaapkamer met tweepersoonsbed en toegang tot het balkon" class="room-image" id="img_chambre_principale" loading="lazy">
                 </a>
             </div>
         </section>
@@ -146,8 +149,8 @@
                     <h2 id="chambre_secondaire_title">De tweede slaapkamer</h2>
                     <p id="chambre_secondaire_description">Een gezellige slaapkamer uitgerust met een tweepersoonsbed, een kledingkast en nachtkastjes met lampen voor twee personen. Ideaal voor rustgevende nachten in een rustige en warme omgeving. Deze kamer heeft ook directe toegang tot het balkon om van het buitenleven te genieten.</p>
                 </div>
-                <a href="/images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="La chambre secondaire">
-                    <img src="/images/chambre-secondaire.webp" alt="Chambre secondaire" class="room-image" loading="lazy">
+                <a href="/images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="De tweede slaapkamer" id="lnk_chambre_secondaire">
+                    <img src="/images/chambre-secondaire.webp" alt="Tweede slaapkamer met tweepersoonsbed" class="room-image" id="img_chambre_secondaire" loading="lazy">
                 </a>
             </div>
         </section>
@@ -158,8 +161,8 @@
                     <h2 id="salle_de_bain_title">De badkamer</h2>
                     <p id="salle_de_bain_description">Een moderne badkamer uitgerust met een ligbad voor een ontspannend moment. De verlichting, instelbaar in intensiteit en kleur, creëert een rustgevende sfeer. U vindt er zachte handdoeken, toiletartikelen zoals shampoo en douchegel, evenals een haardroger en een wasmachine voor extra gemak.</p>
                 </div>
-                <a href="/images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="La salle de bain">
-                    <img src="/images/salle-de-bain.webp" alt="Salle de bain" class="room-image" loading="lazy">
+                <a href="/images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="De badkamer" id="lnk_salle_de_bain">
+                    <img src="/images/salle-de-bain.webp" alt="Badkamer met ligbad" class="room-image" id="img_salle_de_bain" loading="lazy">
                 </a>
             </div>
         </section>
@@ -171,11 +174,11 @@
               <p id="balcon_description">De buitenruimte biedt een aangename plek met comfortabele zitplaatsen, perfect voor een aperitief in de buitenlucht terwijl u geniet van een uitzonderlijk uitzicht. Een tafel en stoelen zijn beschikbaar om met 4 personen te eten, en een elektrische grill staat tot uw beschikking voor heerlijke barbecues. Een ideale plek om te ontspannen en te genieten van zonnige dagen.</p>
             </div>
             <div class="room-images">
-              <a href="/images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en été">
-                  <img src="/images/balcon-ete.webp" alt="Balcon été" class="room-image" loading="lazy">
+              <a href="/images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Het balkon in de zomer" id="lnk_balcon_ete">
+                  <img src="/images/balcon-ete.webp" alt="Balkon in de zomer met uitzicht op de Doubs en de vallei" class="room-image" id="img_balcon_ete" loading="lazy">
               </a>
-              <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en hiver">
-                  <img src="/images/balcon-hiver.webp" alt="Balcon hiver" class="room-image" loading="lazy">
+              <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Het balkon in de winter" id="lnk_balcon_hiver">
+                  <img src="/images/balcon-hiver.webp" alt="Balkon in de winter, uitzicht op de besneeuwde vallei" class="room-image" id="img_balcon_hiver" loading="lazy">
               </a>
             </div>
           </div>
