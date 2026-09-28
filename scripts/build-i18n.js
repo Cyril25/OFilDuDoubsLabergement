@@ -109,6 +109,12 @@ function buildLang(page, lang) {
   // Réécriture des chemins (assets + liens internes)
   $('[src]').each((i, el) => { const v = $(el).attr('src'); const n = rewriteUrl(v, lang); if (n !== v) $(el).attr('src', n); });
   $('[href]').each((i, el) => { const v = $(el).attr('href'); const n = rewriteUrl(v, lang); if (n !== v) $(el).attr('href', n); });
+  // url(...) dans les styles en ligne (ex. background-image) : même règle que src/href
+  $('[style]').each((i, el) => {
+    const v = $(el).attr('style');
+    const n = v.replace(/url\((['"]?)([^'")]+)\1\)/g, (m, q, u) => `url(${q}${rewriteUrl(u, lang)}${q})`);
+    if (n !== v) $(el).attr('style', n);
+  });
 
   // Traduction du contenu par id
   for (const id of Object.keys(tr)) {
