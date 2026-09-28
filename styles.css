@@ -1558,13 +1558,13 @@ header.header2.header-hiver {
     min-height: 300px;
 }
 header.header2.header-ete {
-    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-belvedere-1600.webp');
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-saint-point-1600.webp');
     background-position: center 55%;
     min-height: 300px;
 }
 @media (max-width: 768px) {
     header.header2.header-hiver { background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url('images/banniere/hiver-metabief-1000.webp'); min-height: 200px; }
-    header.header2.header-ete { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-belvedere-1000.webp'); min-height: 200px; }
+    header.header2.header-ete { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-saint-point-1000.webp'); min-height: 200px; }
 }
 /* Bande de photos sous l'introduction */
 .season-gallery {
