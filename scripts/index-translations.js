@@ -1,5 +1,8 @@
 const dataTranslations = {
     fr: {
+        "img_stars@alt": "Meublé de tourisme 4 étoiles",
+        "img_owners@alt": "Photo des propriétaires Alisson et Cyril",
+        "loc_access": "Distances et accès détaillés",
         "h1_kw": "Meublé de tourisme 4★ à Labergement-Sainte-Marie",
         "facts_title": "Le logement en bref",
         "fact_guests": "Jusqu'à 4 voyageurs",
@@ -55,6 +58,9 @@ const dataTranslations = {
         footer_rights: "Tous droits réservés"
     },
     en: {
+        "img_stars@alt": "4-star rated holiday rental",
+        "img_owners@alt": "Photo of the hosts, Alisson and Cyril",
+        "loc_access": "Detailed distances and directions",
         "h1_kw": "4★ holiday apartment in Labergement-Sainte-Marie",
         "facts_title": "The apartment at a glance",
         "fact_guests": "Up to 4 guests",
@@ -108,6 +114,9 @@ const dataTranslations = {
         footer_rights: "All rights reserved"
     },
     de: {
+        "img_stars@alt": "Mit 4 Sternen klassifizierte Ferienwohnung",
+        "img_owners@alt": "Foto der Gastgeber Alisson und Cyril",
+        "loc_access": "Entfernungen und Anfahrt im Detail",
         "h1_kw": "4★ Ferienwohnung in Labergement-Sainte-Marie",
         "facts_title": "Die Wohnung auf einen Blick",
         "fact_guests": "Bis zu 4 Gäste",
@@ -161,6 +170,9 @@ const dataTranslations = {
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        "img_stars@alt": "Vakantiewoning met 4 sterren",
+        "img_owners@alt": "Foto van de gastheren Alisson en Cyril",
+        "loc_access": "Afstanden en route in detail",
         "h1_kw": "4★ vakantieappartement in Labergement-Sainte-Marie",
         "facts_title": "Het appartement in het kort",
         "fact_guests": "Tot 4 gasten",
@@ -214,6 +226,9 @@ const dataTranslations = {
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        "img_stars@alt": "Alojamiento turístico de 4 estrellas",
+        "img_owners@alt": "Foto de los anfitriones, Alisson y Cyril",
+        "loc_access": "Distancias y acceso en detalle",
         "h1_kw": "Apartamento turístico 4★ en Labergement-Sainte-Marie",
         "facts_title": "El apartamento en resumen",
         "fact_guests": "Hasta 4 huéspedes",
@@ -267,6 +282,9 @@ const dataTranslations = {
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        "img_stars@alt": "Alloggio turistico 4 stelle",
+        "img_owners@alt": "Foto dei proprietari, Alisson e Cyril",
+        "loc_access": "Distanze e accesso in dettaglio",
         "h1_kw": "Appartamento vacanze 4★ a Labergement-Sainte-Marie",
         "facts_title": "L'appartamento in breve",
         "fact_guests": "Fino a 4 ospiti",
@@ -320,6 +338,9 @@ const dataTranslations = {
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        "img_stars@alt": "Alojamento turístico de 4 estrelas",
+        "img_owners@alt": "Fotografia dos anfitriões, Alisson e Cyril",
+        "loc_access": "Distâncias e acesso em detalhe",
         "h1_kw": "Apartamento de férias 4★ em Labergement-Sainte-Marie",
         "facts_title": "O apartamento em resumo",
         "fact_guests": "Até 4 hóspedes",
