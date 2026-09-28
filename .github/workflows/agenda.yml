@@ -99,11 +99,14 @@ jobs:
           AZURE_TRANSLATOR_REGION: ${{ secrets.AZURE_TRANSLATOR_REGION }}
         run: node scripts/translate-agenda.js data/agenda.json data/agenda-i18n-cache.json
 
+      - name: Sélection de la semaine pour l'accueil
+        run: node scripts/build-agenda-home.js data/agenda.json data/agenda-home.json
+
       - name: Commit si l'agenda a changé
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/agenda.json data/agenda-i18n-cache.json
+          git add data/agenda.json data/agenda-i18n-cache.json data/agenda-home.json
           if git diff --cached --quiet; then
             echo "Aucun changement dans l'agenda."
           else
