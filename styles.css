@@ -1563,7 +1563,7 @@ header.header2.header-ete {
     min-height: 300px;
 }
 @media (max-width: 768px) {
-    header.header2.header-hiver { background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/hiver-metabief-1000.webp'); min-height: 200px; }
+    header.header2.header-hiver { background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/hiver-metabief-1600.webp'); min-height: 200px; }
     header.header2.header-ete { background-image: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(0,0,0,0.38), rgba(0,0,0,0) 100%), url('images/banniere/ete-saint-point-1000.webp'); min-height: 200px; }
 }
 /* Bande de photos sous l'introduction */

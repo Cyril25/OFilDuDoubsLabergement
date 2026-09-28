@@ -1,10 +1,10 @@
 const dataTranslations = {
     fr: {
+        "stay_img@alt": "La vue d'O'Fil du Doubs au coucher du soleil",
         "stay_title": "Envie de rester quelques jours ?",
         "stay_desc": "Notre meublé de tourisme 4★ à Labergement-Sainte-Marie accueille jusqu'à 4 personnes, avec un grand balcon face au Doubs, à deux pas des lacs.",
         "stay_btn": "Voir les disponibilités",
         "stay_link": "Découvrir le logement",
-        "stay_img@alt": "Le balcon d'O'Fil du Doubs avec vue sur le Doubs",
         title: "Où manger",
         subtitle: "Restaurants et food trucks autour du logement",
         introduction: "Envie de vous régaler sans cuisiner ? Retrouvez le planning des food trucks qui s'installent chaque jour à Labergement-Sainte-Marie et dans les villages voisins, ainsi que notre sélection de restaurants des environs.",
@@ -103,11 +103,11 @@ const dataTranslations = {
         footer_rights: "Tous droits réservés"
     },
     en: {
+        "stay_img@alt": "The view from O'Fil du Doubs at sunset",
         "stay_title": "Fancy staying a few days?",
         "stay_desc": "Our 4★ holiday apartment in Labergement-Sainte-Marie sleeps up to 4, with a large balcony overlooking the Doubs, close to the lakes.",
         "stay_btn": "Check availability",
         "stay_link": "Discover the apartment",
-        "stay_img@alt": "The O'Fil du Doubs balcony overlooking the Doubs",
         title: "Where to eat",
         subtitle: "Restaurants and food trucks near the accommodation",
         introduction: "Fancy a treat without cooking? Check the schedule of food trucks that set up every day in Labergement-Sainte-Marie and the surrounding villages, along with our selection of nearby restaurants.",
@@ -206,11 +206,11 @@ const dataTranslations = {
         footer_rights: "All rights reserved"
     },
     de: {
+        "stay_img@alt": "Der Blick von O'Fil du Doubs bei Sonnenuntergang",
         "stay_title": "Lust, ein paar Tage zu bleiben?",
         "stay_desc": "Unsere 4★ Ferienwohnung in Labergement-Sainte-Marie bietet Platz für bis zu 4 Personen, mit großem Balkon zum Doubs, ganz nah an den Seen.",
         "stay_btn": "Verfügbarkeit ansehen",
         "stay_link": "Die Wohnung entdecken",
-        "stay_img@alt": "Der Balkon von O'Fil du Doubs mit Blick auf den Doubs",
         title: "Wo essen",
         subtitle: "Restaurants und Food Trucks in der Nähe der Unterkunft",
         introduction: "Lust auf Genuss ohne zu kochen? Hier finden Sie den Zeitplan der Food Trucks, die täglich in Labergement-Sainte-Marie und den Nachbardörfern stehen, sowie unsere Auswahl an Restaurants in der Umgebung.",
@@ -309,11 +309,11 @@ const dataTranslations = {
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        "stay_img@alt": "Het uitzicht vanaf O'Fil du Doubs bij zonsondergang",
         "stay_title": "Zin om een paar dagen te blijven?",
         "stay_desc": "Ons 4★ vakantieappartement in Labergement-Sainte-Marie biedt plaats aan 4 personen, met een groot balkon aan de Doubs, vlak bij de meren.",
         "stay_btn": "Beschikbaarheid bekijken",
         "stay_link": "Ontdek het appartement",
-        "stay_img@alt": "Het balkon van O'Fil du Doubs met uitzicht op de Doubs",
         title: "Waar eten",
         subtitle: "Restaurants en foodtrucks in de buurt van de accommodatie",
         introduction: "Zin om te genieten zonder te koken? Bekijk het schema van de foodtrucks die zich elke dag in Labergement-Sainte-Marie en de omliggende dorpen opstellen, samen met onze selectie restaurants in de buurt.",
@@ -412,11 +412,11 @@ const dataTranslations = {
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        "stay_img@alt": "La vista desde O'Fil du Doubs al atardecer",
         "stay_title": "¿Le apetece quedarse unos días?",
         "stay_desc": "Nuestro apartamento turístico 4★ en Labergement-Sainte-Marie acoge hasta 4 personas, con un gran balcón frente al Doubs, muy cerca de los lagos.",
         "stay_btn": "Ver disponibilidad",
         "stay_link": "Descubrir el apartamento",
-        "stay_img@alt": "El balcón de O'Fil du Doubs con vistas al Doubs",
         title: "Dónde comer",
         subtitle: "Restaurantes y food trucks cerca del alojamiento",
         introduction: "¿Ganas de disfrutar sin cocinar? Consulte el horario de los food trucks que se instalan cada día en Labergement-Sainte-Marie y los pueblos vecinos, así como nuestra selección de restaurantes de los alrededores.",
@@ -515,11 +515,11 @@ const dataTranslations = {
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        "stay_img@alt": "La vista da O'Fil du Doubs al tramonto",
         "stay_title": "Voglia di restare qualche giorno?",
         "stay_desc": "Il nostro appartamento vacanze 4★ a Labergement-Sainte-Marie ospita fino a 4 persone, con un ampio balcone sul Doubs, a due passi dai laghi.",
         "stay_btn": "Vedi disponibilità",
         "stay_link": "Scopri l'appartamento",
-        "stay_img@alt": "Il balcone di O'Fil du Doubs con vista sul Doubs",
         title: "Dove mangiare",
         subtitle: "Ristoranti e food truck vicino all'alloggio",
         introduction: "Voglia di mangiare bene senza cucinare? Scopri il calendario dei food truck che ogni giorno si fermano a Labergement-Sainte-Marie e nei villaggi vicini, oltre alla nostra selezione di ristoranti dei dintorni.",
@@ -618,11 +618,11 @@ const dataTranslations = {
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        "stay_img@alt": "A vista de O'Fil du Doubs ao pôr do sol",
         "stay_title": "Apetece ficar alguns dias?",
         "stay_desc": "O nosso apartamento de férias 4★ em Labergement-Sainte-Marie acolhe até 4 pessoas, com uma grande varanda virada para o Doubs, perto dos lagos.",
         "stay_btn": "Ver disponibilidade",
         "stay_link": "Descobrir o apartamento",
-        "stay_img@alt": "A varanda de O'Fil du Doubs com vista para o Doubs",
         title: "Onde comer",
         subtitle: "Restaurantes e food trucks perto do alojamento",
         introduction: "Vontade de se deliciar sem cozinhar? Consulte o horário dos food trucks que se instalam todos os dias em Labergement-Sainte-Marie e nas aldeias vizinhas, bem como a nossa seleção de restaurantes nos arredores.",
