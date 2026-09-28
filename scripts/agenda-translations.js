@@ -2,6 +2,11 @@
 // Les titres/descriptions des événements proviennent du flux DATAtourisme (data/agenda.json).
 const dataTranslations = {
     fr: {
+        "stay_title": "Envie de rester quelques jours ?",
+        "stay_desc": "Notre meublé de tourisme 4★ à Labergement-Sainte-Marie accueille jusqu'à 4 personnes, avec un grand balcon face au Doubs, à deux pas des lacs.",
+        "stay_btn": "Voir les disponibilités",
+        "stay_link": "Découvrir le logement",
+        "stay_img@alt": "Le balcon d'O'Fil du Doubs avec vue sur le Doubs",
         title: "Agenda",
         subtitle: "Les événements à venir autour du logement",
         introduction: "Concerts, marchés, fêtes de village, expositions, animations nature… Voici les manifestations des prochains jours dans un rayon d'environ 20 km autour de Labergement-Sainte-Marie. Mise à jour automatique chaque jour.",
@@ -25,6 +30,11 @@ const dataTranslations = {
         ag_source: "Source : DATAtourisme (Open Data)"
     },
     en: {
+        "stay_title": "Fancy staying a few days?",
+        "stay_desc": "Our 4★ holiday apartment in Labergement-Sainte-Marie sleeps up to 4, with a large balcony overlooking the Doubs, close to the lakes.",
+        "stay_btn": "Check availability",
+        "stay_link": "Discover the apartment",
+        "stay_img@alt": "The O'Fil du Doubs balcony overlooking the Doubs",
         "footer_contact_title": "Contact us",
         "footer_links_title": "Quick Links",
         "footer_link_home": "Home",
@@ -58,6 +68,11 @@ const dataTranslations = {
         ag_source: "Source: DATAtourisme (Open Data)"
     },
     de: {
+        "stay_title": "Lust, ein paar Tage zu bleiben?",
+        "stay_desc": "Unsere 4★ Ferienwohnung in Labergement-Sainte-Marie bietet Platz für bis zu 4 Personen, mit großem Balkon zum Doubs, ganz nah an den Seen.",
+        "stay_btn": "Verfügbarkeit ansehen",
+        "stay_link": "Die Wohnung entdecken",
+        "stay_img@alt": "Der Balkon von O'Fil du Doubs mit Blick auf den Doubs",
         "footer_contact_title": "Kontaktieren Sie uns",
         "footer_links_title": "Schnelllinks",
         "footer_link_home": "Startseite",
@@ -91,6 +106,11 @@ const dataTranslations = {
         ag_source: "Quelle: DATAtourisme (Open Data)"
     },
     nl: {
+        "stay_title": "Zin om een paar dagen te blijven?",
+        "stay_desc": "Ons 4★ vakantieappartement in Labergement-Sainte-Marie biedt plaats aan 4 personen, met een groot balkon aan de Doubs, vlak bij de meren.",
+        "stay_btn": "Beschikbaarheid bekijken",
+        "stay_link": "Ontdek het appartement",
+        "stay_img@alt": "Het balkon van O'Fil du Doubs met uitzicht op de Doubs",
         "footer_contact_title": "Neem contact op",
         "footer_links_title": "Snelle links",
         "footer_link_home": "Home",
@@ -124,6 +144,11 @@ const dataTranslations = {
         ag_source: "Bron: DATAtourisme (Open Data)"
     },
     es: {
+        "stay_title": "¿Le apetece quedarse unos días?",
+        "stay_desc": "Nuestro apartamento turístico 4★ en Labergement-Sainte-Marie acoge hasta 4 personas, con un gran balcón frente al Doubs, muy cerca de los lagos.",
+        "stay_btn": "Ver disponibilidad",
+        "stay_link": "Descubrir el apartamento",
+        "stay_img@alt": "El balcón de O'Fil du Doubs con vistas al Doubs",
         "footer_contact_title": "Contáctanos",
         "footer_links_title": "Enlaces rápidos",
         "footer_link_home": "Inicio",
@@ -157,6 +182,11 @@ const dataTranslations = {
         ag_source: "Fuente: DATAtourisme (Open Data)"
     },
     it: {
+        "stay_title": "Voglia di restare qualche giorno?",
+        "stay_desc": "Il nostro appartamento vacanze 4★ a Labergement-Sainte-Marie ospita fino a 4 persone, con un ampio balcone sul Doubs, a due passi dai laghi.",
+        "stay_btn": "Vedi disponibilità",
+        "stay_link": "Scopri l'appartamento",
+        "stay_img@alt": "Il balcone di O'Fil du Doubs con vista sul Doubs",
         "footer_contact_title": "Contattaci",
         "footer_links_title": "Link rapidi",
         "footer_link_home": "Home",
@@ -190,6 +220,11 @@ const dataTranslations = {
         ag_source: "Fonte: DATAtourisme (Open Data)"
     },
     pt: {
+        "stay_title": "Apetece ficar alguns dias?",
+        "stay_desc": "O nosso apartamento de férias 4★ em Labergement-Sainte-Marie acolhe até 4 pessoas, com uma grande varanda virada para o Doubs, perto dos lagos.",
+        "stay_btn": "Ver disponibilidade",
+        "stay_link": "Descobrir o apartamento",
+        "stay_img@alt": "A varanda de O'Fil du Doubs com vista para o Doubs",
         "footer_contact_title": "Contacte-nos",
         "footer_links_title": "Links rápidos",
         "footer_link_home": "Início",

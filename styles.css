@@ -1590,3 +1590,19 @@ header.header2.header-ete {
 .aghome-title { font-size: 1.02rem; line-height: 1.35; }
 .aghome-place { font-size: 0.88rem; color: #666; margin-top: auto; }
 @media (max-width: 768px) { .aghome-grid { grid-template-columns: 1fr; gap: 10px; } .aghome-card { padding: 12px 14px; gap: 5px; } .aghome-card:nth-child(n+4) { display: none; } }
+
+/* Encart « Envie de rester quelques jours ? » (Agenda, Où manger) */
+.stay-box { display: flex; align-items: center; gap: 18px; background: #f4f8fb; border: 1px solid #dfe8ef; border-left: 4px solid var(--primary-color); border-radius: 12px; padding: 14px 18px; margin: 0 0 28px; }
+.stay-img img { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; display: block; }
+.stay-text { flex: 1; display: flex; flex-direction: column; gap: 4px; text-align: left; line-height: 1.45; }
+.stay-text strong { color: var(--primary-color); font-size: 1.08rem; }
+.stay-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+.stay-actions .btn-maps { padding: 10px 20px; white-space: nowrap; }
+.stay-link { color: var(--primary-color); font-weight: bold; text-decoration: none; font-size: 0.92rem; }
+.stay-link:hover { text-decoration: underline; }
+@media (max-width: 768px) {
+    .stay-box { flex-wrap: wrap; gap: 12px; padding: 12px 14px; }
+    .stay-img img { width: 90px; height: 64px; }
+    .stay-text { flex: 1 1 60%; }
+    .stay-actions { flex: 1 1 100%; flex-direction: row; justify-content: space-between; }
+}

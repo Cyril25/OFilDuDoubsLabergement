@@ -1,6 +1,6 @@
 const dataTranslations = {
     fr: {
-        "introduction": "Au cœur du village de Labergement-Sainte-Marie, notre appartement de 70 m², classé meublé de tourisme 4 étoiles, accueille jusqu'à 4 personnes au premier étage d'une résidence calme. Pièces lumineuses, grand balcon avec une vue dégagée et sans vis-à-vis sur le Doubs, deux chambres avec lit double : tout a été pensé pour se reposer après une journée au lac de Saint-Point, à la Maison de la Réserve ou sur les pistes de Métabief.",
+        "introduction": "Au cœur du village de Labergement-Sainte-Marie, notre appartement de 70 m², classé meublé de tourisme 4 étoiles (un gîte, comme on dit souvent), accueille jusqu'à 4 personnes au premier étage d'une résidence calme. Pièces lumineuses, grand balcon avec une vue dégagée et sans vis-à-vis sur le Doubs, deux chambres avec lit double : tout a été pensé pour se reposer après une journée au lac de Saint-Point, à la Maison de la Réserve ou sur les pistes de Métabief.",
         "img_salon@alt": "Salon lumineux de l'appartement avec télévision et canapé",
         "lnk_salon@data-title": "Le salon",
         "img_salle_a_manger@alt": "Salle à manger avec table pour 4 personnes",
