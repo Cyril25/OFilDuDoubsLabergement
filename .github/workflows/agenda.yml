@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '22'
 
       # Source principale depuis le 19/08/2026 : l'export régional publié sur data.gouv.fr.
       # Il vient de la même base que le flux du diffuseur, mais ne dépend ni d'une clé
