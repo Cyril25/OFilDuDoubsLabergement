@@ -2,8 +2,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta property="og:title" content="O'Fil du Doubs">
-    <meta property="og:description" content="Welcome to O'Fil du Doubs, your holiday accommodation in Labergement-Sainte-Marie.">
+    <meta property="og:title" content="4★ holiday apartment in Labergement-Sainte-Marie near Lake Saint-Point &amp; Métabief | O'Fil du Doubs">
+    <meta property="og:description" content="70 m² 4★ holiday apartment for 4 in Labergement-Sainte-Marie (Haut-Doubs, Jura Mountains): balcony overlooking the Doubs river, 4 km from Lake Saint-Point and Malbuisson, 8 km from Métabief.">
     <meta property="og:image" content="https://ofildudoubs.fr/images/og-cover.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
@@ -11,9 +11,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:url" content="https://ofildudoubs.fr/en/">
     <meta property="og:type" content="website">
-    <meta name="description" content="4★ holiday let in Labergement-Sainte-Marie (Haut-Doubs): a quiet flat with views of the River Doubs, close to Lake Remoray and Métabief. Ideal for 4 people, in both summer and winter.">
+    <meta name="description" content="70 m² 4★ holiday apartment for 4 in Labergement-Sainte-Marie (Haut-Doubs, Jura Mountains): balcony overlooking the Doubs river, 4 km from Lake Saint-Point and Malbuisson, 8 km from Métabief.">
     
-    <title>Charming holiday let in Labergement-Sainte-Marie | O'Fil du Doubs</title>
+    <title>4★ holiday apartment in Labergement-Sainte-Marie near Lake Saint-Point &amp; Métabief | O'Fil du Doubs</title>
     
 	<link rel="canonical" href="https://ofildudoubs.fr/en/">
     
@@ -31,6 +31,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Playfair+Display:wght@400;700&amp;display=swap" rel="stylesheet">
     
+    <!-- Bannière préchargée (mêmes media queries que styles.css) : affichage plus rapide -->
+    <link rel="preload" as="image" href="/images/banniere/vue-balcon-2-1920.webp" media="(min-width: 769px)">
+    <link rel="preload" as="image" href="/images/banniere/vue-balcon-2-1600.webp" media="(max-width: 768px)">
     <link rel="stylesheet" href="/styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
@@ -45,6 +48,10 @@
       "@context": "https://schema.org",
       "@type": "LodgingBusiness",
       "name": "O'Fil du Doubs",
+      "alternateName": "Ô Fil du Doubs",
+      "url": "https://ofildudoubs.fr/",
+      "telephone": "+33683016151",
+      "description": "Meublé de tourisme 4 étoiles de 70 m² pour 4 personnes à Labergement-Sainte-Marie (Haut-Doubs) : grand balcon avec vue sur le Doubs, à 1 km du lac de Remoray, 4 km du lac de Saint-Point et de Malbuisson, 8 km de la station de Métabief.",
       "image": [
         "https://ofildudoubs.fr/images/banniere/vue-balcon-2.webp",
         "https://ofildudoubs.fr/images/salon.webp",
@@ -56,23 +63,110 @@
         "https://ofildudoubs.fr/images/balcon-ete.webp",
         "https://ofildudoubs.fr/images/balcon-hiver.webp"
       ],
-      "description": "Hébergement de charme 4 étoiles à Labergement-Sainte-Marie. Vue sur le Doubs, calme, tout confort pour 4 personnes. Proche Lac de Remoray et Métabief.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 impasse Cotti",
         "addressLocality": "Labergement-Sainte-Marie",
         "postalCode": "25160",
-        "addressCountry": "FR"
+        "addressCountry": "FR",
+        "addressRegion": "Doubs"
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 46.77714,
-        "longitude": 6.30068
+        "latitude": 46.768914,
+        "longitude": 6.280725
       },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=46.768914,6.280725",
       "starRating": {
         "@type": "Rating",
         "ratingValue": "4"
       },
+      "priceRange": "90 € – 120 € par nuit",
+      "checkinTime": "17:00",
+      "checkoutTime": "11:00",
+      "petsAllowed": true,
+      "numberOfRooms": 2,
+      "containsPlace": {
+        "@type": "Accommodation",
+        "name": "Appartement O'Fil du Doubs",
+        "occupancy": {
+          "@type": "QuantitativeValue",
+          "maxValue": 4
+        },
+        "floorSize": {
+          "@type": "QuantitativeValue",
+          "value": 70,
+          "unitCode": "MTK"
+        },
+        "numberOfBedrooms": 2,
+        "numberOfBathroomsTotal": 1,
+        "bed": {
+          "@type": "BedDetails",
+          "numberOfBeds": 2,
+          "typeOfBed": "Lit double"
+        }
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Wi-Fi",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Parking gratuit",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Balcon avec vue",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Cuisine équipée",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Lave-vaisselle",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Lave-linge",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Télévision",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Linge de lit et de toilette fournis",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Lit bébé",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Chaise haute",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Barbecue",
+          "value": true
+        }
+      ],
+      "sameAs": [
+        "https://www.airbnb.fr/rooms/1160174173295911644",
+        "https://www.booking.com/hotel/fr/fil-du-doubs-apartment.html"
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "5.0",
@@ -83,71 +177,131 @@
       "review": [
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Wissem" },
+          "author": {
+            "@type": "Person",
+            "name": "Wissem"
+          },
           "datePublished": "2026-08",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Excellent logement, hôte réactif et chaleureux, n’est pas loin de la frontière suisse en véhicule, cadre calme et agréable, honnêtement je vous le recommande fortement."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Emilie" },
+          "author": {
+            "@type": "Person",
+            "name": "Emilie"
+          },
           "datePublished": "2026-08",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "L’appartement était parfait à tout point de vue : très propre, parfaitement entretenu et agréable à vivre. Notre hôte s’est montré disponible, à l’écoute et très réactif. Nous avons beaucoup apprécié la jolie vue ainsi que le quartier, particulièrement calme. Nous recommandons cette adresse sans hésitation et y reviendrons avec grand plaisir !"
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Murielle" },
+          "author": {
+            "@type": "Person",
+            "name": "Murielle"
+          },
           "datePublished": "2026-06",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "L’appartement est très spacieux et confortable. Au-delà de mes attentes. Rien n’a été oublié à mon sens. La terrasse est très grande. La vue est tellement reposante. Le village et sa région proche juste magnifiques. Je rêve d’y retourner passer des vacances un peu plus longues."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Nicolas" },
+          "author": {
+            "@type": "Person",
+            "name": "Nicolas"
+          },
           "datePublished": "2026-06",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Séjour parfait dans un logement propre et spacieux avec un balcon immense pour profiter du soleil. Hôtes sympathiques et réactifs."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Christelle" },
+          "author": {
+            "@type": "Person",
+            "name": "Christelle"
+          },
           "datePublished": "2026-01",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Nous avons passé une excellente semaine. L’appartement est très agréable, spacieux, lumineux, avec une grande baie vitrée donnant sur un grand balcon d’où la vue est magnifique. Alisson et Cyril sont très réactifs pour répondre à la moindre question. Tout est parfait !"
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Jean-Christophe" },
+          "author": {
+            "@type": "Person",
+            "name": "Jean-Christophe"
+          },
           "datePublished": "2025-12",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Cyril est venu personnellement nous accueillir et nous a fait visiter l’appartement. Ce dernier était impeccable et correspondait parfaitement à la description. L’appartement est spacieux et l’endroit est calme et reposant. Nous avons apprécié également la vue. Nous reviendrons sans hésitation."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Dominique" },
+          "author": {
+            "@type": "Person",
+            "name": "Dominique"
+          },
           "datePublished": "2025-10",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "L’appartement est très agréable : lumineux, fonctionnel, bien situé et parfaitement isolé. La literie est excellente, la vue sur le Doubs est apaisante. Alisson et Cyril sont très sympathiques."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Aurore" },
+          "author": {
+            "@type": "Person",
+            "name": "Aurore"
+          },
           "datePublished": "2025-05",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Le logement est une véritable pépite : très spacieux, décoré avec goût et parfaitement équipé. Situé dans un environnement calme. Alisson et Cyril ont été des hôtes exemplaires."
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Amelie" },
+          "author": {
+            "@type": "Person",
+            "name": "Amelie"
+          },
           "datePublished": "2025-01",
-          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
           "reviewBody": "Le logement était parfait : tant la propreté, que la qualité des équipements. Tout a été bien pensé pour que l’on soit bien. On s’y sent comme à la maison. Je recommande vivement."
         }
-      ],
-      "priceRange": "$$",
-      "telephone": "+33683016151", 
-      "url": "https://ofildudoubs.fr/"
+      ]
     }
     </script>
 
@@ -207,9 +361,8 @@
         <div class="star-classification">
             <img src="/images/meuble-tourisme-4-etoiles.png" alt="Meublé de Tourisme 4 étoiles">
         </div>
-        <h1 id="title">O'Fil du Doubs</h1>
-        <h3 id="subtitle">A comfortable accommodation overlooking the river</h3>
-		<h3 id="subtitle2">4-star tourist accommodation</h3>
+        <h1 class="h1-home"><span id="title">O'Fil du Doubs</span> <span class="h1-kw" id="h1_kw">4★ holiday apartment in Labergement-Sainte-Marie</span></h1>
+        <p class="header-sub" id="subtitle">A comfortable accommodation overlooking the river</p>
     </header>
 
     <main>
@@ -230,6 +383,26 @@
                 </div>
             </div>
         </section>
+
+        <section class="home-facts">
+            <h2 id="facts_title">The apartment at a glance</h2>
+            <ul class="facts-grid">
+                <li><i class="fas fa-ruler-combined" aria-hidden="true"></i> <span>70 m²</span></li>
+                <li><i class="fas fa-users" aria-hidden="true"></i> <span id="fact_guests">Up to 4 guests</span></li>
+                <li><i class="fas fa-bed" aria-hidden="true"></i> <span id="fact_rooms">2 bedrooms, 2 double beds</span></li>
+                <li><i class="fas fa-bath" aria-hidden="true"></i> <span id="fact_bath">Bathroom with bathtub</span></li>
+                <li><i class="fas fa-mountain" aria-hidden="true"></i> <span id="fact_balcony">Large balcony overlooking the Doubs river</span></li>
+                <li><i class="fas fa-parking" aria-hidden="true"></i> <span id="fact_parking">Free parking</span></li>
+                <li><i class="fas fa-wifi" aria-hidden="true"></i> <span id="fact_wifi">High-speed Wi-Fi</span></li>
+                <li><i class="fas fa-soap" aria-hidden="true"></i> <span id="fact_linen">Bed linen and towels provided</span></li>
+                <li><i class="fas fa-paw" aria-hidden="true"></i> <span id="fact_pets">Pets welcome on request</span></li>
+                <li><i class="fas fa-baby" aria-hidden="true"></i> <span id="fact_baby">Baby cot and high chair</span></li>
+            </ul>
+            <div class="cta-center">
+                <a href="/en/dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Check availability and rates</span></a>
+            </div>
+        </section>
+
 		<section>
             <h2 id="reviews_title">What our guests say</h2>
             
@@ -351,6 +524,22 @@
                 <a href="https://www.airbnb.fr/rooms/1160174173295911644/reviews" target="_blank" rel="noopener noreferrer" class="btn-airbnb-review">
                     <i class="fab fa-airbnb" style="font-size: 1.2rem;"></i> <span id="btn_see_reviews">See reviews on Airbnb</span>
                 </a>
+            </div>
+        </section>
+
+        <section class="home-location">
+            <h2 id="loc_title">Ideally located in the Haut-Doubs</h2>
+            <p id="loc_intro" class="loc-intro">Between Lake Remoray and Lake Saint-Point, close to Malbuisson and the Métabief ski resort, the apartment is the perfect base to explore the Haut-Doubs and the Jura Mountains in summer and winter: swimming, hiking, cycling, downhill and cross-country skiing.</p>
+            <ul class="facts-grid loc-grid">
+                <li><i class="fas fa-water" aria-hidden="true"></i> <span id="loc_remoray">Lake Remoray and the Maison de la Réserve</span> <span class="loc-dist">1 km</span></li>
+                <li><i class="fas fa-swimmer" aria-hidden="true"></i> <span id="loc_saintpoint">Lake Saint-Point and Malbuisson</span> <span class="loc-dist">4 km</span></li>
+                <li><i class="fas fa-skiing" aria-hidden="true"></i> <span id="loc_metabief">Métabief resort (skiing, mountain biking, toboggan run)</span> <span class="loc-dist">8 km</span></li>
+                <li><i class="fas fa-tint" aria-hidden="true"></i> <span id="loc_mouthe">Source of the Doubs (Mouthe)</span> <span class="loc-dist">13 km</span></li>
+                <li><i class="fas fa-chess-rook" aria-hidden="true"></i> <span>Château de Joux</span> <span class="loc-dist">12 km</span></li>
+                <li><i class="fas fa-city" aria-hidden="true"></i> <span>Pontarlier</span> <span class="loc-dist">20 km</span></li>
+            </ul>
+            <div class="cta-center">
+                <a href="/en/activites.html" class="loc-more"><span id="loc_more">All activities around the apartment</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
         </section>
 	</main>
