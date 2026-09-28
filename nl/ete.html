@@ -63,15 +63,20 @@
             </li>
             <li><a href="/nl/dispo.html">Tarieven en Beschikbaarheid</a></li>
             <li class="has-sub">
-                <a href="#" class="sub-toggle" data-mkey="autour">In de buurt</a>
+                <a href="#" class="sub-toggle" data-mkey="decouvrir">Ontdekken</a>
                 <ul class="submenu">
                     <li><a href="/nl/activites.html">Activiteiten</a></li>
+                    <li><a href="/nl/agenda.html">Agenda</a></li>
                     <li><a href="/nl/rando.html" data-mkey="randonnees">Wandelingen</a></li>
                     <li><a href="/nl/ete.html">Zomer aan de meren</a></li>
                     <li><a href="/nl/hiver.html">Winter in de bergen</a></li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="pratique">Praktisch</a>
+                <ul class="submenu">
                     <li><a href="/nl/ou-manger.html">Waar eten</a></li>
                     <li><a href="/nl/commerces.html">Winkels</a></li>
-                    <li><a href="/nl/agenda.html">Agenda</a></li>
                 </ul>
             </li>
             <li><a href="/nl/contact.html">Contact</a></li>
@@ -93,13 +98,20 @@
 		</div>
     </nav>
 
-    <header class="header2">
+    <header class="header2 header-ete">
         <h1 id="title">Zomer aan de meren</h1>
         <h2 id="subtitle">Meer van Saint-Point, meer van Remoray en de frisse lucht van het Juragebergte</h2>
     </header>
 
     <main>
         <p id="introduction" class="intro-text">Op 1 km van het meer van Remoray en 4 km van het meer van Saint-Point, het op twee na grootste natuurlijke meer van Frankrijk, is het appartement ideaal voor een frisse zomer in het Juragebergte: zwemmen, suppen, wandelen, fietsen, kaasmakerijen bezoeken… en dineren op het grote balkon met uitzicht op de Doubs.</p>
+
+        <div class="season-gallery">
+            <a href="/images/lac-saint-point.webp" class="glightbox" data-gallery="ete" data-title="Het meer van Saint-Point vanuit de lucht" id="gl_lac_saint_point"><img src="/images/vignettes/lac-saint-point.webp" alt="Het meer van Saint-Point vanuit de lucht" id="g_lac_saint_point" loading="lazy"></a>
+            <a href="/images/base-nautique-malbuisson.webp" class="glightbox" data-gallery="ete" data-title="Het watersportcentrum van Malbuisson aan het meer van Saint-Point" id="gl_base_nautique_malbuisson"><img src="/images/vignettes/base-nautique-malbuisson.webp" alt="Het watersportcentrum van Malbuisson aan het meer van Saint-Point" id="g_base_nautique_malbuisson" loading="lazy"></a>
+            <a href="/images/metabief-luge.webp" class="glightbox" data-gallery="ete" data-title="De rodelbaan van Métabief" id="gl_metabief_luge"><img src="/images/vignettes/metabief-luge.webp" alt="De rodelbaan van Métabief" id="g_metabief_luge" loading="lazy"></a>
+            <a href="/images/saut-du-doubs.webp" class="glightbox" data-gallery="ete" data-title="De waterval Saut du Doubs" id="gl_saut_du_doubs"><img src="/images/vignettes/saut-du-doubs.webp" alt="De waterval Saut du Doubs" id="g_saut_du_doubs" loading="lazy"></a>
+        </div>
 
         <section class="season-section">
             <h2><i class="fas fa-swimmer" aria-hidden="true"></i> <span id="s_swim_title">Zwemmen</span></h2>
@@ -142,6 +154,10 @@
             <a href="/nl/dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Beschikbaarheid en prijzen bekijken</span></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
 
 	<footer>
         <div class="footer-content">

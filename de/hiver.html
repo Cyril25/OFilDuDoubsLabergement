@@ -63,15 +63,20 @@
             </li>
             <li><a href="/de/dispo.html">Preise und Verfügbarkeit</a></li>
             <li class="has-sub">
-                <a href="#" class="sub-toggle" data-mkey="autour">In der Umgebung</a>
+                <a href="#" class="sub-toggle" data-mkey="decouvrir">Entdecken</a>
                 <ul class="submenu">
                     <li><a href="/de/activites.html">Aktivitäten</a></li>
+                    <li><a href="/de/agenda.html">Termine</a></li>
                     <li><a href="/de/rando.html" data-mkey="randonnees">Wanderungen</a></li>
                     <li><a href="/de/ete.html">Sommer an den Seen</a></li>
                     <li><a href="/de/hiver.html">Winter in den Bergen</a></li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="pratique">Praktisches</a>
+                <ul class="submenu">
                     <li><a href="/de/ou-manger.html">Wo essen</a></li>
                     <li><a href="/de/commerces.html">Geschäfte</a></li>
-                    <li><a href="/de/agenda.html">Termine</a></li>
                 </ul>
             </li>
             <li><a href="/de/contact.html">Kontakt</a></li>
@@ -93,13 +98,20 @@
 		</div>
     </nav>
 
-    <header class="header2">
+    <header class="header2 header-hiver">
         <h1 id="title">Winter in den Bergen</h1>
         <h2 id="subtitle">Skifahren in Métabief, Langlauf, Schneeschuhe und Genüsse des Haut-Doubs</h2>
     </header>
 
     <main>
         <p id="introduction" class="intro-text">Wenn der Schnee kommt, wird Labergement-Sainte-Marie zum idealen Ausgangspunkt für Wintersport im Juragebirge: Das Skigebiet Métabief ist 10 Minuten entfernt, die Langlauf- und Schneeschuhloipen eine Viertelstunde. Danach gibt es Fondue oder Raclette (Geräte vorhanden) mit Blick auf die verschneite Landschaft vom Balkon.</p>
+
+        <div class="season-gallery">
+            <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="hiver" data-title="Der Balkon der Wohnung im Schnee" id="gl_balcon_hiver"><img src="/images/vignettes/balcon-hiver.webp" alt="Der Balkon der Wohnung im Schnee" id="g_balcon_hiver" loading="lazy"></a>
+            <a href="/images/chiens-de-traineau-adams.jpg" class="glightbox" data-gallery="hiver" data-title="Fahrt mit dem Hundeschlitten" id="gl_chiens_de_traineau_adams"><img src="/images/vignettes/chiens-de-traineau-adams.webp" alt="Fahrt mit dem Hundeschlitten" id="g_chiens_de_traineau_adams" loading="lazy"></a>
+            <a href="/images/fromagerie-mont-dor.webp" class="glightbox" data-gallery="hiver" data-title="Die Fromagerie du Mont d'Or im Schnee, Métabief" id="gl_fromagerie_mont_dor"><img src="/images/vignettes/fromagerie-mont-dor.webp" alt="Die Fromagerie du Mont d'Or im Schnee, Métabief" id="g_fromagerie_mont_dor" loading="lazy"></a>
+            <a href="/images/fort-saint-antoine.webp" class="glightbox" data-gallery="hiver" data-title="Die Comté-Reifekeller im Fort Saint-Antoine" id="gl_fort_saint_antoine"><img src="/images/vignettes/fort-saint-antoine.webp" alt="Die Comté-Reifekeller im Fort Saint-Antoine" id="g_fort_saint_antoine" loading="lazy"></a>
+        </div>
 
         <section class="season-section">
             <h2><i class="fas fa-skiing" aria-hidden="true"></i> <span id="s_ski_title">Ski alpin in Métabief</span></h2>
@@ -140,6 +152,10 @@
             <a href="/de/dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Verfügbarkeit und Preise ansehen</span></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
 
 	<footer>
         <div class="footer-content">

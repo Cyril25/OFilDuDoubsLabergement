@@ -63,15 +63,20 @@
             </li>
             <li><a href="/nl/dispo.html">Tarieven en Beschikbaarheid</a></li>
             <li class="has-sub">
-                <a href="#" class="sub-toggle" data-mkey="autour">In de buurt</a>
+                <a href="#" class="sub-toggle" data-mkey="decouvrir">Ontdekken</a>
                 <ul class="submenu">
                     <li><a href="/nl/activites.html">Activiteiten</a></li>
+                    <li><a href="/nl/agenda.html">Agenda</a></li>
                     <li><a href="/nl/rando.html" data-mkey="randonnees">Wandelingen</a></li>
                     <li><a href="/nl/ete.html">Zomer aan de meren</a></li>
                     <li><a href="/nl/hiver.html">Winter in de bergen</a></li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="pratique">Praktisch</a>
+                <ul class="submenu">
                     <li><a href="/nl/ou-manger.html">Waar eten</a></li>
                     <li><a href="/nl/commerces.html">Winkels</a></li>
-                    <li><a href="/nl/agenda.html">Agenda</a></li>
                 </ul>
             </li>
             <li><a href="/nl/contact.html">Contact</a></li>
@@ -93,13 +98,20 @@
 		</div>
     </nav>
 
-    <header class="header2">
+    <header class="header2 header-hiver">
         <h1 id="title">Winter in de bergen</h1>
         <h2 id="subtitle">Skiën in Métabief, langlaufen, sneeuwschoenen en lekkernijen uit de Haut-Doubs</h2>
     </header>
 
     <main>
         <p id="introduction" class="intro-text">Als de sneeuw valt, wordt Labergement-Sainte-Marie een ideale uitvalsbasis voor wintersport in het Juragebergte: het skigebied Métabief ligt op 10 minuten, de langlauf- en sneeuwschoenroutes op een kwartier. Daarna is het tijd voor fondue of raclette (apparaten aanwezig), met uitzicht op het besneeuwde landschap vanaf het balkon.</p>
+
+        <div class="season-gallery">
+            <a href="/images/balcon-hiver.webp" class="glightbox" data-gallery="hiver" data-title="Het balkon van het appartement in de sneeuw" id="gl_balcon_hiver"><img src="/images/vignettes/balcon-hiver.webp" alt="Het balkon van het appartement in de sneeuw" id="g_balcon_hiver" loading="lazy"></a>
+            <a href="/images/chiens-de-traineau-adams.jpg" class="glightbox" data-gallery="hiver" data-title="Tocht met de hondenslee" id="gl_chiens_de_traineau_adams"><img src="/images/vignettes/chiens-de-traineau-adams.webp" alt="Tocht met de hondenslee" id="g_chiens_de_traineau_adams" loading="lazy"></a>
+            <a href="/images/fromagerie-mont-dor.webp" class="glightbox" data-gallery="hiver" data-title="De Fromagerie du Mont d'Or in de sneeuw, Métabief" id="gl_fromagerie_mont_dor"><img src="/images/vignettes/fromagerie-mont-dor.webp" alt="De Fromagerie du Mont d'Or in de sneeuw, Métabief" id="g_fromagerie_mont_dor" loading="lazy"></a>
+            <a href="/images/fort-saint-antoine.webp" class="glightbox" data-gallery="hiver" data-title="De Comté-rijpingskelders van Fort Saint-Antoine" id="gl_fort_saint_antoine"><img src="/images/vignettes/fort-saint-antoine.webp" alt="De Comté-rijpingskelders van Fort Saint-Antoine" id="g_fort_saint_antoine" loading="lazy"></a>
+        </div>
 
         <section class="season-section">
             <h2><i class="fas fa-skiing" aria-hidden="true"></i> <span id="s_ski_title">Alpineskiën in Métabief</span></h2>
@@ -140,6 +152,10 @@
             <a href="/nl/dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Beschikbaarheid en prijzen bekijken</span></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
 
 	<footer>
         <div class="footer-content">

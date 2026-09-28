@@ -63,15 +63,20 @@
             </li>
             <li><a href="/es/dispo.html">Tarifas y Disponibilidad</a></li>
             <li class="has-sub">
-                <a href="#" class="sub-toggle" data-mkey="autour">Alrededores</a>
+                <a href="#" class="sub-toggle" data-mkey="decouvrir">Descubrir</a>
                 <ul class="submenu">
                     <li><a href="/es/activites.html">Actividades</a></li>
+                    <li><a href="/es/agenda.html">Agenda</a></li>
                     <li><a href="/es/rando.html" data-mkey="randonnees">Rutas</a></li>
                     <li><a href="/es/ete.html">Verano junto a los lagos</a></li>
                     <li><a href="/es/hiver.html">Invierno en la montaña</a></li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="pratique">Práctico</a>
+                <ul class="submenu">
                     <li><a href="/es/ou-manger.html">Dónde comer</a></li>
                     <li><a href="/es/commerces.html">Comercios</a></li>
-                    <li><a href="/es/agenda.html">Agenda</a></li>
                 </ul>
             </li>
             <li><a href="/es/contact.html">Contacto</a></li>
@@ -93,13 +98,20 @@
 		</div>
     </nav>
 
-    <header class="header2">
+    <header class="header2 header-ete">
         <h1 id="title">Verano junto a los lagos</h1>
         <h2 id="subtitle">Lago de Saint-Point, lago de Remoray y el frescor de las montañas del Jura</h2>
     </header>
 
     <main>
         <p id="introduction" class="intro-text">A 1 km del lago de Remoray y a 4 km del lago de Saint-Point, el tercer lago natural más grande de Francia, el apartamento es ideal para un verano fresco en las montañas del Jura: baño, paddle, senderismo, bicicleta, visitas a queserías… y cenas en el gran balcón frente al Doubs.</p>
+
+        <div class="season-gallery">
+            <a href="/images/lac-saint-point.webp" class="glightbox" data-gallery="ete" data-title="El lago de Saint-Point visto desde el cielo" id="gl_lac_saint_point"><img src="/images/vignettes/lac-saint-point.webp" alt="El lago de Saint-Point visto desde el cielo" id="g_lac_saint_point" loading="lazy"></a>
+            <a href="/images/base-nautique-malbuisson.webp" class="glightbox" data-gallery="ete" data-title="La base náutica de Malbuisson en el lago de Saint-Point" id="gl_base_nautique_malbuisson"><img src="/images/vignettes/base-nautique-malbuisson.webp" alt="La base náutica de Malbuisson en el lago de Saint-Point" id="g_base_nautique_malbuisson" loading="lazy"></a>
+            <a href="/images/metabief-luge.webp" class="glightbox" data-gallery="ete" data-title="El tobogán sobre raíles de Métabief" id="gl_metabief_luge"><img src="/images/vignettes/metabief-luge.webp" alt="El tobogán sobre raíles de Métabief" id="g_metabief_luge" loading="lazy"></a>
+            <a href="/images/saut-du-doubs.webp" class="glightbox" data-gallery="ete" data-title="La cascada del Saut du Doubs" id="gl_saut_du_doubs"><img src="/images/vignettes/saut-du-doubs.webp" alt="La cascada del Saut du Doubs" id="g_saut_du_doubs" loading="lazy"></a>
+        </div>
 
         <section class="season-section">
             <h2><i class="fas fa-swimmer" aria-hidden="true"></i> <span id="s_swim_title">Baño</span></h2>
@@ -142,6 +154,10 @@
             <a href="/es/dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Ver disponibilidad y tarifas</span></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
 
 	<footer>
         <div class="footer-content">
