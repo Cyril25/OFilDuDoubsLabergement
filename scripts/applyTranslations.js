@@ -86,7 +86,10 @@ function applyTranslations(lang, pageTranslations) {
             'commerces.html': 'commerces',
             'ou-manger.html': 'oumanger',
             'agenda.html': 'agenda',
-            'contact.html': 'contact'
+            'contact.html': 'contact',
+            'situation.html': 'situation',
+            'ete.html': 'ete',
+            'hiver.html': 'hiver'
         };
         document.querySelectorAll("#menu-items li a").forEach(link => {
             const file = (link.getAttribute('href') || '').split('/').pop();

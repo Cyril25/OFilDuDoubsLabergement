@@ -1,5 +1,8 @@
 const menuTranslations = {
     fr: {
+        "situation": "Situation et accès",
+        "ete": "L'été au bord des lacs",
+        "hiver": "L'hiver à la montagne",
         accueil: "Accueil",
         logement: "Le logement",
         equipements: "Confort et Équipements",
@@ -13,6 +16,9 @@ const menuTranslations = {
         contact: "Contact"
     },
     en: {
+        "situation": "Location & access",
+        "ete": "Summer by the lakes",
+        "hiver": "Winter in the mountains",
         accueil: "Home",
         logement: "The accommodation",
         equipements: "Comfort and Equipment",
@@ -26,6 +32,9 @@ const menuTranslations = {
         contact: "Contact"
     },
     de: {
+        "situation": "Lage & Anreise",
+        "ete": "Sommer an den Seen",
+        "hiver": "Winter in den Bergen",
         accueil: "Startseite",
         logement: "Die Unterkunft",
         equipements: "Komfort und Ausstattung",
@@ -39,6 +48,9 @@ const menuTranslations = {
         contact: "Kontakt"
     },
     nl: {
+        "situation": "Ligging & bereikbaarheid",
+        "ete": "Zomer aan de meren",
+        "hiver": "Winter in de bergen",
         accueil: "Home",
         logement: "De accommodatie",
         equipements: "Comfort en Uitrusting",
@@ -52,6 +64,9 @@ const menuTranslations = {
         contact: "Contact"
     },
     es: {
+        "situation": "Ubicación y acceso",
+        "ete": "Verano junto a los lagos",
+        "hiver": "Invierno en la montaña",
         accueil: "Inicio",
         logement: "El alojamiento",
         equipements: "Confort y Equipamiento",
@@ -65,6 +80,9 @@ const menuTranslations = {
         contact: "Contacto"
     },
     it: {
+        "situation": "Posizione e accesso",
+        "ete": "Estate sui laghi",
+        "hiver": "Inverno in montagna",
         accueil: "Home",
         logement: "L'alloggio",
         equipements: "Comfort e Attrezzature",
@@ -78,6 +96,9 @@ const menuTranslations = {
         contact: "Contatto"
     },
     pt: {
+        "situation": "Localização e acesso",
+        "ete": "Verão junto aos lagos",
+        "hiver": "Inverno na montanha",
         accueil: "Início",
         logement: "O alojamento",
         equipements: "Conforto e Equipamento",

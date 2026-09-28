@@ -52,6 +52,7 @@
                 <ul class="submenu">
                     <li><a href="logement.html">Le logement</a></li>
                     <li><a href="equipements.html">Confort et Équipements</a></li>
+                    <li><a href="situation.html">Situation et accès</a></li>
                 </ul>
             </li>
             <li><a href="dispo.html">Tarifs et disponibilités</a></li>
@@ -60,6 +61,8 @@
                 <ul class="submenu">
                     <li><a href="activites.html">Activités</a></li>
                     <li><a href="rando.html" data-mkey="randonnees">Randonnées</a></li>
+                    <li><a href="ete.html">L'été au bord des lacs</a></li>
+                    <li><a href="hiver.html">L'hiver à la montagne</a></li>
                     <li><a href="ou-manger.html">Où manger</a></li>
                     <li><a href="commerces.html">Commerces</a></li>
                     <li><a href="agenda.html">Agenda</a></li>
@@ -91,7 +94,7 @@
 
     <main>
         <p id="introduction" class="intro-text">
-            Découvrez notre logement de charme, conçu pour vous offrir un séjour inoubliable à Labergement-Sainte-Marie. Chaque pièce a été pensée pour allier confort, modernité et convivialité.
+            Au cœur du village de Labergement-Sainte-Marie, notre appartement de 70 m², classé meublé de tourisme 4 étoiles, accueille jusqu'à 4 personnes au premier étage d'une résidence calme. Pièces lumineuses, grand balcon avec une vue dégagée et sans vis-à-vis sur le Doubs, deux chambres avec lit double : tout a été pensé pour se reposer après une journée au lac de Saint-Point, à la Maison de la Réserve ou sur les pistes de Métabief.
         </p>
 
         <section class="room">
@@ -101,11 +104,11 @@
                     <p id="salon_description">Un espace lumineux et accueillant, parfait pour se retrouver en famille ou entre amis. Il dispose d'une télévision grand écran, d'une table à manger pour 4 personnes, et de jeux de société.</p>
                 </div>
                 <div class="room-images">
-                    <a href="images/salon.webp" class="glightbox" data-gallery="logement" data-title="Le salon">
-                        <img src="images/salon.webp" alt="Salon lumineux" class="room-image" loading="lazy">
+                    <a href="images/salon.webp" class="glightbox" data-gallery="logement" data-title="Le salon" id="lnk_salon">
+                        <img src="images/salon.webp" alt="Salon lumineux de l'appartement avec télévision et canapé" class="room-image" id="img_salon" loading="lazy">
                     </a>
-                    <a href="images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="La salle à manger">
-                        <img src="images/salle-a-manger.webp" alt="Salle à manger" class="room-image" loading="lazy">
+                    <a href="images/salle-a-manger.webp" class="glightbox" data-gallery="logement" data-title="La salle à manger" id="lnk_salle_a_manger">
+                        <img src="images/salle-a-manger.webp" alt="Salle à manger avec table pour 4 personnes" class="room-image" id="img_salle_a_manger" loading="lazy">
                     </a>
                 </div>
             </div>
@@ -117,8 +120,8 @@
                     <h2 id="cuisine_title">La Cuisine</h2>
                     <p id="cuisine_description">Une cuisine moderne et entièrement équipée : four, lave-vaisselle, Nespresso, appareil à raclette et à fondue...</p>
                 </div>
-                <a href="images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="La cuisine">
-                    <img src="images/cuisine.webp" alt="Cuisine moderne" class="room-image" loading="lazy">
+                <a href="images/cuisine.webp" class="glightbox" data-gallery="logement" data-title="La cuisine" id="lnk_cuisine">
+                    <img src="images/cuisine.webp" alt="Cuisine moderne entièrement équipée" class="room-image" id="img_cuisine" loading="lazy">
                 </a>
             </div>
         </section>
@@ -129,8 +132,8 @@
                     <h2 id="chambre_principale_title">La Chambre Principale</h2>
                     <p id="chambre_principale_description">Chambre spacieuse avec lit double, grande armoire, télévision et accès direct au balcon.</p>
                 </div>
-                <a href="images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="La chambre principale">
-                    <img src="images/chambre-principale.webp" alt="Chambre principale" class="room-image" loading="lazy">
+                <a href="images/chambre-principale.webp" class="glightbox" data-gallery="logement" data-title="La chambre principale" id="lnk_chambre_principale">
+                    <img src="images/chambre-principale.webp" alt="Chambre principale avec lit double et accès au balcon" class="room-image" id="img_chambre_principale" loading="lazy">
                 </a>
             </div>
         </section>
@@ -141,8 +144,8 @@
                     <h2 id="chambre_secondaire_title">La Chambre Secondaire</h2>
                     <p id="chambre_secondaire_description">Chambre accueillante avec lit double et accès balcon, idéale pour des nuits reposantes.</p>
                 </div>
-                <a href="images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="La chambre secondaire">
-                    <img src="images/chambre-secondaire.webp" alt="Chambre secondaire" class="room-image" loading="lazy">
+                <a href="images/chambre-secondaire.webp" class="glightbox" data-gallery="logement" data-title="La chambre secondaire" id="lnk_chambre_secondaire">
+                    <img src="images/chambre-secondaire.webp" alt="Deuxième chambre avec lit double" class="room-image" id="img_chambre_secondaire" loading="lazy">
                 </a>
             </div>
         </section>
@@ -153,8 +156,8 @@
                     <h2 id="salle_de_bain_title">La Salle de Bain</h2>
                     <p id="salle_de_bain_description">Salle de bain moderne avec baignoire, ambiance lumineuse apaisante et machine à laver.</p>
                 </div>
-                <a href="images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="La salle de bain">
-                    <img src="images/salle-de-bain.webp" alt="Salle de bain" class="room-image" loading="lazy">
+                <a href="images/salle-de-bain.webp" class="glightbox" data-gallery="logement" data-title="La salle de bain" id="lnk_salle_de_bain">
+                    <img src="images/salle-de-bain.webp" alt="Salle de bain avec baignoire" class="room-image" id="img_salle_de_bain" loading="lazy">
                 </a>
             </div>
         </section>
@@ -166,11 +169,11 @@
               <p id="balcon_description">Profitez d'une vue exceptionnelle, d'un salon de jardin et d'un grill électrique pour vos repas en extérieur.</p>
             </div>
             <div class="room-images">
-              <a href="images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en été">
-                  <img src="images/balcon-ete.webp" alt="Balcon été" class="room-image" loading="lazy">
+              <a href="images/balcon-ete.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en été" id="lnk_balcon_ete">
+                  <img src="images/balcon-ete.webp" alt="Balcon en été avec vue sur le Doubs et la vallée" class="room-image" id="img_balcon_ete" loading="lazy">
               </a>
-              <a href="images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en hiver">
-                  <img src="images/balcon-hiver.webp" alt="Balcon hiver" class="room-image" loading="lazy">
+              <a href="images/balcon-hiver.webp" class="glightbox" data-gallery="logement" data-title="Le balcon en hiver" id="lnk_balcon_hiver">
+                  <img src="images/balcon-hiver.webp" alt="Balcon en hiver, vue sur la vallée enneigée" class="room-image" id="img_balcon_hiver" loading="lazy">
               </a>
             </div>
           </div>
