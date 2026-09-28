@@ -14,6 +14,7 @@ const dataTranslations = {
         submitButton: "Envoyer",
         formStatusSuccess: "Message envoyé avec succès ! Redirection...",
         formStatusError: "Une erreur est survenue. Merci de réessayer.",
+        formStatusSending: "Envoi en cours...",
 
         // Footer
         footer_contact_title: "Nous contacter",
@@ -42,6 +43,7 @@ const dataTranslations = {
         submitButton: "Send",
         formStatusSuccess: "Message sent successfully! Redirecting...",
         formStatusError: "An error occurred. Please try again.",
+        formStatusSending: "Sending...",
 
         // Footer
         footer_contact_title: "Contact us",
@@ -70,6 +72,7 @@ const dataTranslations = {
         submitButton: "Senden",
         formStatusSuccess: "Nachricht erfolgreich gesendet! Weiterleitung...",
         formStatusError: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+        formStatusSending: "Wird gesendet...",
 
         // Footer
         footer_contact_title: "Kontaktieren Sie uns",
@@ -98,6 +101,7 @@ const dataTranslations = {
         submitButton: "Verzenden",
         formStatusSuccess: "Bericht succesvol verzonden! Doorverwijzen...",
         formStatusError: "Er is een fout opgetreden. Probeer het opnieuw.",
+        formStatusSending: "Bezig met verzenden...",
 
         // Footer
         footer_contact_title: "Neem contact op",
@@ -126,6 +130,7 @@ const dataTranslations = {
         submitButton: "Enviar",
         formStatusSuccess: "¡Mensaje enviado con éxito! Redirigiendo...",
         formStatusError: "Ocurrió un error. Por favor inténtelo de nuevo.",
+        formStatusSending: "Enviando...",
 
         // Footer
         footer_contact_title: "Contáctanos",
@@ -154,6 +159,7 @@ const dataTranslations = {
         submitButton: "Inviare",
         formStatusSuccess: "Messaggio inviato con successo! Reindirizzamento...",
         formStatusError: "Si è verificato un errore. Per favore riprova.",
+        formStatusSending: "Invio in corso...",
 
         // Footer
         footer_contact_title: "Contattaci",
@@ -182,6 +188,7 @@ const dataTranslations = {
         submitButton: "Enviar",
         formStatusSuccess: "Mensagem enviada com sucesso! A redirecionar...",
         formStatusError: "Ocorreu um erro. Por favor, tente novamente.",
+        formStatusSending: "A enviar...",
 
         // Footer
         footer_contact_title: "Contacte-nos",

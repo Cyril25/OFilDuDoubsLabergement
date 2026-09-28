@@ -120,7 +120,11 @@ function buildLang(page, lang) {
   for (const id of Object.keys(tr)) {
     if (SKIP_KEYS.has(id)) continue;
     const el = $('#' + id);
-    if (el.length) el.html(tr[id]);
+    if (!el.length) continue;
+    // Champs de formulaire : la traduction est le placeholder (comme applyTranslations.js),
+    // sinon un <textarea> se retrouverait pré-rempli avec le texte traduit.
+    if (el.is('input, textarea')) el.attr('placeholder', tr[id]);
+    else el.html(tr[id]);
   }
   // Menu (par lien) + libellés de groupe
   $('#menu-items li a').each((i, el) => {

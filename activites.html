@@ -904,10 +904,9 @@
         });
         map.on('mouseout', function() { map.scrollWheelZoom.disable(); });
 
-        // Fond de carte
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CartoDB',
-            subdomains: 'abcd',
+        // Fond de carte : tuiles OSM standard, sans clé (CARTO en exige une depuis le 23/09/2026)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);
 
