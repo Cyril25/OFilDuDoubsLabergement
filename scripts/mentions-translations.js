@@ -18,11 +18,12 @@ const dataTranslations = {
         footer_link_activities: "Activités",
         footer_link_legal: "Mentions Légales",
         footer_contact_form: "Formulaire de contact",
-        footer_follow_title: "Réserver sur Airbnb",
+        footer_follow_title: "Réserver en ligne",
         footer_airbnb_text: "Consultez nos avis et réservez en toute sécurité.",
         footer_rights: "Tous droits réservés"
     },
     en: {
+        "host_text": "This site is hosted by <strong>GitHub Pages</strong>.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Legal Notice",
         editor_title: "Site Editor",
         host_title: "Hosting",
@@ -41,11 +42,12 @@ const dataTranslations = {
         footer_link_activities: "Activities",
         footer_link_legal: "Legal Notice",
         footer_contact_form: "Contact Form",
-        footer_follow_title: "Book on Airbnb",
+        footer_follow_title: "Book online",
         footer_airbnb_text: "Check our reviews and book securely.",
         footer_rights: "All rights reserved"
     },
     de: {
+        "host_text": "Diese Website wird von <strong>GitHub Pages</strong> gehostet.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Impressum",
         editor_title: "Herausgeber",
         host_title: "Hosting",
@@ -64,11 +66,12 @@ const dataTranslations = {
         footer_link_activities: "Aktivitäten",
         footer_link_legal: "Impressum",
         footer_contact_form: "Kontaktformular",
-        footer_follow_title: "Auf Airbnb buchen",
+        footer_follow_title: "Online buchen",
         footer_airbnb_text: "Bewertungen lesen und sicher buchen.",
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        "host_text": "Deze site wordt gehost door <strong>GitHub Pages</strong>.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Colofon",
         editor_title: "Uitgever van de site",
         host_title: "Hosting",
@@ -87,11 +90,12 @@ const dataTranslations = {
         footer_link_activities: "Activiteiten",
         footer_link_legal: "Colofon",
         footer_contact_form: "Contactformulier",
-        footer_follow_title: "Reserveren op Airbnb",
+        footer_follow_title: "Online reserveren",
         footer_airbnb_text: "Bekijk onze beoordelingen en reserveer veilig.",
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        "host_text": "Este sitio está alojado por <strong>GitHub Pages</strong>.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Aviso legal",
         editor_title: "Editor del sitio",
         host_title: "Alojamiento",
@@ -110,11 +114,12 @@ const dataTranslations = {
         footer_link_activities: "Actividades",
         footer_link_legal: "Aviso legal",
         footer_contact_form: "Formulario de contacto",
-        footer_follow_title: "Reservar en Airbnb",
+        footer_follow_title: "Reservar en línea",
         footer_airbnb_text: "Lee nuestras reseñas y reserva con seguridad.",
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        "host_text": "Questo sito è ospitato da <strong>GitHub Pages</strong>.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Note legali",
         editor_title: "Editore del sito",
         host_title: "Hosting",
@@ -133,11 +138,12 @@ const dataTranslations = {
         footer_link_activities: "Attività",
         footer_link_legal: "Note legali",
         footer_contact_form: "Modulo di contatto",
-        footer_follow_title: "Prenota su Airbnb",
+        footer_follow_title: "Prenota online",
         footer_airbnb_text: "Leggi le nostre recensioni e prenota in sicurezza.",
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        "host_text": "Este site está alojado no <strong>GitHub Pages</strong>.<br>\n                GitHub Inc.<br>\n                88 Colin P Kelly Jr St<br>\n                San Francisco, CA 94107<br>\n                United States",
         title: "Aviso legal",
         editor_title: "Editor do site",
         host_title: "Alojamento",
@@ -156,7 +162,7 @@ const dataTranslations = {
         footer_link_activities: "Atividades",
         footer_link_legal: "Aviso legal",
         footer_contact_form: "Formulário de contacto",
-        footer_follow_title: "Reservar no Airbnb",
+        footer_follow_title: "Reservar online",
         footer_airbnb_text: "Veja as nossas avaliações e reserve com segurança.",
         footer_rights: "Todos os direitos reservados"
     }

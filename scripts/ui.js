@@ -185,8 +185,13 @@
     btn.href = 'https://wa.me/33683016151';
     btn.target = '_blank';
     btn.rel = 'noopener noreferrer';
-    btn.title = 'Nous contacter sur WhatsApp';
-    btn.setAttribute('aria-label', 'Contacter sur WhatsApp');
+    var WA_LABELS = {
+        fr: 'Nous contacter sur WhatsApp', en: 'Contact us on WhatsApp', de: 'Kontaktieren Sie uns über WhatsApp',
+        nl: 'Neem contact op via WhatsApp', es: 'Contáctenos por WhatsApp', it: 'Contattateci su WhatsApp', pt: 'Contacte-nos pelo WhatsApp'
+    };
+    var waLabel = WA_LABELS[document.documentElement.getAttribute('lang')] || WA_LABELS.fr;
+    btn.title = waLabel;
+    btn.setAttribute('aria-label', waLabel);
     btn.innerHTML = '<i class="fab fa-whatsapp"></i>';
     document.body.appendChild(btn);
 })();
