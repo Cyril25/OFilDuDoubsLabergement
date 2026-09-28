@@ -1,5 +1,8 @@
 const dataTranslations = {
     fr: {
+        "aghome_title": "Cette semaine autour du logement",
+        "aghome_count": "{n} événements dans les 7 prochains jours, à moins de 20 km. Notre sélection :",
+        "aghome_btn": "Voir tout l'agenda",
         "img_stars@alt": "Meublé de tourisme 4 étoiles",
         "img_owners@alt": "Photo des propriétaires Alisson et Cyril",
         "loc_access": "Distances et accès détaillés",
@@ -58,6 +61,9 @@ const dataTranslations = {
         footer_rights: "Tous droits réservés"
     },
     en: {
+        "aghome_title": "This week around the apartment",
+        "aghome_count": "{n} events in the next 7 days within 20 km. Our pick:",
+        "aghome_btn": "See all events",
         "img_stars@alt": "4-star rated holiday rental",
         "img_owners@alt": "Photo of the hosts, Alisson and Cyril",
         "loc_access": "Detailed distances and directions",
@@ -114,6 +120,9 @@ const dataTranslations = {
         footer_rights: "All rights reserved"
     },
     de: {
+        "aghome_title": "Diese Woche rund um die Wohnung",
+        "aghome_count": "{n} Veranstaltungen in den nächsten 7 Tagen im Umkreis von 20 km. Unsere Auswahl:",
+        "aghome_btn": "Alle Veranstaltungen ansehen",
         "img_stars@alt": "Mit 4 Sternen klassifizierte Ferienwohnung",
         "img_owners@alt": "Foto der Gastgeber Alisson und Cyril",
         "loc_access": "Entfernungen und Anfahrt im Detail",
@@ -170,6 +179,9 @@ const dataTranslations = {
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        "aghome_title": "Deze week rond het appartement",
+        "aghome_count": "{n} evenementen in de komende 7 dagen binnen 20 km. Onze selectie:",
+        "aghome_btn": "Alle evenementen bekijken",
         "img_stars@alt": "Vakantiewoning met 4 sterren",
         "img_owners@alt": "Foto van de gastheren Alisson en Cyril",
         "loc_access": "Afstanden en route in detail",
@@ -226,6 +238,9 @@ const dataTranslations = {
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        "aghome_title": "Esta semana cerca del apartamento",
+        "aghome_count": "{n} eventos en los próximos 7 días a menos de 20 km. Nuestra selección:",
+        "aghome_btn": "Ver toda la agenda",
         "img_stars@alt": "Alojamiento turístico de 4 estrellas",
         "img_owners@alt": "Foto de los anfitriones, Alisson y Cyril",
         "loc_access": "Distancias y acceso en detalle",
@@ -282,6 +297,9 @@ const dataTranslations = {
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        "aghome_title": "Questa settimana intorno all'appartamento",
+        "aghome_count": "{n} eventi nei prossimi 7 giorni entro 20 km. La nostra selezione:",
+        "aghome_btn": "Vedi tutti gli eventi",
         "img_stars@alt": "Alloggio turistico 4 stelle",
         "img_owners@alt": "Foto dei proprietari, Alisson e Cyril",
         "loc_access": "Distanze e accesso in dettaglio",
@@ -338,6 +356,9 @@ const dataTranslations = {
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        "aghome_title": "Esta semana à volta do apartamento",
+        "aghome_count": "{n} eventos nos próximos 7 dias a menos de 20 km. A nossa seleção:",
+        "aghome_btn": "Ver toda a agenda",
         "img_stars@alt": "Alojamento turístico de 4 estrelas",
         "img_owners@alt": "Fotografia dos anfitriões, Alisson e Cyril",
         "loc_access": "Distâncias e acesso em detalhe",
