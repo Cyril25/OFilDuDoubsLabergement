@@ -24,11 +24,14 @@ const dataTranslations = {
         footer_link_activities: "Activités",
         footer_link_legal: "Mentions Légales",
         footer_contact_form: "Formulaire de contact",
-        footer_follow_title: "Réserver sur Airbnb",
+        footer_follow_title: "Réserver en ligne",
         footer_airbnb_text: "Consultez nos avis et réservez en toute sécurité.",
         footer_rights: "Tous droits réservés"
     },
     en: {
+        "contact_quick_email": "By email",
+        "map_title": "Where to find us",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Directions (Google Maps)",
         title: "Contact",
         subtitle: "We are here to answer your questions",
         introduction: "For any questions or booking requests, contact us using the form below",
@@ -53,11 +56,14 @@ const dataTranslations = {
         footer_link_activities: "Activities",
         footer_link_legal: "Legal Notice",
         footer_contact_form: "Contact Form",
-        footer_follow_title: "Book on Airbnb",
+        footer_follow_title: "Book online",
         footer_airbnb_text: "Check our reviews and book securely.",
         footer_rights: "All rights reserved"
     },
     de: {
+        "contact_quick_email": "Per E-Mail",
+        "map_title": "So finden Sie uns",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Route (Google Maps)",
         title: "Kontakt",
         subtitle: "Wir sind hier, um Ihre Fragen zu beantworten",
         introduction: "Für Fragen oder Reservierungsanfragen kontaktieren Sie uns bitte über das untenstehende Formular",
@@ -82,11 +88,14 @@ const dataTranslations = {
         footer_link_activities: "Aktivitäten",
         footer_link_legal: "Impressum",
         footer_contact_form: "Kontaktformular",
-        footer_follow_title: "Auf Airbnb buchen",
+        footer_follow_title: "Online buchen",
         footer_airbnb_text: "Bewertungen lesen und sicher buchen.",
         footer_rights: "Alle Rechte vorbehalten"
     },
     nl: {
+        "contact_quick_email": "Per e-mail",
+        "map_title": "Waar vindt u ons",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Routebeschrijving (Google Maps)",
         title: "Contact",
         subtitle: "Wij zijn er om uw vragen te beantwoorden",
         introduction: "Voor vragen of reserveringsaanvragen kunt u contact met ons opnemen via het onderstaande formulier",
@@ -111,11 +120,14 @@ const dataTranslations = {
         footer_link_activities: "Activiteiten",
         footer_link_legal: "Colofon",
         footer_contact_form: "Contactformulier",
-        footer_follow_title: "Reserveren op Airbnb",
+        footer_follow_title: "Online reserveren",
         footer_airbnb_text: "Bekijk onze beoordelingen en reserveer veilig.",
         footer_rights: "Alle rechten voorbehouden"
     },
     es: {
+        "contact_quick_email": "Por correo electrónico",
+        "map_title": "Dónde encontrarnos",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Cómo llegar (Google Maps)",
         title: "Contacto",
         subtitle: "Estamos aquí para responder a sus preguntas",
         introduction: "Para cualquier pregunta o solicitud de reserva, contáctenos mediante el siguiente formulario",
@@ -140,11 +152,14 @@ const dataTranslations = {
         footer_link_activities: "Actividades",
         footer_link_legal: "Aviso legal",
         footer_contact_form: "Formulario de contacto",
-        footer_follow_title: "Reservar en Airbnb",
+        footer_follow_title: "Reservar en línea",
         footer_airbnb_text: "Lee nuestras reseñas y reserva con seguridad.",
         footer_rights: "Todos los derechos reservados"
     },
     it: {
+        "contact_quick_email": "Via e-mail",
+        "map_title": "Dove trovarci",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Indicazioni (Google Maps)",
         title: "Contatto",
         subtitle: "Siamo qui per rispondere alle vostre domande",
         introduction: "Per qualsiasi domanda o richiesta di prenotazione, contattaci tramite il modulo qui sotto",
@@ -169,11 +184,14 @@ const dataTranslations = {
         footer_link_activities: "Attività",
         footer_link_legal: "Note legali",
         footer_contact_form: "Modulo di contatto",
-        footer_follow_title: "Prenota su Airbnb",
+        footer_follow_title: "Prenota online",
         footer_airbnb_text: "Leggi le nostre recensioni e prenota in sicurezza.",
         footer_rights: "Tutti i diritti riservati"
     },
     pt: {
+        "contact_quick_email": "Por e-mail",
+        "map_title": "Onde nos encontrar",
+        "map_directions": "<i class=\"fas fa-directions\"></i> Como chegar (Google Maps)",
         title: "Contacto",
         subtitle: "Estamos aqui para responder às suas perguntas",
         introduction: "Para qualquer dúvida ou pedido de reserva, contacte-nos através do formulário abaixo",
@@ -198,7 +216,7 @@ const dataTranslations = {
         footer_link_activities: "Atividades",
         footer_link_legal: "Aviso legal",
         footer_contact_form: "Formulário de contacto",
-        footer_follow_title: "Reservar no Airbnb",
+        footer_follow_title: "Reservar online",
         footer_airbnb_text: "Veja as nossas avaliações e reserve com segurança.",
         footer_rights: "Todos os direitos reservados"
     }

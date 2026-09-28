@@ -458,7 +458,7 @@
                     <div class="activity-infos">
                         <div class="transport-options">
                             <span class="t-badge"><i class="fas fa-car"></i> 1h10 (55 km)</span>
-                            <span class="t-badge"><i class="fas fa-walking"></i> Balade sur place</span>
+                            <span class="t-badge" id="badge_walk_onsite"><i class="fas fa-walking"></i> Balade sur place</span>
                         </div>
                         <a href="http://www.sautdudoubs.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=Parking+Du+Saut+Du+Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
@@ -477,7 +477,7 @@
                     <div class="activity-infos">
                         <div class="transport-options">
                             <span class="t-badge"><i class="fas fa-car"></i> 15 min (13 km)</span>
-                            <span class="t-badge"><i class="fas fa-walking"></i> Balade 30 min</span>
+                            <span class="t-badge" id="badge_walk_30"><i class="fas fa-walking"></i> Balade 30 min</span>
                         </div>
                         <a href="https://www.destination-haut-doubs.com/val-de-mouthe.html" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=Station+de+la+Source+du+Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
@@ -496,7 +496,7 @@
                     <div class="activity-infos">
                         <div class="transport-options">
                             <span class="t-badge"><i class="fas fa-car"></i> 21 min (12 km)</span>
-                            <span class="t-badge"><i class="fas fa-walking"></i> Rando depuis Métabief</span>
+                            <span class="t-badge" id="badge_hike_metabief"><i class="fas fa-walking"></i> Rando depuis Métabief</span>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=Mont+d+Or&query_place_id=ChIJp4nuqHyxjUcRoMDuPnielHM" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
                     </div>
@@ -642,7 +642,7 @@
                     <p id="peche_truite_desc">Le Doubs offre de beaux parcours pour la truite fario en rivière. Eau claire, secteurs calmes, idéal pour pêcheurs débutants ou confirmés. Carte de pêche obligatoire.</p>
                     <div class="activity-infos">
                         <div class="transport-options">
-                            <span class="t-badge"><i class="fas fa-walking"></i> Accès direct rivière</span>
+                            <span class="t-badge" id="badge_river"><i class="fas fa-walking"></i> Accès direct rivière</span>
                         </div>
                         <a href="https://www.cartedepeche.fr/" target="_blank" class="btn-activity btn-website"><i class="fas fa-globe"></i> <span class="lbl-website">Site officiel</span></a>
                         <a href="https://www.google.com/maps/search/?api=1&query=P%C3%AAche+%C3%A0+la+Truite+dans+le+Haut-Doubs" target="_blank" class="btn-activity btn-maps"><i class="fas fa-location-arrow"></i> <span class="lbl-maps">Y aller</span></a>
@@ -959,7 +959,8 @@
         }
 
         // --- AJOUT DES POINTS ---
-        addTaggedMarker(46.768914, 6.280725, "Vous êtes ici<br>2 impasse Cotti", ['vous'], 'red');
+        var YOU_ARE_HERE = { fr: "Vous êtes ici", en: "You are here", de: "Sie sind hier", nl: "U bent hier", es: "Usted está aquí", it: "Voi siete qui", pt: "Está aqui" };
+        addTaggedMarker(46.768914, 6.280725, (YOU_ARE_HERE[document.documentElement.getAttribute('lang')] || YOU_ARE_HERE.fr) + "<br>2 impasse Cotti", ['vous'], 'red');
 
         // Activités
         addTaggedMarker(46.770527637007895, 6.269824982803603, "Lac de Remoray", ['nature', 'randonnée', 'baignade'], 'green', 'https://maps.app.goo.gl/cPB7PDkhW5rS7iLY8', 'lac_remoray_title');
