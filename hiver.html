@@ -56,15 +56,20 @@
             </li>
             <li><a href="dispo.html">Tarifs et disponibilités</a></li>
             <li class="has-sub">
-                <a href="#" class="sub-toggle" data-mkey="autour">Autour de vous</a>
+                <a href="#" class="sub-toggle" data-mkey="decouvrir">À découvrir</a>
                 <ul class="submenu">
                     <li><a href="activites.html">Activités</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
                     <li><a href="rando.html" data-mkey="randonnees">Randonnées</a></li>
                     <li><a href="ete.html">L'été au bord des lacs</a></li>
                     <li><a href="hiver.html">L'hiver à la montagne</a></li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#" class="sub-toggle" data-mkey="pratique">Pratique</a>
+                <ul class="submenu">
                     <li><a href="ou-manger.html">Où manger</a></li>
                     <li><a href="commerces.html">Commerces</a></li>
-                    <li><a href="agenda.html">Agenda</a></li>
                 </ul>
             </li>
             <li><a href="contact.html">Contact</a></li>
@@ -86,13 +91,20 @@
 		</div>
     </nav>
 
-    <header class="header2">
+    <header class="header2 header-hiver">
         <h1 id="title">L'hiver à la montagne</h1>
         <h2 id="subtitle">Ski à Métabief, ski de fond, raquettes et douceurs du Haut-Doubs</h2>
     </header>
 
     <main>
         <p id="introduction" class="intro-text">Quand la neige arrive, Labergement-Sainte-Marie devient un camp de base idéal pour les sports d'hiver dans les montagnes du Jura : la station de Métabief est à 10 minutes, les pistes de ski de fond et de raquettes à un quart d'heure. Au retour, place à la fondue ou à la raclette (appareils fournis), face au paysage enneigé du balcon.</p>
+
+        <div class="season-gallery">
+            <a href="images/balcon-hiver.webp" class="glightbox" data-gallery="hiver" data-title="Le balcon de l'appartement sous la neige" id="gl_balcon_hiver"><img src="images/vignettes/balcon-hiver.webp" alt="Le balcon de l'appartement sous la neige" id="g_balcon_hiver" loading="lazy"></a>
+            <a href="images/chiens-de-traineau-adams.jpg" class="glightbox" data-gallery="hiver" data-title="Balade en chiens de traîneau" id="gl_chiens_de_traineau_adams"><img src="images/vignettes/chiens-de-traineau-adams.webp" alt="Balade en chiens de traîneau" id="g_chiens_de_traineau_adams" loading="lazy"></a>
+            <a href="images/fromagerie-mont-dor.webp" class="glightbox" data-gallery="hiver" data-title="La Fromagerie du Mont d'Or sous la neige, à Métabief" id="gl_fromagerie_mont_dor"><img src="images/vignettes/fromagerie-mont-dor.webp" alt="La Fromagerie du Mont d'Or sous la neige, à Métabief" id="g_fromagerie_mont_dor" loading="lazy"></a>
+            <a href="images/fort-saint-antoine.webp" class="glightbox" data-gallery="hiver" data-title="Les caves d'affinage du Comté au Fort Saint-Antoine" id="gl_fort_saint_antoine"><img src="images/vignettes/fort-saint-antoine.webp" alt="Les caves d'affinage du Comté au Fort Saint-Antoine" id="g_fort_saint_antoine" loading="lazy"></a>
+        </div>
 
         <section class="season-section">
             <h2><i class="fas fa-skiing" aria-hidden="true"></i> <span id="s_ski_title">Ski alpin à Métabief</span></h2>
@@ -133,6 +145,10 @@
             <a href="dispo.html" class="btn-maps btn-cta"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <span id="cta_dispo">Voir les disponibilités et les tarifs</span></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        GLightbox({ selector: '.glightbox', touchNavigation: true });
+    </script>
 
 	<footer>
         <div class="footer-content">

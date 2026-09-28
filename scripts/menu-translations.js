@@ -1,5 +1,7 @@
 const menuTranslations = {
     fr: {
+        "decouvrir": "À découvrir",
+        "pratique": "Pratique",
         "situation": "Situation et accès",
         "ete": "L'été au bord des lacs",
         "hiver": "L'hiver à la montagne",
@@ -16,6 +18,8 @@ const menuTranslations = {
         contact: "Contact"
     },
     en: {
+        "decouvrir": "Explore",
+        "pratique": "Practical",
         "situation": "Location & access",
         "ete": "Summer by the lakes",
         "hiver": "Winter in the mountains",
@@ -32,6 +36,8 @@ const menuTranslations = {
         contact: "Contact"
     },
     de: {
+        "decouvrir": "Entdecken",
+        "pratique": "Praktisches",
         "situation": "Lage & Anreise",
         "ete": "Sommer an den Seen",
         "hiver": "Winter in den Bergen",
@@ -48,6 +54,8 @@ const menuTranslations = {
         contact: "Kontakt"
     },
     nl: {
+        "decouvrir": "Ontdekken",
+        "pratique": "Praktisch",
         "situation": "Ligging & bereikbaarheid",
         "ete": "Zomer aan de meren",
         "hiver": "Winter in de bergen",
@@ -64,6 +72,8 @@ const menuTranslations = {
         contact: "Contact"
     },
     es: {
+        "decouvrir": "Descubrir",
+        "pratique": "Práctico",
         "situation": "Ubicación y acceso",
         "ete": "Verano junto a los lagos",
         "hiver": "Invierno en la montaña",
@@ -80,6 +90,8 @@ const menuTranslations = {
         contact: "Contacto"
     },
     it: {
+        "decouvrir": "Da scoprire",
+        "pratique": "Info utili",
         "situation": "Posizione e accesso",
         "ete": "Estate sui laghi",
         "hiver": "Inverno in montagna",
@@ -96,6 +108,8 @@ const menuTranslations = {
         contact: "Contatto"
     },
     pt: {
+        "decouvrir": "Descobrir",
+        "pratique": "Prático",
         "situation": "Localização e acesso",
         "ete": "Verão junto aos lagos",
         "hiver": "Inverno na montanha",

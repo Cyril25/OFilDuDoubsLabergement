@@ -1550,3 +1550,32 @@ header .header-sub {
 .faq-item p { margin: 0 4px 14px; line-height: 1.7; }
 .faq-item a { color: var(--primary-color); }
 .loc-sep { margin: 0 12px; color: #999; }
+
+/* Bannières des pages de saison (voile sombre : titre lisible sur la neige et le ciel) */
+header.header2.header-hiver {
+    background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url('images/banniere/hiver-metabief-1920.webp');
+    background-position: center 40%;
+    min-height: 300px;
+}
+header.header2.header-ete {
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-belvedere-1600.webp');
+    background-position: center 55%;
+    min-height: 300px;
+}
+@media (max-width: 768px) {
+    header.header2.header-hiver { background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url('images/banniere/hiver-metabief-1000.webp'); min-height: 200px; }
+    header.header2.header-ete { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('images/banniere/ete-belvedere-1000.webp'); min-height: 200px; }
+}
+/* Bande de photos sous l'introduction */
+.season-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 40px;
+}
+.season-gallery a { display: block; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-card); aspect-ratio: 4 / 3; }
+.season-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+.season-gallery a:hover img { transform: scale(1.05); }
+@media (max-width: 768px) {
+    .season-gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
