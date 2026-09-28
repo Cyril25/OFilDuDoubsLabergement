@@ -115,22 +115,22 @@
             <form action="https://formspree.io/f/mzzeqqyl" method="POST" class="contact-form">
               <div class="form-group">
                 <label for="name" id="labelName">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Votre nom" required="">
+                <input type="text" id="name" name="name" placeholder="Ihr Name" required="">
               </div>
             
               <div class="form-group">
                 <label for="email" id="labelEmail">E-Mail:</label>
-                <input type="email" id="email" name="email" placeholder="Votre adresse email" required="">
+                <input type="email" id="email" name="email" placeholder="Ihre E-Mail-Adresse" required="">
               </div>
             
               <div class="form-group">
                 <label for="phone" id="labelPhone">Telefon:</label>
-                <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required="">
+                <input type="tel" id="phone" name="phone" placeholder="Ihre Telefonnummer" required="">
               </div>
             
               <div class="form-group">
                 <label for="message" id="labelMessage">Nachricht:</label>
-                <textarea id="message" name="message" rows="5" placeholder="Votre message" required="">Ihre Nachricht</textarea>
+                <textarea id="message" name="message" rows="5" placeholder="Ihre Nachricht" required=""></textarea>
               </div>
             
               <div style="position: absolute; left: -9999px;" aria-hidden="true">
@@ -148,34 +148,40 @@
                 const form = e.target;
                 const submitButton = form.querySelector('button[type="submit"]');
                 const statusText = document.getElementById('formStatus');
-            
+                // Messages dans la langue de la page (contact-translations.js), français à défaut
+                const lang = document.documentElement.lang || 'fr';
+                const tr = (typeof dataTranslations !== 'undefined' && dataTranslations[lang]) || {};
+                const fr = (typeof dataTranslations !== 'undefined' && dataTranslations.fr) || {};
+                const t = (k, d) => tr[k] || fr[k] || d;
+
                 if (form.querySelector('[name="website"]').value !== "") {
                   return;
                 }
-            
+
                 submitButton.disabled = true;
-                submitButton.textContent = "Envoi en cours...";
+                submitButton.textContent = t('formStatusSending', "Envoi en cours...");
                 statusText.textContent = "";
-            
+
                 fetch(form.action, {
                   method: 'POST',
                   body: new FormData(form),
                   headers: { 'Accept': 'application/json' }
                 }).then(response => {
                   if (response.ok) {
-                    statusText.textContent = "Message envoyé avec succès ! Redirection...";
+                    statusText.textContent = t('formStatusSuccess', "Message envoyé avec succès ! Redirection...");
                     setTimeout(() => {
-                      window.location.href = 'merci.html';
+                      // Chemin absolu : merci.html n'existe qu'à la racine (la page est aussi servie depuis /en/, /de/…)
+                      window.location.href = '/merci.html';
                     }, 1000);
                   } else {
                     throw new Error("Erreur lors de l'envoi");
                   }
                 }).catch(error => {
-                  statusText.textContent = "Une erreur est survenue.";
+                  statusText.textContent = t('formStatusError', "Une erreur est survenue.");
                   console.error(error);
                 }).finally(() => {
                   submitButton.disabled = false;
-                  submitButton.textContent = "Envoyer";
+                  submitButton.textContent = t('submitButton', "Envoyer");
                 });
               });
             </script>
@@ -194,8 +200,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         var contactMap = L.map('contact-map', { scrollWheelZoom: false }).setView([46.768914, 6.280725], 16);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        // Tuiles OSM standard : sans clé (CARTO en exige une depuis le 23/09/2026)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(contactMap);
         L.marker([46.768914, 6.280725])
