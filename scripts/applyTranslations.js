@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
         menuToggle.parentNode.replaceChild(newToggle, menuToggle);
 
         newToggle.addEventListener("click", function () {
-            menuItemsContainer.classList.toggle("active");
+            const open = menuItemsContainer.classList.toggle("active");
+            document.body.classList.toggle("menu-open", open);
         });
     }
 
@@ -87,7 +88,7 @@ function applyTranslations(lang, pageTranslations) {
             'ou-manger.html': 'oumanger',
             'agenda.html': 'agenda',
             'contact.html': 'contact',
-            'situation.html': 'situation',
+            'situation.html': 'situation', 'faq.html': 'faq',
             'ete.html': 'ete',
             'hiver.html': 'hiver'
         };

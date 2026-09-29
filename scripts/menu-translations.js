@@ -1,5 +1,6 @@
 const menuTranslations = {
     fr: {
+        "faq": "Questions fréquentes",
         "decouvrir": "À découvrir",
         "pratique": "Pratique",
         "situation": "Situation et accès",
@@ -18,6 +19,7 @@ const menuTranslations = {
         contact: "Contact"
     },
     en: {
+        "faq": "FAQ",
         "decouvrir": "Explore",
         "pratique": "Practical",
         "situation": "Location & access",
@@ -36,6 +38,7 @@ const menuTranslations = {
         contact: "Contact"
     },
     de: {
+        "faq": "Häufige Fragen",
         "decouvrir": "Entdecken",
         "pratique": "Praktisches",
         "situation": "Lage & Anreise",
@@ -54,6 +57,7 @@ const menuTranslations = {
         contact: "Kontakt"
     },
     nl: {
+        "faq": "Veelgestelde vragen",
         "decouvrir": "Ontdekken",
         "pratique": "Praktisch",
         "situation": "Ligging & bereikbaarheid",
@@ -72,6 +76,7 @@ const menuTranslations = {
         contact: "Contact"
     },
     es: {
+        "faq": "Preguntas frecuentes",
         "decouvrir": "Descubrir",
         "pratique": "Práctico",
         "situation": "Ubicación y acceso",
@@ -90,6 +95,7 @@ const menuTranslations = {
         contact: "Contacto"
     },
     it: {
+        "faq": "Domande frequenti",
         "decouvrir": "Da scoprire",
         "pratique": "Info utili",
         "situation": "Posizione e accesso",
@@ -108,6 +114,7 @@ const menuTranslations = {
         contact: "Contatto"
     },
     pt: {
+        "faq": "Perguntas frequentes",
         "decouvrir": "Descobrir",
         "pratique": "Prático",
         "situation": "Localização e acesso",

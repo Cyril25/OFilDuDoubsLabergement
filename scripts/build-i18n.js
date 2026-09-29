@@ -24,6 +24,7 @@ const PAGES = {
   'agenda': 'agenda', 'dispo': 'dispo',          // Phase 2 : pages dynamiques (JS suit <html lang>)
   'rando': 'rando',                              // Randonnées (dynamique, JS suit <html lang>)
   'situation': 'situation', 'ete': 'ete', 'hiver': 'hiver',   // Accès, séjours d'été et d'hiver
+  'faq': 'faq',                                  // Questions fréquentes
 };
 const STATIC = Object.keys(PAGES);
 const SKIP_KEYS = new Set(['btn_website', 'btn_maps', 'btn_hours', 'info_min']);
@@ -33,7 +34,7 @@ const hrefKeyMap = {
   '': 'accueil', 'index.html': 'accueil', 'logement.html': 'logement', 'equipements.html': 'equipements',
   'dispo.html': 'dispo', 'activites.html': 'activites', 'commerces.html': 'commerces',
   'ou-manger.html': 'oumanger', 'agenda.html': 'agenda', 'contact.html': 'contact',
-  'situation.html': 'situation', 'ete.html': 'ete', 'hiver.html': 'hiver',
+  'situation.html': 'situation', 'faq.html': 'faq', 'ete.html': 'ete', 'hiver.html': 'hiver',
 };
 
 // Charge une variable globale définie dans un fichier JS (const X = {...})
@@ -190,7 +191,7 @@ function patchFr(page) {
 const FR_PAGES = {
   index: 1.0, logement: 0.8, equipements: 0.7, dispo: 0.9, activites: 0.8,
   commerces: 0.7, 'ou-manger': 0.8, agenda: 0.8, contact: 0.6, mentions: 0.2, rando: 0.8,
-  situation: 0.8, ete: 0.7, hiver: 0.7,
+  situation: 0.8, ete: 0.7, hiver: 0.7, faq: 0.6,
 };
 const fileFor = (p, lang) => path.join(ROOT, ...(lang === 'fr' ? [] : [lang]), p + '.html');
 
