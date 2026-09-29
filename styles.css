@@ -363,6 +363,15 @@ section h2 {
     }
 
     nav ul.active { display: flex; }
+    /* Menu ouvert : il défile seul, la page derrière reste immobile */
+    #menu-items {
+        max-height: calc(100vh - 60px);
+        max-height: calc(100dvh - 60px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+    body.menu-open { overflow: hidden; }
     nav ul li { margin: 10px 0; }
 
     /* Sous-menus en accordéon sur mobile */
@@ -1391,9 +1400,10 @@ a.glightbox img.room-image { cursor: zoom-in; }
 }
 .ft-tonight-list { display: flex; flex-wrap: wrap; gap: 12px; }
 .ft-tonight-item {
-    flex: 1 1 260px;
+    flex: 1 1 220px;
     display: flex;
-    align-items: center;
+    flex-direction: column;       /* nom et lieu au-dessus, bouton d'appel dessous : rien ne se chevauche */
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
     background: #fff;
@@ -1412,7 +1422,7 @@ a.glightbox img.room-image { cursor: zoom-in; }
     gap: 5px;
 }
 .ft-tonight-loc i { color: var(--primary-color); margin-top: 3px; }
-.ft-tonight-call { flex-shrink: 0; font-size: 0.82rem; padding: 8px 12px; white-space: nowrap; }
+.ft-tonight-call { flex-shrink: 0; font-size: 0.82rem; padding: 8px 12px; white-space: nowrap; margin: 0; }
 .ft-tonight-empty { color: #666; font-size: 0.92rem; margin: 0; }
 .ft-tonight-more {
     display: inline-block;

@@ -28,7 +28,7 @@ const dataTranslations = {
         chambre_secondaire_title: "La Chambre Secondaire",
         chambre_secondaire_description: "Une chambre accueillante, équipée d’un lit double, d’une armoire et de tables de chevet avec lampes pour deux. Idéale pour des nuits reposantes, dans un cadre calme et chaleureux. Cette chambre bénéficie également d’un accès direct au balcon pour profiter de l’extérieur.",
         salle_de_bain_title: "La Salle de Bain",
-        salle_de_bain_description: "Une salle de bain moderne équipée d'une baignoire pour un moment de détente. La lumière, réglable en intensité et en couleur, crée une ambiance apaisante. Vous y trouverez des serviettes moelleuses, des produits de toilette tels que du shampoing et du gel douche, ainsi qu’un sèche-cheveux et une machine à laver pour plus de commodités.",
+        salle_de_bain_description: "Une salle de bain équipée d'une baignoire pour un moment de détente. La lumière, réglable en intensité et en couleur, crée une ambiance apaisante. Vous y trouverez des serviettes moelleuses, des produits de toilette tels que du shampoing et du gel douche, ainsi qu’un sèche-cheveux et une machine à laver pour plus de commodités.",
         balcon_title: "Le balcon",
         balcon_description: "L'extérieur offre un espace agréable avec un salon confortable, parfait pour un apéritif en plein air tout en profitant d'une vue exceptionnelle. Une table et des chaises sont disponibles pour manger à 4, et un grill électrique est à votre disposition pour réaliser de délicieuses grillades. Un endroit idéal pour se détendre et savourer les beaux jours.",
 
@@ -73,7 +73,7 @@ const dataTranslations = {
         chambre_secondaire_title: "The Secondary Bedroom",
         chambre_secondaire_description: "A cozy bedroom equipped with a double bed, a wardrobe, and bedside tables with lamps for two. Ideal for restful nights in a calm and warm setting. This room also has direct access to the balcony to enjoy the outdoors.",
         salle_de_bain_title: "The Bathroom",
-        salle_de_bain_description: "A modern bathroom equipped with a bathtub for a relaxing moment. The adjustable lighting, in intensity and color, creates a soothing ambiance. You will find soft towels, toiletries such as shampoo and shower gel, as well as a hairdryer and a washing machine for added convenience.",
+        salle_de_bain_description: "A bathroom equipped with a bathtub for a relaxing moment. The adjustable lighting, in intensity and color, creates a soothing ambiance. You will find soft towels, toiletries such as shampoo and shower gel, as well as a hairdryer and a washing machine for added convenience.",
         balcon_title: "The Balcony",
         balcon_description: "The outdoor area offers a pleasant space with comfortable seating, perfect for an outdoor aperitif while enjoying an exceptional view. A table and chairs are available for dining for 4, and an electric grill is at your disposal for delicious barbecues. An ideal spot to relax and enjoy sunny days.",
 
@@ -118,7 +118,7 @@ const dataTranslations = {
         chambre_secondaire_title: "Das Nebenschlafzimmer",
         chambre_secondaire_description: "Ein gemütliches Schlafzimmer mit einem Doppelbett, einem Kleiderschrank und Nachttischen mit Lampen für zwei Personen. Ideal für erholsame Nächte in einer ruhigen und warmen Umgebung. Dieses Zimmer hat ebenfalls direkten Zugang zum Balkon, um die Natur zu genießen.",
         salle_de_bain_title: "Das Badezimmer",
-        salle_de_bain_description: "Ein modernes Badezimmer mit einer Badewanne für einen entspannenden Moment. Die einstellbare Beleuchtung in Intensität und Farbe schafft eine beruhigende Atmosphäre. Sie finden weiche Handtücher, Toilettenartikel wie Shampoo und Duschgel sowie einen Haartrockner und eine Waschmaschine für zusätzlichen Komfort.",
+        salle_de_bain_description: "Ein Badezimmer mit einer Badewanne für einen entspannenden Moment. Die einstellbare Beleuchtung in Intensität und Farbe schafft eine beruhigende Atmosphäre. Sie finden weiche Handtücher, Toilettenartikel wie Shampoo und Duschgel sowie einen Haartrockner und eine Waschmaschine für zusätzlichen Komfort.",
         balcon_title: "Der Balkon",
         balcon_description: "Der Außenbereich bietet einen angenehmen Raum mit bequemen Sitzgelegenheiten, perfekt für einen Aperitif im Freien, während Sie eine außergewöhnliche Aussicht genießen. Ein Tisch und Stühle stehen für Mahlzeiten zu viert zur Verfügung, und ein Elektrogrill ist für köstliche Grillgerichte vorhanden. Ein idealer Ort, um sich zu entspannen und die sonnigen Tage zu genießen.",
 
@@ -163,7 +163,7 @@ const dataTranslations = {
         chambre_secondaire_title: "De tweede slaapkamer",
         chambre_secondaire_description: "Een gezellige slaapkamer uitgerust met een tweepersoonsbed, een kledingkast en nachtkastjes met lampen voor twee personen. Ideaal voor rustgevende nachten in een rustige en warme omgeving. Deze kamer heeft ook directe toegang tot het balkon om van het buitenleven te genieten.",
         salle_de_bain_title: "De badkamer",
-        salle_de_bain_description: "Een moderne badkamer uitgerust met een ligbad voor een ontspannend moment. De verlichting, instelbaar in intensiteit en kleur, creëert een rustgevende sfeer. U vindt er zachte handdoeken, toiletartikelen zoals shampoo en douchegel, evenals een haardroger en een wasmachine voor extra gemak.",
+        salle_de_bain_description: "Een badkamer uitgerust met een ligbad voor een ontspannend moment. De verlichting, instelbaar in intensiteit en kleur, creëert een rustgevende sfeer. U vindt er zachte handdoeken, toiletartikelen zoals shampoo en douchegel, evenals een haardroger en een wasmachine voor extra gemak.",
         balcon_title: "Het balkon",
         balcon_description: "De buitenruimte biedt een aangename plek met comfortabele zitplaatsen, perfect voor een aperitief in de buitenlucht terwijl u geniet van een uitzonderlijk uitzicht. Een tafel en stoelen zijn beschikbaar om met 4 personen te eten, en een elektrische grill staat tot uw beschikking voor heerlijke barbecues. Een ideale plek om te ontspannen en te genieten van zonnige dagen.",
 
@@ -208,7 +208,7 @@ const dataTranslations = {
         chambre_secondaire_title: "El dormitorio secundario",
         chambre_secondaire_description: "Una habitación acogedora, equipada con una cama doble, un armario y mesitas de noche con lámparas para dos. Ideal para noches de descanso, en un entorno tranquilo y cálido. Esta habitación también tiene acceso directo al balcón para disfrutar del exterior.",
         salle_de_bain_title: "El baño",
-        salle_de_bain_description: "Un baño moderno equipado con una bañera para un momento de relajación. La iluminación, regulable en intensidad y color, crea un ambiente relajante. Encontrará toallas suaves, artículos de aseo como champú y gel de ducha, así como un secador de pelo y una lavadora para mayor comodidad.",
+        salle_de_bain_description: "Un baño equipado con una bañera para un momento de relajación. La iluminación, regulable en intensidad y color, crea un ambiente relajante. Encontrará toallas suaves, artículos de aseo como champú y gel de ducha, así como un secador de pelo y una lavadora para mayor comodidad.",
         balcon_title: "El balcón",
         balcon_description: "El exterior ofrece un espacio agradable con un salón cómodo, perfecto para un aperitivo al aire libre mientras disfruta de una vista excepcional. Una mesa y sillas están disponibles para comer 4 personas, y una parrilla eléctrica está a su disposición para realizar deliciosas barbacoas. Un lugar ideal para relajarse y disfrutar de los días soleados.",
 
@@ -253,7 +253,7 @@ const dataTranslations = {
         chambre_secondaire_title: "La camera secondaria",
         chambre_secondaire_description: "Una camera accogliente, dotata di un letto matrimoniale, un armadio e comodini con lampade per due. Ideale per notti riposanti, in un ambiente calmo e caldo. Questa camera gode anche di un accesso diretto al balcone per godersi l'esterno.",
         salle_de_bain_title: "Il bagno",
-        salle_de_bain_description: "Un bagno moderno dotato di vasca per un momento di relax. L'illuminazione, regolabile in intensità e colore, crea un'atmosfera rilassante. Troverete asciugamani morbidi, prodotti da bagno come shampoo e bagnoschiuma, oltre a un asciugacapelli e una lavatrice per maggiore comodità.",
+        salle_de_bain_description: "Un bagno dotato di vasca per un momento di relax. L'illuminazione, regolabile in intensità e colore, crea un'atmosfera rilassante. Troverete asciugamani morbidi, prodotti da bagno come shampoo e bagnoschiuma, oltre a un asciugacapelli e una lavatrice per maggiore comodità.",
         balcon_title: "Il balcone",
         balcon_description: "L'esterno offre uno spazio piacevole con un salotto confortevole, perfetto per un aperitivo all'aperto godendo di una vista eccezionale. Un tavolo e sedie sono disponibili per mangiare in 4, e un grill elettrico è a vostra disposizione per deliziose grigliate. Un luogo ideale per rilassarsi e godersi le belle giornate.",
 
@@ -298,7 +298,7 @@ const dataTranslations = {
         chambre_secondaire_title: "O quarto secundário",
         chambre_secondaire_description: "Um quarto acolhedor, equipado com uma cama de casal, um guarda-roupa e mesas de cabeceira com candeeiros para dois. Ideal para noites repousantes, num ambiente calmo e acolhedor. Este quarto beneficia também de acesso direto à varanda para desfrutar do exterior.",
         salle_de_bain_title: "A casa de banho",
-        salle_de_bain_description: "Uma casa de banho moderna equipada com banheira para um momento de relaxamento. A iluminação, regulável em intensidade e cor, cria um ambiente calmante. Encontrará toalhas macias, produtos de higiene como champô e gel de banho, bem como um secador de cabelo e uma máquina de lavar roupa para maior comodidade.",
+        salle_de_bain_description: "Uma casa de banho equipada com banheira para um momento de relaxamento. A iluminação, regulável em intensidade e cor, cria um ambiente calmante. Encontrará toalhas macias, produtos de higiene como champô e gel de banho, bem como um secador de cabelo e uma máquina de lavar roupa para maior comodidade.",
         balcon_title: "A varanda",
         balcon_description: "O exterior oferece um espaço agradável com uma sala de estar confortável, perfeito para um aperitivo ao ar livre enquanto desfruta de uma vista excecional. Uma mesa e cadeiras estão disponíveis para refeições para 4 pessoas, e um grelhador elétrico está à sua disposição para deliciosos churrascos. Um local ideal para relaxar e aproveitar os dias de sol.",
 
