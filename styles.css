@@ -1559,6 +1559,7 @@ header .header-sub {
 .faq-item[open] summary::after { content: "\2212"; }
 .faq-item p { margin: 0 4px 14px; line-height: 1.7; }
 .faq-item a { color: var(--primary-color); }
+.intro-text a { color: var(--primary-color); }
 .loc-sep { margin: 0 12px; color: #999; }
 
 /* Bannières des pages de saison (voile sombre : titre lisible sur la neige et le ciel) */

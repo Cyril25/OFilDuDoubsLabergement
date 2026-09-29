@@ -88,7 +88,7 @@ function applyTranslations(lang, pageTranslations) {
             'ou-manger.html': 'oumanger',
             'agenda.html': 'agenda',
             'contact.html': 'contact',
-            'situation.html': 'situation',
+            'situation.html': 'situation', 'faq.html': 'faq',
             'ete.html': 'ete',
             'hiver.html': 'hiver'
         };

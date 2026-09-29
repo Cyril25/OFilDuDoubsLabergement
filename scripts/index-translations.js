@@ -54,6 +54,7 @@ const dataTranslations = {
         footer_link_rates: "Tarifs et Disponibilités",
         footer_link_activities: "Activités",
         footer_link_legal: "Mentions Légales",
+        footer_link_faq: "Questions fréquentes",
         footer_contact_form: "Formulaire de contact", // AJOUTÉ
         footer_follow_title: "Réserver en ligne",
         footer_airbnb_text: "Consultez nos avis et réservez en toute sécurité.",
@@ -112,6 +113,7 @@ const dataTranslations = {
         footer_link_rates: "Rates and Availability",
         footer_link_activities: "Activities",
         footer_link_legal: "Legal Notice",
+        footer_link_faq: "FAQ",
         footer_contact_form: "Contact Form", // AJOUTÉ
         footer_follow_title: "Book online",
         footer_airbnb_text: "Check our reviews and book securely.",
@@ -170,6 +172,7 @@ const dataTranslations = {
         footer_link_rates: "Preise und Verfügbarkeit",
         footer_link_activities: "Aktivitäten",
         footer_link_legal: "Impressum",
+        footer_link_faq: "Häufige Fragen",
         footer_contact_form: "Kontaktformular", // AJOUTÉ
         footer_follow_title: "Online buchen",
         footer_airbnb_text: "Bewertungen lesen und sicher buchen.",
@@ -228,6 +231,7 @@ const dataTranslations = {
         footer_link_rates: "Tarieven en beschikbaarheid",
         footer_link_activities: "Activiteiten",
         footer_link_legal: "Colofon",
+        footer_link_faq: "Veelgestelde vragen",
         footer_contact_form: "Contactformulier", // AJOUTÉ
         footer_follow_title: "Online reserveren",
         footer_airbnb_text: "Bekijk onze beoordelingen en reserveer veilig.",
@@ -286,6 +290,7 @@ const dataTranslations = {
         footer_link_rates: "Tarifas y Disponibilidad",
         footer_link_activities: "Actividades",
         footer_link_legal: "Aviso legal",
+        footer_link_faq: "Preguntas frecuentes",
         footer_contact_form: "Formulario de contacto", // AJOUTÉ
         footer_follow_title: "Reservar en línea",
         footer_airbnb_text: "Lee nuestras reseñas y reserva con seguridad.",
@@ -344,6 +349,7 @@ const dataTranslations = {
         footer_link_rates: "Tariffe e Disponibilità",
         footer_link_activities: "Attività",
         footer_link_legal: "Note legali",
+        footer_link_faq: "Domande frequenti",
         footer_contact_form: "Modulo di contatto", // AJOUTÉ
         footer_follow_title: "Prenota online",
         footer_airbnb_text: "Leggi le nostre recensioni e prenota in sicurezza.",
@@ -402,6 +408,7 @@ const dataTranslations = {
         footer_link_rates: "Tarifas e Disponibilidade",
         footer_link_activities: "Atividades",
         footer_link_legal: "Aviso legal",
+        footer_link_faq: "Perguntas frequentes",
         footer_contact_form: "Formulário de contacto", // AJOUTÉ
         footer_follow_title: "Reservar online",
         footer_airbnb_text: "Veja as nossas avaliações e reserve com segurança.",
