@@ -1066,9 +1066,10 @@ a.glightbox img.room-image { cursor: zoom-in; }
 
 /* === INFOS PRATIQUES : liste avec icônes === */
 .practical-info-list { list-style: none; padding: 0; max-width: 640px; margin: 0 auto; }
-.practical-info-list li { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.75rem 0; border-bottom: 1px solid #eee; font-size: 1rem; color: var(--text-color); }
+/* Texte en flux normal (pas en flex) : le libellé en gras et la suite se suivent, sans colonne étroite qui coupe « Arrivée » de ses deux-points. */
+.practical-info-list li { position: relative; text-align: left; padding: 0.75rem 0 0.75rem 2rem; border-bottom: 1px solid #eee; font-size: 1rem; color: var(--text-color); }
 .practical-info-list li:last-child { border-bottom: none; }
-.practical-info-list li i { color: var(--primary-color); font-size: 1.1rem; margin-top: 0.1rem; min-width: 1.2rem; text-align: center; }
+.practical-info-list li i { position: absolute; left: 0; top: 0.85rem; color: var(--primary-color); font-size: 1.1rem; min-width: 1.2rem; text-align: center; }
 
 /* === RGPD BANNER === */
 #rgpd-banner {
