@@ -16,6 +16,7 @@ const dataTranslations = {
         ft_today_label: "Aujourd'hui",
         ft_call: "Appeler",
         ft_at_village: "Au village",
+        ft_soon: "Ouverture prochaine",
 
         ft_tonight_title: "Les food trucks du jour",
         ft_tonight_none: "Aucun food truck prévu aujourd'hui.",
@@ -40,6 +41,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, burger, tacos",
         ft_desc_obardak: "Frites maison, burgers, américains",
         ft_desc_pizzpopotte: "Pizzeria itinérante",
+        ft_desc_lameule: "Pizzas artisanales, pâte maison et produits locaux du Haut-Doubs. Commandes à partir de 18 h",
 
         restaurants_title: "Restaurants",
         restaurants_intro: "Une sélection de bonnes tables autour du logement : du bistrot de village à la table gastronomique, sans oublier les spécialités fromagères du Haut-Doubs. Pensez à réserver, surtout en haute saison et pour les adresses les plus prisées.",
@@ -120,6 +122,7 @@ const dataTranslations = {
         ft_today_label: "Today",
         ft_call: "Call",
         ft_at_village: "In the village",
+        ft_soon: "Opening soon",
 
         ft_tonight_title: "Today's food trucks",
         ft_tonight_none: "No food truck scheduled today.",
@@ -144,6 +147,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, burger, tacos",
         ft_desc_obardak: "Homemade fries, burgers, 'américains'",
         ft_desc_pizzpopotte: "Travelling pizzeria",
+        ft_desc_lameule: "Artisan pizzas, homemade dough and local Haut-Doubs produce. Orders from 6 pm",
 
         restaurants_title: "Restaurants",
         restaurants_intro: "A selection of good places to eat near the accommodation: from the village bistro to fine dining, not forgetting the cheese specialities of the Haut-Doubs. Remember to book, especially in high season and for the most popular spots.",
@@ -224,6 +228,7 @@ const dataTranslations = {
         ft_today_label: "Heute",
         ft_call: "Anrufen",
         ft_at_village: "Im Dorf",
+        ft_soon: "Eröffnung in Kürze",
 
         ft_tonight_title: "Food Trucks heute",
         ft_tonight_none: "Heute ist kein Food Truck vor Ort.",
@@ -248,6 +253,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, Burger, Tacos",
         ft_desc_obardak: "Hausgemachte Pommes, Burger, 'Américains'",
         ft_desc_pizzpopotte: "Mobile Pizzeria",
+        ft_desc_lameule: "Handwerkliche Pizzen, hausgemachter Teig und regionale Produkte aus dem Haut-Doubs. Bestellungen ab 18 Uhr",
 
         restaurants_title: "Restaurants",
         restaurants_intro: "Eine Auswahl guter Adressen rund um die Unterkunft: vom Dorfbistro bis zur gehobenen Küche, nicht zu vergessen die Käsespezialitäten des Haut-Doubs. Denken Sie ans Reservieren, besonders in der Hochsaison und bei den beliebtesten Adressen.",
@@ -328,6 +334,7 @@ const dataTranslations = {
         ft_today_label: "Vandaag",
         ft_call: "Bellen",
         ft_at_village: "In het dorp",
+        ft_soon: "Binnenkort open",
 
         ft_tonight_title: "De foodtrucks van vandaag",
         ft_tonight_none: "Vandaag staat er geen foodtruck.",
@@ -352,6 +359,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, burger, tacos",
         ft_desc_obardak: "Huisgemaakte friet, burgers, 'américains'",
         ft_desc_pizzpopotte: "Rondreizende pizzeria",
+        ft_desc_lameule: "Ambachtelijke pizza's, zelfgemaakt deeg en lokale producten uit de Haut-Doubs. Bestellen vanaf 18.00 uur",
 
         restaurants_title: "Restaurants",
         restaurants_intro: "Een selectie van goede eetadressen rond de accommodatie: van het dorpsbistro tot fijne gastronomie, en natuurlijk de kaasspecialiteiten van de Haut-Doubs. Vergeet niet te reserveren, vooral in het hoogseizoen en voor de populairste adressen.",
@@ -432,6 +440,7 @@ const dataTranslations = {
         ft_today_label: "Hoy",
         ft_call: "Llamar",
         ft_at_village: "En el pueblo",
+        ft_soon: "Próxima apertura",
 
         ft_tonight_title: "Los food trucks de hoy",
         ft_tonight_none: "Hoy no hay ningún food truck.",
@@ -456,6 +465,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, hamburguesa, tacos",
         ft_desc_obardak: "Patatas caseras, hamburguesas, 'américains'",
         ft_desc_pizzpopotte: "Pizzería itinerante",
+        ft_desc_lameule: "Pizzas artesanas, masa casera y productos locales del Haut-Doubs. Pedidos a partir de las 18:00",
 
         restaurants_title: "Restaurantes",
         restaurants_intro: "Una selección de buenas mesas alrededor del alojamiento: desde el bistró del pueblo hasta la alta cocina, sin olvidar las especialidades de queso del Haut-Doubs. Recuerde reservar, sobre todo en temporada alta y en las direcciones más solicitadas.",
@@ -536,6 +546,7 @@ const dataTranslations = {
         ft_today_label: "Oggi",
         ft_call: "Chiama",
         ft_at_village: "In paese",
+        ft_soon: "Prossima apertura",
 
         ft_tonight_title: "I food truck di oggi",
         ft_tonight_none: "Oggi non è previsto nessun food truck.",
@@ -560,6 +571,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, burger, tacos",
         ft_desc_obardak: "Patatine fatte in casa, burger, 'américains'",
         ft_desc_pizzpopotte: "Pizzeria itinerante",
+        ft_desc_lameule: "Pizze artigianali, impasto fatto in casa e prodotti locali dell'Haut-Doubs. Ordini dalle 18:00",
 
         restaurants_title: "Ristoranti",
         restaurants_intro: "Una selezione di buoni indirizzi intorno all'alloggio: dal bistrot di paese alla tavola gastronomica, senza dimenticare le specialità casearie dell'Haut-Doubs. Ricordati di prenotare, soprattutto in alta stagione e per gli indirizzi più richiesti.",
@@ -640,6 +652,7 @@ const dataTranslations = {
         ft_today_label: "Hoje",
         ft_call: "Ligar",
         ft_at_village: "Na aldeia",
+        ft_soon: "Abertura em breve",
 
         ft_tonight_title: "Os food trucks de hoje",
         ft_tonight_none: "Hoje não há nenhum food truck.",
@@ -664,6 +677,7 @@ const dataTranslations = {
         ft_desc_krckebab: "Kebab, hambúrguer, tacos",
         ft_desc_obardak: "Batatas fritas caseiras, hambúrgueres, 'américains'",
         ft_desc_pizzpopotte: "Pizzaria itinerante",
+        ft_desc_lameule: "Pizzas artesanais, massa caseira e produtos locais do Haut-Doubs. Encomendas a partir das 18h",
 
         restaurants_title: "Restaurantes",
         restaurants_intro: "Uma seleção de boas mesas à volta do alojamento: do bistrô da aldeia à mesa gastronómica, sem esquecer as especialidades de queijo do Haut-Doubs. Lembre-se de reservar, sobretudo na época alta e nos endereços mais procurados.",

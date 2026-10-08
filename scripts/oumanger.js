@@ -20,17 +20,37 @@
         kebabsa:    { name: "Kebab",             phone: "0622922267", desc: "ft_desc_kebabsa" },
         krckebab:   { name: "KRC Kebab",         phone: "0783262818", desc: "ft_desc_krckebab", facebook: "https://www.facebook.com/p/Krc-snack-100063982365163/?locale=fr_FR" },
         obardak:    { name: "AL'Barak à Frites", phone: "0626719904", desc: "ft_desc_obardak", facebook: "https://www.facebook.com/p/ALbarak-A-Frites-61579330163380/" },
-        pizzpopotte:{ name: "Pizz Popotte",      phone: "0686008508", desc: "ft_desc_pizzpopotte", facebook: "https://www.facebook.com/pizzapopotte/?locale=fr_FR" }
+        pizzpopotte:{ name: "Pizz Popotte",      phone: "0686008508", desc: "ft_desc_pizzpopotte", facebook: "https://www.facebook.com/pizzapopotte/?locale=fr_FR" },
+        lameule:    { name: "La Meule à Pizza",  phone: "0775695088", desc: "ft_desc_lameule", soon: true } // soon : pas encore ouvert (flyer oct. 2026), retirer quand c'est confirmé
     };
+
+    // Distance en voiture depuis le gîte (itinéraire routier OSRM, oct. 2026), par village.
+    // Les touristes ne situent pas les villages : on l'affiche sur chaque créneau hors Labergement.
+    const villageDist = {
+        'Saint-Antoine':      '6 km / 8 min',
+        'Vaux-et-Chantegrue': '7 km / 8 min',
+        'Les Hôpitaux-Neufs': '9 km / 12 min',
+        'La Planée':          '10 km / 12 min',
+        'Oye-et-Pallet':      '12 km / 15 min'
+    };
+    const locHtml = (loc) => {
+        const dist = villageDist[loc.split(' – ')[0]];
+        return '<span>' + loc + (dist ? ' <span class="ft-dist"><i class="fas fa-car"></i> ' + dist + '</span>' : '') + '</span>';
+    };
+    const soonBadge = (tr) => tr.soon
+        ? '<span class="ft-badge-soon"><i class="fas fa-hourglass-half"></i> ' + (T.ft_soon || 'Ouverture prochaine') + '</span>'
+        : '';
 
     // --- Planning : index 0 = lundi ... 6 = dimanche ---
     const schedule = [
         // Lundi
         [ { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Mardi
-        [ { t: 'maxbiga', loc: 'Labergement – Parking Fromagerie' } ],
+        [ { t: 'maxbiga', loc: 'Labergement – Parking Fromagerie' },
+          { t: 'lameule', loc: 'Oye-et-Pallet – Terrain de pétanque' } ],
         // Mercredi
         [ { t: 'lenomade', loc: 'Les Hôpitaux-Neufs' },
+          { t: 'lameule', loc: 'Saint-Antoine – Face à la fromagerie' },
           { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Jeudi
         [ { t: 'elpirata', loc: 'La Planée' },
@@ -41,6 +61,7 @@
         [ { t: 'krckebab', loc: "Labergement – près d'Obertino" },
           { t: 'obardak', loc: 'Labergement – Parking Fromagerie' },
           { t: 'pizzpopotte', loc: 'Vaux-et-Chantegrue' },
+          { t: 'lameule', loc: 'La Planée – Parking Mairie' },
           { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
         // Samedi
         [ { t: 'montedoro', loc: 'Labergement – Parking CocciMarket' } ],
@@ -75,9 +96,9 @@
             : '';
         return ''
             + '<div class="ft-card">'
-            +   '<div class="ft-card-head"><h4 class="ft-name">' + tr.name + '</h4>' + villageBadge + '</div>'
+            +   '<div class="ft-card-head"><h4 class="ft-name">' + tr.name + '</h4>' + villageBadge + soonBadge(tr) + '</div>'
             +   '<p class="ft-desc">' + (T[tr.desc] || '') + '</p>'
-            +   '<p class="ft-loc"><i class="fas fa-map-marker-alt"></i> ' + entry.loc + '</p>'
+            +   '<p class="ft-loc"><i class="fas fa-map-marker-alt"></i> ' + locHtml(entry.loc) + '</p>'
             +   '<div class="ft-actions">'
             +     '<a class="btn-activity btn-maps" href="' + telHref(tr.phone) + '"><i class="fas fa-phone"></i> ' + (T.ft_call || 'Appeler') + ' ' + fmtPhone(tr.phone) + '</a>'
             +     linksHtml(tr)
@@ -89,7 +110,7 @@
         const tr = trucks[key];
         return ''
             + '<div class="ft-card">'
-            +   '<div class="ft-card-head"><h4 class="ft-name">' + tr.name + '</h4></div>'
+            +   '<div class="ft-card-head"><h4 class="ft-name">' + tr.name + '</h4>' + soonBadge(tr) + '</div>'
             +   '<p class="ft-desc">' + (T[tr.desc] || '') + '</p>'
             +   '<div class="ft-actions">'
             +     '<a class="btn-activity btn-maps" href="' + telHref(tr.phone) + '"><i class="fas fa-phone"></i> ' + fmtPhone(tr.phone) + '</a>'
@@ -138,7 +159,8 @@
                 +   '<div class="ft-tonight-who">'
                 +     '<span class="ft-tonight-name">' + tr.name + '</span>'
                 +     (isLab ? '<span class="ft-badge-village"><i class="fas fa-walking"></i> ' + (T.ft_at_village || 'Au village') + '</span>' : '')
-                +     '<span class="ft-tonight-loc"><i class="fas fa-map-marker-alt"></i> ' + entry.loc + '</span>'
+                +     soonBadge(tr)
+                +     '<span class="ft-tonight-loc"><i class="fas fa-map-marker-alt"></i> ' + locHtml(entry.loc) + '</span>'
                 +   '</div>'
                 +   '<a class="btn-activity btn-maps ft-tonight-call" href="' + telHref(tr.phone) + '"><i class="fas fa-phone"></i> ' + fmtPhone(tr.phone) + '</a>'
                 + '</div>';
