@@ -41,16 +41,26 @@ jobs:
             rm -f bfc.csv
           fi
 
-      # Complément : le flux apporte les libellés multilingues natifs et l'identifiant SIT,
+      # Complément : l'API apporte les libellés multilingues natifs et l'identifiant SIT,
       # qui permet la jointure exacte avec les photos Tourinsoft. Son indisponibilité ne
-      # doit plus bloquer la mise à jour de l'agenda, d'où le continue-on-error.
-      - name: Télécharger et décompresser le flux du diffuseur
+      # doit pas bloquer la mise à jour de l'agenda, d'où le continue-on-error.
+      - name: Télécharger les événements (API DATAtourisme)
+        id: api
+        continue-on-error: true
+        env:
+          DATATOURISME_API_KEY: ${{ secrets.DATATOURISME_API_KEY }}
+        run: node scripts/fetch-api-datatourisme.js entertainmentAndEvent 20 extracted
+
+      # Repli tant qu'il existe : la plateforme Diffuseur ferme en octobre 2027.
+      - name: Repli — flux du diffuseur
         id: flux
+        if: steps.api.outcome == 'failure'
         continue-on-error: true
         env:
           DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
         run: |
           set -e
+          echo "::warning::API DATAtourisme indisponible — repli sur le flux du diffuseur."
           if [ -z "$DATATOURISME_URL" ]; then
             echo "::error::Le secret DATATOURISME_URL n'est pas défini."
             exit 1
@@ -66,9 +76,9 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-      - name: Signaler un flux diffuseur indisponible
+      - name: Signaler API et flux indisponibles
         if: steps.flux.outcome == 'failure'
-        run: echo "::warning::Flux du diffuseur indisponible — agenda construit depuis le seul export data.gouv.fr (descriptions limitées à ce que fournit Tourinsoft)."
+        run: echo "::warning::API et flux DATAtourisme indisponibles — agenda construit depuis le seul export data.gouv.fr (descriptions limitées à ce que fournit Tourinsoft)."
 
       - name: Construire data/agenda.json
         run: node scripts/build-agenda.js extracted data/agenda.json 20 bfc.csv

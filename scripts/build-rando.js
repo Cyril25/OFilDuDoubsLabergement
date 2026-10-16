@@ -3,8 +3,10 @@
  * Génère data/rando.json — itinéraires de randonnée/vélo autour de Labergement.
  * HYBRIDE :
  *  - BASE : Tourinsoft/Decibelles BFC, type "randonnees" (riche en vélo + photos + catégories).
- *  - ENRICHISSEMENT : flux DATAtourisme extrait (difficulté, dénivelé, trace GPX,
- *    descriptions multilingues), joint par identifiant (Tourinsoft _id == dc:identifier DATAtourisme, en minuscules).
+ *  - ENRICHISSEMENT : DATAtourisme (difficulté, dénivelé, trace GPX, descriptions multilingues),
+ *    joint par identifiant (Tourinsoft _id == identifiant DATAtourisme, en minuscules). Le dossier
+ *    vient de l'API (fetch-api-datatourisme.js) ou, en repli, du flux du diffuseur : les deux
+ *    formats sont lus (l'API n'a plus les préfixes JSON-LD dc:, ebucore:, kb:, et note les langues @fr).
  *
  * Usage : node scripts/build-rando.js <dossier_datatourisme_extrait> <fichier_sortie> [rayon_km]
  */
@@ -36,7 +38,7 @@ const langMap = (obj, max) => {
   const out = {};
   for (const lg of Object.keys(obj)) {
     let v = obj[lg]; if (Array.isArray(v)) v = v[0];
-    if (typeof v === 'string' && v.trim()) out[lg] = max ? v.trim().slice(0, max) : v.trim();
+    if (typeof v === 'string' && v.trim()) out[lg.replace(/^@/, '')] = max ? v.trim().slice(0, max) : v.trim();
   }
   return Object.keys(out).length ? out : null;
 };
@@ -71,9 +73,11 @@ const modeFromCats = (cats) => {
 };
 
 // ===== Enrichissement DATAtourisme (par identifiant en minuscules) =====
-const DIFF = { 'kb:EasyTour': 'easy', 'kb:MediumDifficultyTour': 'medium', 'kb:DifficultTour': 'hard', 'kb:VeryDifficultTour': 'very_hard' };
-const TYPE = { 'kb:Loop': 'loop', 'kb:OpenJaw': 'roaming', 'kb:RoundTrip': 'roundtrip', 'kb:OneWay': 'oneway' };
-const TYPE_PRIORITY = ['kb:Loop', 'kb:OpenJaw', 'kb:RoundTrip', 'kb:OneWay'];
+const DIFF = { EasyTour: 'easy', MediumDifficultyTour: 'medium', DifficultTour: 'hard', VeryDifficultTour: 'very_hard' };
+const TYPE = { Loop: 'loop', OpenJaw: 'roaming', RoundTrip: 'roundtrip', OneWay: 'oneway' };
+const TYPE_PRIORITY = ['Loop', 'OpenJaw', 'RoundTrip', 'OneWay'];
+// Concept d'un thésaurus : { "@id": "kb:EasyTour" } (flux) ou { key: "EasyTour" } (API)
+const conceptKey = (c) => c ? String(c.key || c['@id'] || '').replace(/^kb:/, '') : '';
 function buildEnrichMap(dir) {
   const map = {};
   const objectsDir = path.join(dir, 'objects');
@@ -81,18 +85,18 @@ function buildEnrichMap(dir) {
   if (!fs.existsSync(root)) return map;
   for (const f of walk(root)) {
     let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
-    const id = (o['dc:identifier'] || '').toString().toLowerCase();
+    const id = (o['dc:identifier'] || o.identifier || '').toString().toLowerCase();
     if (!id) continue;
     const pc = asArray(o['hasPracticeCondition'])[0];
-    const diffId = pc && asArray(pc['hasDifficultyLevel'])[0] && asArray(pc['hasDifficultyLevel'])[0]['@id'];
-    const tourTypeIds = asArray(o['hasTourType']).map(t => t && t['@id']);
-    const typeId = TYPE_PRIORITY.find(idd => tourTypeIds.includes(idd));
+    const diffKey = pc && conceptKey(asArray(pc['hasDifficultyLevel'])[0]);
+    const tourTypeKeys = asArray(o['hasTourType']).map(conceptKey);
+    const typeKey = TYPE_PRIORITY.find(k => tourTypeKeys.includes(k));
     const denivele = parseFloat(o['positiveCumulDifference']);
     // GPX + topoguide PDF parmi les représentations
     let gpx, pdf;
     for (const rep of [...asArray(o['hasMainRepresentation']), ...asArray(o['hasRepresentation'])]) {
-      for (const res of asArray(rep && rep['ebucore:hasRelatedResource'])) {
-        for (const loc of asArray(res && res['ebucore:locator'])) {
+      for (const res of asArray(rep && (rep['ebucore:hasRelatedResource'] || rep.hasRelatedResource))) {
+        for (const loc of asArray(res && (res['ebucore:locator'] || res.locator))) {
           if (typeof loc !== 'string') continue;
           if (!gpx && /\.gpx(\?|$)/i.test(loc)) gpx = loc;
           if (!pdf && /\.pdf(\?|$)/i.test(loc)) pdf = loc;
@@ -100,11 +104,11 @@ function buildEnrichMap(dir) {
       }
     }
     const descObj = asArray(o['hasDescription'])[0];
-    const descML = (descObj && langMap(descObj['dc:description'], 500)) || langMap(o['rdfs:comment'], 500) || null;
+    const descML = (descObj && langMap(descObj['dc:description'] || descObj.description, 500)) || langMap(o['rdfs:comment'] || o.comment, 500) || null;
     map[id] = {
-      difficulty: DIFF[diffId] || undefined,
+      difficulty: DIFF[diffKey] || undefined,
       denivele: Number.isFinite(denivele) ? Math.round(denivele) : undefined,
-      type: TYPE[typeId] || undefined,
+      type: TYPE[typeKey] || undefined,
       gpx,
       pdf,
       descML,

@@ -2,14 +2,14 @@
 /**
  * Génère data/agenda.json à partir de trois sources complémentaires :
  *   1. l'export régional DATAtourisme de data.gouv.fr (source principale) ;
- *   2. le flux du diffuseur, quand il est exploitable (libellés multilingues + id SIT) ;
+ *   2. l'API DATAtourisme — ou, en repli, le flux du diffuseur (libellés multilingues + id SIT) ;
  *   3. Tourinsoft (photos, et événements non publiés en open data).
  * Usage : node scripts/build-agenda.js <dossier_extrait> <fichier_sortie> [rayon_km] [export.csv]
  *
- * Le téléchargement + décompression (gzip→zip) est fait en amont par le workflow :
- *   curl -sSL "$DATATOURISME_URL" -o flux.bin
- *   gzip -dc flux.bin > flux.zip && unzip -q -o flux.zip -d extracted
- *   node scripts/build-agenda.js extracted data/agenda.json
+ * Le dossier extrait est rempli en amont par le workflow, avec un fichier JSON par objet :
+ *   node scripts/fetch-api-datatourisme.js entertainmentAndEvent 20 extracted
+ * ou, en repli, scripts/fetch-flux-datatourisme.sh. Les deux formats sont lus : l'API n'a plus
+ * les préfixes JSON-LD (dc:, schema:, ebucore:, foaf:) et note les langues @fr.
  */
 const fs = require('fs'), path = require('path');
 const { eventsFromCsv, normName } = require('./lib/datatourisme-csv.js');
@@ -43,7 +43,7 @@ const langMap = (obj, max) => {
   const out = {};
   for (const lg of Object.keys(obj)) {
     let v = obj[lg]; if (Array.isArray(v)) v = v[0];
-    if (typeof v === 'string' && v.trim()) { out[lg] = max ? v.trim().slice(0, max) : v.trim(); }
+    if (typeof v === 'string' && v.trim()) { out[lg.replace(/^@/, '')] = max ? v.trim().slice(0, max) : v.trim(); }
   }
   return Object.keys(out).length ? out : null;
 };
@@ -51,7 +51,7 @@ const asArray = (v) => v == null ? [] : (Array.isArray(v) ? v : [v]);
 
 let total = 0, kept = 0;
 const events = [];        // agenda final
-const fluxEvents = [];    // flux du diffuseur, quand il répond
+const fluxEvents = [];    // API DATAtourisme (ou flux du diffuseur), quand elle répond
 
 // === Catégorisation ===
 // DATAtourisme : déduite des @type (priorité du plus spécifique au plus générique).
@@ -91,15 +91,15 @@ const catFromTitle = (t) => {
 
 const objectsDir = extractedDir ? path.join(extractedDir, 'objects') : null;
 const fluxOk = Boolean(objectsDir && fs.existsSync(objectsDir));
-if (!fluxOk) console.error('Flux du diffuseur absent — agenda construit sans lui.');
+if (!fluxOk) console.error('API DATAtourisme et flux du diffuseur absents — agenda construit sans eux.');
 
 for (const f of (fluxOk ? walk(objectsDir) : [])) {
   total++;
   let o; try { o = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { continue; }
 
   const loc = asArray(o['isLocatedAt'])[0]; if (!loc) continue;
-  const geo = loc['schema:geo']; if (!geo) continue;
-  const lat = parseFloat(geo['schema:latitude']), lon = parseFloat(geo['schema:longitude']);
+  const geo = loc['schema:geo'] || loc.geo; if (!geo) continue;
+  const lat = parseFloat(geo['schema:latitude'] ?? geo.latitude), lon = parseFloat(geo['schema:longitude'] ?? geo.longitude);
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
   const dist = haversine(lat, lon);
   if (dist > RADIUS) continue;
@@ -124,32 +124,32 @@ for (const f of (fluxOk ? walk(objectsDir) : [])) {
   // Permanent (non récurrent et > ~7 mois) → ce n'est pas un événement, on l'exclut de l'agenda
   if (!recurring && durationDays > 210) continue;
 
-  const title = langMap(o['rdfs:label']); if (!title) continue;
-  const addr = asArray(loc['schema:address'])[0] || {};
-  const city = addr['schema:addressLocality'] || '';
+  const title = langMap(o['rdfs:label'] || o.label); if (!title) continue;
+  const addr = asArray(loc['schema:address'] || loc.address)[0] || {};
+  const city = addr['schema:addressLocality'] || addr.addressLocality || '';
 
   // image (optionnelle) : représentation principale, sinon secondaire
   const rep = asArray(o['hasMainRepresentation'])[0] || asArray(o['hasRepresentation'])[0];
-  const res = rep && asArray(rep['ebucore:hasRelatedResource'])[0];
-  const img = res && asArray(res['ebucore:locator'])[0] || null;
+  const res = rep && asArray(rep['ebucore:hasRelatedResource'] || rep.hasRelatedResource)[0];
+  const img = res && asArray(res['ebucore:locator'] || res.locator)[0] || null;
 
   // site web (optionnel) via hasContact
   let url = null;
   for (const c of asArray(o['hasContact'])) {
-    const hp = c && (c['foaf:homepage'] || c['schema:url']);
+    const hp = c && (c['foaf:homepage'] || c['schema:url'] || c.homepage);
     if (hp) { url = asArray(hp)[0]; break; }
   }
 
-  // description courte (toutes langues fournies par le flux), pour tous les événements
+  // description courte (toutes langues fournies par la source), pour tous les événements
   const descObj = asArray(o['hasDescription'])[0];
-  const desc = descObj ? (langMap(descObj['dc:description'], 300) || langMap(descObj['shortDescription'], 300)) : null;
+  const desc = descObj ? (langMap(descObj['dc:description'] || descObj.description, 300) || langMap(descObj['shortDescription'], 300)) : null;
 
   fluxEvents.push({
-    id: o['dc:identifier'] || o['@id'],
+    id: o['dc:identifier'] || o.identifier || o['@id'] || o.uuid,
     title, city, dist: Math.round(dist * 10) / 10,
     start: starts[0], end: lastEnd, next,
     recurring: recurring || undefined,
-    cat: catFromTypes(o['@type']),
+    cat: catFromTypes(o['@type'] || o.type),
     img, url, desc: desc || undefined,
   });
   kept++;
@@ -170,9 +170,9 @@ if (csvFile) {
   }
 }
 
-// === Complément par le flux du diffuseur ===
-// Quand il fonctionne il apporte les libellés multilingues et surtout l'identifiant SIT,
-// qui rend possible la jointure exacte avec les photos Tourinsoft.
+// === Complément par l'API DATAtourisme (ou le flux du diffuseur) ===
+// Elle apporte les libellés multilingues et surtout l'identifiant SIT, qui rend possible
+// la jointure exacte avec les photos Tourinsoft.
 const parNom = new Map(events.map(e => [normName(e.title.fr), e]));
 let fusionnes = 0, ajoutes = 0;
 for (const fe of fluxEvents) {
@@ -301,5 +301,5 @@ async function mergeTourinsoft() {
   const payload = { generated: new Date().toISOString(), radiusKm: RADIUS, count: events.length, events };
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, JSON.stringify(payload));
-  console.error(`data.gouv: ${csvKept}/${csvScanned} | flux diffuseur: ${kept} (${fusionnes} fusionnés, ${ajoutes} ajoutés) | total: ${events.length} | ${outFile} (${fs.statSync(outFile).size} octets)`);
+  console.error(`data.gouv: ${csvKept}/${csvScanned} | API/flux DATAtourisme: ${kept} (${fusionnes} fusionnés, ${ajoutes} ajoutés) | total: ${events.length} | ${outFile} (${fs.statSync(outFile).size} octets)`);
 })();

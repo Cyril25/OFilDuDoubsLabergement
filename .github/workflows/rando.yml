@@ -41,11 +41,21 @@ jobs:
             echo "Réponse usage DeepL : $U"
           fi
 
-      - name: Télécharger et décompresser le flux itinéraires
+      - name: Télécharger les itinéraires (API DATAtourisme)
+        id: api
+        continue-on-error: true
+        env:
+          DATATOURISME_API_KEY: ${{ secrets.DATATOURISME_API_KEY }}
+        run: node scripts/fetch-api-datatourisme.js tour 80 extracted
+
+      # Repli tant qu'il existe : la plateforme Diffuseur ferme en octobre 2027.
+      - name: Repli — flux itinéraires du diffuseur
+        if: steps.api.outcome == 'failure'
         env:
           DATATOURISME_URL: ${{ secrets.DATATOURISME_URL }}
         run: |
           set -e
+          echo "::warning::API DATAtourisme indisponible — repli sur le flux du diffuseur."
           if [ -z "$DATATOURISME_URL" ]; then
             echo "::error::Le secret DATATOURISME_URL n'est pas défini."
             exit 1
