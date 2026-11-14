@@ -1461,6 +1461,8 @@
                         // d'un jour. Les compter comme départs a fait avancer le début des
                         // créneaux d'un jour chaque jour (septembre 2026). Même règle que le
                         // worker (updateCheckoutsFromFeed) et le notifieur Telegram.
+                        // Les séjours que Booking livre rognés au jour courant arrivent ici
+                        // déjà restitués entiers par le worker (restituerBlocsRognes).
                         const durationDays = (end - start) / (1000 * 60 * 60 * 24);
                         if (durationDays <= 1 && summary.includes('Not available')) {
                             return;

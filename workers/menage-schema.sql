@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS menages (
 
 -- dernier_depart  : 'AAAA-MM-JJT11:00:00', ne recule jamais
 -- departs_a_venir : tableau JSON de dates AAAA-MM-JJ
+-- blocs_not_available : objet JSON { "<plateforme>|<DTEND>": { debut, vu, rogne? } },
+--                       début d'origine des blocs « Not available » (voir le worker)
 CREATE TABLE IF NOT EXISTS parametres (
     cle    TEXT PRIMARY KEY,
     valeur TEXT NOT NULL

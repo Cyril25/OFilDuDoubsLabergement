@@ -20,7 +20,8 @@
  *
  * Autres :
  *   GET/PUT /dates, /messages, /agenda-images, /rando-overrides, /evolution (KV)
- *   GET  /ical   → flux iCal Airbnb + Booking fusionnés
+ *   GET  /ical   → flux iCal Airbnb + Booking fusionnés, blocs « Not available »
+ *                  rognés par la plateforme restitués entiers (voir restituerBlocsRognes)
  *                  (et mémorise les départs dans D1, voir updateCheckoutsFromFeed)
  *
  * La clé KV `menage_state` (ancien objet JSON unique) n'est plus écrite depuis
@@ -40,8 +41,12 @@ const ADMIN_EMAILS = ['cyril.samson41@gmail.com', 'alisson.pasquier@gmail.com'];
 // Flux iCal à fusionner — les URLs (qui contiennent des tokens secrets) sont
 // injectées via les secrets du worker : ICAL_AIRBNB et ICAL_BOOKING.
 // (Dashboard → worker → Settings → Variables and Secrets, type « Secret ».)
+// Le nom de plateforme sert de clé à la mémoire des blocs (voir restituerBlocsRognes).
 function getIcalFeeds(env) {
-    return [env.ICAL_AIRBNB, env.ICAL_BOOKING].filter(Boolean);
+    return [
+        { plateforme: 'airbnb', url: env.ICAL_AIRBNB },
+        { plateforme: 'booking', url: env.ICAL_BOOKING },
+    ].filter(f => f.url);
 }
 
 // Origines autorisées (à ajuster selon tes domaines)
@@ -128,27 +133,161 @@ function aujourdhuiParis() {
 // parseICS dans menage.html et que le notifieur Telegram. Booking exporte
 // aussi des `CLOSED - Not available` d'un jour, écartés par la même règle.
 //
+// ⚠ MAIS UN SÉJOUR EN COURS PEUT ÊTRE LIVRÉ ROGNÉ À UN JOUR.
+// Booking exporte ses réservations en `CLOSED - Not available` et ne livre
+// un bloc qu'à partir d'aujourd'hui : un séjour du 9 au 13 devient 10→13 le
+// 10, 11→13 le 11, puis 12→13 la dernière nuit — un bloc d'un jour, écarté
+// par la règle ci-dessus. Le départ du 13 n'était alors jamais noté, le
+// créneau ménage affichait « 27/10 → 19/12 » et le notifieur Telegram
+// répétait « Arrivée aujourd'hui » (9→13 novembre 2026). D'où la mémoire des
+// blocs (restituerBlocsRognes) : le début vu plus tôt est rendu au flux
+// AVANT cette fonction et avant les deux autres lecteurs.
+//
 // L'horizon de 6 mois (celui de la page) écarte les bornes glissantes des
 // plateformes, qui réécrivaient l'état chaque jour sans rien apporter.
 const HORIZON_DEPARTS_JOURS = 183;
 
-function isOneDayBlock(event, start, end) {
+const isoDepuisCompact = d => `${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`;
+const compactDepuisIso = d => d.replace(/-/g, '');
+
+function datesEvenement(event) {
+    const s = event.match(/DTSTART;VALUE=DATE:(\d{8})/);
+    const m = event.match(/DTEND;VALUE=DATE:(\d{8})/);
+    if (!s || !m) return null;
+    return { start: isoDepuisCompact(s[1]), end: isoDepuisCompact(m[1]) };
+}
+
+function estBlocNotAvailable(event) {
     const summary = (event.match(/SUMMARY:(.*)/) || [])[1] || '';
-    return summary.includes('Not available') && (Date.parse(end) - Date.parse(start)) <= 86400000;
+    return summary.includes('Not available');
+}
+
+function isOneDayBlock(event, start, end) {
+    return estBlocNotAvailable(event) && (Date.parse(end) - Date.parse(start)) <= 86400000;
+}
+
+// ---------------------------------------------------------------------
+// Mémoire des blocs « Not available » (D1, table parametres, clé
+// `blocs_not_available`) : { "<plateforme>|<DTEND>": { debut, vu, rogne? } }
+//   - debut : DTSTART d'origine (AAAA-MM-JJ), suivi du flux tant que le bloc
+//             est à venir (l'hôte peut le déplacer), FIGÉ dès qu'il est en
+//             cours — le flux ne peut plus que le rogner ;
+//   - vu    : jour (Paris) où le bloc a été vu pour la première fois ;
+//   - rogne : jour où le flux l'a livré rogné pour la première fois (une
+//             seule ligne de journal par bloc).
+// La clé ignore l'UID : on ne sait pas si Booking le garde stable d'un jour à
+// l'autre ; la plateforme et la date de fin, eux, ne bougent pas.
+// Les blocs d'un jour ne sont pas mémorisés (jour même vide chez Airbnb,
+// `CLOSED` isolés de Booking, borne des 12 mois) : seul un bloc vu plus long
+// peut être restitué. Un bloc créé d'un seul jour reste donc invisible.
+// Un bloc absent d'un flux correctement lu (annulé, terminé, dates changées)
+// sort de la mémoire.
+// ---------------------------------------------------------------------
+const CLE_BLOCS_MEMORISES = 'blocs_not_available';
+
+async function lireBlocsMemorises(env) {
+    const ligne = await env.DB.prepare('SELECT valeur FROM parametres WHERE cle = ?1')
+        .bind(CLE_BLOCS_MEMORISES).first();
+    if (!ligne) return {};
+    try {
+        const objet = JSON.parse(ligne.valeur);
+        return objet && typeof objet === 'object' && !Array.isArray(objet) ? objet : {};
+    } catch (ignore) {
+        return {};
+    }
+}
+
+// Réécrit le DTSTART d'un VEVENT et garde trace de celui du flux.
+function restituerDebut(event, debutOrigine, debutFlux) {
+    const eol = event.includes('\r\n') ? '\r\n' : '\n';
+    return event.replace(
+        /DTSTART;VALUE=DATE:\d{8}/,
+        `DTSTART;VALUE=DATE:${compactDepuisIso(debutOrigine)}${eol}X-MENAGE-DEBUT-FLUX:${compactDepuisIso(debutFlux)}`
+    );
+}
+
+// Fonction pure (testée dans menage-state-worker.test.mjs).
+//   flux    : [{ plateforme, texte }] — le texte iCal brut de chaque plateforme
+//   memoire : objet lu en D1 (jamais modifié : une copie est rendue)
+//   today   : AAAA-MM-JJ (Paris)
+// Rend { evenements, memoire, journaux } : les VEVENT à servir (débuts
+// restitués), la mémoire mise à jour, et un détail par bloc rogné pour la
+// première fois (à journaliser).
+function restituerBlocsRognes(flux, memoire, today) {
+    const apres = JSON.parse(JSON.stringify(memoire || {}));
+    const evenements = [];
+    const journaux = [];
+    const presentes = new Set();
+    const plateformesLues = new Set();
+
+    for (const { plateforme, texte } of flux) {
+        if (texte.includes('BEGIN:VCALENDAR')) plateformesLues.add(plateforme);
+        for (const event of texte.match(/BEGIN:VEVENT[\s\S]+?END:VEVENT/g) || []) {
+            const dates = datesEvenement(event);
+            if (!dates || !estBlocNotAvailable(event)) {
+                evenements.push(event);
+                continue;
+            }
+            const { start, end } = dates;
+            const cle = `${plateforme}|${end}`;
+            presentes.add(cle);
+            const plusieursJours = Date.parse(end) - Date.parse(start) > 86400000;
+            const mem = apres[cle];
+
+            if (!mem) {
+                if (plusieursJours) apres[cle] = { debut: start, vu: today };
+                evenements.push(event);
+            } else if (mem.debut > today || start < mem.debut) {
+                // Bloc encore à venir (l'hôte peut le déplacer) ou début plus
+                // ancien que celui mémorisé : le flux fait foi.
+                if (!plusieursJours) delete apres[cle];
+                else if (start !== mem.debut) mem.debut = start;
+                evenements.push(event);
+            } else if (start > mem.debut) {
+                // Bloc en cours livré rogné : on rend le début vu plus tôt.
+                evenements.push(restituerDebut(event, mem.debut, start));
+                if (!mem.rogne) {
+                    mem.rogne = today;
+                    journaux.push({ plateforme, debut: mem.debut, fin: end, debut_flux: start });
+                }
+            } else {
+                evenements.push(event);
+            }
+        }
+    }
+
+    for (const cle of Object.keys(apres)) {
+        const plateforme = cle.split('|')[0];
+        if (plateformesLues.has(plateforme) && !presentes.has(cle)) delete apres[cle];
+    }
+
+    return { evenements, memoire: apres, journaux };
+}
+
+async function enregistrerBlocsMemorises(env, avant, apres, journaux) {
+    const ecritures = [];
+    const apresJson = JSON.stringify(apres);
+    if (apresJson !== JSON.stringify(avant)) {
+        ecritures.push(env.DB.prepare(
+            `INSERT INTO parametres (cle, valeur) VALUES (?1, ?2)
+             ON CONFLICT (cle) DO UPDATE SET valeur = excluded.valeur`
+        ).bind(CLE_BLOCS_MEMORISES, apresJson));
+    }
+    for (const detail of journaux) {
+        ecritures.push(journal(env, null, 'flux: bloc « Not available » livré rogné, début restitué', detail));
+    }
+    if (ecritures.length) await env.DB.batch(ecritures);
 }
 
 async function updateCheckoutsFromFeed(env, allEvents) {
     const todayParis = aujourdhuiParis();
     const horizon = new Date(Date.parse(todayParis) + HORIZON_DEPARTS_JOURS * 86400000).toISOString().slice(0, 10);
-    const iso = d => `${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`;
 
     const feedCheckouts = new Set();
     for (const event of allEvents) {
-        const s = event.match(/DTSTART;VALUE=DATE:(\d{8})/);
-        const m = event.match(/DTEND;VALUE=DATE:(\d{8})/);
-        if (!s || !m) continue;
-        const start = iso(s[1]);
-        const end = iso(m[1]);
+        const dates = datesEvenement(event);
+        if (!dates) continue;
+        const { start, end } = dates;
         if (isOneDayBlock(event, start, end)) continue;
         if (end > horizon) continue;
         feedCheckouts.add(end);
@@ -636,15 +775,27 @@ export default {
         if (path === '/ical') {
             if (request.method === 'GET') {
                 try {
-                    const results = await Promise.all(
-                        getIcalFeeds(env).map(url => fetch(url).then(r => r.text()))
-                    );
-                    // Extraire tous les VEVENT de chaque flux
-                    const allEvents = results
-                        .flatMap(ics => ics.match(/BEGIN:VEVENT[\s\S]+?END:VEVENT/g) || []);
-                    // Mémoriser les départs sans retarder la réponse
-                    ctx.waitUntil(updateCheckoutsFromFeed(env, allEvents)
-                        .catch(e => console.error('updateCheckoutsFromFeed', e)));
+                    // Les flux et la mémoire des blocs sont lus en parallèle. Si D1
+                    // ne répond pas, le flux est servi tel quel et la mémoire n'est
+                    // pas touchée (la réécrire depuis rien perdrait les débuts).
+                    const [flux, memoire] = await Promise.all([
+                        Promise.all(getIcalFeeds(env).map(f =>
+                            fetch(f.url).then(r => r.text()).then(texte => ({ plateforme: f.plateforme, texte }))
+                        )),
+                        lireBlocsMemorises(env).catch(e => {
+                            console.error('lireBlocsMemorises', e);
+                            return null;
+                        }),
+                    ]);
+                    const restitution = memoire
+                        ? restituerBlocsRognes(flux, memoire, aujourdhuiParis())
+                        : { evenements: flux.flatMap(f => f.texte.match(/BEGIN:VEVENT[\s\S]+?END:VEVENT/g) || []) };
+                    const allEvents = restitution.evenements;
+                    // Mémoriser départs et blocs sans retarder la réponse
+                    ctx.waitUntil(Promise.all([
+                        updateCheckoutsFromFeed(env, allEvents),
+                        memoire ? enregistrerBlocsMemorises(env, memoire, restitution.memoire, restitution.journaux) : null,
+                    ]).catch(e => console.error('ical: mémorisation', e)));
                     // Reconstruire un iCal unique
                     const merged = [
                         'BEGIN:VCALENDAR',
@@ -700,3 +851,6 @@ export default {
         return new Response('Method not allowed', { status: 405, headers: corsHeaders });
     },
 };
+
+// Pour les tests (node --test workers/menage-state-worker.test.mjs) ; ignoré par le runtime Workers.
+export { restituerBlocsRognes, isOneDayBlock, updateCheckoutsFromFeed };
