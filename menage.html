@@ -1613,7 +1613,8 @@
         // =============================================
         // RENDU DU BLOC PAIEMENT (factorisé)
         // =============================================
-        // Génère le bloc paiement complet d'un créneau marqué "done".
+        // Génère le bloc paiement complet d'un créneau, fait ou non (l'argent
+        // est souvent déposé avant le passage du ménage).
         // Layout : 2 lignes claires
         //   Ligne 1 (toujours) : statut readonly (Payé le X · 50€ · commentaire)
         //   Ligne 2 (admin)    : date | montant | commentaire | bouton(s)
@@ -1969,6 +1970,22 @@
                     badge.innerHTML = '<i class="fas fa-clock"></i> À venir';
                     listItem.appendChild(badge);
                 }
+
+                // L'argent est en général déposé à l'appartement AVANT le ménage :
+                // le paiement se saisit donc sur tout créneau, fait ou non. Une
+                // fois posé, il est visible de tous (les personnes du ménage
+                // savent que l'enveloppe est là) ; l'admin voit toujours le bloc.
+                if (!isDone) {
+                    const entryPaiement = getMenage(arrivee) || {};
+                    if (entryPaiement.paye_le || adminMode) {
+                        listItem.appendChild(renderPaymentBlock(arrivee, {
+                            onRefresh: function() {
+                                updateCleaningSlotsList(currentCleaningSlots);
+                                updatePastSlotsList();
+                            }
+                        }));
+                    }
+                }
                 listElement.appendChild(listItem);
 
                 // Admin : afficher les réservations entre ce créneau et le suivant
@@ -2163,8 +2180,8 @@
                 }
                 li.appendChild(statusRow);
 
-                // === Ligne paiement (seulement si le créneau est marqué fait) ===
-                if (isDoneEntry) {
+                // === Ligne paiement : créneau fait, ou déjà payé, ou vue admin ===
+                if (isDoneEntry || entry.paye_le || adminMode) {
                     li.appendChild(renderPaymentBlock(arrivee, {
                         onRefresh: function() { updatePastSlotsList(); }
                     }));
