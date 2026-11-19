@@ -30,6 +30,24 @@ const CODES = {
   deepl: { de: 'DE', en: 'EN-GB', es: 'ES', it: 'IT', nl: 'NL', pt: 'PT-PT' },
 };
 
+// Le palier gratuit d'Azure (F0) plafonne aussi le débit : 2 M caractères par heure,
+// lissés sur une fenêtre glissante (~33 000 par minute). Un rattrapage d'arriéré dépasse
+// vite ce rythme et reçoit un 429 — vu le 19/11/2026 : 907 segments sur 1 135, puis arrêt.
+// On patiente et on renvoie le même lot plutôt que d'abandonner tout le run.
+const PAUSE_429_MS = 65_000;
+const ESSAIS_MAX = 6;            // au-delà (≈ 5 min d'attente), on lève : l'appelant garde son cache partiel
+
+async function envoyerAvecReprise(nom, url, options) {
+  for (let essai = 1; ; essai++) {
+    const resp = await fetch(url, options);
+    if (resp.status !== 429 || essai >= ESSAIS_MAX) return resp;
+    const retryAfter = Number(resp.headers.get('retry-after'));
+    const attente = retryAfter > 0 ? Math.min(retryAfter * 1000, 300_000) : PAUSE_429_MS;
+    console.error(`  ${nom} 429 (débit dépassé) — pause de ${Math.round(attente / 1000)} s, essai ${essai + 1}/${ESSAIS_MAX}`);
+    await new Promise(r => setTimeout(r, attente));
+  }
+}
+
 /** Nom du fournisseur actif, ou null si aucune clé n'est configurée. */
 function providerName() {
   if (process.env.AZURE_TRANSLATOR_KEY) return 'azure';
@@ -54,7 +72,7 @@ async function azureTranslate(texts, lang) {
   }
 
   const url = endpoint + '/translate?api-version=3.0&from=fr&to=' + encodeURIComponent(to);
-  const resp = await fetch(url, {
+  const resp = await envoyerAvecReprise('Azure', url, {
     method: 'POST',
     headers,
     body: JSON.stringify(texts.map(t => ({ Text: t }))),
@@ -82,7 +100,7 @@ async function deeplTranslate(texts, lang) {
   body.append('target_lang', target);
   for (const t of texts) body.append('text', t);
 
-  const resp = await fetch(base + '/v2/translate', {
+  const resp = await envoyerAvecReprise('DeepL', base + '/v2/translate', {
     method: 'POST',
     headers: { 'Authorization': 'DeepL-Auth-Key ' + key, 'Content-Type': 'application/x-www-form-urlencoded' },
     body,
