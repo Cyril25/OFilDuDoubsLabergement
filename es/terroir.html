@@ -118,10 +118,10 @@
 
         <div class="terroir-toc" id="toc" role="navigation" aria-label="Índice">
             <a href="#vins"><i class="fas fa-wine-bottle" aria-hidden="true"></i> <span id="toc_vins">Los vinos</span></a>
+            <a href="#accords"><i class="fas fa-utensils" aria-hidden="true"></i> <span id="toc_accords">Los maridajes</span></a>
             <a href="#rieme"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="toc_rieme">Maison Rième</span></a>
             <a href="#fromages"><i class="fas fa-cheese" aria-hidden="true"></i> <span id="toc_fromages">Los quesos</span></a>
             <a href="#salaisons"><i class="fas fa-bacon" aria-hidden="true"></i> <span id="toc_salaisons">Los embutidos</span></a>
-            <a href="#accords"><i class="fas fa-utensils" aria-hidden="true"></i> <span id="toc_accords">Los maridajes</span></a>
             <a href="#trouver"><i class="fas fa-store" aria-hidden="true"></i> <span id="toc_trouver">Dónde comprar</span></a>
         </div>
 
@@ -221,11 +221,29 @@
                 </ul>
                 <p class="partners-note" id="partners_note">Lista orientativa y no exhaustiva.</p>
             </div>
+        </section>
 
-            <div class="terroir-note">
-                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> <span id="fruitiere_title">¿Sabía que…?</span></h3>
-                <p id="fruitiere_text">En el Franco Condado, una <em>fruitière</em> es una cooperativa. Los ganaderos ponen en común su leche para elaborar el Comté; los viticultores hacen lo mismo con sus uvas en las <em>fruitières vinicoles</em>. Misma palabra, misma idea: producir juntos, en el pueblo.</p>
+        <section class="terroir-section" id="accords">
+            <h2><i class="fas fa-utensils" aria-hidden="true"></i> <span id="accords_title">Maridajes del Franco Condado</span></h2>
+            <p class="section-intro" id="accords_intro">Los aparatos de raclette y fondue están en la cocina; los quesos y embutidos, en el pueblo (se los presentamos <a href="#fromages">más abajo</a>). Aquí tiene, para cada plato, el vino de nuestra selección que mejor lo acompaña.</p>
+            <div class="table-scroll">
+                <table class="dist-table accords-table">
+                    <thead><tr><th id="th_dish">Plato</th><th id="th_wine">Con</th></tr></thead>
+                    <tbody>
+                        <tr><td id="a1_dish">Fondue de Comté</td><td id="a1_wine">Savagnin, o Chardonnay para más frescura</td></tr>
+                        <tr><td id="a2_dish">Mont d'Or al horno</td><td>Savagnin</td></tr>
+                        <tr><td id="a3_dish">Raclette de Morbier</td><td id="a3_wine">Chardonnay o Poulsard</td></tr>
+                        <tr><td id="a4_dish">Salchicha de Morteau, con lentejas o patatas</td><td id="a4_wine">Poulsard o Trousseau</td></tr>
+                        <tr><td id="a5_dish">Salchicha de Montbéliard</td><td id="a5_wine">Rosado o Poulsard</td></tr>
+                        <tr><td id="a6_dish">Comté joven / Comté curado</td><td>Chardonnay / Savagnin</td></tr>
+                        <tr><td id="a7_dish">Jamón ahumado, brési</td><td id="a7_wine">Poulsard o Trousseau; Crémant para el brési de aperitivo</td></tr>
+                        <tr><td id="a8_dish">Cancoillotte caliente</td><td>Chardonnay</td></tr>
+                        <tr><td id="a9_dish">Melón, postres</td><td>Macvin</td></tr>
+                    </tbody>
+                </table>
             </div>
+            <p class="accords-soft"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="accords_soft">Y para toda la familia: una Mortuacienne bien fría.</span></p>
+            <p class="terroir-legal" id="legal_2">L'abus d'alcool est dangereux pour la santé, à consommer avec modération. (El abuso del alcohol es perjudicial para la salud; consúmase con moderación.)</p>
         </section>
 
         <section class="terroir-section" id="rieme">
@@ -260,6 +278,10 @@
         <section class="terroir-section" id="fromages">
             <h2><i class="fas fa-cheese" aria-hidden="true"></i> <span id="fromages_title">Los quesos del Haut-Doubs</span></h2>
             <p class="section-intro" id="fromages_intro">Aquí el queso es cosa de leche cruda, prados y cooperativas. Los ganaderos entregan su leche a la <em>fruitière</em> del pueblo, que la transforma allí mismo. Cuatro quesos resumen este saber hacer.</p>
+            <div class="terroir-note">
+                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> <span id="fruitiere_title">¿Sabía que…?</span></h3>
+                <p id="fruitiere_text">En el Franco Condado, una <em>fruitière</em> es una cooperativa. Los ganaderos ponen en común su leche para elaborar el Comté; los viticultores hacen lo mismo con sus uvas en las <em>fruitières vinicoles</em>. Misma palabra, misma idea: producir juntos, en el pueblo.</p>
+            </div>
             <div class="t-grid t-grid-2">
                 <article class="t-card">
                     <div class="t-head"><span class="t-icon" aria-hidden="true"><i class="fas fa-cheese"></i></span><div><h3>Comté</h3><p class="t-tag" id="c1_tag">AOP · pasta prensada cocida</p></div></div>
@@ -328,29 +350,6 @@
                     </dl>
                 </article>
             </div>
-        </section>
-
-        <section class="terroir-section" id="accords">
-            <h2><i class="fas fa-utensils" aria-hidden="true"></i> <span id="accords_title">Maridajes del Franco Condado</span></h2>
-            <p class="section-intro" id="accords_intro">Los aparatos de raclette y fondue están en la cocina; los quesos y embutidos, en el pueblo. Aquí tiene, para cada plato, el vino de nuestra selección que mejor lo acompaña.</p>
-            <div class="table-scroll">
-                <table class="dist-table accords-table">
-                    <thead><tr><th id="th_dish">Plato</th><th id="th_wine">Con</th></tr></thead>
-                    <tbody>
-                        <tr><td id="a1_dish">Fondue de Comté</td><td id="a1_wine">Savagnin, o Chardonnay para más frescura</td></tr>
-                        <tr><td id="a2_dish">Mont d'Or al horno</td><td>Savagnin</td></tr>
-                        <tr><td id="a3_dish">Raclette de Morbier</td><td id="a3_wine">Chardonnay o Poulsard</td></tr>
-                        <tr><td id="a4_dish">Salchicha de Morteau, con lentejas o patatas</td><td id="a4_wine">Poulsard o Trousseau</td></tr>
-                        <tr><td id="a5_dish">Salchicha de Montbéliard</td><td id="a5_wine">Rosado o Poulsard</td></tr>
-                        <tr><td id="a6_dish">Comté joven / Comté curado</td><td>Chardonnay / Savagnin</td></tr>
-                        <tr><td id="a7_dish">Jamón ahumado, brési</td><td id="a7_wine">Poulsard o Trousseau; Crémant para el brési de aperitivo</td></tr>
-                        <tr><td id="a8_dish">Cancoillotte caliente</td><td>Chardonnay</td></tr>
-                        <tr><td id="a9_dish">Melón, postres</td><td>Macvin</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="accords-soft"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="accords_soft">Y para toda la familia: una Mortuacienne bien fría.</span></p>
-            <p class="terroir-legal" id="legal_2">L'abus d'alcool est dangereux pour la santé, à consommer avec modération. (El abuso del alcohol es perjudicial para la salud; consúmase con moderación.)</p>
         </section>
 
         <section class="terroir-section" id="trouver">

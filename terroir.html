@@ -111,10 +111,10 @@
 
         <div class="terroir-toc" id="toc" role="navigation" aria-label="Sommaire">
             <a href="#vins"><i class="fas fa-wine-bottle" aria-hidden="true"></i> <span id="toc_vins">Les vins</span></a>
+            <a href="#accords"><i class="fas fa-utensils" aria-hidden="true"></i> <span id="toc_accords">Les accords</span></a>
             <a href="#rieme"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="toc_rieme">Maison Rième</span></a>
             <a href="#fromages"><i class="fas fa-cheese" aria-hidden="true"></i> <span id="toc_fromages">Les fromages</span></a>
             <a href="#salaisons"><i class="fas fa-bacon" aria-hidden="true"></i> <span id="toc_salaisons">Les salaisons</span></a>
-            <a href="#accords"><i class="fas fa-utensils" aria-hidden="true"></i> <span id="toc_accords">Les accords</span></a>
             <a href="#trouver"><i class="fas fa-store" aria-hidden="true"></i> <span id="toc_trouver">Où les trouver</span></a>
         </div>
 
@@ -214,11 +214,29 @@
                 </ul>
                 <p class="partners-note" id="partners_note">Liste indicative et non exhaustive.</p>
             </div>
+        </section>
 
-            <div class="terroir-note">
-                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> <span id="fruitiere_title">Le saviez-vous ?</span></h3>
-                <p id="fruitiere_text">En Franche-Comté, une fruitière est une coopérative. Les éleveurs y mettent leur lait en commun pour faire le Comté ; les vignerons font de même avec leurs raisins dans les fruitières vinicoles. Même mot, même idée : produire ensemble, au village.</p>
+        <section class="terroir-section" id="accords">
+            <h2><i class="fas fa-utensils" aria-hidden="true"></i> <span id="accords_title">Les accords comtois</span></h2>
+            <p class="section-intro" id="accords_intro">Les appareils à raclette et à fondue sont dans la cuisine, les fromages et les salaisons au village (nous vous les présentons <a href="#fromages">plus bas</a>). Voici, pour chaque plat, le vin de notre sélection qu'on y associe volontiers.</p>
+            <div class="table-scroll">
+                <table class="dist-table accords-table">
+                    <thead><tr><th id="th_dish">Plat</th><th id="th_wine">Avec</th></tr></thead>
+                    <tbody>
+                        <tr><td id="a1_dish">Fondue comtoise</td><td id="a1_wine">Savagnin, ou Chardonnay pour plus de fraîcheur</td></tr>
+                        <tr><td id="a2_dish">Mont d'Or chaud</td><td>Savagnin</td></tr>
+                        <tr><td id="a3_dish">Raclette au Morbier</td><td id="a3_wine">Chardonnay ou Poulsard</td></tr>
+                        <tr><td id="a4_dish">Saucisse de Morteau, lentilles ou pommes de terre</td><td id="a4_wine">Poulsard ou Trousseau</td></tr>
+                        <tr><td id="a5_dish">Saucisse de Montbéliard</td><td id="a5_wine">Rosé ou Poulsard</td></tr>
+                        <tr><td id="a6_dish">Comté jeune / Comté affiné</td><td>Chardonnay / Savagnin</td></tr>
+                        <tr><td id="a7_dish">Jambon fumé, brési</td><td id="a7_wine">Poulsard ou Trousseau ; Crémant pour le brési à l'apéritif</td></tr>
+                        <tr><td id="a8_dish">Cancoillotte chaude</td><td>Chardonnay</td></tr>
+                        <tr><td id="a9_dish">Melon, desserts</td><td>Macvin</td></tr>
+                    </tbody>
+                </table>
             </div>
+            <p class="accords-soft"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="accords_soft">Et pour toute la famille : une Mortuacienne bien fraîche.</span></p>
+            <p class="terroir-legal" id="legal_2">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
         </section>
 
         <section class="terroir-section" id="rieme">
@@ -253,6 +271,10 @@
         <section class="terroir-section" id="fromages">
             <h2><i class="fas fa-cheese" aria-hidden="true"></i> <span id="fromages_title">Les fromages du Haut-Doubs</span></h2>
             <p class="section-intro" id="fromages_intro">Ici, le fromage est une affaire de lait cru, de prairies et de coopératives. Les éleveurs livrent leur lait à la fruitière du village, qui le transforme sur place. Quatre fromages résument ce savoir-faire.</p>
+            <div class="terroir-note">
+                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> <span id="fruitiere_title">Le saviez-vous ?</span></h3>
+                <p id="fruitiere_text">En Franche-Comté, une fruitière est une coopérative. Les éleveurs y mettent leur lait en commun pour faire le Comté ; les vignerons font de même avec leurs raisins dans les fruitières vinicoles. Même mot, même idée : produire ensemble, au village.</p>
+            </div>
             <div class="t-grid t-grid-2">
                 <article class="t-card">
                     <div class="t-head"><span class="t-icon" aria-hidden="true"><i class="fas fa-cheese"></i></span><div><h3>Comté</h3><p class="t-tag" id="c1_tag">AOP · pâte pressée cuite</p></div></div>
@@ -321,29 +343,6 @@
                     </dl>
                 </article>
             </div>
-        </section>
-
-        <section class="terroir-section" id="accords">
-            <h2><i class="fas fa-utensils" aria-hidden="true"></i> <span id="accords_title">Les accords comtois</span></h2>
-            <p class="section-intro" id="accords_intro">Les appareils à raclette et à fondue sont dans la cuisine, les fromages et les salaisons au village. Voici, pour chaque plat, le vin de notre sélection qu'on y associe volontiers.</p>
-            <div class="table-scroll">
-                <table class="dist-table accords-table">
-                    <thead><tr><th id="th_dish">Plat</th><th id="th_wine">Avec</th></tr></thead>
-                    <tbody>
-                        <tr><td id="a1_dish">Fondue comtoise</td><td id="a1_wine">Savagnin, ou Chardonnay pour plus de fraîcheur</td></tr>
-                        <tr><td id="a2_dish">Mont d'Or chaud</td><td>Savagnin</td></tr>
-                        <tr><td id="a3_dish">Raclette au Morbier</td><td id="a3_wine">Chardonnay ou Poulsard</td></tr>
-                        <tr><td id="a4_dish">Saucisse de Morteau, lentilles ou pommes de terre</td><td id="a4_wine">Poulsard ou Trousseau</td></tr>
-                        <tr><td id="a5_dish">Saucisse de Montbéliard</td><td id="a5_wine">Rosé ou Poulsard</td></tr>
-                        <tr><td id="a6_dish">Comté jeune / Comté affiné</td><td>Chardonnay / Savagnin</td></tr>
-                        <tr><td id="a7_dish">Jambon fumé, brési</td><td id="a7_wine">Poulsard ou Trousseau ; Crémant pour le brési à l'apéritif</td></tr>
-                        <tr><td id="a8_dish">Cancoillotte chaude</td><td>Chardonnay</td></tr>
-                        <tr><td id="a9_dish">Melon, desserts</td><td>Macvin</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="accords-soft"><i class="fas fa-lemon" aria-hidden="true"></i> <span id="accords_soft">Et pour toute la famille : une Mortuacienne bien fraîche.</span></p>
-            <p class="terroir-legal" id="legal_2">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
         </section>
 
         <section class="terroir-section" id="trouver">
