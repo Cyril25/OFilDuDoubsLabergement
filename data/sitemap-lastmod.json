@@ -1,394 +1,422 @@
 {
  "https://ofildudoubs.fr/": {
-  "hash": "fdb3cddce84cd4a2cf5a369c19b757252b7ed7cd",
-  "date": "2026-09-29"
+  "hash": "2dd1e43925fc72ee96504c2ae1a93b095cbbc683",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/logement.html": {
-  "hash": "4cf032f81a899c9c899aff20ad0814c275cea76b",
-  "date": "2026-09-29"
+  "hash": "0f5b72bfb0f790054db34dd819db19c4d54cd68b",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/equipements.html": {
-  "hash": "bd12f5db7017d26ad6672eb355b229870a1c6a9c",
-  "date": "2026-09-29"
+  "hash": "33170b3376f46f381336f81439096d9352f643fe",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/dispo.html": {
-  "hash": "01626658973375caa9698f54e126b2097fa18636",
-  "date": "2026-09-29"
+  "hash": "f9489e5272b2c38da04e1377b9c74efc56a85eb9",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/activites.html": {
-  "hash": "3b6b6f8cc7a51d7a8bdbc17f75f31d83ffee9b9e",
-  "date": "2026-09-29"
+  "hash": "9327772aed53ed0194263c2823907d19d32f6524",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/commerces.html": {
-  "hash": "370b7edc5e497f7f5020f7b2b25e4ea1067fc92f",
-  "date": "2026-09-29"
+  "hash": "78f65ed8ccab390293b3634552b7a7a9a0c6b485",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/ou-manger.html": {
-  "hash": "7defb2cd309ebbfa74d531a88631de339c06a486",
-  "date": "2026-09-29"
+  "hash": "9a6cca262c9cd98e87da2daacf39bb9976f9ba38",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/agenda.html": {
-  "hash": "3c36b18cf58e8aa6ae0911a763131be1f3becb90",
-  "date": "2026-09-29"
+  "hash": "47c8e69bf4653c2934ad2fc060ed020b819fcc56",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/contact.html": {
-  "hash": "4ad5e5855d44eaa0a6a3201b16623296abeb275a",
-  "date": "2026-09-29"
+  "hash": "8326b1199273612e0741fd9def74cc1c15ed6b55",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/rando.html": {
-  "hash": "9a8ebede8fa151fe230bb237c5b67686e64e2dcb",
-  "date": "2026-09-29"
+  "hash": "8539b61fa728f77e3ec99008a8998be14359b909",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/situation.html": {
-  "hash": "bf616a728cb4ffe9153676c5992be9224c1385fb",
-  "date": "2026-09-29"
+  "hash": "98e374f26b0edbc9d9954d8e961d45cc04b2afb4",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/ete.html": {
-  "hash": "e7786e3a1c63cb479f9253177661af70f51f67fa",
-  "date": "2026-09-29"
+  "hash": "bff73a9a7244352814ed5e4019739a226f111b46",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/hiver.html": {
-  "hash": "3a7e824ec5f3cbc9f9450b248bbc347b56770f1d",
-  "date": "2026-09-29"
+  "hash": "a63d8f240207790e8eca4d840b56fd6c416dc022",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/faq.html": {
-  "hash": "5136aa491627a38d433200d5f3e0d3d35e254a8e",
-  "date": "2026-09-29"
+  "hash": "c354e0a70c46a6fb4b9cc2fee15d8749d48a951d",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/terroir.html": {
+  "hash": "f56a9300e662a70b7caff3106aa6d8a309e2742a",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/": {
-  "hash": "6cf730891774010c2e6083b0318d28c0090c9826",
-  "date": "2026-09-29"
+  "hash": "6e16a9f03a4c968510b01414493fa9a2068172bd",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/": {
-  "hash": "5ec754fb07537dbc911afd9763bd77eb519a0474",
-  "date": "2026-09-29"
+  "hash": "ed86123313a28560b96aa0cf1646d3c1eecf0e6e",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/": {
-  "hash": "ce271a127cd379c780da7d2592c6fb36cd618c8d",
-  "date": "2026-09-29"
+  "hash": "65f00543a952a066ca339d2619dedfdd1f95ce33",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/": {
-  "hash": "4b4f86a736c0e362e806059ab2b82c9929f720b5",
-  "date": "2026-09-29"
+  "hash": "cce20a90b892f6051799581176ed1c1ab9ae0be0",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/": {
-  "hash": "d380dc4fcf4d34665a830d30b380154e55593040",
-  "date": "2026-09-29"
+  "hash": "79bc723428bbc2789d842b8d702c47a25dfc9a4a",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/": {
-  "hash": "d84185a8604ecc5fac8f78391c340cc6e62a77b3",
-  "date": "2026-09-29"
+  "hash": "c38427e5ed4b180a876864276f380eb78e0c2174",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/logement.html": {
-  "hash": "d2270bbf0e800a7b41adfadc634d7111ff1e4d03",
-  "date": "2026-09-29"
+  "hash": "d52c4ad7662996aa3796de477aad418de860ad07",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/logement.html": {
-  "hash": "ec00d517cef219f1afaa78c643bb7f879b84401a",
-  "date": "2026-09-29"
+  "hash": "2aad47dacc37202ff4d58eb4d4770ec583c55b0f",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/logement.html": {
-  "hash": "1c049693940286a883db7608f6cfc17a65f6b32a",
-  "date": "2026-09-29"
+  "hash": "1c24db386c4886e53ecba3de30619c58c16210ab",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/logement.html": {
-  "hash": "c37c70d35c5994e0fc62245ac953d3b8791c1b19",
-  "date": "2026-09-29"
+  "hash": "0dc0fb7cc3b7cd147326eabb25f3a301bbc58eb1",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/logement.html": {
-  "hash": "92cf08ded3fbb61f10a75f9dc6bb55e9da400d88",
-  "date": "2026-09-29"
+  "hash": "f2e4daccda2498cb150fba025cf615274d48b1a9",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/logement.html": {
-  "hash": "f89db7212d896b68ff2bbf1ea46048e629250951",
-  "date": "2026-09-29"
+  "hash": "612e1c7b765cdd083d6b71a35e2d77ad236fda60",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/equipements.html": {
-  "hash": "29036840946f1281711c08630401c6327d2958aa",
-  "date": "2026-09-29"
+  "hash": "39aae25f6b6f7530ddc83aecd01aba2a712324ac",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/equipements.html": {
-  "hash": "a6ecbc39cfd1aa5d65ea88e7c4f428440b040f99",
-  "date": "2026-09-29"
+  "hash": "48991cf485661e0a4ba750c48d9c2f1e9755da31",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/equipements.html": {
-  "hash": "6c1892b5477d521ba1a69992f50d2a37d87535d8",
-  "date": "2026-09-29"
+  "hash": "227311fff748ddc76b135321c3b16b1a4d542f4e",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/equipements.html": {
-  "hash": "3c16380ccdf1a7d1f50cb03b69b6be13d7051797",
-  "date": "2026-09-29"
+  "hash": "51d5a0c9909fa475ecd2dfe81eb41a02f17199d6",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/equipements.html": {
-  "hash": "8c5477884d4bdd5540e07ec0bdcc5718b0bf7ca7",
-  "date": "2026-09-29"
+  "hash": "c4d0aebe416d75aad6f15673a583acb20d7a1e5a",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/equipements.html": {
-  "hash": "513dad19e727581817b636bba3a9ca57fc08755f",
-  "date": "2026-09-29"
+  "hash": "2f1682af41ac468923d54b3a24ccbfe93704dfbe",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/commerces.html": {
-  "hash": "9d0694c11e1b76665e1c9866126a39d3f5eb0cbd",
-  "date": "2026-09-29"
+  "hash": "a8a2d1bb507ef400b7353c3f7aac051b174d9007",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/commerces.html": {
-  "hash": "2b28d2adcefdd6f7543fb7ba6772387ae4a5e56b",
-  "date": "2026-09-29"
+  "hash": "7bac8ace2606679f87d6f0f8d744f3c76926a465",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/commerces.html": {
-  "hash": "684f74bf3888064a3328b4a441315a8f936516d6",
-  "date": "2026-09-29"
+  "hash": "74a5e4a42f3b5ca13d7a0e3be220aa700a527ad5",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/commerces.html": {
-  "hash": "bdad6db05c6e07d9aa944e7034f2a3031021d8b6",
-  "date": "2026-09-29"
+  "hash": "a9c437fd825c834f1432da61070188b86bc555d9",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/commerces.html": {
-  "hash": "5229f42bb0c4a519d89b08f5f2b66e7e880e4f37",
-  "date": "2026-09-29"
+  "hash": "7547fd1fa21d6da677747c6e895dbc1476e9d3b3",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/commerces.html": {
-  "hash": "4cc5a55675870bc6d3f1c58a1693768bc4fb98e0",
-  "date": "2026-09-29"
+  "hash": "a56f83199feae3c47ffb43c15795e653fdc02253",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/activites.html": {
-  "hash": "6f87e6f6f5d5f01b36c151fecb291192d5979dd3",
-  "date": "2026-09-29"
+  "hash": "28fec7f6f17cc1513694f1d38ff83133650a1f95",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/activites.html": {
-  "hash": "50cf6620c4078d8cae77e74e99c83925cf4f3ae5",
-  "date": "2026-09-29"
+  "hash": "e687e8a65d70fe7df02308f69cecc0ed0bac5f88",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/activites.html": {
-  "hash": "d149bbaa63aa76d72d91020e686bfa3a3fa122d8",
-  "date": "2026-09-29"
+  "hash": "9f57f63e89b3a8969f8016f8275574ac16b22037",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/activites.html": {
-  "hash": "d2d8cabbc02092c145ca6fd7fe4255d3b9f10829",
-  "date": "2026-09-29"
+  "hash": "515dd23148ed25668e69fcf000be885777c25c56",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/activites.html": {
-  "hash": "ce29cc9dc85cb894cb64da446b70340bb711d139",
-  "date": "2026-09-29"
+  "hash": "224d51fb3f8d0d0620bb52c9ba254ac8e01ea122",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/activites.html": {
-  "hash": "2b4ee604234989d383328c9c118d5f75c21de317",
-  "date": "2026-09-29"
+  "hash": "53472ca19b220db79496548a47f39ef68abab181",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/ou-manger.html": {
-  "hash": "ad35a5bd7d37dc211e7c80ef43f6685c0bb85a74",
-  "date": "2026-09-29"
+  "hash": "4fca65130c5eef0455357e5c0117c687bd4606a1",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/ou-manger.html": {
-  "hash": "7553623bbd5fc3b12f6ad6801d8c1d4abafe6cc4",
-  "date": "2026-09-29"
+  "hash": "736d9db60305add69818f117cf0eb40f4f9fe88a",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/ou-manger.html": {
-  "hash": "e36761151ef721f648b1fc636d50e7cc5b9ec77f",
-  "date": "2026-09-29"
+  "hash": "8bf3f31616d9a6b5be0ab120f2f8d68294f90002",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/ou-manger.html": {
-  "hash": "ddf921b415c8a41e0d9733d4c79dc9dca8c01ccd",
-  "date": "2026-09-29"
+  "hash": "54a25d6e796890f28023dc7f915fccab463674c3",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/ou-manger.html": {
-  "hash": "9dd80d7e44c336206d1316d33f65e7de7ef1b9ea",
-  "date": "2026-09-29"
+  "hash": "9abfd3d428a089baac654395ea54a813297c85aa",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/ou-manger.html": {
-  "hash": "0f8168177f51f6b594d9b11c407f4811ba5323a6",
-  "date": "2026-09-29"
+  "hash": "06551d20539a0d73de6f67968f5a085191daee64",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/contact.html": {
-  "hash": "46290dc2ed0e251dc1847c02c9afdd732e780ad9",
-  "date": "2026-09-29"
+  "hash": "bfe44ab8da111898179f0104e373a3d49b031e02",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/contact.html": {
-  "hash": "0cc81c9c676fcf0e0f8bba303ac027c3309742a2",
-  "date": "2026-09-29"
+  "hash": "03f66b038502a55e0f829e4f1c7099478484dd07",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/contact.html": {
-  "hash": "f65451465b70ef646cafda22d755e1064ce9ad10",
-  "date": "2026-09-29"
+  "hash": "0f0e5237ad2579be10607b7163c6aa1766742975",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/contact.html": {
-  "hash": "1ab792a2281dc991a86a97f7e8ff7b45466ec666",
-  "date": "2026-09-29"
+  "hash": "28c4cccb486674cb965ade6d430958ff0ebf41e2",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/contact.html": {
-  "hash": "9f6162ae7f25c618053dd421cb13f62cd03e8f07",
-  "date": "2026-09-29"
+  "hash": "a9c13727ff4fbfb96b1d65d4eec9d327569ce82c",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/contact.html": {
-  "hash": "2afa449217f3ad60e04fcb92aee08b863d521eb0",
-  "date": "2026-09-29"
+  "hash": "5dfc51322654d359ca4638661342c147081dab21",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/agenda.html": {
-  "hash": "82677538ef5d846377b0e464ec449146621fc71b",
-  "date": "2026-09-29"
+  "hash": "07866e74ec0a0be623fa6d03dd03736ae8b1f327",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/agenda.html": {
-  "hash": "ff4298aba2745e09064a64992fd25a70094220b5",
-  "date": "2026-09-29"
+  "hash": "7c213c571e08d5f424161b601b4cb4b8cb86c216",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/agenda.html": {
-  "hash": "7ee2fab48ae15fdf7e890b936088afc7eee9c79a",
-  "date": "2026-09-29"
+  "hash": "d52dd5bc22131375e5fab75b80949b43e8b027a0",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/agenda.html": {
-  "hash": "02b458441c6cb5daaae8d9d4bbafcd5562bc3483",
-  "date": "2026-09-29"
+  "hash": "24ad16dbef34a8ea2e60efe0315e5c22a3efbf44",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/agenda.html": {
-  "hash": "e400617fc5d3de7a4e1c457193f371972786b0d9",
-  "date": "2026-09-29"
+  "hash": "cd13d4696da182e0562afdeaa4b4179a39755b84",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/agenda.html": {
-  "hash": "192db1324e8ecff50f50e97a05ff19b7f8592ce5",
-  "date": "2026-09-29"
+  "hash": "28578eab44bbc4fbce5c3005485a476c89cb091f",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/dispo.html": {
-  "hash": "00fd3d792f830a56a4748d5c94bccf89591247da",
-  "date": "2026-09-29"
+  "hash": "b2ff17f25681a8e9e5c2b59beea803e4de96dfa0",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/dispo.html": {
-  "hash": "a388f0a9a20e35dc58d17eda4456048294f49d9e",
-  "date": "2026-09-29"
+  "hash": "b397dac3455a44853ccff2c374d4dcfb858ef348",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/dispo.html": {
-  "hash": "8b7f32b8345666b3c5c88075fcd4df3722ddd0e0",
-  "date": "2026-09-29"
+  "hash": "1ffb14f737961529795e21fcf355fe9c4d6dc5f6",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/dispo.html": {
-  "hash": "7baf21b971bd2f271e3f54b9e6205ca7c134fd5e",
-  "date": "2026-09-29"
+  "hash": "6ef1f7da0f6c8bf2c598b3c184440a4350febd95",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/dispo.html": {
-  "hash": "fa7e56ba2e45a052e049a2d25acaf8377d9caf90",
-  "date": "2026-09-29"
+  "hash": "54eb5dec6ccc87950ea5d42383250d4fb098b3d0",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/dispo.html": {
-  "hash": "9b7ac55851c91669d080ddc905f93976ae0a7d1e",
-  "date": "2026-09-29"
+  "hash": "af9ef29b3fa9ca6cb80d29576534d0a6f2e75ace",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/rando.html": {
-  "hash": "19cdee4ea9a9d68c32c1485688482445a75e7deb",
-  "date": "2026-09-29"
+  "hash": "e29ba6c9144c93633172c1a1d85683d25dcbeeb3",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/rando.html": {
-  "hash": "0e41069b72bf587af97876d1ba10e2cf5f229071",
-  "date": "2026-09-29"
+  "hash": "740ee1a0110ddbe54f18ce8514205678db1614f4",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/rando.html": {
-  "hash": "0aa747efa13e207ccc8eb42d3271383c05b3aac3",
-  "date": "2026-09-29"
+  "hash": "f397b596675c306ff310b4b956e23ae46266915e",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/rando.html": {
-  "hash": "1adbc045572fcb82fecd6420f100d702393da015",
-  "date": "2026-09-29"
+  "hash": "290d0941cf02fb5f34cf71158ed1ed1fd02bc7fb",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/rando.html": {
-  "hash": "dbeb78f27eae52376214b8a9c333e2866941321d",
-  "date": "2026-09-29"
+  "hash": "d718f6dd0347b17b50fa52e24f9da5808ed589f5",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/rando.html": {
-  "hash": "3af532bb73312981c00c2bdf4789f86e81e30d64",
-  "date": "2026-09-29"
+  "hash": "968dfc974f1f0f8de6d5e826c0b0469901fbbf6b",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/situation.html": {
-  "hash": "1f78f1afdf8759e0d16fdfabe8932363259ae921",
-  "date": "2026-09-29"
+  "hash": "89f25586f5afdfbdfee4ba9e3db2d09d178a7d6b",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/situation.html": {
-  "hash": "0ed9bc208b4e8ff41c6bacd2406a0ed0475c3f6e",
-  "date": "2026-09-29"
+  "hash": "7842fb1bd8e59a8523985eafd62264c2929aba98",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/situation.html": {
-  "hash": "8378f7974d426fd02462f775d7579e873945c1ec",
-  "date": "2026-09-29"
+  "hash": "a15dab9a8a645da64c0202f87ed317f475cf6a15",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/situation.html": {
-  "hash": "4075d29526c4383c1d5fef8d420e16875094b580",
-  "date": "2026-09-29"
+  "hash": "8f26fd7cc5516bdc7ac2715750b0e9439abcf287",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/situation.html": {
-  "hash": "42d7b76a5b41257ddb71395573cd082c7aaac5a9",
-  "date": "2026-09-29"
+  "hash": "7d3da7547bd2b99449b19a8077be789b5f7fd8da",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/situation.html": {
-  "hash": "dbdc0e5d9d1e159869671681fb3f4c9dd1116fc1",
-  "date": "2026-09-29"
+  "hash": "bf247217408ad66b236e4390616e9720f9e34f6f",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/ete.html": {
-  "hash": "b32cfb812bba420a51ac8fc92158c3f19180263c",
-  "date": "2026-09-29"
+  "hash": "83f8486977f1672faa611b660e7d8699c84fb641",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/ete.html": {
-  "hash": "ca8131f6d08ec23ce4fa1db552b35da8b9d5aa7b",
-  "date": "2026-09-29"
+  "hash": "f4d546adb5671ed6e7d74fd8f75d16b841da6889",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/ete.html": {
-  "hash": "02fd80fa4ee767bd60ed88f5f319aae6ae3acdeb",
-  "date": "2026-09-29"
+  "hash": "8650bbf22855c43392580f8afadb4db5973f1485",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/ete.html": {
-  "hash": "85f11a6c8236f14916a4b94acd78878388029eb8",
-  "date": "2026-09-29"
+  "hash": "1cec7172e07e46219142c0ed47e2d4425d9728db",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/ete.html": {
-  "hash": "5f7005b6a7796c8738880cfa6d94aee28fe76f3c",
-  "date": "2026-09-29"
+  "hash": "72445639d416486d681c37e74213a7bf790cd94b",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/ete.html": {
-  "hash": "3c1e5f73348a6df7920f7d379ece8a1c457b8328",
-  "date": "2026-09-29"
+  "hash": "4e8e351e1c5ee6ed805066d17112d61f52a36c0e",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/hiver.html": {
-  "hash": "38e82f16a2879dff98d94cccd3dc8ffc10e02b65",
-  "date": "2026-09-29"
+  "hash": "aafe43c352a9732656b3c614824311a1b0bf77fb",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/hiver.html": {
-  "hash": "39ed31fb248570715e4741e29041a858a6d4e4f5",
-  "date": "2026-09-29"
+  "hash": "b8f2abcdc44c43da37436ae4872b7fcb3134c0b1",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/hiver.html": {
-  "hash": "942f5e51fc06d3ff2e08e8029d7b550d54bf3e70",
-  "date": "2026-09-29"
+  "hash": "13c8d6e7f6003b372d7a5fd8303b03e3348bf1b4",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/hiver.html": {
-  "hash": "dbdb77b668af25cb13f6cf3e51da2c4d1ecc6de2",
-  "date": "2026-09-29"
+  "hash": "a65003a48905268f7118ddf3c67f5408ad805a3a",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/hiver.html": {
-  "hash": "3b90f51391e06d119ffac2b17a3c7c93de56d0c0",
-  "date": "2026-09-29"
+  "hash": "cfe1d057ca26886e07c2f91bddcb123b7d0afb3f",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/hiver.html": {
-  "hash": "24c0bef3d47b92fa27194c523fd42f0eff8c8df7",
-  "date": "2026-09-29"
+  "hash": "55d6bfdd6eb7307918bf9cccae4860cdb38841c9",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/en/faq.html": {
-  "hash": "c43166cd7b5d9bca6e11272cf2362de4d2b48959",
-  "date": "2026-09-29"
+  "hash": "4a3de9d3f9cbdf8cfe566565f6d869d1fba98ef1",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/de/faq.html": {
-  "hash": "7173f9d3d07ef694b97f2df2937a5f04fff19620",
-  "date": "2026-09-29"
+  "hash": "116ab5846f1c9cf27cca4ed021fda8c9330a32d7",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/nl/faq.html": {
-  "hash": "3c43d631d70184bd4bbe13c4a7e45e2f79f95347",
-  "date": "2026-09-29"
+  "hash": "2204ac4d44e5a5ed073260b96f3195f3f5fbc483",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/es/faq.html": {
-  "hash": "c212f773f9de8ce12ce28238539e7b1256976360",
-  "date": "2026-09-29"
+  "hash": "e5913d2c72ad2989be74e6d1467b6a0038d89b08",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/it/faq.html": {
-  "hash": "1e9d9773df2ce687a49dd69699e0fcf140589d4d",
-  "date": "2026-09-29"
+  "hash": "7e7d4716aa640780cf87cdab9884c96dec47bc3f",
+  "date": "2026-11-19"
  },
  "https://ofildudoubs.fr/pt/faq.html": {
-  "hash": "828b98a2625d9a9897a6f24410ce82f8ab233aa7",
-  "date": "2026-09-29"
+  "hash": "7a563c28c5a49e6e8603335fa9bed5eb46462b9a",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/en/terroir.html": {
+  "hash": "fedc0357d5fcc464b5e81e43b9600983f9828f86",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/de/terroir.html": {
+  "hash": "6806ddb4d06081438c19929f43afb4013efbdde0",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/nl/terroir.html": {
+  "hash": "31232e3c18c0ddf949bf91583c5e80ce2cfdb42b",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/es/terroir.html": {
+  "hash": "73285be62bc487e67feeace12876254ea2d9f44f",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/it/terroir.html": {
+  "hash": "1cfb2c62cea4e99e992fd733e6e07e854c5f816f",
+  "date": "2026-11-19"
+ },
+ "https://ofildudoubs.fr/pt/terroir.html": {
+  "hash": "65790dfb2490f7e5942c1a7dc1b41c74bb9d5189",
+  "date": "2026-11-19"
  }
 }

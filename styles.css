@@ -1640,3 +1640,103 @@ header.header2.header-ete {
 header h1, header h2, header h3, header p, header .h1-kw {
     text-shadow: 0 2px 6px rgba(0,0,0,0.75), 0 0 22px rgba(0,0,0,0.45);
 }
+
+/* =========================================
+   PAGE TERROIR ET GASTRONOMIE
+   Cartes sans photo de produit : pastille couleur du vin (robe) ou icône,
+   bandeaux qui séparent « dans l'appartement » et « au village ».
+   ========================================= */
+.terroir-toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 10px; }
+.terroir-toc a {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+    border-radius: 999px; background: #fff; border: 1px solid #d7e3ec;
+    color: var(--primary-color); font-weight: 700; font-size: .95rem; text-decoration: none;
+    transition: background .15s, border-color .15s;
+}
+.terroir-toc a:hover { background: var(--accent-color); border-color: var(--primary-color); }
+
+.terroir-band {
+    display: flex; align-items: center; gap: 16px;
+    margin: 44px 0 22px; padding: 16px 22px; border-radius: 12px;
+}
+.terroir-band > i { font-size: 1.6rem; flex-shrink: 0; }
+.terroir-band > div { text-align: left; }
+.terroir-band strong { display: block; font-family: var(--font-title); font-size: 1.4rem; }
+.terroir-band .sub { display: block; font-size: .95rem; opacity: .85; }
+.band-home { background: var(--accent-color); color: var(--primary-color); border-left: 5px solid var(--primary-color); }
+.band-village { background: #f4efe6; color: #6b4f2a; border-left: 5px solid #b08b57; }
+.village-note { max-width: 860px; margin: -6px auto 26px; text-align: center; color: #555; }
+.village-note a, .section-intro a, .trouver-list a { color: var(--primary-color); }
+
+.terroir-section { scroll-margin-top: 80px; }
+.terroir-section h2 i { color: var(--primary-color); margin-right: 6px; }
+.terroir-section .section-intro { max-width: 860px; margin: 0 auto 16px; line-height: 1.75; text-align: left; }
+
+.terroir-note {
+    max-width: 860px; margin: 26px auto; padding: 18px 22px; text-align: left;
+    background: #f6f9fb; border-left: 4px solid var(--primary-color); border-radius: 0 10px 10px 0;
+}
+.terroir-note h3 { margin: 0 0 8px; font-family: var(--font-title); color: var(--primary-color); font-size: 1.15rem; }
+.terroir-note h3 i { margin-right: 6px; }
+.terroir-note p { margin: 0; line-height: 1.7; }
+
+/* Flex plutôt que grid : une carte seule en dernière ligne (7 vins) se centre au lieu de rester à gauche */
+.t-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin: 28px 0 10px; }
+.t-grid > .t-card { flex: 0 1 330px; }
+.t-grid-2 > .t-card { flex-basis: 460px; }
+.t-card {
+    display: flex; flex-direction: column; text-align: left;
+    background: #fff; border: 1px solid #e3e8ee; border-radius: 12px; padding: 20px 22px;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+.t-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,.07); transform: translateY(-2px); }
+.t-head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.t-robe {
+    flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--robe);
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,.12), 0 0 0 4px #fff, 0 0 0 5px #e3e8ee;
+}
+.t-icon {
+    flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-color); color: var(--primary-color); font-size: 1.05rem;
+}
+.t-head h3 { margin: 0; font-family: var(--font-title); color: var(--primary-color); font-size: 1.25rem; }
+.t-tag { margin: 2px 0 0; font-size: .85rem; color: #777; }
+.t-card dl { margin: 0; flex-grow: 1; }
+.t-card dt { margin-top: 12px; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #8a6d3b; }
+.t-card dd { margin: 3px 0 0; line-height: 1.6; font-size: .97rem; }
+.t-serve { margin: 16px 0 0; padding-top: 12px; border-top: 1px dashed #e3e8ee; font-size: .9rem; color: #555; }
+.t-serve i { color: var(--primary-color); margin-right: 6px; }
+.t-gift { display: inline-block; padding: 3px 11px; border-radius: 999px; background: #2e7d32; color: #fff; font-size: .8rem; font-weight: 700; }
+
+.terroir-legal { margin: 18px 0 0; text-align: center; font-size: .85rem; font-style: italic; color: #777; }
+
+.terroir-partners { max-width: 860px; margin: 30px auto 0; text-align: center; }
+.terroir-partners h3 { font-family: var(--font-title); color: var(--primary-color); font-size: 1.2rem; margin: 0 0 8px; }
+.terroir-partners p { margin: 0 0 12px; }
+.terroir-partners ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.terroir-partners li { padding: 8px 14px; border-radius: 8px; background: #f6f9fb; border: 1px solid #e3e8ee; font-weight: 700; color: #444; }
+.terroir-partners li span { display: block; font-weight: 400; font-size: .82rem; color: #777; }
+.terroir-partners .partners-note { margin: 10px 0 0; font-size: .85rem; color: #777; }
+
+.accords-table th, .accords-table td,
+.accords-table td:nth-child(2), .accords-table th:nth-child(2) { text-align: left; white-space: normal; }
+.accords-table td:first-child { font-weight: 700; color: #444; width: 50%; }
+.accords-soft { text-align: center; margin: 18px 0 0; }
+.accords-soft i { color: var(--primary-color); margin-right: 4px; }
+
+.trouver-list { max-width: 860px; margin: 0 auto; padding-left: 20px; text-align: left; line-height: 1.75; }
+.trouver-list li { margin-bottom: 8px; }
+.terroir-credits { margin: 6px 0 0; text-align: center; font-size: .78rem; color: #888; }
+.terroir-credits a { color: inherit; }
+
+@media (max-width: 768px) {
+    .t-grid { gap: 16px; }
+    .t-grid > .t-card, .t-grid-2 > .t-card { flex: 1 1 100%; }
+    section.terroir-section { padding: 28px 14px; }
+    .t-card { padding: 18px 16px; }
+    .terroir-note { padding: 16px 16px; }
+    .terroir-band { margin-top: 34px; padding: 14px 16px; }
+    .terroir-band strong { font-size: 1.2rem; }
+    .accords-table td:first-child { width: auto; }
+}

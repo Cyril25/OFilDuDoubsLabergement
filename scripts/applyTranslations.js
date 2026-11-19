@@ -90,7 +90,8 @@ function applyTranslations(lang, pageTranslations) {
             'contact.html': 'contact',
             'situation.html': 'situation', 'faq.html': 'faq',
             'ete.html': 'ete',
-            'hiver.html': 'hiver'
+            'hiver.html': 'hiver',
+            'terroir.html': 'terroir'
         };
         document.querySelectorAll("#menu-items li a").forEach(link => {
             const file = (link.getAttribute('href') || '').split('/').pop();
@@ -111,6 +112,11 @@ function applyTranslations(lang, pageTranslations) {
         Object.keys(pageTranslations).forEach(id => {
             // On ignore les clés spéciales qui servent aux classes (voir section C)
             if (['btn_website', 'btn_maps', 'info_min', 'info_km'].includes(id)) return;
+            // Clé « .classe » : tous les éléments de la classe (même règle que build-i18n.js)
+            if (id.startsWith('.')) {
+                document.querySelectorAll(id).forEach(el => { el.innerHTML = pageTranslations[id]; });
+                return;
+            }
 
             const element = document.getElementById(id);
             if (element) {
