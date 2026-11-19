@@ -170,15 +170,33 @@ if (csvFile) {
   }
 }
 
+// === Rapprochement entre sources ===
+// Le nom seul ne suffit pas : « Marché de Noël » existe dans dix villages. Joindre par nom
+// rattachait identifiants, photos et descriptions au mauvais événement, et écartait comme
+// doublon le marché de Noël de Labergement (absent de l'agenda en novembre 2026).
+// On rapproche donc par nom + commune, en départageant par la date de début.
+const cleLieu = (titre, ville) => normName(titre) + '|' + normName(ville);
+function indexer(liste, cle) {
+  const m = new Map();
+  for (const x of liste) { const k = cle(x); if (!m.has(k)) m.set(k, []); m.get(k).push(x); }
+  return m;
+}
+// Même date de début d'abord, sinon un candidat pas encore apparié (`pris`, facultatif).
+function apparier(index, k, start, pris) {
+  const c = (index.get(k) || []).filter(x => !pris || !pris.has(x));
+  return c.find(x => x.start === start) || c[0];
+}
+
 // === Complément par l'API DATAtourisme (ou le flux du diffuseur) ===
 // Elle apporte les libellés multilingues et surtout l'identifiant SIT, qui rend possible
 // la jointure exacte avec les photos Tourinsoft.
-const parNom = new Map(events.map(e => [normName(e.title.fr), e]));
+const parLieu = indexer(events, e => cleLieu(e.title.fr, e.city));
+const fusionnesSet = new Set();
 let fusionnes = 0, ajoutes = 0;
 for (const fe of fluxEvents) {
-  const cle = normName(fe.title.fr);
-  const e = parNom.get(cle);
-  if (!e) { events.push(fe); parNom.set(cle, fe); ajoutes++; continue; }
+  const e = apparier(parLieu, cleLieu(fe.title.fr, fe.city), fe.start, fusionnesSet);
+  if (!e) { events.push(fe); ajoutes++; continue; }
+  fusionnesSet.add(e);
   e.id = fe.id;                                              // id SIT → photos Tourinsoft
   if (fe.title && Object.keys(fe.title).length > 1) e.title = fe.title;
   if (fe.desc && Object.keys(fe.desc).length > 1) e.desc = fe.desc;
@@ -216,20 +234,20 @@ async function mergeTourinsoft() {
   } catch (err) { console.error('Tourinsoft : échec (' + err.message + ') — agenda DATAtourisme seul.'); return; }
 
   const ourIds = new Set(events.map(e => String(e.id).toLowerCase()));
-  const ourNames = new Set(events.map(e => normName(e.title.fr)));
-  const byId = {}, parNomTis = {};
-  docs.forEach(d => {
-    byId[d._id] = d._source;
-    const n = normName(d._source && d._source.nom);
-    if (n && !parNomTis[n]) parNomTis[n] = d._source;
-  });
+  const ourLieux = new Set(events.map(e => cleLieu(e.title.fr, e.city)));
+  const byId = {};
+  docs.forEach(d => { byId[d._id] = d._source; });
+  const debutTis = (s) => (Array.isArray(s.dates) ? s.dates : []).map(p => p && p.datedebut).filter(Boolean).sort()[0];
+  const tisParLieu = indexer(docs.filter(d => d._source).map(d => ({ s: d._source, start: debutTis(d._source) })),
+    x => cleLieu(x.s.nom, x.s.commune));
 
   // 1) Enrichir nos événements avec les photos. Jointure par identifiant SIT quand on
-  //    l'a (événements venus du flux), sinon par nom : l'export data.gouv ne porte que
-  //    l'UUID DATAtourisme, qui n'a pas d'équivalent côté Tourinsoft.
+  //    l'a (événements venus de l'API), sinon par nom + commune : l'export data.gouv ne
+  //    porte que l'UUID DATAtourisme, qui n'a pas d'équivalent côté Tourinsoft.
   let enriched = 0;
   for (const e of events) {
-    const s = byId[String(e.id).toLowerCase()] || parNomTis[normName(e.title.fr)];
+    const m = apparier(tisParLieu, cleLieu(e.title.fr, e.city), e.start);
+    const s = byId[String(e.id).toLowerCase()] || (m && m.s);
     if (!s) continue;
     // L'export data.gouv ne décrit pas les événements (3 descriptions sur 5374) : quand
     // le flux est en panne, Tourinsoft est notre seule source pour ce champ.
@@ -250,7 +268,7 @@ async function mergeTourinsoft() {
   let added = 0;
   for (const d of docs) {
     if (ourIds.has(d._id)) continue;
-    if (ourNames.has(normName(d._source && d._source.nom))) continue;   // déjà là via data.gouv
+    if (d._source && ourLieux.has(cleLieu(d._source.nom, d._source.commune))) continue;   // déjà là via data.gouv
     const s = d._source;
     const nom = s.nom; if (!nom) continue;
     const geo = s.position;                       // [lon, lat]
