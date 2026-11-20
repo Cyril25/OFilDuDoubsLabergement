@@ -1644,7 +1644,7 @@ header h1, header h2, header h3, header p, header .h1-kw {
 /* =========================================
    PAGE TERROIR ET GASTRONOMIE
    Cartes sans photo de produit : pastille couleur du vin (robe) ou icône,
-   bandeaux qui séparent « dans l'appartement » et « au village ».
+   bandeaux qui séparent les grandes parties de la page.
    ========================================= */
 .terroir-toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 10px; }
 .terroir-toc a {
