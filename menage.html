@@ -1736,6 +1736,16 @@
             return block;
         }
 
+        // Créneau « week-end » : du samedi (≥ 11h) au dimanche (≤ 17h) DU MÊME
+        // week-end. Sans la contrainte du lendemain, un créneau samedi → dimanche
+        // cinq semaines plus tard passait pour un week-end (gris au lieu de bleu).
+        function estCreneauWeekend(slotStart, slotEnd) {
+            const lendemain = new Date(slotStart.getFullYear(), slotStart.getMonth(), slotStart.getDate() + 1);
+            return slotStart.getDay() === 6 && slotStart.getHours() >= 11
+                && slotEnd.getHours() <= 17
+                && slotEnd.toDateString() === lendemain.toDateString();
+        }
+
         // =============================================
         // MISE À JOUR DU CALENDRIER
         // =============================================
@@ -1745,7 +1755,7 @@
                 const slotStart = new Date(slot.start);
                 const slotEnd = new Date(slot.end);
                 const isSameDay = slotStart.toDateString() === slotEnd.toDateString();
-                const isWeekendSlot = slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString();
+                const isWeekendSlot = estCreneauWeekend(slotStart, slotEnd);
 
                 const arrivee = slotArrivee(slot);
                 const status = getSlotStatus(arrivee);
@@ -1796,7 +1806,7 @@
                 // Classe de type de créneau
                 if (slotStart.toDateString() === slotEnd.toDateString()) {
                     listItem.classList.add('urgent');
-                } else if (slotStart.getDay() === 6 && slotStart.getHours() >= 11 && slotEnd.getDay() === 0 && slotEnd.getHours() <= 17 && slotStart.toDateString() !== slotEnd.toDateString()) {
+                } else if (estCreneauWeekend(slotStart, slotEnd)) {
                     listItem.classList.add('weekend');
                 }
 
