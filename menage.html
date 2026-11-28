@@ -1780,6 +1780,31 @@
             }));
         }
 
+        // Une date de ménage manuelle peut tomber au milieu d'une « réservation »
+        // du flux : typiquement des dates bloquées à la main sur Airbnb, qui
+        // couvrent en réalité deux séjours (le flux livre 19/12 → 02/01, le
+        // ménage du 28/12 sépare 19/12 → 28/12 et 28/12 → 02/01). Pour
+        // l'affichage, on coupe la réservation à chaque créneau qu'elle contient
+        // entièrement : une partie finit au début du créneau, la suivante
+        // commence à sa fin. Le flux et le calcul des créneaux n'en savent rien.
+        function decouperResasAuxCreneaux(events, slots) {
+            const morceaux = [];
+            for (const ev of events) {
+                const debutResa = new Date(ev.start);
+                const finResa = new Date(ev.end);
+                const creneauxDedans = slots
+                    .filter(s => new Date(s.start) > debutResa && new Date(s.end) < finResa)
+                    .sort((a, b) => new Date(a.start) - new Date(b.start));
+                let debut = ev.start;
+                for (const s of creneauxDedans) {
+                    morceaux.push({ ...ev, start: debut, end: s.start, decoupee: true });
+                    debut = s.end;
+                }
+                morceaux.push(creneauxDedans.length ? { ...ev, start: debut, decoupee: true } : ev);
+            }
+            return morceaux;
+        }
+
         // =============================================
         // MISE À JOUR DE LA LISTE
         // =============================================
@@ -1790,6 +1815,7 @@
 
             let todoCount = 0;
             let doneCount = 0;
+            const resasAffichees = decouperResasAuxCreneaux(currentIcalEvents, cleaningSlots);
 
             cleaningSlots.forEach((slot, idx) => {
                 const arrivee = slotArrivee(slot);
@@ -1999,13 +2025,13 @@
                 listElement.appendChild(listItem);
 
                 // Admin : afficher les réservations entre ce créneau et le suivant
-                if (adminMode && currentIcalEvents.length > 0) {
+                if (adminMode && resasAffichees.length > 0) {
                     const slotEndDate = new Date(slot.end);
                     const nextSlot = cleaningSlots[idx + 1];
                     const nextSlotStart = nextSlot ? new Date(nextSlot.start) : new Date('2099-12-31');
 
                     // Trouver toutes les réservations entre la fin de ce créneau et le début du suivant
-                    const resasBetween = currentIcalEvents.filter(ev => {
+                    const resasBetween = resasAffichees.filter(ev => {
                         const evStart = new Date(ev.start);
                         return evStart >= slotEndDate && evStart < nextSlotStart;
                     });
@@ -2013,6 +2039,7 @@
                     resasBetween.forEach((resa, resaIdx) => {
                         const resaDiv = document.createElement('div');
                         resaDiv.className = 'reservation-row';
+                        if (resa.decoupee) resaDiv.title = 'Coupée par une date de ménage manuelle : le flux ne donne qu\'une seule réservation';
 
                         const badge = document.createElement('span');
                         badge.className = 'resa-source ' + resa.source.toLowerCase();
